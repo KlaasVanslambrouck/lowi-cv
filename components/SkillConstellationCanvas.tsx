@@ -5,14 +5,47 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, Line } from "@react-three/drei";
 import type { Line2 } from "three-stdlib";
+import { useTheme } from "@/app/cv/hooks/useTheme";
+import type { Theme } from "@/app/cv/context/ThemeContext";
 import type { SkillNode } from "@/types/content";
 import styles from "@/styles/cv.module.css";
 
 // Zelfde visuele taal als ArchitectureScene: bone bollen, koper voor
 // actief/gehoverd. Geen bloom-postprocessing hier — deze scene moet licht
 // blijven (de bloom zit alleen in de hero).
-const COLOR_BONE = "#EDE7DC";
-const COLOR_COPPER = "#B8763E";
+interface SkillScenePalette {
+  infrastructure: string;
+  activity: string;
+  pointLight: string;
+  ambientIntensity: number;
+  pointLightIntensity: number;
+  idleEmissive: number;
+  neighborEmissive: number;
+  activeEmissive: number;
+}
+
+const SKILL_SCENE_PALETTES: Record<Theme, SkillScenePalette> = {
+  dark: {
+    infrastructure: "#F1ECE2",
+    activity: "#C98245",
+    pointLight: "#F1ECE2",
+    ambientIntensity: 0.45,
+    pointLightIntensity: 20,
+    idleEmissive: 0.35,
+    neighborEmissive: 0.8,
+    activeEmissive: 1.15,
+  },
+  light: {
+    infrastructure: "#171820",
+    activity: "#A95F2C",
+    pointLight: "#FAF7F1",
+    ambientIntensity: 0.85,
+    pointLightIntensity: 8,
+    idleEmissive: 0.03,
+    neighborEmissive: 0.18,
+    activeEmissive: 0.28,
+  },
+};
 
 // Met de hand ontworpen clusters (bewust geen physics-simulatie):
 // business-cluster links (Functional Analysis, Product), AI-kern in het
@@ -59,12 +92,14 @@ function SkillNodeMesh({
   highlight, // "hovered" | "neighbor" | "idle" | "dimmed"
   onHover,
   reducedMotion,
+  palette,
 }: {
   node: SkillNode;
   position: [number, number, number];
   highlight: "hovered" | "neighbor" | "idle" | "dimmed";
   onHover: (id: string | null) => void;
   reducedMotion: boolean;
+  palette: SkillScenePalette;
 }) {
   const materialRef = useRef<THREE.MeshStandardMaterial>(null);
   const targetColor = useMemo(() => new THREE.Color(), []);
@@ -75,9 +110,14 @@ function SkillNodeMesh({
 
     // Doelwaarden per highlight-status
     const isCopper = highlight === "hovered" || highlight === "neighbor";
-    targetColor.set(isCopper ? COLOR_COPPER : COLOR_BONE);
+    targetColor.set(isCopper ? palette.activity : palette.infrastructure);
     const targetOpacity = highlight === "dimmed" ? 0.22 : 1;
-    const targetEmissive = highlight === "hovered" ? 1.4 : isCopper ? 0.9 : 0.5;
+    const targetEmissive =
+      highlight === "hovered"
+        ? palette.activeEmissive
+        : isCopper
+          ? palette.neighborEmissive
+          : palette.idleEmissive;
 
     if (reducedMotion) {
       // Reduced motion: statussen wisselen instant, zonder animated dim
@@ -99,7 +139,7 @@ function SkillNodeMesh({
 
   const labelClass =
     highlight === "hovered" || highlight === "neighbor"
-      ? `${styles.nodeLabel} ${styles.nodeLabelJarvis}`
+      ? `${styles.nodeLabel} ${styles.nodeLabelCopper}`
       : highlight === "dimmed"
         ? `${styles.nodeLabel} ${styles.nodeLabelDimmed}`
         : styles.nodeLabel;
@@ -122,9 +162,9 @@ function SkillNodeMesh({
         <sphereGeometry args={[0.16, 24, 24]} />
         <meshStandardMaterial
           ref={materialRef}
-          color={COLOR_BONE}
-          emissive={COLOR_BONE}
-          emissiveIntensity={0.5}
+          color={palette.infrastructure}
+          emissive={palette.infrastructure}
+          emissiveIntensity={palette.idleEmissive}
           transparent
           opacity={1}
         />
@@ -142,12 +182,14 @@ function ConstellationLine({
   emphasized,
   dimmed,
   reducedMotion,
+  palette,
 }: {
   start: [number, number, number];
   end: [number, number, number];
   emphasized: boolean;
   dimmed: boolean;
   reducedMotion: boolean;
+  palette: SkillScenePalette;
 }) {
   const lineRef = useRef<Line2>(null);
 
@@ -164,7 +206,7 @@ function ConstellationLine({
     <Line
       ref={lineRef}
       points={[start, end]}
-      color={emphasized ? COLOR_COPPER : COLOR_BONE}
+      color={emphasized ? palette.activity : palette.infrastructure}
       lineWidth={1}
       transparent
       opacity={0.25}
@@ -195,6 +237,9 @@ export default function SkillConstellationCanvas({
   onHover,
   reducedMotion,
 }: SkillConstellationCanvasProps) {
+  const { theme } = useTheme();
+  const palette = SKILL_SCENE_PALETTES[theme];
+
   // Posities en unieke edges één keer afleiden uit de content
   const positions = useMemo(() => {
     const map = new Map<string, [number, number, number]>();
@@ -236,8 +281,12 @@ export default function SkillConstellationCanvas({
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.45} />
-      <pointLight position={[3, 3, 5]} intensity={20} color={COLOR_BONE} />
+      <ambientLight intensity={palette.ambientIntensity} />
+      <pointLight
+        position={[3, 3, 5]}
+        intensity={palette.pointLightIntensity}
+        color={palette.pointLight}
+      />
       <ConstellationCameraDrift reducedMotion={reducedMotion} />
       {edges.map(([fromId, toId]) => {
         const touchesHover =
@@ -251,6 +300,7 @@ export default function SkillConstellationCanvas({
             emphasized={touchesHover}
             dimmed={hoveredSkillId !== null && !touchesHover}
             reducedMotion={reducedMotion}
+            palette={palette}
           />
         );
       })}
@@ -271,6 +321,7 @@ export default function SkillConstellationCanvas({
             highlight={highlight}
             onHover={onHover}
             reducedMotion={reducedMotion}
+            palette={palette}
           />
         );
       })}

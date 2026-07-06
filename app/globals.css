@@ -4,18 +4,103 @@
 --------------------------------------------------------------------------- */
 
 :root {
-  /* Kleurenpalet */
-  --cv-ink: #13141b;
-  --cv-bone: #ede7dc;
-  --cv-copper: #b8763e; /* bewust GEEN terracotta #D97757 */
-  --cv-cyan: #5fbfb0; /* uitsluitend voor live/actieve data-indicatoren */
-  --cv-muted: #8a8677;
+  /* CV kleurenpalet - dark default */
+  --cv-bg: #101118;
+  --cv-surface: #171923;
+  --cv-surface-raised: #1e202b;
+  --cv-text: #f1ece2;
+  --cv-text-soft: #d8d2c8;
+  --cv-muted: #9995a0;
+  --cv-border: rgba(241, 236, 226, 0.14);
+  --cv-copper: #c98245;
+  --cv-copper-soft: #d9a06d;
+  --cv-blue: #669cff;
+  --cv-blue-soft: #8cb5ff;
+  --cv-violet: #9878ff;
+  --cv-violet-soft: #b19bff;
+  --cv-live: #669cff;
   --cv-radius: 18px;
+
+  --cv-bg-rgb: 16 17 24;
+  --cv-surface-rgb: 23 25 35;
+  --cv-surface-raised-rgb: 30 32 43;
+  --cv-text-rgb: 241 236 226;
+  --cv-text-soft-rgb: 216 210 200;
+  --cv-muted-rgb: 153 149 160;
+  --cv-copper-rgb: 201 130 69;
+  --cv-blue-rgb: 102 156 255;
+  --cv-violet-rgb: 152 120 255;
+
+  /* Backwards-compatible aliases voor bestaande componentclasses. */
+  --cv-ink: var(--cv-bg);
+  --cv-bone: var(--cv-text);
 
   /* Fontvariabelen (--font-fraunces enz.) worden door next/font op <html> gezet */
   --cv-font-serif: var(--font-fraunces), Georgia, serif;
   --cv-font-sans: var(--font-dm-sans), system-ui, sans-serif;
   --cv-font-mono: var(--font-dm-mono), ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-cv-theme]) {
+    --cv-bg: #f3efe7;
+    --cv-surface: #e8e2d8;
+    --cv-surface-raised: #faf7f1;
+    --cv-text: #171820;
+    --cv-text-soft: #3e3d43;
+    --cv-muted: #6f6a70;
+    --cv-border: rgba(23, 24, 32, 0.16);
+    --cv-copper: #a95f2c;
+    --cv-copper-soft: #c17a48;
+    --cv-blue: #2864d7;
+    --cv-blue-soft: #4b7dde;
+    --cv-violet: #6945d6;
+    --cv-violet-soft: #8265dc;
+    --cv-live: #2864d7;
+
+    --cv-bg-rgb: 243 239 231;
+    --cv-surface-rgb: 232 226 216;
+    --cv-surface-raised-rgb: 250 247 241;
+    --cv-text-rgb: 23 24 32;
+    --cv-text-soft-rgb: 62 61 67;
+    --cv-muted-rgb: 111 106 112;
+    --cv-copper-rgb: 169 95 44;
+    --cv-blue-rgb: 40 100 215;
+    --cv-violet-rgb: 105 69 214;
+  }
+}
+
+html[data-cv-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-cv-theme="light"] {
+  --cv-bg: #f3efe7;
+  --cv-surface: #e8e2d8;
+  --cv-surface-raised: #faf7f1;
+  --cv-text: #171820;
+  --cv-text-soft: #3e3d43;
+  --cv-muted: #6f6a70;
+  --cv-border: rgba(23, 24, 32, 0.16);
+  --cv-copper: #a95f2c;
+  --cv-copper-soft: #c17a48;
+  --cv-blue: #2864d7;
+  --cv-blue-soft: #4b7dde;
+  --cv-violet: #6945d6;
+  --cv-violet-soft: #8265dc;
+  --cv-live: #2864d7;
+
+  --cv-bg-rgb: 243 239 231;
+  --cv-surface-rgb: 232 226 216;
+  --cv-surface-raised-rgb: 250 247 241;
+  --cv-text-rgb: 23 24 32;
+  --cv-text-soft-rgb: 62 61 67;
+  --cv-muted-rgb: 111 106 112;
+  --cv-copper-rgb: 169 95 44;
+  --cv-blue-rgb: 40 100 215;
+  --cv-violet-rgb: 105 69 214;
+
+  color-scheme: light;
 }
 
 /* --- Minimale reset --- */
@@ -33,8 +118,8 @@ html {
 }
 
 body {
-  background-color: var(--cv-ink);
-  color: var(--cv-bone);
+  background-color: var(--cv-bg);
+  color: var(--cv-text);
   font-family: var(--cv-font-sans);
   font-size: 1rem;
   line-height: 1.65;
@@ -90,7 +175,7 @@ pre {
 
 ::selection {
   background-color: var(--cv-copper);
-  color: var(--cv-ink);
+  color: var(--cv-bg);
 }
 
 /* Bezoekers met reduced motion krijgen geen smooth scroll of animaties */

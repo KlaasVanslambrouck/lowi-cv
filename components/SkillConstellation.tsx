@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import type { Project, SkillNode, UILabels } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useSceneSupport } from "@/hooks/useSceneSupport";
+import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 // De WebGL-canvas laadt lazy en uitsluitend client-side
@@ -32,7 +34,10 @@ export default function SkillConstellation({
 }: SkillConstellationProps) {
   const { t } = useLanguage();
   const support = useSceneSupport();
+  const { isExplanationActive } = useJarvisExplain();
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
+  const skillsExplanationId = "skills-system-thinking";
+  const skillsExplainActive = isExplanationActive(skillsExplanationId);
 
   const hoveredSkill = useMemo(
     () => nodes.find((node) => node.id === hoveredSkillId) ?? null,
@@ -50,18 +55,36 @@ export default function SkillConstellation({
   // Fallback: eenvoudige tag-grid (mobiel, geen WebGL, of vóór de checks)
   if (!support.ready || support.smallScreen || !support.webglOk) {
     return (
-      <ul className={styles.skillsGrid}>
-        {nodes.map((node) => (
-          <li key={node.id} className={styles.skillTag}>
-            {node.name}
-          </li>
-        ))}
-      </ul>
+      <div
+        className={
+          skillsExplainActive
+            ? `${styles.skillsExplainSurface} ${styles.jarvisExplainActiveOutline}`
+            : styles.skillsExplainSurface
+        }
+      >
+        <ul className={styles.skillsGrid}>
+          {nodes.map((node) => (
+            <li key={node.id} className={styles.skillTag}>
+              {node.name}
+            </li>
+          ))}
+        </ul>
+        <JarvisExplainButton
+          explanationId={skillsExplanationId}
+          label={labels.jarvisExplainButton}
+        />
+      </div>
     );
   }
 
   return (
-    <div className={styles.constellationWrapper}>
+    <div
+      className={
+        skillsExplainActive
+          ? `${styles.constellationWrapper} ${styles.jarvisExplainActiveOutline}`
+          : styles.constellationWrapper
+      }
+    >
       <div className={styles.constellationCanvas} aria-hidden="true">
         <SkillConstellationCanvas
           nodes={nodes}
@@ -91,6 +114,12 @@ export default function SkillConstellation({
             {t(labels.constellationHint)}
           </p>
         )}
+        <div className={styles.jarvisExplainActionRow}>
+          <JarvisExplainButton
+            explanationId={skillsExplanationId}
+            label={labels.jarvisExplainButton}
+          />
+        </div>
       </aside>
       {/* Skills blijven leesbaar voor screenreaders (canvas is aria-hidden) */}
       <ul className={styles.srOnly}>

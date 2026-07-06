@@ -4,11 +4,14 @@ import { useState } from "react";
 import type { Project, UILabels, XrayLayer } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useXray } from "@/hooks/useXray";
+import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 interface ProjectCardProps {
   project: Project;
   labels: UILabels;
+  explanationId?: string;
 }
 
 // Bouwt de monospace-boomstructuur voor de X-ray weergave
@@ -24,23 +27,34 @@ function buildXrayTree(breakdown: XrayLayer[]): string {
     .join("\n");
 }
 
-export default function ProjectCard({ project, labels }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  labels,
+  explanationId,
+}: ProjectCardProps) {
   const { t } = useLanguage();
   const { xrayActive } = useXray();
+  const { isExplanationActive } = useJarvisExplain();
   // Exploded view: muis-hover én expliciete toggle (toetsenbord/touch)
   const [hoverExploded, setHoverExploded] = useState(false);
   const [pinnedExploded, setPinnedExploded] = useState(false);
 
   const exploded = hoverExploded || pinnedExploded;
   const showXray = xrayActive && Boolean(project.xrayBreakdown);
+  const explainActive = explanationId
+    ? isExplanationActive(explanationId)
+    : false;
+  const cardClassName = [
+    styles.projectCard,
+    exploded ? styles.projectCardExploded : "",
+    explainActive ? styles.jarvisExplainActiveOutline : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <article
-      className={
-        exploded
-          ? `${styles.projectCard} ${styles.projectCardExploded}`
-          : styles.projectCard
-      }
+      className={cardClassName}
       onMouseEnter={() => setHoverExploded(true)}
       onMouseLeave={() => setHoverExploded(false)}
     >
@@ -58,16 +72,21 @@ export default function ProjectCard({ project, labels }: ProjectCardProps) {
             {t(labels.explodeToggle)}
           </button>
         </div>
+        <p className={styles.projectDescription}>{t(project.description)}</p>
         {showXray && project.xrayBreakdown ? (
-          // X-ray: technische boomstructuur i.p.v. de beschrijving
-          <pre key="xray" className={`${styles.xrayTree} ${styles.fadeSwap}`}>
+          // X-ray voegt technische metadata toe; gewone content blijft zichtbaar.
+          <pre className={`${styles.xrayTree} ${styles.fadeSwap}`}>
             {buildXrayTree(project.xrayBreakdown)}
           </pre>
-        ) : (
-          <p key="normal" className={`${styles.projectDescription} ${styles.fadeSwap}`}>
-            {t(project.description)}
-          </p>
-        )}
+        ) : null}
+        {explanationId ? (
+          <div className={styles.jarvisExplainActionRow}>
+            <JarvisExplainButton
+              explanationId={explanationId}
+              label={labels.jarvisExplainButton}
+            />
+          </div>
+        ) : null}
       </div>
       <pre
         className={`${styles.codeBlock} ${styles.projectCardLayer} ${styles.projectLayerMid}`}

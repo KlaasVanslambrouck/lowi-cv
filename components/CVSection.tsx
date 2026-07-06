@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Bilingual } from "@/types/content";
+import { useInViewOnce } from "@/hooks/useInViewOnce";
 import { useLanguage } from "@/hooks/useLanguage";
 import styles from "@/styles/cv.module.css";
 
@@ -13,35 +14,8 @@ interface CVSectionProps {
 
 // Sectie-wrapper met titel en scroll-reveal (fade + kleine translate-y).
 export default function CVSection({ id, title, children }: CVSectionProps) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [sectionRef, isVisible] = useInViewOnce<HTMLElement>();
   const { t } = useLanguage();
-
-  useEffect(() => {
-    const element = sectionRef.current;
-    if (!element) return;
-
-    // Bij reduced motion: meteen tonen, geen reveal-animatie
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.12 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <section

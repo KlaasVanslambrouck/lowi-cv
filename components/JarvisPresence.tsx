@@ -10,7 +10,7 @@ interface JarvisPresenceProps {
   label: string; // taalonafhankelijke prefix, bv. "jarvis"
 }
 
-// Subtiel, vast paneel linksonder dat een "systeem-observatie" toont voor de
+// Subtiel, vast paneel rechtsonder dat een "systeem-observatie" toont voor de
 // sectie die momenteel in beeld is. Leest dezelfde data-section-id-attributen
 // die CVSection/Hero/ContactFooter al zetten — er is dus één bron van
 // sectie-identiteit, geen dubbele observer-configuratie per component.

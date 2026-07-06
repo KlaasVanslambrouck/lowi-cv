@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import type { ExperienceEntry } from "@/types/content";
+import type { Bilingual, ExperienceEntry } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
+import CareerMotifBackground from "@/components/CareerMotifBackground";
+import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 interface ExperienceTimelineProps {
   entries: ExperienceEntry[];
+  explainButtonLabel: Bilingual;
 }
 
 // Rustige, leesbare tijdlijn — huidige rol staat bovenaan (volgorde uit
@@ -16,10 +20,13 @@ interface ExperienceTimelineProps {
 // pagina).
 export default function ExperienceTimeline({
   entries,
+  explainButtonLabel,
 }: ExperienceTimelineProps) {
   const { t } = useLanguage();
+  const { isExplanationActive } = useJarvisExplain();
   const listRef = useRef<HTMLOListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const currentExperienceExplanationId = "current-experience";
 
   useEffect(() => {
     const list = listRef.current;
@@ -60,19 +67,47 @@ export default function ExperienceTimeline({
         aria-hidden="true"
       />
       <ol ref={listRef} className={styles.timeline}>
-        {entries.map((entry) => (
+        {entries.map((entry) => {
+          const isCurrentEntry = /heden|present/i.test(entry.period);
+          const explainActive =
+            isCurrentEntry &&
+            isExplanationActive(currentExperienceExplanationId);
+
+          return (
           <li
             key={`${entry.company}-${entry.period}`}
             className={styles.timelineItem}
           >
-            <div className={styles.timelineHeader}>
-              <h3 className={styles.timelineRole}>{t(entry.role)}</h3>
-              <span className={styles.timelineCompany}>{entry.company}</span>
+            <div
+              className={
+                explainActive
+                  ? `${styles.timelineItemSurface} ${styles.jarvisExplainActiveOutline}`
+                  : styles.timelineItemSurface
+              }
+            >
+              <CareerMotifBackground motif={entry.motif} />
+              <div className={styles.timelineItemContent}>
+                <div className={styles.timelineHeader}>
+                  <h3 className={styles.timelineRole}>{t(entry.role)}</h3>
+                  <span className={styles.timelineCompany}>{entry.company}</span>
+                </div>
+                <span className={styles.timelinePeriod}>{entry.period}</span>
+                <p className={styles.timelineDescription}>
+                  {t(entry.description)}
+                </p>
+                {isCurrentEntry ? (
+                  <div className={styles.jarvisExplainActionRow}>
+                    <JarvisExplainButton
+                      explanationId={currentExperienceExplanationId}
+                      label={explainButtonLabel}
+                    />
+                  </div>
+                ) : null}
+              </div>
             </div>
-            <span className={styles.timelinePeriod}>{entry.period}</span>
-            <p className={styles.timelineDescription}>{t(entry.description)}</p>
           </li>
-        ))}
+          );
+        })}
       </ol>
     </div>
   );

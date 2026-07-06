@@ -18,30 +18,57 @@ export const placeholderContent: PortfolioContent = {
 
   experience: [
     {
+      role: {
+        nl: "Sound Engineer & Hoofd Geluidsafdeling",
+        en: "Sound Engineer & Head of Audio",
+      },
+      company: "Soundfield NV (freelance & vast)",
+      period: "2010 — 2021",
+      motif: "soundwave",
+      description: {
+        nl: "Ontwierp geluidsinstallaties en verzorgde live-mixing bij internationale evenementen voor Adecco, Samsonite, AWS en meer.",
+        en: "Designed sound systems and ran live mixing at international events for Adecco, Samsonite, AWS and more.",
+      },
+    },
+    {
+      role: { nl: "Team Lead Productie", en: "Production Team Lead" },
+      company: "Student Kick-Off, Gent (vrijwilliger / volunteer)",
+      period: "2012 — 2020",
+      // TODO: exacte jaren nog te bevestigen door gebruiker.
+      motif: "stage-lights",
+      description: {
+        nl: "Programmeerde de Mainstage en onderhandelde artiestencontracten voor een studentenevenement met 30.000+ bezoekers.",
+        en: "Booked the Mainstage and negotiated artist contracts for a student festival drawing 30,000+ visitors.",
+      },
+    },
+    {
+      role: { nl: "Founder", en: "Founder" },
+      company: "Event Explorers",
+      period: "2016 — 2017",
+      motif: "blueprint",
+      description: {
+        nl: "Eigen onderneming: begeleidde events en projecten van concept en engineering tot volledige realisatie.",
+        en: "Own company: guided events and projects from concept and engineering through to full realisation.",
+      },
+    },
+    {
       role: { nl: "Functioneel Analist", en: "Functional Analyst" },
-      company: "Placeholder Corp",
-      period: "2023 — heden",
+      company: "EGOV VZW — project bij FOD Financiën",
+      period: "2021 — 2022",
+      motif: "flowchart",
       description: {
-        nl: "Analyse en optimalisatie van bedrijfsprocessen, brug tussen business en IT, functionele specificaties voor dataplatformen.",
-        en: "Analysis and optimisation of business processes, bridging business and IT, functional specifications for data platforms.",
+        nl: "Vertaalde business-behoeften naar functionele specificaties voor case management en workflow-automatisering.",
+        en: "Translated business needs into functional specs for case management and workflow automation.",
       },
     },
     {
-      role: { nl: "Business Analyst", en: "Business Analyst" },
-      company: "Voorbeeld NV",
-      period: "2021 — 2023",
+      role: { nl: "Functioneel Consultant", en: "Functional Consultant" },
+      company: "Itineris NV",
+      period: "2022 — heden / present",
+      motif: "flowchart",
       description: {
-        nl: "Requirements-analyse en rapportering voor logistieke ketens, met focus op datakwaliteit en dashboards.",
-        en: "Requirements analysis and reporting for logistics chains, focusing on data quality and dashboards.",
-      },
-    },
-    {
-      role: { nl: "Junior Consultant", en: "Junior Consultant" },
-      company: "Demo Consulting",
-      period: "2019 — 2021",
-      description: {
-        nl: "Procesdocumentatie en ondersteuning bij ERP-implementaties voor klanten in retail en productie.",
-        en: "Process documentation and support for ERP implementations for clients in retail and manufacturing.",
+        nl: "Projectconsultancy en domeinverantwoordelijke voor service delivery bij een grootschalig upgrade-project voor De Watergroep.",
+        en: "Project consultancy and domain lead for service delivery on a large-scale upgrade project for De Watergroep.",
       },
     },
   ],
@@ -49,19 +76,20 @@ export const placeholderContent: PortfolioContent = {
   education: [
     {
       degree: {
-        nl: "Master Handelswetenschappen",
-        en: "Master of Business Administration",
+        nl: "Industrieel Ingenieur Elektromechanica (niet afgerond)",
+        en: "Industrial Engineering – Electromechanics (not completed)",
       },
-      institution: "KU Leuven",
-      period: "2015 — 2019",
+      institution: "Universiteit Gent",
+      period: "2010 — 2015",
+      motif: "blueprint",
     },
     {
       degree: {
-        nl: "Postgraduaat Data & AI",
-        en: "Postgraduate Data & AI",
+        nl: "Functioneel Analist — Omscholingstraject",
+        en: "Functional Analyst — Career Switch Programme",
       },
-      institution: "VUB",
-      period: "2020 — 2021",
+      institution: "Switchfully (onderdeel van Cegeka)",
+      period: "2021",
     },
   ],
 
@@ -72,11 +100,15 @@ export const placeholderContent: PortfolioContent = {
     },
     {
       language: { nl: "Engels", en: "English" },
-      level: { nl: "Professioneel vaardig", en: "Full professional proficiency" },
+      level: { nl: "Zeer goed", en: "Very good" },
     },
     {
       language: { nl: "Frans", en: "French" },
-      level: { nl: "Goede werkkennis", en: "Good working knowledge" },
+      level: { nl: "Goed", en: "Good" },
+    },
+    {
+      language: { nl: "Russisch", en: "Russian" },
+      level: { nl: "Basis", en: "Basic" },
     },
   ],
 
@@ -312,8 +344,8 @@ render(reply.text);`,
     {
       sectionId: "languages",
       text: {
-        nl: "taalmodules geladen: nl · en · fr",
-        en: "language modules loaded: nl · en · fr",
+        nl: "taalmodules geladen: nl · en · fr · ru",
+        en: "language modules loaded: nl · en · fr · ru",
       },
     },
     {
@@ -326,8 +358,8 @@ render(reply.text);`,
     {
       sectionId: "lowi",
       text: {
-        nl: "kernplatform nidus · status groen",
-        en: "core platform nidus · status green",
+        nl: "kernplatform nidus · status live",
+        en: "core platform nidus · status live",
       },
     },
     {
@@ -360,10 +392,212 @@ render(reply.text);`,
     },
   ],
 
+  // TODO: later vervangen door echte RAG-context op basis van CV/projectdata.
+  jarvisExplanations: [
+    {
+      id: "current-experience",
+      title: {
+        nl: "Functionele analyse met delivery-verantwoordelijkheid",
+        en: "Functional analysis with delivery responsibility",
+      },
+      contextLabel: {
+        nl: "Ervaring / huidige rol",
+        en: "Experience / current role",
+      },
+      summary: {
+        nl: "Deze ervaring toont dat Klaas niet enkel requirements verzamelt, maar domeinen structureert, risico's zichtbaar maakt en complexe upgrades vertaalbaar houdt voor business en engineering.",
+        en: "This experience shows Klaas does more than gather requirements: he structures domains, exposes risks and keeps complex upgrades understandable for business and engineering.",
+      },
+      signals: [
+        {
+          nl: "domeinverantwoordelijkheid binnen service delivery",
+          en: "domain ownership within service delivery",
+        },
+        {
+          nl: "vertaling tussen businessproces en systeemgedrag",
+          en: "translation between business process and system behaviour",
+        },
+        {
+          nl: "upgrade-context met afhankelijkheden en impactanalyse",
+          en: "upgrade context with dependencies and impact analysis",
+        },
+      ],
+      relevance: {
+        nl: "Voor AI Business Engineering is dit belangrijk: goede AI-systemen beginnen bij scherpe procesanalyse, betrouwbare context en heldere beslislogica.",
+        en: "For AI Business Engineering this matters: strong AI systems start with sharp process analysis, reliable context and clear decision logic.",
+      },
+    },
+    {
+      id: "nidus-project",
+      title: {
+        nl: "Nidus als zenuwcentrum van het platform",
+        en: "Nidus as the platform nerve centre",
+      },
+      contextLabel: {
+        nl: "LOWI / Nidus",
+        en: "LOWI / Nidus",
+      },
+      summary: {
+        nl: "Nidus positioneert de portfolio als een ecosysteem in plaats van losse demos. Het project bundelt data, services en API-laag zodat andere toepassingen context kunnen hergebruiken.",
+        en: "Nidus positions the portfolio as an ecosystem rather than a set of demos. It combines data, services and an API layer so other applications can reuse context.",
+      },
+      signals: [
+        {
+          nl: "centrale backend met herbruikbare API-contracten",
+          en: "central backend with reusable API contracts",
+        },
+        {
+          nl: "platformdenken boven losse projectpresentatie",
+          en: "platform thinking beyond isolated project presentation",
+        },
+        {
+          nl: "basis voor geheugen, telemetry en RAG-context",
+          en: "foundation for memory, telemetry and RAG context",
+        },
+      ],
+      relevance: {
+        nl: "Dit maakt toekomstige Jarvis-logica geloofwaardig: een assistent heeft pas waarde wanneer hij op een eigen, gestructureerde contextlaag kan bouwen.",
+        en: "This makes future Jarvis logic credible: an assistant becomes valuable when it can build on its own structured context layer.",
+      },
+    },
+    {
+      id: "lowi-project",
+      title: {
+        nl: "LOWI als samenhangend portfoliosysteem",
+        en: "LOWI as a connected portfolio system",
+      },
+      contextLabel: {
+        nl: "Platform / projectarchitectuur",
+        en: "Platform / project architecture",
+      },
+      summary: {
+        nl: "LOWI toont een verschuiving van losse technische experimenten naar een samenhangende productomgeving: data, interfaces, agents en observability horen bij dezelfde ontwerpkeuzes.",
+        en: "LOWI shows a shift from separate technical experiments to a connected product environment: data, interfaces, agents and observability belong to the same design choices.",
+      },
+      signals: [
+        {
+          nl: "meerdere projecten delen dezelfde platformtaal",
+          en: "multiple projects share one platform language",
+        },
+        {
+          nl: "frontend, data en automatisering worden samen ontworpen",
+          en: "frontend, data and automation are designed together",
+        },
+        {
+          nl: "portfolio functioneert als levend systeem",
+          en: "the portfolio behaves like a living system",
+        },
+      ],
+      relevance: {
+        nl: "Een intelligente portfolio moet zichzelf kunnen verklaren. LOWI is de laag die die verklaring technisch en inhoudelijk laat samenkomen.",
+        en: "An intelligent portfolio should be able to explain itself. LOWI is the layer where that explanation becomes both technical and substantive.",
+      },
+    },
+    {
+      id: "skills-system-thinking",
+      title: {
+        nl: "Skills als systeem in plaats van lijst",
+        en: "Skills as a system, not a list",
+      },
+      contextLabel: {
+        nl: "Skills / systeemdenken",
+        en: "Skills / systems thinking",
+      },
+      summary: {
+        nl: "De skillset is niet bedoeld als verzameling badges. Ze toont hoe analyse, APIs, data, automation en productdenken samen een route vormen naar AI-systemen die bruikbaar zijn.",
+        en: "The skillset is not meant as a collection of badges. It shows how analysis, APIs, data, automation and product thinking combine into usable AI systems.",
+      },
+      signals: [
+        {
+          nl: "businessanalyse verbonden met technische uitvoering",
+          en: "business analysis connected to technical delivery",
+        },
+        {
+          nl: "data en APIs als brug naar agentgedrag",
+          en: "data and APIs as a bridge to agent behaviour",
+        },
+        {
+          nl: "productfocus houdt experimenten bruikbaar",
+          en: "product focus keeps experiments usable",
+        },
+      ],
+      relevance: {
+        nl: "Dit profiel is waardevol waar AI niet als losse chatbot wordt gezien, maar als systeemlaag boven processen, data en beslissingen.",
+        en: "This profile is valuable where AI is not treated as a separate chatbot, but as a system layer on top of processes, data and decisions.",
+      },
+    },
+    {
+      id: "live-system",
+      title: {
+        nl: "Live data als geloofwaardigheidssignaal",
+        en: "Live data as a credibility signal",
+      },
+      contextLabel: {
+        nl: "Live systeem / telemetry",
+        en: "Live system / telemetry",
+      },
+      summary: {
+        nl: "De live-sectie suggereert dat het portfolio niet alleen vertelt wat gebouwd werd, maar ook status, gebruik en betrouwbaarheid kan tonen. Vandaag is dit placeholder-data; de vorm is al production-minded.",
+        en: "The live section suggests the portfolio can show not only what was built, but also status, usage and reliability. Today it is placeholder data; the shape is already production-minded.",
+      },
+      signals: [
+        {
+          nl: "operationele taal: uptime, services en API-calls",
+          en: "operational language: uptime, services and API calls",
+        },
+        {
+          nl: "observability als onderdeel van de ervaring",
+          en: "observability as part of the experience",
+        },
+        {
+          nl: "voorbereid op echte platformtelemetrie",
+          en: "prepared for real platform telemetry",
+        },
+      ],
+      relevance: {
+        nl: "Dat maakt dit meer dan een demo: bezoekers krijgen het gevoel dat achter de interface een draaiend systeem kan zitten.",
+        en: "That makes this more than a demo: visitors get the sense that a running system can exist behind the interface.",
+      },
+    },
+    {
+      id: "ai-transition",
+      title: {
+        nl: "Van analyse naar AI-engineering",
+        en: "From analysis to AI engineering",
+      },
+      contextLabel: {
+        nl: "Jarvis / AI-richting",
+        en: "Jarvis / AI direction",
+      },
+      summary: {
+        nl: "Jarvis maakt de overgang tastbaar: van processen begrijpen naar systemen bouwen die context kunnen ophalen, redeneren over intentie en acties voorbereiden.",
+        en: "Jarvis makes the transition tangible: from understanding processes to building systems that can retrieve context, reason about intent and prepare actions.",
+      },
+      signals: [
+        {
+          nl: "LLM-interface bovenop eigen platformdata",
+          en: "LLM interface on top of owned platform data",
+        },
+        {
+          nl: "toolgebruik en geheugen als volgende logische stap",
+          en: "tool use and memory as the next logical step",
+        },
+        {
+          nl: "AI uitgelegd via concrete productflows",
+          en: "AI explained through concrete product flows",
+        },
+      ],
+      relevance: {
+        nl: "De richting is duidelijk: geen AI als effect, maar AI als bruikbare laag in een systeem dat zakelijke context begrijpt.",
+        en: "The direction is clear: not AI as an effect, but AI as a usable layer in a system that understands business context.",
+      },
+    },
+  ],
+
   contact: {
     email: "klaas@example.com",
     linkedinUrl: "https://www.linkedin.com/in/placeholder",
-    location: { nl: "Brussel, België", en: "Brussels, Belgium" },
+    location: { nl: "Oudenaarde, België", en: "Oudenaarde, Belgium" },
     cvPdfUrl: "/cv-klaas.pdf",
   },
 
@@ -411,5 +645,21 @@ render(reply.text);`,
     },
     constellationProjectsLabel: { nl: "gebruikt in", en: "used in" },
     jarvisPresenceLabel: "jarvis",
+    jarvisExplainButton: {
+      nl: "Vraag Jarvis hierover",
+      en: "Ask Jarvis about this",
+    },
+    jarvisExplainClose: {
+      nl: "Sluit Jarvis-paneel",
+      en: "Close Jarvis panel",
+    },
+    jarvisExplainStatus: {
+      nl: "JARVIS / contextuele analyse",
+      en: "JARVIS / contextual analysis",
+    },
+    jarvisExplainRelevanceLabel: {
+      nl: "Waarom dit relevant is",
+      en: "Why this matters",
+    },
   },
 };

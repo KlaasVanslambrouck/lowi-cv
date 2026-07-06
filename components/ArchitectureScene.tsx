@@ -6,12 +6,74 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, Line } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import type { Line2 } from "three-stdlib";
+import { useTheme } from "@/app/cv/hooks/useTheme";
+import type { Theme } from "@/app/cv/context/ThemeContext";
 import styles from "@/styles/cv.module.css";
 
 // Kleuren als constanten — matchen de CSS design tokens in globals.css
-const COLOR_BONE = "#EDE7DC";
-const COLOR_COPPER = "#B8763E";
-const COLOR_CYAN = "#5FBFB0";
+interface ScenePalette {
+  background: string;
+  infrastructure: string;
+  activity: string;
+  live: string;
+  ai: string;
+  line: string;
+  pointLight: string;
+  ambientIntensity: number;
+  pointLightIntensity: number;
+  coreEmissive: number;
+  infrastructureEmissive: number;
+  jarvisEmissive: number;
+  coreLineOpacity: number;
+  meshLineOpacity: number;
+  haloBaseOpacity: number;
+  haloPulseOpacity: number;
+  bloomIntensity: number;
+  bloomThreshold: number;
+}
+
+const SCENE_PALETTES: Record<Theme, ScenePalette> = {
+  dark: {
+    background: "#101118",
+    infrastructure: "#F1ECE2",
+    activity: "#C98245",
+    live: "#669CFF",
+    ai: "#9878FF",
+    line: "#F1ECE2",
+    pointLight: "#F1ECE2",
+    ambientIntensity: 0.4,
+    pointLightIntensity: 26,
+    coreEmissive: 1.05,
+    infrastructureEmissive: 0.28,
+    jarvisEmissive: 0.8,
+    coreLineOpacity: 0.18,
+    meshLineOpacity: 0.28,
+    haloBaseOpacity: 0.08,
+    haloPulseOpacity: 0.18,
+    bloomIntensity: 0.45,
+    bloomThreshold: 0.28,
+  },
+  light: {
+    background: "#F3EFE7",
+    infrastructure: "#171820",
+    activity: "#A95F2C",
+    live: "#2864D7",
+    ai: "#6945D6",
+    line: "#171820",
+    pointLight: "#FAF7F1",
+    ambientIntensity: 0.9,
+    pointLightIntensity: 8,
+    coreEmissive: 0.28,
+    infrastructureEmissive: 0.04,
+    jarvisEmissive: 0.22,
+    coreLineOpacity: 0.2,
+    meshLineOpacity: 0.2,
+    haloBaseOpacity: 0.04,
+    haloPulseOpacity: 0.1,
+    bloomIntensity: 0.12,
+    bloomThreshold: 0.6,
+  },
+};
 
 // Camera-drift-amplitudes. Deze worden OOK meegerekend in de safe-zone-
 // berekening hieronder, zodat nodes ook tijdens de drift buiten de tekstzone
@@ -80,27 +142,27 @@ const CONNECTIONS: Array<[string, string]> = [
 ];
 
 // Datapulsen: klein glowing bolletje dat over een verbinding reist.
-// Twee smaken: cyaan = "data" (sneller), koper = "activiteit" (trager).
+// Koper is normale activiteit, blue is live data, violet is AI/Jarvis.
 // Puur decoratief/placeholder — later eventueel gekoppeld aan echte events.
 // Perf-knop: dit aantal (8) eerst verlagen als bloom + pulsen te zwaar worden.
 interface PulseConfig {
   from: string;
   to: string;
-  color: string;
+  tone: "activity" | "live" | "ai";
   speed: number; // fractie van de lijn per seconde
   phase: number; // startoffset zodat pulsen niet synchroon lopen
   size: number;
 }
 
 const PULSES: PulseConfig[] = [
-  { from: "pi", to: "supabase", color: COLOR_CYAN, speed: 0.4, phase: 0.0, size: 0.045 },
-  { from: "next-js", to: "supabase", color: COLOR_CYAN, speed: 0.36, phase: 0.45, size: 0.04 },
-  { from: "databricks", to: "supabase", color: COLOR_CYAN, speed: 0.42, phase: 0.7, size: 0.04 },
-  { from: "supabase", to: CORE_ID, color: COLOR_CYAN, speed: 0.38, phase: 0.2, size: 0.045 },
-  { from: CORE_ID, to: "jarvis", color: COLOR_COPPER, speed: 0.22, phase: 0.1, size: 0.05 },
-  { from: CORE_ID, to: "railway", color: COLOR_COPPER, speed: 0.24, phase: 0.55, size: 0.045 },
-  { from: "mobile", to: "railway", color: COLOR_COPPER, speed: 0.2, phase: 0.35, size: 0.045 },
-  { from: "jarvis", to: "railway", color: COLOR_COPPER, speed: 0.26, phase: 0.8, size: 0.04 },
+  { from: "pi", to: "supabase", tone: "activity", speed: 0.4, phase: 0.0, size: 0.045 },
+  { from: "next-js", to: "supabase", tone: "activity", speed: 0.36, phase: 0.45, size: 0.04 },
+  { from: "databricks", to: "supabase", tone: "activity", speed: 0.42, phase: 0.7, size: 0.04 },
+  { from: "supabase", to: CORE_ID, tone: "live", speed: 0.38, phase: 0.2, size: 0.045 },
+  { from: CORE_ID, to: "jarvis", tone: "ai", speed: 0.22, phase: 0.1, size: 0.05 },
+  { from: CORE_ID, to: "railway", tone: "activity", speed: 0.24, phase: 0.55, size: 0.045 },
+  { from: "mobile", to: "railway", tone: "activity", speed: 0.2, phase: 0.35, size: 0.045 },
+  { from: "jarvis", to: "railway", tone: "ai", speed: 0.26, phase: 0.8, size: 0.04 },
 ];
 
 const MAX_BASE_X = 3.0; // breedste ontwerp-positie (databricks)
@@ -161,7 +223,13 @@ function useNodeLayout(): Map<string, [number, number, number]> {
 }
 
 // De centrale kern-node: koper, groter, sterkere gloed; verschijnt als eerste
-function CoreNode({ position }: { position: [number, number, number] }) {
+function CoreNode({
+  position,
+  palette,
+}: {
+  position: [number, number, number];
+  palette: ScenePalette;
+}) {
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.MeshStandardMaterial>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
@@ -175,7 +243,7 @@ function CoreNode({ position }: { position: [number, number, number] }) {
     groupRef.current?.scale.setScalar(scale);
     if (materialRef.current) {
       materialRef.current.emissiveIntensity =
-        1.5 + (Math.sin(elapsed * 1.1) + 1) * 0.25;
+        palette.coreEmissive + (Math.sin(elapsed * 1.1) + 1) * 0.18;
     }
     if (labelRef.current) {
       labelRef.current.style.opacity = String(progress);
@@ -200,9 +268,9 @@ function CoreNode({ position }: { position: [number, number, number] }) {
         <sphereGeometry args={[0.3, 32, 32]} />
         <meshStandardMaterial
           ref={materialRef}
-          color={COLOR_COPPER}
-          emissive={COLOR_COPPER}
-          emissiveIntensity={1.5}
+          color={palette.ai}
+          emissive={palette.ai}
+          emissiveIntensity={palette.coreEmissive}
         />
       </mesh>
       <Html position={[0, 0.55, 0]} center style={{ pointerEvents: "none" }}>
@@ -223,18 +291,20 @@ function ArchitectureNode({
   node,
   position,
   bootDelay,
+  palette,
 }: {
   node: ArchitectureNodeConfig;
   position: [number, number, number];
   bootDelay: number;
+  palette: ScenePalette;
 }) {
   const groupRef = useRef<THREE.Group>(null);
   const coreMaterialRef = useRef<THREE.MeshStandardMaterial>(null);
   const haloRef = useRef<THREE.Mesh>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
 
-  // Jarvis is koper en iets prominenter dan de rest
-  const baseColor = node.isJarvis ? COLOR_COPPER : COLOR_BONE;
+  // Jarvis is violet en iets prominenter dan de infrastructuurnodes.
+  const baseColor = node.isJarvis ? palette.ai : palette.infrastructure;
   const radius = node.isJarvis ? 0.22 : 0.14;
 
   useFrame(({ clock }) => {
@@ -250,17 +320,19 @@ function ArchitectureNode({
       );
     }
 
-    // Idle-staat: jarvis pulseert continu in cyaan
+    // Idle-staat: Jarvis pulseert continu met electric-blue activiteit.
     if (node.isJarvis) {
       const pulse = (Math.sin(elapsed * 2.4) + 1) / 2; // genormaliseerd 0..1
       if (coreMaterialRef.current) {
-        coreMaterialRef.current.emissiveIntensity = 0.9 + pulse * 1.2;
+        coreMaterialRef.current.emissiveIntensity =
+          palette.jarvisEmissive + pulse * 0.8;
       }
       if (haloRef.current) {
         haloRef.current.scale.setScalar(1.35 + pulse * 0.45);
         const haloMaterial = haloRef.current
           .material as THREE.MeshBasicMaterial;
-        haloMaterial.opacity = 0.1 + pulse * 0.25;
+        haloMaterial.opacity =
+          palette.haloBaseOpacity + pulse * palette.haloPulseOpacity;
       }
     }
   });
@@ -285,17 +357,21 @@ function ArchitectureNode({
           ref={coreMaterialRef}
           color={baseColor}
           emissive={baseColor}
-          emissiveIntensity={node.isJarvis ? 1.1 : 0.5}
+          emissiveIntensity={
+            node.isJarvis
+              ? palette.jarvisEmissive
+              : palette.infrastructureEmissive
+          }
         />
       </mesh>
       {node.isJarvis ? (
-        // Cyaan halo die meepulseert — cyaan is de "live"-kleur
+        // Electric-blue halo die meepulseert als actieve Jarvis-state.
         <mesh ref={haloRef} scale={1.4}>
           <sphereGeometry args={[radius, 24, 24]} />
           <meshBasicMaterial
-            color={COLOR_CYAN}
+            color={palette.live}
             transparent
-            opacity={0.15}
+            opacity={palette.haloBaseOpacity}
             depthWrite={false}
           />
         </mesh>
@@ -380,9 +456,11 @@ function GrowingLine({
 function FadingLine({
   start,
   end,
+  palette,
 }: {
   start: [number, number, number];
   end: [number, number, number];
+  palette: ScenePalette;
 }) {
   const lineRef = useRef<Line2>(null);
 
@@ -393,7 +471,7 @@ function FadingLine({
       0.5,
     );
     if (lineRef.current) {
-      lineRef.current.material.opacity = 0.28 * progress;
+      lineRef.current.material.opacity = palette.meshLineOpacity * progress;
     }
   });
 
@@ -401,7 +479,7 @@ function FadingLine({
     <Line
       ref={lineRef}
       points={[start, end]}
-      color={COLOR_BONE}
+      color={palette.line}
       lineWidth={1}
       transparent
       opacity={0}
@@ -471,13 +549,18 @@ function CameraDrift() {
 }
 
 // Het volledige netwerk, gepositioneerd via de safe-zone-layout
-function NetworkScene() {
+function NetworkScene({ palette }: { palette: ScenePalette }) {
   const layout = useNodeLayout();
   const corePosition = layout.get(CORE_ID)!;
+  const pulseColors: Record<PulseConfig["tone"], string> = {
+    activity: palette.activity,
+    live: palette.live,
+    ai: palette.ai,
+  };
 
   return (
     <group>
-      <CoreNode position={corePosition} />
+      <CoreNode position={corePosition} palette={palette} />
       {/* Kern-verbindingen groeien gestaffeld vanuit de kern naar elke node */}
       {NODES.map((node, index) => (
         <GrowingLine
@@ -485,8 +568,8 @@ function NetworkScene() {
           origin={corePosition}
           target={layout.get(node.id)!}
           delay={BOOT_LINK_START + index * BOOT_LINK_STAGGER}
-          color={COLOR_COPPER}
-          maxOpacity={0.18}
+          color={palette.activity}
+          maxOpacity={palette.coreLineOpacity}
         />
       ))}
       {/* Nodes ontwaken één voor één na de verbindingen */}
@@ -496,6 +579,7 @@ function NetworkScene() {
           node={node}
           position={layout.get(node.id)!}
           bootDelay={BOOT_NODE_START + index * BOOT_NODE_STAGGER}
+          palette={palette}
         />
       ))}
       {/* Onderlinge verbindingen faden daarna subtiel in */}
@@ -504,6 +588,7 @@ function NetworkScene() {
           key={`${fromId}-${toId}`}
           start={layout.get(fromId)!}
           end={layout.get(toId)!}
+          palette={palette}
         />
       ))}
       {/* Continu reizende datapulsen (2 kleuren/snelheden) */}
@@ -512,7 +597,7 @@ function NetworkScene() {
           key={`pulse-${index}`}
           start={layout.get(pulse.from)!}
           end={layout.get(pulse.to)!}
-          color={pulse.color}
+          color={pulseColors[pulse.tone]}
           speed={pulse.speed}
           phase={pulse.phase}
           size={pulse.size}
@@ -524,6 +609,9 @@ function NetworkScene() {
 
 // Ambient 3D-visualisatie van de LOWI-architectuur (achtergrond van de hero).
 export default function ArchitectureScene() {
+  const { theme } = useTheme();
+  const palette = SCENE_PALETTES[theme];
+
   return (
     <div className={styles.sceneCanvasWrapper}>
       <Canvas
@@ -531,15 +619,20 @@ export default function ArchitectureScene() {
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.4} />
-        <pointLight position={[4, 4, 6]} intensity={30} color={COLOR_BONE} />
+        <color attach="background" args={[palette.background]} />
+        <ambientLight intensity={palette.ambientIntensity} />
+        <pointLight
+          position={[4, 4, 6]}
+          intensity={palette.pointLightIntensity}
+          color={palette.pointLight}
+        />
         <CameraDrift />
-        <NetworkScene />
+        <NetworkScene palette={palette} />
         <EffectComposer>
           {/* Subtiele bloom zodat de emissive bollen zacht gloeien */}
           <Bloom
-            intensity={0.55}
-            luminanceThreshold={0.25}
+            intensity={palette.bloomIntensity}
+            luminanceThreshold={palette.bloomThreshold}
             luminanceSmoothing={0.9}
             mipmapBlur
           />

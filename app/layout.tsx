@@ -45,6 +45,7 @@ export default function RootLayout({
     <html
       lang="nl"
       className={`${fraunces.variable} ${dmSans.variable} ${dmMono.variable}`}
+      suppressHydrationWarning
     >
       <body>
         <LanguageProvider>

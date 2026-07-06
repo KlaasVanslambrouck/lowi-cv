@@ -4,10 +4,46 @@ import { useRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
+import { useTheme } from "@/app/cv/hooks/useTheme";
+import type { Theme } from "@/app/cv/context/ThemeContext";
 import styles from "@/styles/cv.module.css";
 
-const COLOR_BONE = "#EDE7DC";
-const COLOR_COPPER = "#B8763E";
+interface MiniScenePalette {
+  infrastructure: string;
+  activity: string;
+  pointLight: string;
+  ambientIntensity: number;
+  pointLightIntensity: number;
+  infrastructureEmissive: number;
+  coreEmissive: number;
+  nodeLineOpacity: number;
+  linkOpacity: number;
+}
+
+const MINI_SCENE_PALETTES: Record<Theme, MiniScenePalette> = {
+  dark: {
+    infrastructure: "#F1ECE2",
+    activity: "#C98245",
+    pointLight: "#F1ECE2",
+    ambientIntensity: 0.45,
+    pointLightIntensity: 14,
+    infrastructureEmissive: 0.35,
+    coreEmissive: 0.9,
+    nodeLineOpacity: 0.3,
+    linkOpacity: 0.16,
+  },
+  light: {
+    infrastructure: "#171820",
+    activity: "#A95F2C",
+    pointLight: "#FAF7F1",
+    ambientIntensity: 0.85,
+    pointLightIntensity: 7,
+    infrastructureEmissive: 0.04,
+    coreEmissive: 0.18,
+    nodeLineOpacity: 0.22,
+    linkOpacity: 0.2,
+  },
+};
 
 // Het netwerk "gesplitst in clusters": interface (links), platform-kern
 // (midden, met koperen kernpunt), data (rechts). Bewust zonder labels en
@@ -58,7 +94,13 @@ const INTER_CLUSTER_LINKS: Array<[number, number]> = [
   [1, 2],
 ];
 
-function MiniClusterGroup({ cluster }: { cluster: MiniCluster }) {
+function MiniClusterGroup({
+  cluster,
+  palette,
+}: {
+  cluster: MiniCluster;
+  palette: MiniScenePalette;
+}) {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock }) => {
@@ -76,9 +118,9 @@ function MiniClusterGroup({ cluster }: { cluster: MiniCluster }) {
         <mesh>
           <sphereGeometry args={[0.16, 24, 24]} />
           <meshStandardMaterial
-            color={COLOR_COPPER}
-            emissive={COLOR_COPPER}
-            emissiveIntensity={1.1}
+            color={palette.activity}
+            emissive={palette.activity}
+            emissiveIntensity={palette.coreEmissive}
           />
         </mesh>
       ) : null}
@@ -87,9 +129,9 @@ function MiniClusterGroup({ cluster }: { cluster: MiniCluster }) {
           <mesh position={offset}>
             <sphereGeometry args={[0.09, 16, 16]} />
             <meshStandardMaterial
-              color={COLOR_BONE}
-              emissive={COLOR_BONE}
-              emissiveIntensity={0.5}
+              color={palette.infrastructure}
+              emissive={palette.infrastructure}
+              emissiveIntensity={palette.infrastructureEmissive}
             />
           </mesh>
           {/* Lijntje van elk punt naar het cluster-centrum */}
@@ -98,10 +140,10 @@ function MiniClusterGroup({ cluster }: { cluster: MiniCluster }) {
               [0, 0, 0],
               offset,
             ]}
-            color={COLOR_BONE}
+            color={palette.infrastructure}
             lineWidth={1}
             transparent
-            opacity={0.3}
+            opacity={palette.nodeLineOpacity}
           />
         </group>
       ))}
@@ -121,26 +163,33 @@ function MiniCameraDrift() {
 }
 
 export default function ArchitectureSceneMiniCanvas() {
+  const { theme } = useTheme();
+  const palette = MINI_SCENE_PALETTES[theme];
+
   return (
     <Canvas
       camera={{ position: [0, 0, 4.6], fov: 40 }}
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.45} />
-      <pointLight position={[3, 3, 4]} intensity={14} color={COLOR_BONE} />
+      <ambientLight intensity={palette.ambientIntensity} />
+      <pointLight
+        position={[3, 3, 4]}
+        intensity={palette.pointLightIntensity}
+        color={palette.pointLight}
+      />
       <MiniCameraDrift />
       {CLUSTERS.map((cluster, index) => (
-        <MiniClusterGroup key={index} cluster={cluster} />
+        <MiniClusterGroup key={index} cluster={cluster} palette={palette} />
       ))}
       {INTER_CLUSTER_LINKS.map(([fromIndex, toIndex]) => (
         <Line
           key={`${fromIndex}-${toIndex}`}
           points={[CLUSTERS[fromIndex].center, CLUSTERS[toIndex].center]}
-          color={COLOR_COPPER}
+          color={palette.activity}
           lineWidth={1}
           transparent
-          opacity={0.16}
+          opacity={palette.linkOpacity}
           dashed
           dashSize={0.12}
           gapSize={0.1}

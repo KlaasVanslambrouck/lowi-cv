@@ -47,9 +47,13 @@ const FALLBACK_CONNECTIONS: Array<[string, string]> = [
 // Bewust maar 2 lijnen: stroke-dashoffset triggert paint (geen compositor),
 // meer lijnen drukt de mobiele Lighthouse-score. De animatie start bovendien
 // pas na een delay (zie CSS), zodat hij de laad-fase niet belast.
-const FLOW_LINES: Array<[string, string]> = [
-  ["pi", "supabase"],
-  ["jarvis", "railway"],
+const FLOW_LINES: Array<{
+  from: string;
+  to: string;
+  tone: "activity" | "ai";
+}> = [
+  { from: "pi", to: "supabase", tone: "activity" },
+  { from: "jarvis", to: "railway", tone: "ai" },
 ];
 
 const NODE_LOOKUP = new Map(
@@ -98,14 +102,14 @@ export default function ArchitectureSceneFallback() {
           />
         ))}
         {/* Reizende lichtpuntjes over een selectie van lijnen */}
-        {FLOW_LINES.map(([fromId, toId], index) => {
+        {FLOW_LINES.map(({ from: fromId, to: toId, tone }) => {
           const from = nodePoint(fromId);
           const to = nodePoint(toId);
           return (
             <line
               key={`flow-${fromId}-${toId}`}
               className={
-                index % 2 === 0 ? styles.svgFlowCyan : styles.svgFlowCopper
+                tone === "ai" ? styles.svgFlowViolet : styles.svgFlowCopper
               }
               x1={from.x}
               y1={from.y}
@@ -117,7 +121,7 @@ export default function ArchitectureSceneFallback() {
         {/* Kern-node (koper, groter) */}
         <g className={styles.svgNodeGroup}>
           <circle
-            className={styles.svgHaloCopper}
+            className={styles.svgHaloViolet}
             cx={FALLBACK_CORE.x}
             cy={FALLBACK_CORE.y}
             r={22}
@@ -134,7 +138,7 @@ export default function ArchitectureSceneFallback() {
           <g key={node.id} className={styles.svgNodeGroup}>
             <circle
               className={
-                node.isJarvis ? styles.svgHaloCyan : styles.svgHaloBone
+                node.isJarvis ? styles.svgHaloViolet : styles.svgHaloBone
               }
               cx={node.x}
               cy={node.y}

@@ -8,6 +8,8 @@ export interface Bilingual {
   en: string;
 }
 
+export type CareerMotif = "soundwave" | "stage-lights" | "blueprint" | "flowchart";
+
 export interface HeroContent {
   name: string;
   currentRole: Bilingual; // nl: "Functioneel Analist", en: "Functional Analyst"
@@ -20,6 +22,7 @@ export interface ExperienceEntry {
   role: Bilingual; // max ~4 woorden
   company: string;
   period: string;
+  motif: CareerMotif;
   description: Bilingual; // max ~25 woorden
 }
 
@@ -27,6 +30,7 @@ export interface EducationEntry {
   degree: Bilingual; // max ~6 woorden
   institution: string;
   period: string;
+  motif?: CareerMotif;
 }
 
 export interface LanguageSkill {
@@ -82,6 +86,15 @@ export interface JarvisObservation {
   text: Bilingual; // max ~8 woorden, voelt als logregel
 }
 
+export interface JarvisExplanation {
+  id: string;
+  title: Bilingual;
+  contextLabel: Bilingual;
+  summary: Bilingual;
+  signals: Bilingual[];
+  relevance: Bilingual;
+}
+
 // Skill-node in de SkillConstellation-graaf
 export interface SkillNode {
   id: string;
@@ -125,6 +138,10 @@ export interface UILabels {
   constellationHint: Bilingual; // hint in het paneel als niets gehoverd is
   constellationProjectsLabel: Bilingual; // "gebruikt in" / "used in"
   jarvisPresenceLabel: string; // prefix van het presence-paneel, taalonafhankelijk
+  jarvisExplainButton: Bilingual;
+  jarvisExplainClose: Bilingual;
+  jarvisExplainStatus: Bilingual;
+  jarvisExplainRelevanceLabel: Bilingual;
 }
 
 // De volledige content-payload zoals die later uit `portfolio_content` komt.
@@ -140,6 +157,7 @@ export interface PortfolioContent {
   liveStats: LiveStat[];
   jarvisMessages: JarvisPlaceholderMessage[];
   jarvisObservations: JarvisObservation[];
+  jarvisExplanations: JarvisExplanation[];
   contact: ContactInfo;
   sectionTitles: SectionTitles;
   uiLabels: UILabels;
