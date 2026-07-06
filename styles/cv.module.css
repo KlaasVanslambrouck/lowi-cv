@@ -6,14 +6,86 @@
 
 .cvPage {
   min-height: 100vh;
+  /* dvh volgt de echte zichtbare hoogte op mobiel (adresbalk/toetsenbord);
+     de vh-regel erboven blijft staan als fallback voor oudere browsers */
+  min-height: 100dvh;
   background-color: var(--cv-bg);
   color: var(--cv-text);
 }
 
+.errorPage {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  background-color: var(--cv-bg);
+  color: var(--cv-text);
+}
+
+.errorPanel {
+  width: min(100%, 36rem);
+  border: 1px solid var(--cv-border);
+  border-radius: 8px;
+  background-color: var(--cv-surface);
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.errorEyebrow {
+  margin-bottom: 0.5rem;
+  color: var(--cv-violet-soft);
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.errorTitle {
+  margin-bottom: 0.75rem;
+  font-family: var(--cv-font-serif);
+  font-size: clamp(2rem, 7vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.errorCopy {
+  max-width: 30rem;
+  color: var(--cv-text-soft);
+}
+
+.errorActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.errorButton,
+.errorLink {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--cv-border);
+  border-radius: 8px;
+  color: var(--cv-text);
+  font-family: var(--cv-font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  padding: 0 0.9rem;
+}
+
+.errorButton:hover,
+.errorLink:hover {
+  border-color: var(--cv-copper);
+  color: var(--cv-copper-soft);
+}
+
 .languageToggle {
   position: fixed;
-  top: 1.25rem;
-  right: 1.25rem;
+  /* env(safe-area-inset-*) houdt de knoppen vrij van notch/dynamic island;
+     werkt samen met viewport-fit=cover in app/layout.tsx */
+  top: calc(1.25rem + env(safe-area-inset-top, 0px));
+  right: calc(1.25rem + env(safe-area-inset-right, 0px));
   z-index: 50;
   display: flex;
   align-items: center;
@@ -30,8 +102,8 @@
 
 .themeToggle {
   position: fixed;
-  top: 3.9rem;
-  right: 1.25rem;
+  top: calc(3.9rem + env(safe-area-inset-top, 0px));
+  right: calc(1.25rem + env(safe-area-inset-right, 0px));
   z-index: 50;
   display: flex;
   align-items: center;
@@ -204,15 +276,6 @@
 /* "Reizend lichtpuntje": korte dash die via dashoffset over de lijn schuift.
    De animation-delay laat de laad-fase (en de Lighthouse-trace) met rust —
    dashoffset-animaties triggeren paint en zijn relatief duur op mobiel. */
-.svgFlowBlue {
-  stroke: var(--cv-live);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-dasharray: 6 140;
-  opacity: 0.8;
-  animation: svgFlow 3.2s linear 4s infinite;
-}
-
 .svgFlowViolet {
   stroke: var(--cv-violet);
   stroke-width: 1.5;
@@ -255,8 +318,7 @@
 
 /* Pulserende halo's — transform-box zodat scale rond het eigen middelpunt draait */
 .svgHaloBone,
-.svgHaloViolet,
-.svgHaloCopper {
+.svgHaloViolet {
   transform-box: fill-box;
   transform-origin: center;
   animation: svgPulse 3s ease-in-out infinite;
@@ -269,11 +331,6 @@
 .svgHaloViolet {
   fill: rgb(var(--cv-violet-rgb) / 0.18);
   animation-duration: 2.2s;
-}
-
-.svgHaloCopper {
-  fill: rgb(var(--cv-copper-rgb) / 0.16);
-  animation-duration: 3.8s;
 }
 
 @keyframes svgPulse {
@@ -1203,6 +1260,13 @@
   font-size: 0.85rem;
 }
 
+.footerNote {
+  max-width: 42rem;
+  margin-top: 1.1rem;
+  color: var(--cv-muted);
+  font-size: 0.82rem;
+}
+
 .downloadButton {
   display: inline-flex;
   align-items: center;
@@ -1231,8 +1295,8 @@
 /* Zelfde vormtaal als .languageToggle, vast onder de taalknop */
 .xrayToggle {
   position: fixed;
-  top: 6.55rem;
-  right: 1.25rem;
+  top: calc(6.55rem + env(safe-area-inset-top, 0px));
+  right: calc(1.25rem + env(safe-area-inset-right, 0px));
   z-index: 50;
   display: flex;
   align-items: center;
@@ -1355,9 +1419,9 @@
 
 .jarvisExplainPanel {
   position: fixed;
-  top: 8.15rem;
-  right: 1.25rem;
-  bottom: 1.25rem;
+  top: calc(8.15rem + env(safe-area-inset-top, 0px));
+  right: calc(1.25rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
   z-index: 70;
   width: min(420px, calc(100vw - 2.5rem));
   overflow-y: auto;
@@ -1576,13 +1640,16 @@
 
 .jarvisPresence {
   position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
+  right: calc(1.25rem + env(safe-area-inset-right, 0px));
+  /* safe-area-inset-bottom houdt het paneel boven de home-indicator en
+     (deels) boven browser-UI die onderaan overlayt */
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
   z-index: 40;
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  max-width: 300px;
+  align-items: flex-start;
+  gap: 0.35rem 0.6rem;
+  flex-wrap: wrap;
+  max-width: 330px;
   padding: 0.5rem 0.85rem;
   border-radius: 10px;
   background-color: rgb(var(--cv-surface-rgb) / 0.72);
@@ -1603,6 +1670,41 @@
 
 .jarvisPresenceText {
   animation: fadeSwap 0.3s ease;
+}
+
+.jarvisProactive {
+  display: grid;
+  gap: 0.35rem;
+  flex-basis: 100%;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgb(var(--cv-violet-rgb) / 0.18);
+  animation: fadeSwap 0.3s ease;
+}
+
+.jarvisProactiveText,
+.jarvisProactiveQuestion {
+  color: var(--cv-text-soft);
+}
+
+.jarvisProactiveQuestion {
+  color: var(--cv-muted);
+  font-size: 0.68rem;
+}
+
+.jarvisProactiveButton {
+  justify-self: start;
+  min-height: 1.8rem;
+  border: 1px solid rgb(var(--cv-violet-rgb) / 0.38);
+  border-radius: 999px;
+  color: var(--cv-violet-soft);
+  font-size: 0.68rem;
+  padding: 0.25rem 0.55rem;
+  pointer-events: auto;
+}
+
+.jarvisProactiveButton:hover {
+  border-color: var(--cv-violet);
+  color: var(--cv-text);
 }
 
 @media (max-width: 767px) {
@@ -1627,17 +1729,21 @@
     z-index: 69;
     width: 100%;
     max-height: 75vh;
+    /* dvh: bottom sheet krimpt mee met de echte zichtbare hoogte */
+    max-height: 75dvh;
     border-right: none;
     border-bottom: none;
     border-left: none;
     border-radius: var(--cv-radius) var(--cv-radius) 0 0;
-    padding: 1.1rem 1.25rem 1.25rem;
+    /* extra bodempadding zodat de inhoud boven de home-indicator blijft */
+    padding: 1.1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
     backdrop-filter: none;
   }
 
   .jarvisExplainClose {
-    width: 2.35rem;
-    height: 2.35rem;
+    /* 44px — minimum touch target (WCAG/Apple) */
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }
 
@@ -1648,8 +1754,25 @@
     padding: 3rem 1.25rem 1rem;
   }
 
+  /* Mobiel toont altijd de compacte SVG-fallback (zie useSceneSupport), dus
+     de hero hoeft geen volledige schermhoogte te vullen zoals bij de
+     WebGL-scene op desktop: illustratie en tekst stromen gewoon onder elkaar */
+  .hero {
+    min-height: auto;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heroScene {
+    position: relative;
+    inset: auto;
+    /* Zelfde verhouding als de fallback-viewBox (800×420): de illustratie
+       krijgt exact haar getekende hoogte, zonder lege ruimte eronder */
+    aspect-ratio: 800 / 420;
+  }
+
   .heroContent {
-    padding: 3rem 1.25rem 4rem;
+    padding: 1rem 1.25rem 3rem;
   }
 
   .timeline {
@@ -1660,6 +1783,29 @@
     left: calc(-1.4rem - 5px);
   }
 
+  /* Career-motieven: layering (position/z-index/overflow) is bewust
+     viewport-onafhankelijk en blijft hier ongemoeid — alleen de vórmen
+     schalen mee, zodat ze op smalle, hogere kaarten dezelfde compacte
+     rechter-accent-verhouding houden als op desktop i.p.v. de volledige
+     kaarthoogte achter de tekst te beslaan */
+  .soundwaveBars {
+    width: min(40%, 8.5rem);
+    max-height: 8rem;
+    margin-block: auto;
+    inset: 0 0.9rem 0 auto;
+  }
+
+  .soundwaveBar {
+    width: 0.3rem;
+  }
+
+  .blueprintSvg,
+  .flowchartSvg {
+    width: min(55%, 14rem);
+    max-height: 8.5rem;
+    margin-block: auto;
+  }
+
   /* backdrop-blur boven de geanimeerde SVG-hero is te duur op mobiel;
      de achtergrondkleur is donker genoeg zonder blur */
   .languageToggle,
@@ -1667,5 +1813,46 @@
   .xrayToggle {
     backdrop-filter: none;
     background-color: rgb(var(--cv-surface-rgb) / 0.92);
+  }
+}
+
+/* ===== Touch targets =====
+   Op touch-apparaten krijgt elk klein interactief element een onzichtbaar
+   tikgebied van minstens 44×44px (WCAG/Apple-richtlijn) via een ::after die
+   gecentreerd over het element ligt — het visuele ontwerp blijft ongewijzigd. */
+@media (pointer: coarse) {
+  .jarvisExplainButton,
+  .layersToggle,
+  .footerLink,
+  .lowiLink,
+  .jarvisExplainClose {
+    position: relative;
+  }
+
+  .languageToggle::after,
+  .themeToggle::after,
+  .xrayToggle::after,
+  .jarvisExplainButton::after,
+  .layersToggle::after,
+  .footerLink::after,
+  .lowiLink::after,
+  .jarvisExplainClose::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Iets ruimere verticale afstand tussen de drie gestapelde toggles zodat
+     hun vergrote tikgebieden elkaar niet overlappen (pitch 48px i.p.v. 42px) */
+  .themeToggle {
+    top: calc(4.25rem + env(safe-area-inset-top, 0px));
+  }
+
+  .xrayToggle {
+    top: calc(7.25rem + env(safe-area-inset-top, 0px));
   }
 }

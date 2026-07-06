@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, DM_Sans, DM_Mono } from "next/font/google";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { XrayProvider } from "@/context/XrayContext";
@@ -29,6 +29,14 @@ const dmMono = DM_Mono({
   variable: "--font-dm-mono",
   display: "swap",
 });
+
+// viewport-fit=cover laat de pagina onder de notch/home-indicator doorlopen,
+// zodat env(safe-area-inset-*) in de CSS de fixed elementen kan vrijhouden.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "Klaas Van Slambrouck — CV",

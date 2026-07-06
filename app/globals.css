@@ -1,6 +1,18 @@
 /* ---------------------------------------------------------------------------
    Design tokens + CSS-reset voor LOWI CV.
    Component-specifieke styling leeft in styles/cv.module.css.
+
+   LET OP — dit is het huidige, definitieve kleurenpalet. Er bestond een
+   eerdere spec met andere hexwaarden (ink #13141B, bone #EDE7DC, copper
+   #B8763E, cyaan #5FBFB0, muted #8A8677); die is volledig vervangen door
+   dit dark/light-themasysteem (ThemeContext/ThemeToggle, data-cv-theme).
+   Semantiek van de huidige tokens:
+   - --cv-copper: het signatuur-accent (headings-accent, focus, kern-node);
+   - --cv-blue (= --cv-live): "live/actief" — live-indicatoren en dataflow;
+   - --cv-violet: alles wat Jarvis/AI is;
+   - --cv-ink/--cv-bone bestaan enkel nog als aliassen naar --cv-bg/--cv-text.
+   De WebGL-scenes hardcoden deze hexwaarden per thema (WebGL kan geen
+   CSS-variabelen lezen) — hou die in sync bij paletwijzigingen.
 --------------------------------------------------------------------------- */
 
 :root {

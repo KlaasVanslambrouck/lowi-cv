@@ -6,8 +6,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, Line } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import type { Line2 } from "three-stdlib";
-import { useTheme } from "@/app/cv/hooks/useTheme";
-import type { Theme } from "@/app/cv/context/ThemeContext";
+import { useTheme } from "@/hooks/useTheme";
+import type { Theme } from "@/context/ThemeContext";
 import styles from "@/styles/cv.module.css";
 
 // Kleuren als constanten — matchen de CSS design tokens in globals.css
@@ -256,7 +256,6 @@ function CoreNode({
         onClick={(event) => {
           event.stopPropagation();
           // TODO: later scrollen naar de bijbehorende sectie
-          console.log(`clicked: ${CORE_ID}`);
         }}
         onPointerOver={() => {
           document.body.style.cursor = "pointer";
@@ -343,7 +342,6 @@ function ArchitectureNode({
         onClick={(event) => {
           event.stopPropagation();
           // TODO: later scrollen naar de bijbehorende sectie
-          console.log(`clicked: ${node.id}`);
         }}
         onPointerOver={() => {
           document.body.style.cursor = "pointer";

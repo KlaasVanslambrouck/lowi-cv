@@ -1,42 +1,58 @@
 # LOWI CV
 
-Publieke CV/portfolio-pagina van Klaas Van Slambrouck — een interactieve, tweetalige (NL/EN) one-pager met een 3D-architectuurvisualisatie van het LOWI-platform.
+Publieke CV/portfolio-pagina van Klaas Van Slambrouck: een interactieve,
+tweetalige Next.js one-pager met LOWI-visualisaties, privacyvriendelijke
+analytics en een klein admin-dashboard.
 
 ## Tech stack
 
-- [Next.js](https://nextjs.org) (App Router, TypeScript)
-- CSS Modules (geen Tailwind)
-- [Three.js](https://threejs.org) via `@react-three/fiber`, `@react-three/drei` en `@react-three/postprocessing`
-- Fonts: Fraunces, DM Sans en DM Mono via `next/font`
+- Next.js App Router met TypeScript
+- CSS Modules, geen Tailwind
+- Three.js via `@react-three/fiber`, `@react-three/drei` en postprocessing
+- Supabase SSR auth voor `/beheer`
+- Supabase `portfolio_analytics` voor server-side analytics inserts
+- Fonts via `next/font`: Fraunces, DM Sans en DM Mono
 
 ## Lokaal draaien
 
 ```bash
 npm install
-cp .env.local.example .env.local   # env-vars invullen (mogen voorlopig leeg blijven)
+cp .env.local.example .env.local
 npm run dev
 ```
 
-De site draait daarna op [http://localhost:3000](http://localhost:3000).
+Vul voor auth en analytics minimaal `NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` en `SUPABASE_SERVICE_ROLE_KEY` in. Zonder die
+waarden blijft de publieke CV bruikbaar, maar beheer en analytics werken niet.
 
-> **Opmerking:** deze fase gebruikt uitsluitend placeholder-content uit
-> `content/placeholderContent.ts`. De koppeling met Supabase en de nidus-api
-> (live stats, Jarvis-chat) volgt in een latere stap.
+## Architectuur
 
----
+- Publieke CV: `app/page.tsx` rendert de CV-content uit
+  `content/placeholderContent.ts` met client-side taal-, thema-, X-ray- en
+  Jarvis-contexten.
+- Public boundary: bezoekers krijgen geen service-role key en schrijven nooit
+  direct naar Supabase. Analytics gaan uitsluitend via `POST /api/track`.
+- Admin boundary: `/beheer/dashboard` is beschermd door `proxy.ts` en nogmaals
+  in de server component. Beide gebruiken `lib/auth/admin.ts`, dat Supabase
+  server-side met `auth.getUser()` verifieert en daarna expliciet de admin-id
+  autoriseert.
+- Analytics flow: de browser maakt een sessionStorage UUID, normaliseert de
+  referrer naar origin, en stuurt alleen gewhiteliste events. De API valideert
+  payloads opnieuw en schrijft met de server-only service-role client.
+- Service-role boundary: `SUPABASE_SERVICE_ROLE_KEY` wordt alleen gebruikt in
+  server-only code onder `lib/supabase/server.ts` en API-routes.
+- WebGL fallback: Three.js-scenes laden lazy en vallen terug bij klein scherm,
+  ontbrekende WebGL-support of reduced motion.
+- Reduced motion: globale CSS en scene-support schakelen beweging of live WebGL
+  terug waar dat relevant is.
 
-## English
+Meer detail staat in [ARCHITECTURE.md](ARCHITECTURE.md),
+[SECURITY.md](SECURITY.md) en
+[docs/database-security.md](docs/database-security.md).
 
-**LOWI CV** is the public CV/portfolio page of Klaas Van Slambrouck — an interactive, bilingual (NL/EN) one-pager featuring a 3D architecture visualisation of the LOWI platform.
-
-**Stack:** Next.js (App Router, TypeScript), CSS Modules, Three.js via react-three-fiber.
-
-**Run locally:**
+## Validatie
 
 ```bash
-npm install
-cp .env.local.example .env.local   # fill in the env vars (may stay empty for now)
-npm run dev
+npm run lint
+npm run build
 ```
-
-All content currently comes from `content/placeholderContent.ts`; the Supabase / nidus-api integration (live stats, Jarvis chat) will be wired up in a later step.

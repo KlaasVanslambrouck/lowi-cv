@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import type { Project, UILabels, XrayLayer } from "@/types/content";
+import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useXray } from "@/hooks/useXray";
-import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
-import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
+import JarvisExplainButton from "@/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/hooks/useJarvisExplain";
+import { trackEvent } from "@/lib/analytics/trackEvent";
 import styles from "@/styles/cv.module.css";
 
 interface ProjectCardProps {
@@ -35,6 +37,7 @@ export default function ProjectCard({
   const { t } = useLanguage();
   const { xrayActive } = useXray();
   const { isExplanationActive } = useJarvisExplain();
+  const sessionId = useAnalyticsSession();
   // Exploded view: muis-hover én expliciete toggle (toetsenbord/touch)
   const [hoverExploded, setHoverExploded] = useState(false);
   const [pinnedExploded, setPinnedExploded] = useState(false);
@@ -52,6 +55,22 @@ export default function ProjectCard({
     .filter(Boolean)
     .join(" ");
 
+  function handleExplodedToggle() {
+    const nextPinnedExploded = !pinnedExploded;
+    setPinnedExploded(nextPinnedExploded);
+
+    if (nextPinnedExploded && sessionId) {
+      trackEvent({
+        sessionId,
+        eventType: "interaction",
+        eventData: {
+          interactionId: "project_exploded_open",
+          projectId: project.id,
+        },
+      });
+    }
+  }
+
   return (
     <article
       className={cardClassName}
@@ -66,7 +85,7 @@ export default function ProjectCard({
           <button
             type="button"
             className={styles.layersToggle}
-            onClick={() => setPinnedExploded((previous) => !previous)}
+            onClick={handleExplodedToggle}
             aria-pressed={pinnedExploded}
           >
             {t(labels.explodeToggle)}

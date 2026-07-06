@@ -2,8 +2,8 @@
 
 import type { LowiContent, LowiProject, UILabels } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
-import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
-import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
+import JarvisExplainButton from "@/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 interface LowiSectionProps {

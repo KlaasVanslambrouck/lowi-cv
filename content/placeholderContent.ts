@@ -326,12 +326,28 @@ render(reply.text);`,
         nl: "systemen online · bezoeker gedetecteerd",
         en: "systems online · visitor detected",
       },
+      proactiveSuggestion: {
+        nl: "Deze intro verraadt de richting: analyse wordt systeemontwerp.",
+        en: "This intro hints at the direction: analysis becomes system design.",
+      },
+      suggestedQuestion: {
+        nl: "Hoe vertaalt Klaas analysewerk naar AI-systemen?",
+        en: "How does Klaas translate analysis work into AI systems?",
+      },
     },
     {
       sectionId: "experience",
       text: {
         nl: "scant loopbaantraject: analyse → engineering",
         en: "scanning career path: analysis → engineering",
+      },
+      proactiveSuggestion: {
+        nl: "De loopbaanlijn toont waarom hij business en techniek kan verbinden.",
+        en: "The career line shows why he can connect business and technology.",
+      },
+      suggestedQuestion: {
+        nl: "Welke ervaring is het meest relevant voor AI Business Engineering?",
+        en: "Which experience is most relevant for AI Business Engineering?",
       },
     },
     {
@@ -340,12 +356,28 @@ render(reply.text);`,
         nl: "indexeert opleidingsdata",
         en: "indexing education records",
       },
+      proactiveSuggestion: {
+        nl: "De opleiding verklaart de technische basis onder zijn analysewerk.",
+        en: "The education explains the technical base beneath his analysis work.",
+      },
+      suggestedQuestion: {
+        nl: "Hoe helpt zijn technische achtergrond in functionele analyse?",
+        en: "How does his technical background help in functional analysis?",
+      },
     },
     {
       sectionId: "languages",
       text: {
         nl: "taalmodules geladen: nl · en · fr · ru",
         en: "language modules loaded: nl · en · fr · ru",
+      },
+      proactiveSuggestion: {
+        nl: "Talen zijn hier meer dan CV-data: ze helpen stakeholdercontext lezen.",
+        en: "Languages are more than CV data here: they help read stakeholder context.",
+      },
+      suggestedQuestion: {
+        nl: "Waar maken zijn talenkennis en analyse elkaar sterker?",
+        en: "Where do his languages and analysis strengthen each other?",
       },
     },
     {
@@ -354,12 +386,28 @@ render(reply.text);`,
         nl: "mapt skill-constellatie",
         en: "mapping skill constellation",
       },
+      proactiveSuggestion: {
+        nl: "De interessante laag zit in de verbindingen tussen skills.",
+        en: "The interesting layer is in the connections between skills.",
+      },
+      suggestedQuestion: {
+        nl: "Welke skill-combinatie maakt dit profiel onderscheidend?",
+        en: "Which skill combination makes this profile distinctive?",
+      },
     },
     {
       sectionId: "lowi",
       text: {
         nl: "kernplatform nidus · status live",
         en: "core platform nidus · status live",
+      },
+      proactiveSuggestion: {
+        nl: "LOWI maakt de portfolio minder statisch en meer platformachtig.",
+        en: "LOWI makes the portfolio less static and more platform-like.",
+      },
+      suggestedQuestion: {
+        nl: "Waarom is LOWI belangrijk voor zijn AI-richting?",
+        en: "Why is LOWI important for his AI direction?",
       },
     },
     {
@@ -368,12 +416,28 @@ render(reply.text);`,
         nl: "observeert projectcluster: nidus",
         en: "observing project cluster: nidus",
       },
+      proactiveSuggestion: {
+        nl: "De projecten tonen hoe hij abstracte ideeen naar systemen brengt.",
+        en: "The projects show how he turns abstract ideas into systems.",
+      },
+      suggestedQuestion: {
+        nl: "Welk project bewijst het best zijn systeemdenken?",
+        en: "Which project best proves his systems thinking?",
+      },
     },
     {
       sectionId: "live-stats",
       text: {
         nl: "telemetrie-stream actief",
         en: "telemetry stream active",
+      },
+      proactiveSuggestion: {
+        nl: "Live cijfers zijn nog placeholder, maar de observability-denkwijze is echt.",
+        en: "The live numbers are placeholders, but the observability mindset is real.",
+      },
+      suggestedQuestion: {
+        nl: "Waarom past observability bij een AI-portfolio?",
+        en: "Why does observability fit an AI portfolio?",
       },
     },
     {
@@ -382,12 +446,28 @@ render(reply.text);`,
         nl: "standby — terminal actief",
         en: "standby — terminal active",
       },
+      proactiveSuggestion: {
+        nl: "Jarvis is nu nog een preview van de toekomstige contextlaag.",
+        en: "Jarvis is currently a preview of the future context layer.",
+      },
+      suggestedQuestion: {
+        nl: "Wat zou Jarvis straks al over deze bezoeker weten?",
+        en: "What would Jarvis eventually know about this visitor?",
+      },
     },
     {
       sectionId: "contact",
       text: {
         nl: "kanalen beschikbaar: e-mail · linkedin",
         en: "channels available: email · linkedin",
+      },
+      proactiveSuggestion: {
+        nl: "Na deze route is de beste vervolgstap meestal een concreet gesprek.",
+        en: "After this route, the best next step is usually a concrete conversation.",
+      },
+      suggestedQuestion: {
+        nl: "Welke vraag stel je best aan Klaas na deze portfolio?",
+        en: "What is the best question to ask Klaas after this portfolio?",
       },
     },
   ],
@@ -599,6 +679,8 @@ render(reply.text);`,
     linkedinUrl: "https://www.linkedin.com/in/placeholder",
     location: { nl: "Oudenaarde, België", en: "Oudenaarde, Belgium" },
     cvPdfUrl: "/cv-klaas.pdf",
+    // Nog geen PDF in /public — knop blijft verborgen tot dit op true staat.
+    cvPdfAvailable: false,
   },
 
   sectionTitles: {
@@ -634,6 +716,12 @@ render(reply.text);`,
       nl: "Schakel X-ray modus in of uit",
       en: "Toggle X-ray mode",
     },
+    themeDarkLabel: "DARK",
+    themeLightLabel: "LIGHT",
+    themeToggleAria: {
+      nl: "Schakel tussen donker en licht thema",
+      en: "Toggle between dark and light theme",
+    },
     xrayStatDetail: {
       nl: "deployment: fra1 · laatste build: —",
       en: "deployment: fra1 · last build: —",
@@ -660,6 +748,14 @@ render(reply.text);`,
     jarvisExplainRelevanceLabel: {
       nl: "Waarom dit relevant is",
       en: "Why this matters",
+    },
+    jarvisProactiveAsk: {
+      nl: "Vraag het Jarvis",
+      en: "Ask Jarvis",
+    },
+    analyticsTransparencyNote: {
+      nl: "Deze site verzamelt beperkte, privacyvriendelijke gebruiksstatistieken zonder advertentiecookies of cross-site tracking.",
+      en: "This site collects limited, privacy-friendly usage statistics without advertising cookies or cross-site tracking.",
     },
   },
 };

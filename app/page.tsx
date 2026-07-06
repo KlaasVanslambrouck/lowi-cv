@@ -3,7 +3,7 @@
 import { placeholderContent } from "@/content/placeholderContent";
 import { useLanguage } from "@/hooks/useLanguage";
 import LanguageToggle from "@/components/LanguageToggle";
-import ThemeToggle from "@/app/cv/components/ThemeToggle";
+import ThemeToggle from "@/components/ThemeToggle";
 import XrayToggle from "@/components/XrayToggle";
 import Hero from "@/components/Hero";
 import CVSection from "@/components/CVSection";
@@ -18,9 +18,10 @@ import LiveStatBadge from "@/components/LiveStatBadge";
 import JarvisTerminal from "@/components/JarvisTerminal";
 import JarvisPresence from "@/components/JarvisPresence";
 import ContactFooter from "@/components/ContactFooter";
-import JarvisExplainPanel from "@/app/cv/components/JarvisExplainPanel";
-import { JarvisExplainProvider } from "@/app/cv/context/JarvisExplainContext";
-import { ThemeProvider } from "@/app/cv/context/ThemeContext";
+import JarvisExplainPanel from "@/components/JarvisExplainPanel";
+import { JarvisExplainProvider } from "@/context/JarvisExplainContext";
+import { SessionInsightProvider } from "@/context/SessionInsightContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import styles from "@/styles/cv.module.css";
 
 // De volledige CV-pagina. Alle content komt uit placeholderContent en wordt
@@ -31,14 +32,16 @@ export default function HomePage() {
 
   return (
     <ThemeProvider>
-      <JarvisExplainProvider explanations={content.jarvisExplanations}>
-        <main className={styles.cvPage}>
+      <SessionInsightProvider>
+        <JarvisExplainProvider explanations={content.jarvisExplanations}>
+          <main className={styles.cvPage}>
           <LanguageToggle />
-          <ThemeToggle />
+          <ThemeToggle labels={content.uiLabels} />
           <XrayToggle labels={content.uiLabels} />
           <JarvisPresence
             observations={content.jarvisObservations}
             label={content.uiLabels.jarvisPresenceLabel}
+            askLabel={content.uiLabels.jarvisProactiveAsk}
           />
 
           <Hero content={content.hero} />
@@ -118,8 +121,9 @@ export default function HomePage() {
             labels={content.uiLabels}
           />
           <JarvisExplainPanel labels={content.uiLabels} />
-        </main>
-      </JarvisExplainProvider>
+          </main>
+        </JarvisExplainProvider>
+      </SessionInsightProvider>
     </ThemeProvider>
   );
 }

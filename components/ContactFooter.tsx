@@ -2,6 +2,7 @@
 
 import type { Bilingual, ContactInfo, UILabels } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 import styles from "@/styles/cv.module.css";
 
 interface ContactFooterProps {
@@ -16,10 +17,11 @@ export default function ContactFooter({
   labels,
 }: ContactFooterProps) {
   const { t } = useLanguage();
+  const [footerRef] = useSectionTracking<HTMLElement>("contact");
 
   return (
     // data-section-id zodat JarvisPresence deze sectie herkent
-    <footer className={styles.footer} data-section-id="contact">
+    <footer ref={footerRef} className={styles.footer} data-section-id="contact">
       <div className={styles.footerInner}>
         <h2 className={styles.footerTitle}>{t(title)}</h2>
         <div className={styles.footerLinks}>
@@ -36,11 +38,16 @@ export default function ContactFooter({
           </a>
           <span className={styles.footerLocation}>{t(contact.location)}</span>
         </div>
-        {/* TODO: PDF-bestand nog manueel toevoegen aan /public,
-            later evt. dynamisch genereren */}
-        <a className={styles.downloadButton} href={contact.cvPdfUrl} download>
-          {t(labels.downloadCv)}
-        </a>
+        {/* Knop verschijnt pas als het PDF-bestand echt in /public staat
+            (contact.cvPdfAvailable) — voorkomt een 404 op de downloadlink. */}
+        {contact.cvPdfAvailable ? (
+          <a className={styles.downloadButton} href={contact.cvPdfUrl} download>
+            {t(labels.downloadCv)}
+          </a>
+        ) : null}
+        <p className={styles.footerNote}>
+          {t(labels.analyticsTransparencyNote)}
+        </p>
       </div>
     </footer>
   );

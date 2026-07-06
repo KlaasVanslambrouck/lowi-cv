@@ -33,6 +33,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // begint met "nl" → Nederlands, anders Engels (fallback Nederlands).
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === "nl" || stored === "en") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- bewust: voorkeur kan pas na mount gelezen worden (SSR heeft geen localStorage)
       setLanguage(stored);
       return;
     }

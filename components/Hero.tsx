@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import type { HeroContent } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useSceneSupport } from "@/hooks/useSceneSupport";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 import ArchitectureSceneFallback from "@/components/ArchitectureSceneFallback";
 import styles from "@/styles/cv.module.css";
 
@@ -19,12 +20,13 @@ interface HeroProps {
 
 export default function Hero({ content }: HeroProps) {
   const { t } = useLanguage();
+  const [heroRef] = useSectionTracking<HTMLElement>("hero");
   // Gedeelde detectie (reduced motion, <768px, WebGL); vóór mount tonen we
   // altijd de SVG-fallback zodat er nooit een lege hero flitst
   const support = useSceneSupport();
 
   return (
-    <header className={styles.hero} data-section-id="hero">
+    <header ref={heroRef} className={styles.hero} data-section-id="hero">
       <div className={styles.heroScene}>
         {support.showLiveScene ? (
           <ArchitectureScene />

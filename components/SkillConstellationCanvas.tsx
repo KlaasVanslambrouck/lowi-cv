@@ -5,8 +5,8 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, Line } from "@react-three/drei";
 import type { Line2 } from "three-stdlib";
-import { useTheme } from "@/app/cv/hooks/useTheme";
-import type { Theme } from "@/app/cv/context/ThemeContext";
+import { useTheme } from "@/hooks/useTheme";
+import type { Theme } from "@/context/ThemeContext";
 import type { SkillNode } from "@/types/content";
 import styles from "@/styles/cv.module.css";
 

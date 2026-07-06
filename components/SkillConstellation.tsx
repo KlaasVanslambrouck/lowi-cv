@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { Project, SkillNode, UILabels } from "@/types/content";
+import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useSceneSupport } from "@/hooks/useSceneSupport";
-import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
-import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
+import JarvisExplainButton from "@/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/hooks/useJarvisExplain";
+import { trackEvent } from "@/lib/analytics/trackEvent";
 import styles from "@/styles/cv.module.css";
 
 // De WebGL-canvas laadt lazy en uitsluitend client-side
@@ -24,9 +26,9 @@ interface SkillConstellationProps {
   labels: UILabels;
 }
 
-// 3D-skillgraaf met hover-detailpaneel. Op mobiel/zonder WebGL valt dit
-// terug op de klassieke skill-tag-grid zodat de informatie overal
-// beschikbaar blijft.
+// 3D-skillgraaf met hover-detailpaneel. Op mobiel, zonder WebGL of bij
+// reduced motion valt dit terug op de klassieke skill-tag-grid zodat de
+// informatie overal beschikbaar blijft (zelfde gedrag als de andere scenes).
 export default function SkillConstellation({
   nodes,
   projects,
@@ -35,7 +37,9 @@ export default function SkillConstellation({
   const { t } = useLanguage();
   const support = useSceneSupport();
   const { isExplanationActive } = useJarvisExplain();
+  const sessionId = useAnalyticsSession();
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
+  const trackedSkillHoverIdsRef = useRef(new Set<string>());
   const skillsExplanationId = "skills-system-thinking";
   const skillsExplainActive = isExplanationActive(skillsExplanationId);
 
@@ -52,8 +56,39 @@ export default function SkillConstellation({
     );
   }, [hoveredSkill, projects]);
 
-  // Fallback: eenvoudige tag-grid (mobiel, geen WebGL, of vóór de checks)
-  if (!support.ready || support.smallScreen || !support.webglOk) {
+  const handleSkillHover = useCallback(
+    (skillId: string | null) => {
+      setHoveredSkillId(skillId);
+
+      if (
+        !skillId ||
+        !sessionId ||
+        trackedSkillHoverIdsRef.current.has(skillId)
+      ) {
+        return;
+      }
+
+      trackedSkillHoverIdsRef.current.add(skillId);
+      trackEvent({
+        sessionId,
+        eventType: "interaction",
+        eventData: {
+          interactionId: "skill_node_hover",
+          skillId,
+        },
+      });
+    },
+    [sessionId],
+  );
+
+  // Fallback: eenvoudige tag-grid (mobiel, geen WebGL, reduced motion,
+  // of vóór de checks)
+  if (
+    !support.ready ||
+    support.smallScreen ||
+    !support.webglOk ||
+    support.reducedMotion
+  ) {
     return (
       <div
         className={
@@ -89,7 +124,7 @@ export default function SkillConstellation({
         <SkillConstellationCanvas
           nodes={nodes}
           hoveredSkillId={hoveredSkillId}
-          onHover={setHoveredSkillId}
+          onHover={handleSkillHover}
           reducedMotion={support.reducedMotion}
         />
       </div>

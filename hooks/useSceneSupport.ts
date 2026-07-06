@@ -22,7 +22,10 @@ function detectWebGLSupport(): boolean {
 }
 
 // Gedeelde detectielogica voor alle WebGL-scenes (Hero, SkillConstellation,
-// ArchitectureSceneMini): reduced motion, schermbreedte <768px en WebGL-support.
+// ArchitectureSceneMini): reduced motion, klein scherm en WebGL-support.
+// "Klein scherm" = smaller dan 768px breed ÓF lager dan 501px — dat laatste
+// vangt telefoons in landscape (bv. 844×390), waar de hero-scene anders
+// dwars door de titeltekst rendert (visueel bevestigd in de mobiele audit).
 // Media queries worden live gevolgd, zodat bv. een window-resize of het
 // omzetten van de OS-instelling meteen doorwerkt.
 export function useSceneSupport(): SceneSupport {
@@ -38,7 +41,9 @@ export function useSceneSupport(): SceneSupport {
     const reducedMotionQuery = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
-    const smallScreenQuery = window.matchMedia("(max-width: 767px)");
+    const smallScreenQuery = window.matchMedia(
+      "(max-width: 767px), (max-height: 500px)",
+    );
 
     const evaluate = () => {
       const webglOk = detectWebGLSupport();

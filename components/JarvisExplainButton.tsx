@@ -2,7 +2,7 @@
 
 import type { Bilingual } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
-import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
+import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 interface JarvisExplainButtonProps {

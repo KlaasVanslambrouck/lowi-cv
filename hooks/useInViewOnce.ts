@@ -5,12 +5,16 @@ import { useEffect, useRef, useState } from "react";
 interface UseInViewOnceOptions {
   rootMargin?: string;
   threshold?: number;
+  keepObserving?: boolean;
+  onEntryChange?: (entry: IntersectionObserverEntry) => void;
 }
 
 // Gedeelde eenmalige reveal-trigger voor secties en decoratieve motieven.
 export function useInViewOnce<T extends Element>({
   rootMargin = "0px",
   threshold = 0.12,
+  keepObserving = false,
+  onEntryChange,
 }: UseInViewOnceOptions = {}) {
   const ref = useRef<T>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -19,18 +23,26 @@ export function useInViewOnce<T extends Element>({
     const element = ref.current;
     if (!element) return;
 
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     // Reduced motion: meteen eindstaat tonen, zonder scroll-animatie.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (reducedMotion) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- bewust: media query is pas na mount leesbaar, eenmalige init
       setIsVisible(true);
-      return;
+      if (!keepObserving) return;
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          onEntryChange?.(entry);
           if (entry.isIntersecting) {
             setIsVisible(true);
-            observer.disconnect();
+            if (!keepObserving) {
+              observer.disconnect();
+            }
           }
         });
       },
@@ -39,7 +51,7 @@ export function useInViewOnce<T extends Element>({
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [rootMargin, threshold]);
+  }, [keepObserving, onEntryChange, rootMargin, threshold]);
 
   return [ref, isVisible] as const;
 }

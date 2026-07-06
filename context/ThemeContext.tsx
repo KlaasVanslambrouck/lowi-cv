@@ -47,6 +47,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const resolvedTheme = readStoredTheme() ?? readPreferredTheme();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- bewust: voorkeur kan pas na mount gelezen worden (SSR heeft geen localStorage/matchMedia)
     setTheme(resolvedTheme);
     applyDocumentTheme(resolvedTheme);
 

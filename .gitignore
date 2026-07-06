@@ -67,6 +67,7 @@ web_modules/
 
 # dotenv environment variable files
 # BELANGRIJK: dit project wordt public op GitHub — env-bestanden mogen NOOIT mee
+# SUPABASE_SERVICE_ROLE_KEY staat lokaal in .env* en valt dus ook onder deze regel.
 .env
 .env*
 .env.*

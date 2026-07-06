@@ -3,8 +3,8 @@
 import type { Bilingual, LiveStat } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useXray } from "@/hooks/useXray";
-import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
-import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
+import JarvisExplainButton from "@/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 interface LiveStatBadgeProps {
@@ -14,7 +14,8 @@ interface LiveStatBadgeProps {
   explainButtonLabel: Bilingual;
 }
 
-// Cyaan is voorbehouden aan live/actieve data-indicatoren zoals deze badge.
+// De live-kleur (--cv-live, elektrisch blauw — per thema gedefinieerd in
+// globals.css) is voorbehouden aan live/actieve data-indicatoren zoals deze badge.
 export default function LiveStatBadge({
   stat,
   xrayDetail,

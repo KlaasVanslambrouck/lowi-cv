@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import type { Bilingual } from "@/types/content";
-import { useInViewOnce } from "@/hooks/useInViewOnce";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 import styles from "@/styles/cv.module.css";
 
 interface CVSectionProps {
@@ -14,7 +14,7 @@ interface CVSectionProps {
 
 // Sectie-wrapper met titel en scroll-reveal (fade + kleine translate-y).
 export default function CVSection({ id, title, children }: CVSectionProps) {
-  const [sectionRef, isVisible] = useInViewOnce<HTMLElement>();
+  const [sectionRef, isVisible] = useSectionTracking<HTMLElement>(id);
   const { t } = useLanguage();
 
   return (

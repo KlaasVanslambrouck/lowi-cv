@@ -84,6 +84,8 @@ export interface JarvisPlaceholderMessage {
 export interface JarvisObservation {
   sectionId: string; // matcht data-section-id van de sectie
   text: Bilingual; // max ~8 woorden, voelt als logregel
+  proactiveSuggestion?: Bilingual;
+  suggestedQuestion?: Bilingual;
 }
 
 export interface JarvisExplanation {
@@ -108,6 +110,7 @@ export interface ContactInfo {
   linkedinUrl: string;
   location: Bilingual;
   cvPdfUrl: string;
+  cvPdfAvailable: boolean; // pas true zodra het PDF-bestand echt in /public staat
 }
 
 // Titels van de paginasecties — ook content, dus niet hardcoded in JSX.
@@ -133,6 +136,9 @@ export interface UILabels {
   xrayNormalLabel: string; // modusnaam, taalonafhankelijk ("NORMAL")
   xrayActiveLabel: string; // modusnaam, taalonafhankelijk ("X-RAY")
   xrayToggleAria: Bilingual; // aria-label voor de X-ray-knop
+  themeDarkLabel: string; // modusnaam, taalonafhankelijk ("DARK")
+  themeLightLabel: string; // modusnaam, taalonafhankelijk ("LIGHT")
+  themeToggleAria: Bilingual; // aria-label voor de theme-knop
   xrayStatDetail: Bilingual; // extra technische regel onder LiveStatBadge
   explodeToggle: Bilingual; // knoplabel voor de exploded-view op ProjectCard
   constellationHint: Bilingual; // hint in het paneel als niets gehoverd is
@@ -142,6 +148,8 @@ export interface UILabels {
   jarvisExplainClose: Bilingual;
   jarvisExplainStatus: Bilingual;
   jarvisExplainRelevanceLabel: Bilingual;
+  jarvisProactiveAsk: Bilingual;
+  analyticsTransparencyNote: Bilingual;
 }
 
 // De volledige content-payload zoals die later uit `portfolio_content` komt.

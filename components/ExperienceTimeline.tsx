@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Bilingual, ExperienceEntry } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import CareerMotifBackground from "@/components/CareerMotifBackground";
-import JarvisExplainButton from "@/app/cv/components/JarvisExplainButton";
-import { useJarvisExplain } from "@/app/cv/hooks/useJarvisExplain";
+import JarvisExplainButton from "@/components/JarvisExplainButton";
+import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 interface ExperienceTimelineProps {

@@ -4,9 +4,8 @@ import { useRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
-import { useTheme } from "@/app/cv/hooks/useTheme";
-import type { Theme } from "@/app/cv/context/ThemeContext";
-import styles from "@/styles/cv.module.css";
+import { useTheme } from "@/hooks/useTheme";
+import type { Theme } from "@/context/ThemeContext";
 
 interface MiniScenePalette {
   infrastructure: string;
