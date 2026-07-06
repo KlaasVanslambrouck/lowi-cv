@@ -1,0 +1,109 @@
+/* ---------------------------------------------------------------------------
+   Design tokens + CSS-reset voor LOWI CV.
+   Component-specifieke styling leeft in styles/cv.module.css.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* Kleurenpalet */
+  --cv-ink: #13141b;
+  --cv-bone: #ede7dc;
+  --cv-copper: #b8763e; /* bewust GEEN terracotta #D97757 */
+  --cv-cyan: #5fbfb0; /* uitsluitend voor live/actieve data-indicatoren */
+  --cv-muted: #8a8677;
+  --cv-radius: 18px;
+
+  /* Fontvariabelen (--font-fraunces enz.) worden door next/font op <html> gezet */
+  --cv-font-serif: var(--font-fraunces), Georgia, serif;
+  --cv-font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --cv-font-mono: var(--font-dm-mono), ui-monospace, monospace;
+}
+
+/* --- Minimale reset --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--cv-ink);
+  color: var(--cv-bone);
+  font-family: var(--cv-font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+canvas,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--cv-font-serif);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+code,
+pre {
+  font-family: var(--cv-font-mono);
+}
+
+/* --- Toegankelijkheid: duidelijke focus-states op alles wat interactief is --- */
+:focus-visible {
+  outline: 2px solid var(--cv-copper);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background-color: var(--cv-copper);
+  color: var(--cv-ink);
+}
+
+/* Bezoekers met reduced motion krijgen geen smooth scroll of animaties */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

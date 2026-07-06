@@ -1,0 +1,1169 @@
+/* ---------------------------------------------------------------------------
+   Component-styling voor LOWI CV. Design tokens komen uit app/globals.css.
+--------------------------------------------------------------------------- */
+
+/* ===== LanguageToggle ===== */
+
+.languageToggle {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background-color: rgba(19, 20, 27, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(237, 231, 220, 0.12);
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.languageOption {
+  color: var(--cv-muted);
+  padding: 0.1rem 0.2rem;
+  transition: color 0.2s ease;
+}
+
+.languageOptionActive {
+  color: var(--cv-copper);
+}
+
+.languageDivider {
+  color: var(--cv-muted);
+  opacity: 0.5;
+}
+
+/* ===== Hero ===== */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background-color: var(--cv-ink);
+}
+
+/* De 3D-scene vult de hele hero als ambient achtergrond */
+.heroScene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 5rem;
+  /* Zachte gradient onderaan zodat tekst leesbaar blijft over de scene */
+  background: linear-gradient(
+    to top,
+    rgba(19, 20, 27, 0.92) 0%,
+    rgba(19, 20, 27, 0.55) 55%,
+    rgba(19, 20, 27, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.heroContent > * {
+  pointer-events: auto;
+}
+
+.heroName {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  color: var(--cv-bone);
+  margin-bottom: 1rem;
+}
+
+.heroRoles {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-family: var(--cv-font-mono);
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+}
+
+.roleCurrent {
+  color: var(--cv-bone);
+}
+
+.roleArrow {
+  color: var(--cv-copper);
+  display: inline-flex;
+}
+
+.roleTarget {
+  color: var(--cv-copper);
+}
+
+.heroThesis {
+  max-width: 34rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  color: var(--cv-bone);
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+}
+
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cv-cyan);
+  border: 1px solid rgba(95, 191, 176, 0.35);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+}
+
+.liveDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--cv-cyan);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(95, 191, 176, 0.5);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 0 6px rgba(95, 191, 176, 0);
+  }
+}
+
+/* ===== ArchitectureScene + fallback ===== */
+
+.sceneCanvasWrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.sceneFallback {
+  position: absolute;
+  inset: 0;
+  padding: 3rem 1rem 0;
+}
+
+/* Lichte SVG-variant van het netwerk (mobiel / reduced motion / geen WebGL) */
+.sceneFallbackSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.svgLine {
+  stroke: rgba(237, 231, 220, 0.22);
+  stroke-width: 1;
+}
+
+.svgCoreLine {
+  stroke: rgba(184, 118, 62, 0.14);
+  stroke-width: 1;
+}
+
+/* "Reizend lichtpuntje": korte dash die via dashoffset over de lijn schuift.
+   De animation-delay laat de laad-fase (en de Lighthouse-trace) met rust —
+   dashoffset-animaties triggeren paint en zijn relatief duur op mobiel. */
+.svgFlowCyan {
+  stroke: var(--cv-cyan);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 6 140;
+  opacity: 0.8;
+  animation: svgFlow 3.2s linear 4s infinite;
+}
+
+.svgFlowCopper {
+  stroke: var(--cv-copper);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 6 140;
+  opacity: 0.8;
+  animation: svgFlow 4.6s linear 5s infinite;
+}
+
+@keyframes svgFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    /* dash-periode = 6 + 140; negatief zodat het puntje "vooruit" reist */
+    stroke-dashoffset: -146;
+  }
+}
+
+.svgNode {
+  fill: var(--cv-bone);
+}
+
+.svgNodeJarvis {
+  fill: var(--cv-copper);
+}
+
+.svgCoreNode {
+  fill: var(--cv-copper);
+}
+
+/* Pulserende halo's — transform-box zodat scale rond het eigen middelpunt draait */
+.svgHaloBone,
+.svgHaloCyan,
+.svgHaloCopper {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: svgPulse 3s ease-in-out infinite;
+}
+
+.svgHaloBone {
+  fill: rgba(237, 231, 220, 0.1);
+}
+
+.svgHaloCyan {
+  fill: rgba(95, 191, 176, 0.2);
+  animation-duration: 2.2s;
+}
+
+.svgHaloCopper {
+  fill: rgba(184, 118, 62, 0.16);
+  animation-duration: 3.8s;
+}
+
+@keyframes svgPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.55;
+  }
+}
+
+.svgLabel {
+  font-family: var(--cv-font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  fill: var(--cv-bone);
+  opacity: 0.75;
+}
+
+.svgLabelJarvis {
+  font-family: var(--cv-font-mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  fill: var(--cv-copper);
+}
+
+/* Label naast elke node in de 3D-scene */
+.nodeLabel {
+  font-family: var(--cv-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--cv-bone);
+  opacity: 0.8;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nodeLabelJarvis {
+  color: var(--cv-copper);
+  opacity: 1;
+  font-size: 0.8rem;
+}
+
+/* Gedimde variant tijdens hover in de SkillConstellation */
+.nodeLabelDimmed {
+  opacity: 0.2;
+}
+
+/* ===== CVSection (scroll-reveal) ===== */
+
+.section {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 1.5rem;
+}
+
+.sectionTitle {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  color: var(--cv-bone);
+  margin-bottom: 2rem;
+}
+
+.sectionTitle::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 2px;
+  margin-top: 0.75rem;
+  background-color: var(--cv-copper);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.revealVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== ExperienceTimeline ===== */
+
+.timelineWrapper {
+  position: relative;
+}
+
+/* Verticale gradient-lijn links van de items */
+.timelineTrack {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--cv-copper),
+    rgba(184, 118, 62, 0.06)
+  );
+}
+
+/* Koperen bolletje dat meebeweegt met de zichtbare tijdlijn-positie;
+   de verticale positie komt via --timeline-progress uit het component */
+.timelineMarker {
+  position: absolute;
+  left: -4px;
+  top: var(--timeline-progress, 15%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--cv-copper);
+  box-shadow: 0 0 12px rgba(184, 118, 62, 0.55);
+  transform: translateY(-50%);
+  transition: top 0.5s ease;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+.timelineItem {
+  position: relative;
+}
+
+/* Koperen stip op de tijdlijn */
+.timelineItem::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.75rem - 5px);
+  top: 0.5rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--cv-copper);
+}
+
+.timelineHeader {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+}
+
+.timelineRole {
+  font-size: 1.15rem;
+  color: var(--cv-bone);
+}
+
+.timelineCompany {
+  color: var(--cv-muted);
+  font-size: 0.95rem;
+}
+
+.timelinePeriod {
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--cv-copper);
+  display: block;
+  margin: 0.3rem 0 0.5rem;
+}
+
+.timelineDescription {
+  max-width: 40rem;
+  color: var(--cv-bone);
+  opacity: 0.82;
+}
+
+/* ===== EducationList ===== */
+
+.educationList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.educationItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.educationDegree {
+  font-size: 1.1rem;
+  color: var(--cv-bone);
+}
+
+.educationInstitution {
+  color: var(--cv-muted);
+}
+
+.educationPeriod {
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--cv-copper);
+}
+
+/* ===== LanguageSkillsList ===== */
+
+.languageList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 26rem;
+}
+
+.languageItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px dashed rgba(237, 231, 220, 0.15);
+  padding-bottom: 0.6rem;
+}
+
+.languageName {
+  color: var(--cv-bone);
+}
+
+.languageLevel {
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  color: var(--cv-muted);
+}
+
+/* ===== Skill-tags ===== */
+
+.skillsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skillTag {
+  font-family: var(--cv-font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--cv-bone);
+  border: 1px solid rgba(237, 231, 220, 0.25);
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+}
+
+/* ===== LowiSection ===== */
+
+.lowiIntro {
+  max-width: 42rem;
+  font-size: 1.1rem;
+  color: var(--cv-bone);
+  opacity: 0.85;
+  margin-bottom: 2rem;
+}
+
+.lowiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.lowiCard {
+  border: 1px solid rgba(237, 231, 220, 0.12);
+  border-radius: var(--cv-radius);
+  padding: 1.5rem;
+  background-color: rgba(237, 231, 220, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.lowiCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.lowiName {
+  font-size: 1.25rem;
+  color: var(--cv-bone);
+}
+
+.lowiTagline {
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--cv-copper);
+}
+
+.lowiDescription {
+  color: var(--cv-bone);
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.statusBadge {
+  font-family: var(--cv-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  white-space: nowrap;
+}
+
+/* Cyaan uitsluitend voor actieve/live status */
+.statusBadgeActive {
+  color: var(--cv-cyan);
+  border: 1px solid rgba(95, 191, 176, 0.4);
+}
+
+.statusBadgeMuted {
+  color: var(--cv-muted);
+  border: 1px solid rgba(138, 134, 119, 0.4);
+}
+
+.lowiLink {
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  color: var(--cv-copper);
+  text-decoration: none;
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.lowiLink:hover {
+  text-decoration: underline;
+}
+
+/* ===== ProjectCard ===== */
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  /* Nodig zodat de translateZ van de exploded-lagen diepte krijgt */
+  perspective: 1200px;
+}
+
+.projectCard {
+  border: 1px solid rgba(237, 231, 220, 0.12);
+  border-radius: var(--cv-radius);
+  padding: 1.5rem;
+  background-color: rgba(237, 231, 220, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  /* Lagen behouden hun 3D-positie binnen de kaart */
+  transform-style: preserve-3d;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* Elke kaartlaag kan afzonderlijk naar voren schuiven (exploded view) */
+.projectCardLayer {
+  transform: translateZ(0);
+  transition: transform 0.35s ease;
+}
+
+/* Glow-taal is voorbehouden aan Hero + deze exploded/hover-staat.
+   De klasse wordt via JS gezet (hover én toegankelijke toggle), zodat het
+   ook op touch-devices en met het toetsenbord werkt — niet enkel :hover. */
+.projectCardExploded {
+  border-color: rgba(184, 118, 62, 0.6);
+  box-shadow: 0 0 32px rgba(184, 118, 62, 0.15);
+  transform: translateY(-4px) rotateX(2deg);
+}
+
+.projectCardExploded .projectLayerFront {
+  transform: translateZ(44px);
+}
+
+.projectCardExploded .projectLayerMid {
+  transform: translateZ(22px);
+}
+
+.projectCardExploded .projectLayerBack {
+  transform: translateZ(8px);
+}
+
+.projectTitleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Toegankelijke exploded-toggle (touch/toetsenbord) */
+.layersToggle {
+  font-family: var(--cv-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+  border: 1px solid rgba(138, 134, 119, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  flex-shrink: 0;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.layersToggle:hover,
+.layersToggle[aria-pressed="true"] {
+  color: var(--cv-copper);
+  border-color: rgba(184, 118, 62, 0.6);
+}
+
+.projectTitle {
+  font-size: 1.2rem;
+  color: var(--cv-bone);
+}
+
+.projectDescription {
+  color: var(--cv-bone);
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.codeBlock {
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(237, 231, 220, 0.08);
+  border-radius: calc(var(--cv-radius) - 8px);
+  padding: 1rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--cv-bone);
+  overflow-x: auto;
+}
+
+.techList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.techTag {
+  font-family: var(--cv-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--cv-muted);
+  border: 1px solid rgba(138, 134, 119, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+/* ===== LiveStatBadge ===== */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.25rem;
+}
+
+.statBadge {
+  border: 1px solid rgba(95, 191, 176, 0.25);
+  border-radius: var(--cv-radius);
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.statValue {
+  font-family: var(--cv-font-mono);
+  font-size: 1.9rem;
+  color: var(--cv-cyan);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.statDot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: var(--cv-cyan);
+  animation: pulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.statLabel {
+  font-family: var(--cv-font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+}
+
+.statsNote {
+  margin-top: 1.25rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  color: var(--cv-muted);
+}
+
+/* ===== JarvisTerminal ===== */
+
+.terminal {
+  border: 1px solid rgba(237, 231, 220, 0.15);
+  border-radius: var(--cv-radius);
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  max-width: 46rem;
+}
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1.1rem;
+  background-color: rgba(237, 231, 220, 0.05);
+  border-bottom: 1px solid rgba(237, 231, 220, 0.1);
+}
+
+.terminalDots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.terminalDot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background-color: var(--cv-muted);
+  opacity: 0.5;
+}
+
+.terminalTitle {
+  font-family: var(--cv-font-mono);
+  font-size: 0.78rem;
+  color: var(--cv-muted);
+}
+
+.terminalBody {
+  padding: 1.25rem 1.25rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.terminalMessage {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.terminalPromptSymbol {
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.terminalUser .terminalPromptSymbol {
+  color: var(--cv-muted);
+}
+
+.terminalUser {
+  color: var(--cv-bone);
+}
+
+.terminalJarvis {
+  color: var(--cv-cyan);
+}
+
+.terminalJarvis .terminalPromptSymbol {
+  color: var(--cv-copper);
+}
+
+.terminalInputRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.25rem 1.1rem;
+  border-top: 1px dashed rgba(237, 231, 220, 0.1);
+  margin-top: 0.75rem;
+}
+
+.terminalInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--cv-muted);
+  font-family: var(--cv-font-mono);
+  font-size: 0.85rem;
+}
+
+.terminalInput::placeholder {
+  color: var(--cv-muted);
+  opacity: 0.7;
+}
+
+.terminalCaret {
+  width: 0.55rem;
+  height: 1.05rem;
+  background-color: var(--cv-copper);
+  animation: blink 1.1s steps(1) infinite;
+  flex-shrink: 0;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.terminalNote {
+  margin-top: 1rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  color: var(--cv-muted);
+}
+
+/* ===== ContactFooter ===== */
+
+.footer {
+  margin-top: 4rem;
+  border-top: 1px solid rgba(237, 231, 220, 0.12);
+  padding: 3.5rem 1.5rem 4rem;
+}
+
+.footerInner {
+  max-width: 68rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.footerTitle {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--cv-bone);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.9rem;
+}
+
+.footerLink {
+  color: var(--cv-bone);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184, 118, 62, 0.5);
+  padding-bottom: 2px;
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: var(--cv-copper);
+}
+
+.footerLocation {
+  color: var(--cv-muted);
+  font-family: var(--cv-font-mono);
+  font-size: 0.85rem;
+}
+
+.downloadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  font-family: var(--cv-font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: var(--cv-ink);
+  background-color: var(--cv-copper);
+  border-radius: 999px;
+  padding: 0.7rem 1.5rem;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.downloadButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(184, 118, 62, 0.35);
+}
+
+/* ===== XrayToggle ===== */
+
+/* Zelfde vormtaal als .languageToggle, vast onder de taalknop */
+.xrayToggle {
+  position: fixed;
+  top: 3.9rem;
+  right: 1.25rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background-color: rgba(19, 20, 27, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(237, 231, 220, 0.12);
+  font-family: var(--cv-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+/* ===== X-ray weergave ===== */
+
+/* Korte cross-dissolve bij het wisselen van modus/inhoud */
+.fadeSwap {
+  animation: fadeSwap 0.3s ease;
+}
+
+@keyframes fadeSwap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Technische boomstructuur op ProjectCard in X-ray modus */
+.xrayTree {
+  font-family: var(--cv-font-mono);
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: var(--cv-bone);
+  background-color: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(184, 118, 62, 0.25);
+  border-radius: calc(var(--cv-radius) - 8px);
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+}
+
+/* Extra deploymentregel onder LiveStatBadge in X-ray modus */
+.statXrayDetail {
+  font-family: var(--cv-font-mono);
+  font-size: 0.7rem;
+  color: var(--cv-muted);
+  border-top: 1px dashed rgba(138, 134, 119, 0.35);
+  padding-top: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+/* ===== SkillConstellation ===== */
+
+.constellationWrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.constellationCanvas {
+  height: 420px;
+  border: 1px solid rgba(237, 231, 220, 0.1);
+  border-radius: var(--cv-radius);
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.constellationLoading {
+  height: 420px;
+  border: 1px dashed rgba(237, 231, 220, 0.15);
+  border-radius: var(--cv-radius);
+}
+
+.constellationPanel {
+  border: 1px solid rgba(237, 231, 220, 0.12);
+  border-radius: var(--cv-radius);
+  padding: 1.4rem;
+  background-color: rgba(237, 231, 220, 0.03);
+}
+
+.constellationSkillName {
+  font-size: 1.25rem;
+  color: var(--cv-bone);
+  margin-bottom: 0.75rem;
+}
+
+.constellationPanelLabel {
+  font-family: var(--cv-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+  margin-bottom: 0.4rem;
+}
+
+.constellationProjectList li {
+  color: var(--cv-bone);
+  opacity: 0.85;
+  padding: 0.2rem 0;
+}
+
+.constellationHint {
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  color: var(--cv-muted);
+}
+
+/* Alleen voor screenreaders (canvas is decoratief/aria-hidden) */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 1023px) {
+  .constellationWrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .constellationCanvas,
+  .constellationLoading {
+    height: 340px;
+  }
+}
+
+/* ===== ArchitectureSceneMini ===== */
+
+.miniSceneWrapper {
+  max-width: 68rem;
+  height: 240px;
+  margin: 2.5rem auto 0;
+  padding: 0 1.5rem;
+}
+
+/* ===== JarvisPresence ===== */
+
+.jarvisPresence {
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 40;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  max-width: 300px;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
+  background-color: rgba(19, 20, 27, 0.7);
+  border: 1px solid rgba(95, 191, 176, 0.25);
+  backdrop-filter: blur(8px);
+  font-family: var(--cv-font-mono);
+  font-size: 0.72rem;
+  color: var(--cv-muted);
+  opacity: 0.85;
+  /* Puur informatief overlay-element, mag klikken nooit blokkeren */
+  pointer-events: none;
+}
+
+.jarvisPresenceLabel {
+  color: var(--cv-cyan);
+  letter-spacing: 0.1em;
+}
+
+.jarvisPresenceText {
+  animation: fadeSwap 0.3s ease;
+}
+
+@media (max-width: 767px) {
+  /* Op kleine schermen is het paneel eerder ruis dan sfeer */
+  .jarvisPresence {
+    display: none;
+  }
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 767px) {
+  .section {
+    padding: 3rem 1.25rem 1rem;
+  }
+
+  .heroContent {
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  .timeline {
+    padding-left: 1.4rem;
+  }
+
+  .timelineItem::before {
+    left: calc(-1.4rem - 5px);
+  }
+
+  /* backdrop-blur boven de geanimeerde SVG-hero is te duur op mobiel;
+     de achtergrondkleur is donker genoeg zonder blur */
+  .languageToggle,
+  .xrayToggle {
+    backdrop-filter: none;
+    background-color: rgba(19, 20, 27, 0.9);
+  }
+}
