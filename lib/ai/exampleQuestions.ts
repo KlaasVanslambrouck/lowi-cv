@@ -8,12 +8,12 @@ import type { EvalCase } from "./types";
 
 export const exampleQuestions: EvalCase[] = [
   {
-    id: "ai-business-engineering-fit",
+    id: "ai-enabled-systems-fit",
     question: {
-      nl: "Waarom is Klaas geschikt voor AI Business Engineering?",
-      en: "Why is Klaas a good fit for AI Business Engineering?",
+      nl: "Waarom past Klaas bij het bouwen van AI-gedreven systemen?",
+      en: "Why is Klaas a good fit for building AI-enabled systems?",
     },
-    expectedSourceIds: ["system-about-me", "skill-ai", "system-lowi-intro"],
+    expectedSourceIds: ["system-about-me", "skill-ai", "skill-functional-analysis"],
   },
   {
     id: "systems-actually-built",

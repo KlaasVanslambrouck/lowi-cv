@@ -88,15 +88,24 @@ const ARCHITECTURE_CONNECTIONS: Array<[string, string]> = [
 // Handmatig gecureerde extra trefwoorden per chunk-id — alléén waar
 // automatische extractie te mager is, met per entry de reden waarom.
 const CURATED_KEYWORDS: Record<string, string[]> = {
-  // hero.targetRole ("AI Business Engineer") is geen eigen chunk; de
+  // hero.targetRole ("Bouwer van AI-gedreven systemen") is geen eigen chunk; de
   // over-mij-tekst draagt dat verhaal en de brug business↔techniek, dus de
   // termen uit hero.targetRole en hero.focusAreas horen hier thuis.
   "system-about-me": [
-    "ai business engineer",
+    "ai-gedreven systemen",
+    "ai-enabled systems",
     "engineering",
     "businessanalyse",
     "technische implementatie",
     "verbinden",
+  ],
+  // De centrale AI-knoop moet vindbaar zijn op de actuele rolrichting uit de
+  // hero, niet alleen op de losse term "AI".
+  "skill-ai": [
+    "ai-gedreven systemen",
+    "ai-enabled systems",
+    "bouwen",
+    "building",
   ],
   // De skill-node heet in de content Engels "Functional Analysis"; NL-bezoekers
   // zoeken op deze Nederlandse varianten van hetzelfde begrip.

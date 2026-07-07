@@ -11,12 +11,12 @@ export interface GroundedAnswer {
 }
 
 export const preAuthoredAnswers: Record<string, GroundedAnswer> = {
-  "ai-business-engineering-fit": {
+  "ai-enabled-systems-fit": {
     responseType: "pre-authored",
     sourceChunkIds: ["system-about-me", "skill-ai", "skill-functional-analysis"],
     text: {
-      nl: "Klaas past bij AI Business Engineering omdat zijn profiel businessanalyse, technologie en AI samenbrengt. De portfolio beschrijft hem als functioneel analist die processen begrijpt, frictie ziet en die inzichten naar praktische werkende oplossingen vertaalt. De skill-constellatie verbindt AI met LLMs, automation, data en functional analysis, terwijl Functional Analysis gekoppeld is aan productdenken en systems thinking.",
-      en: "Klaas fits AI Business Engineering because his profile brings business analysis, technology and AI together. The portfolio describes him as a functional analyst who understands processes, spots friction and translates that into practical working solutions. The skill constellation connects AI with LLMs, automation, data and functional analysis, while Functional Analysis is linked to product thinking and systems thinking.",
+      nl: "Klaas past bij het bouwen van AI-gedreven systemen omdat zijn profiel businessanalyse, technologie en AI samenbrengt. De portfolio beschrijft hem als functioneel analist die processen begrijpt, frictie ziet en die inzichten naar praktische werkende oplossingen vertaalt. De skill-constellatie verbindt AI met LLMs, automation, data en functional analysis, terwijl Functional Analysis gekoppeld is aan productdenken en systems thinking.",
+      en: "Klaas fits the work of building AI-enabled systems because his profile brings business analysis, technology and AI together. The portfolio describes him as a functional analyst who understands processes, spots friction and translates that into practical working solutions. The skill constellation connects AI with LLMs, automation, data and functional analysis, while Functional Analysis is linked to product thinking and systems thinking.",
     },
   },
   "systems-actually-built": {

@@ -41,7 +41,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Klaas Van Slambrouck — CV",
   description:
-    "Functioneel Analist op weg naar AI Business Engineer. CV en portfolio met live inkijk in het LOWI-platform.",
+    "Functioneel Analist die business, technologie en AI vertaalt naar werkende systemen. CV en portfolio met live inkijk in het LOWI-platform.",
 };
 
 export default function RootLayout({

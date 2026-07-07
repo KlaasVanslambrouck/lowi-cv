@@ -14,6 +14,7 @@ import ArchitectureSceneMini from "@/components/ArchitectureSceneMini";
 import ProjectCard from "@/components/ProjectCard";
 import ContactFooter from "@/components/ContactFooter";
 import JarvisExplainPanel from "@/components/JarvisExplainPanel";
+import JarvisAsk from "@/components/jarvis/JarvisAsk";
 import { JarvisExplainProvider } from "@/context/JarvisExplainContext";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -88,6 +89,7 @@ export default function HomePage() {
             title={content.sectionTitles.contact}
             labels={content.uiLabels}
           />
+          <JarvisAsk />
           <JarvisExplainPanel labels={content.uiLabels} />
           </main>
         </JarvisExplainProvider>

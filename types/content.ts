@@ -13,7 +13,7 @@ export type CareerMotif = "soundwave" | "stage-lights" | "blueprint" | "flowchar
 export interface HeroContent {
   name: string;
   currentRole: Bilingual; // nl: "Functioneel Analist", en: "Functional Analyst"
-  targetRole: Bilingual; // nl/en: "AI Business Engineer" — doel, niet huidige titel
+  targetRole: Bilingual; // doelrichting, niet huidige titel
   thesis: Bilingual; // max ~18 woorden
   identityLine: Bilingual;
   focusAreas: string[];
