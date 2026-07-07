@@ -13,7 +13,20 @@ export const placeholderContent: PortfolioContent = {
       nl: "Ik vertaal businessprocessen naar werkende AI-systemen — van analyse tot draaiende productie.",
       en: "I translate business processes into working AI systems — from analysis to running production.",
     },
+    identityLine: {
+      nl: "LOWI is mijn persoonlijke lab voor AI, systemen en verbeelding. Met Nidus bouw ik een levend platform dat mijn gezin, huis, data en automatisering samenbrengt — niet als demo, maar als werkend bewijs van wat ik kan bouwen.",
+      en: "LOWI is my personal lab for AI, systems and imagination. With Nidus, I'm building a living platform that brings together my family, home, data and automation — not as a demo, but as working proof of what I can build.",
+    },
+    focusAreas: ["AI Systems", "Business Analysis", "Production Engineering"],
     liveLabel: { nl: "live", en: "live" },
+  },
+
+  aboutMe: {
+    heading: { nl: "Wie ik ben", en: "Who I am" },
+    body: {
+      nl: "Ik ben Klaas, functioneel analist met een sterke drang om systemen te begrijpen én te bouwen. Mijn kracht zit op de brug tussen business, technologie en AI: ik zie snel hoe processen werken, waar frictie zit en hoe je die kunt vertalen naar praktische, werkende oplossingen. LOWI is mijn persoonlijke laboratorium: de plek waar ik leer, experimenteer en bewijs dat ideeën pas echt waarde krijgen wanneer ze draaien.",
+      en: "I'm Klaas, a functional analyst with a strong drive to understand and build systems. My strength sits at the intersection of business, technology and AI: I quickly see how processes work, where the friction lies, and how to translate that into practical, working solutions. LOWI is my personal laboratory: the place where I learn, experiment, and prove that ideas only gain real value once they actually run.",
+    },
   },
 
   experience: [
@@ -178,8 +191,8 @@ export const placeholderContent: PortfolioContent = {
 
   lowi: {
     intro: {
-      nl: "LOWI is mijn persoonlijke platform: een verzameling zelfgebouwde systemen die samen één ecosysteem vormen — van data-pipelines tot een eigen AI-assistent.",
-      en: "LOWI is my personal platform: a collection of self-built systems forming one ecosystem — from data pipelines to a personal AI assistant.",
+      nl: "LOWI — Lab of Wonder and Imagination — is mijn eigen leer- en bouwomgeving rond AI, biologie, automatisering en creatieve technologie. Het begon als nieuwsgierigheid, maar groeit uit tot een persoonlijk platform waarin ik onderzoek, prototypes en echte systemen samenbreng. LOWI toont hoe ik denk: niet alleen conceptueel, maar altijd richting iets dat bruikbaar, begrijpelijk en technisch degelijk is.",
+      en: "LOWI — Lab of Wonder and Imagination — is my own learning and building environment around AI, biology, automation and creative technology. It started as curiosity, but is growing into a personal platform where I bring together research, prototypes and real systems. LOWI shows how I think: not just conceptually, but always aimed at something usable, understandable and technically sound.",
     },
     projects: [
       {
@@ -189,8 +202,8 @@ export const placeholderContent: PortfolioContent = {
           en: "The nerve centre of the LOWI platform",
         },
         description: {
-          nl: "Centrale hub met Supabase-backend, Railway-services en een eigen API-laag die alle andere onderdelen van het platform voedt.",
-          en: "Central hub with a Supabase backend, Railway services and a custom API layer feeding every other part of the platform.",
+          nl: "Nidus is het eerste echte systeem binnen LOWI: een persoonlijk operating system voor mijn gezin, huis en dagelijkse routines. Ik bouw er koppelingen in met energieverbruik, locatie, automatisering, dashboards, Raspberry Pi-workers, Supabase, mobiele interfaces en uiteindelijk Jarvis als intelligente laag erbovenop. Het doel is geen demo, maar een levend systeem dat context begrijpt, helpt beslissen en stap voor stap slimmer wordt.",
+          en: "Nidus is the first real system within LOWI: a personal operating system for my family, home and daily routines. I'm building in connections to energy usage, location, automation, dashboards, Raspberry Pi workers, Supabase, mobile interfaces, and eventually Jarvis as an intelligent layer on top. The goal isn't a demo, but a living system that understands context, helps make decisions, and gets a little smarter step by step.",
         },
         status: { nl: "In productie", en: "In production" },
         url: "https://example.com/nidus",
@@ -333,6 +346,21 @@ render(reply.text);`,
       suggestedQuestion: {
         nl: "Hoe vertaalt Klaas analysewerk naar AI-systemen?",
         en: "How does Klaas translate analysis work into AI systems?",
+      },
+    },
+    {
+      sectionId: "about",
+      text: {
+        nl: "leest identiteit: analyse · bouwdrang",
+        en: "reading identity: analysis · builder drive",
+      },
+      proactiveSuggestion: {
+        nl: "Hier wordt duidelijk waarom LOWI meer is dan een zijproject.",
+        en: "This makes clear why LOWI is more than a side project.",
+      },
+      suggestedQuestion: {
+        nl: "Wat zegt LOWI over hoe Klaas leert en bouwt?",
+        en: "What does LOWI say about how Klaas learns and builds?",
       },
     },
     {

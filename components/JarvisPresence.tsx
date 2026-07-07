@@ -152,7 +152,15 @@ export default function JarvisPresence({
     : null;
 
   return (
-    <div className={styles.jarvisPresence} role="status" aria-live="polite">
+    <div
+      className={
+        showProactive
+          ? `${styles.jarvisPresence} ${styles.jarvisPresenceProactive}`
+          : styles.jarvisPresence
+      }
+      role="status"
+      aria-live="polite"
+    >
       <span className={styles.jarvisPresenceLabel}>{label}</span>
       {/* key forceert de korte fade bij elke sectie-wissel */}
       <span

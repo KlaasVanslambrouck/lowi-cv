@@ -2,7 +2,6 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createBrowserSupabaseClient } from "@/lib/supabase/browserClient";
 import styles from "./beheer.module.css";
 
 const GENERIC_LOGIN_ERROR = "Ongeldige combinatie";
@@ -20,28 +19,21 @@ export default function BeheerLoginPage() {
     setIsSubmitting(true);
 
     try {
-      const gateResponse = await fetch("/api/auth/login-attempt", {
+      // Volledig server-side login: de route voert rate-limiting én
+      // signInWithPassword uit en zet de sessie-cookie op de response.
+      const response = await fetch("/api/auth/login", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (!gateResponse.ok) {
+      if (!response.ok) {
+        // Bewust generiek: nooit prijsgeven of het e-mailadres bestaat.
         setErrorMessage(
-          gateResponse.status === 429
+          response.status === 429
             ? "Te veel pogingen. Probeer later opnieuw."
             : GENERIC_LOGIN_ERROR,
         );
-        return;
-      }
-
-      const supabase = createBrowserSupabaseClient();
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        // Bewust generiek: nooit prijsgeven of het e-mailadres bestaat.
-        setErrorMessage(GENERIC_LOGIN_ERROR);
         return;
       }
 

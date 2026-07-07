@@ -14,10 +14,15 @@ bestaande fallbacks.
 
 ## Beheer
 
-`/beheer` is de loginpagina. De browser gebruikt de Supabase anon key voor
-`signInWithPassword`. De loginroute `/api/auth/login-attempt` heeft alleen een
-eenvoudige in-memory pogingenteller; die is nuttig als basisdrempel, maar geen
-volledige brute-forcebescherming in serverless omgevingen.
+`/beheer` is de loginpagina. Het formulier post `{ email, password }` naar
+`POST /api/auth/login`; die route voert server-side eerst een in-memory
+IP-pogingenteller uit en daarna zelf `signInWithPassword` via de Supabase
+SSR-cookie-client, zodat de sessie-cookie door de server wordt gezet. De
+teller en de echte auth-call zitten daardoor in dezelfde route en de
+rate-limit is niet meer te omzeilen door het formulier over te slaan. De
+in-memory teller blijft wel een basisdrempel, geen volledige
+brute-forcebescherming in serverless omgevingen. Uitloggen gebeurt nog
+client-side via de anon-key browserclient (`signOut` in het dashboard).
 
 `/beheer/dashboard` is dubbel beschermd:
 

@@ -80,16 +80,33 @@
   color: var(--cv-copper-soft);
 }
 
-.languageToggle {
+.controlStack {
   position: fixed;
   /* env(safe-area-inset-*) houdt de knoppen vrij van notch/dynamic island;
      werkt samen met viewport-fit=cover in app/layout.tsx */
   top: calc(1.25rem + env(safe-area-inset-top, 0px));
   right: calc(1.25rem + env(safe-area-inset-right, 0px));
   z-index: 50;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  width: max-content;
+  max-width: calc(100vw - 2.5rem);
+  padding: 0.45rem;
+  border: 1px solid rgb(var(--cv-text-rgb) / 0.1);
+  border-radius: 1.35rem;
+  background-color: rgb(var(--cv-surface-rgb) / 0.38);
+  backdrop-filter: blur(10px);
+}
+
+.languageToggle {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex-shrink: 0;
+  white-space: nowrap;
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
   background-color: rgb(var(--cv-surface-rgb) / 0.82);
@@ -101,13 +118,12 @@
 }
 
 .themeToggle {
-  position: fixed;
-  top: calc(3.9rem + env(safe-area-inset-top, 0px));
-  right: calc(1.25rem + env(safe-area-inset-right, 0px));
-  z-index: 50;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex-shrink: 0;
+  white-space: nowrap;
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
   background-color: rgb(var(--cv-surface-rgb) / 0.82);
@@ -131,6 +147,51 @@
 .languageDivider {
   color: var(--cv-muted);
   opacity: 0.5;
+}
+
+.lowiMark {
+  position: relative;
+  width: 1.65rem;
+  height: 1.65rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid rgb(var(--cv-copper-rgb) / 0.25);
+  border-radius: 50%;
+  background-color: rgb(var(--cv-surface-rgb) / 0.74);
+  box-shadow: inset 0 0 14px rgb(var(--cv-blue-rgb) / 0.08);
+}
+
+.lowiMark::before,
+.lowiMark::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.lowiMark::before {
+  width: 0.42rem;
+  height: 0.42rem;
+  background-color: var(--cv-live);
+  box-shadow: 0 0 10px rgb(var(--cv-blue-rgb) / 0.45);
+}
+
+.lowiMark::after {
+  inset: 0.32rem;
+  border: 1px solid rgb(var(--cv-blue-rgb) / 0.28);
+  animation: lowiBreath 3.2s ease-in-out infinite;
+}
+
+@keyframes lowiBreath {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.22);
+  }
 }
 
 /* ===== Hero ===== */
@@ -207,7 +268,42 @@
   font-size: clamp(1.05rem, 2.4vw, 1.25rem);
   color: var(--cv-bone);
   opacity: 0.85;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.heroIdentityLine {
+  max-width: 46rem;
+  color: var(--cv-text-soft);
+  font-size: clamp(0.92rem, 2vw, 1.05rem);
+  line-height: 1.58;
+  opacity: 0.74;
+  margin-bottom: 1rem;
+}
+
+.heroFocusStrip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.55rem;
+  margin-bottom: 1.35rem;
+  color: var(--cv-muted);
+  font-family: var(--cv-font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.84;
+}
+
+.heroFocusStrip li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.heroFocusStrip li:not(:last-child)::after {
+  content: "·";
+  color: var(--cv-copper);
+  opacity: 0.68;
 }
 
 .liveBadge {
@@ -422,6 +518,15 @@
 .revealVisible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ===== AboutMe ===== */
+
+.aboutMeBody {
+  max-width: 50rem;
+  color: var(--cv-text-soft);
+  font-size: 1.05rem;
+  line-height: 1.78;
 }
 
 /* ===== ExperienceTimeline ===== */
@@ -716,6 +821,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .lowiMark::after {
+    animation: none;
+    opacity: 0.72;
+    transform: none;
+  }
+
   .soundwaveBar,
   .stageBeam {
     animation: none;
@@ -829,15 +940,16 @@
 /* ===== LowiSection ===== */
 
 .lowiIntro {
-  max-width: 42rem;
+  max-width: 50rem;
   font-size: 1.1rem;
+  line-height: 1.72;
   color: var(--cv-bone);
   opacity: 0.85;
   margin-bottom: 0.85rem;
 }
 
 .lowiIntroBlock {
-  max-width: 42rem;
+  max-width: 50rem;
   margin-bottom: 2rem;
   border-radius: var(--cv-radius);
 }
@@ -855,7 +967,7 @@
   background-color: rgb(var(--cv-text-rgb) / 0.03);
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .lowiCardHeader {
@@ -882,6 +994,7 @@
   color: var(--cv-bone);
   opacity: 0.8;
   font-size: 0.95rem;
+  line-height: 1.68;
 }
 
 .statusBadge {
@@ -1292,15 +1405,14 @@
 
 /* ===== XrayToggle ===== */
 
-/* Zelfde vormtaal als .languageToggle, vast onder de taalknop */
+/* Zelfde vormtaal als .languageToggle, binnen dezelfde control-stack */
 .xrayToggle {
-  position: fixed;
-  top: calc(6.55rem + env(safe-area-inset-top, 0px));
-  right: calc(1.25rem + env(safe-area-inset-right, 0px));
-  z-index: 50;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex-shrink: 0;
+  white-space: nowrap;
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
   background-color: rgb(var(--cv-surface-rgb) / 0.82);
@@ -1649,22 +1761,36 @@
   align-items: flex-start;
   gap: 0.35rem 0.6rem;
   flex-wrap: wrap;
-  max-width: 330px;
-  padding: 0.5rem 0.85rem;
-  border-radius: 10px;
-  background-color: rgb(var(--cv-surface-rgb) / 0.72);
-  border: 1px solid rgb(var(--cv-violet-rgb) / 0.25);
+  max-width: 280px;
+  padding: 0.42rem 0.68rem;
+  border-radius: 8px;
+  background-color: rgb(var(--cv-surface-rgb) / 0.48);
+  border: 1px solid rgb(var(--cv-muted-rgb) / 0.16);
   backdrop-filter: blur(8px);
   font-family: var(--cv-font-mono);
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   color: var(--cv-muted);
-  opacity: 0.85;
+  opacity: 0.56;
   /* Puur informatief overlay-element, mag klikken nooit blokkeren */
   pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.jarvisPresenceProactive {
+  max-width: 330px;
+  padding: 0.5rem 0.85rem;
+  background-color: rgb(var(--cv-surface-rgb) / 0.82);
+  border-color: rgb(var(--cv-violet-rgb) / 0.3);
+  box-shadow: 0 12px 32px rgb(var(--cv-violet-rgb) / 0.1);
+  opacity: 0.96;
 }
 
 .jarvisPresenceLabel {
-  color: var(--cv-violet);
+  color: var(--cv-violet-soft);
   letter-spacing: 0.1em;
 }
 
@@ -1751,7 +1877,7 @@
 
 @media (max-width: 767px) {
   .section {
-    padding: 3rem 1.25rem 1rem;
+    padding: 4.75rem 1.25rem 1rem;
   }
 
   /* Mobiel toont altijd de compacte SVG-fallback (zie useSceneSupport), dus
@@ -1773,6 +1899,18 @@
 
   .heroContent {
     padding: 1rem 1.25rem 3rem;
+  }
+
+  .heroRoles {
+    row-gap: 0.45rem;
+  }
+
+  .roleTarget {
+    flex-basis: 100%;
+  }
+
+  .heroFocusStrip {
+    max-width: 100%;
   }
 
   .timeline {
@@ -1808,11 +1946,57 @@
 
   /* backdrop-blur boven de geanimeerde SVG-hero is te duur op mobiel;
      de achtergrondkleur is donker genoeg zonder blur */
+  .controlStack {
+    left: calc(0.75rem + env(safe-area-inset-left, 0px));
+    right: calc(0.75rem + env(safe-area-inset-right, 0px));
+    top: calc(0.75rem + env(safe-area-inset-top, 0px));
+    width: auto;
+    max-width: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    padding: 0.32rem;
+    border-radius: 999px;
+    backdrop-filter: none;
+    background-color: rgb(var(--cv-surface-rgb) / 0.5);
+  }
+
+  .lowiMark {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .lowiMark::before {
+    width: 0.34rem;
+    height: 0.34rem;
+  }
+
+  .lowiMark::after {
+    inset: 0.26rem;
+  }
+
   .languageToggle,
   .themeToggle,
   .xrayToggle {
     backdrop-filter: none;
     background-color: rgb(var(--cv-surface-rgb) / 0.92);
+    gap: 0.3rem;
+    padding: 0.28rem 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .languageToggle {
+    font-size: 0.66rem;
+  }
+
+  .themeToggle,
+  .xrayToggle {
+    font-size: 0.58rem;
+  }
+
+  .languageOption {
+    padding: 0.05rem 0.1rem;
   }
 }
 
@@ -1846,13 +2030,14 @@
     transform: translate(-50%, -50%);
   }
 
-  /* Iets ruimere verticale afstand tussen de drie gestapelde toggles zodat
-     hun vergrote tikgebieden elkaar niet overlappen (pitch 48px i.p.v. 42px) */
-  .themeToggle {
-    top: calc(4.25rem + env(safe-area-inset-top, 0px));
+  /* Iets ruimere afstand zodat de vergrote tikgebieden elkaar niet overlappen. */
+  .controlStack {
+    gap: 0.7rem;
   }
+}
 
-  .xrayToggle {
-    top: calc(7.25rem + env(safe-area-inset-top, 0px));
+@media (max-width: 767px) and (pointer: coarse) {
+  .controlStack {
+    gap: 0.25rem;
   }
 }

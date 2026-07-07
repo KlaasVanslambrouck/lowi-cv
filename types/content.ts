@@ -15,7 +15,14 @@ export interface HeroContent {
   currentRole: Bilingual; // nl: "Functioneel Analist", en: "Functional Analyst"
   targetRole: Bilingual; // nl/en: "AI Business Engineer" — doel, niet huidige titel
   thesis: Bilingual; // max ~18 woorden
+  identityLine: Bilingual;
+  focusAreas: string[];
   liveLabel: Bilingual;
+}
+
+export interface AboutMeContent {
+  heading: Bilingual;
+  body: Bilingual;
 }
 
 export interface ExperienceEntry {
@@ -41,13 +48,13 @@ export interface LanguageSkill {
 export interface LowiProject {
   name: string;
   tagline: Bilingual; // max ~10 woorden
-  description: Bilingual; // max ~30 woorden
+  description: Bilingual;
   status: Bilingual;
   url?: string;
 }
 
 export interface LowiContent {
-  intro: Bilingual; // max ~30 woorden
+  intro: Bilingual;
   projects: LowiProject[];
 }
 
@@ -155,6 +162,7 @@ export interface UILabels {
 // De volledige content-payload zoals die later uit `portfolio_content` komt.
 export interface PortfolioContent {
   hero: HeroContent;
+  aboutMe: AboutMeContent;
   experience: ExperienceEntry[];
   education: EducationEntry[];
   languageSkills: LanguageSkill[];

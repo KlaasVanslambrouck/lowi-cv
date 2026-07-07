@@ -11,7 +11,7 @@ interface XrayToggleProps {
   labels: UILabels;
 }
 
-// Vast knopje onder de LanguageToggle: schakelt de globale X-ray modus.
+// Knop in de control-stack: schakelt de globale X-ray modus.
 export default function XrayToggle({ labels }: XrayToggleProps) {
   const { t } = useLanguage();
   const { xrayActive, toggleXray } = useXray();

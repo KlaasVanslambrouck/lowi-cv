@@ -2,9 +2,7 @@
 
 import { placeholderContent } from "@/content/placeholderContent";
 import { useLanguage } from "@/hooks/useLanguage";
-import LanguageToggle from "@/components/LanguageToggle";
-import ThemeToggle from "@/components/ThemeToggle";
-import XrayToggle from "@/components/XrayToggle";
+import ControlStack from "@/components/ControlStack";
 import Hero from "@/components/Hero";
 import CVSection from "@/components/CVSection";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
@@ -35,9 +33,7 @@ export default function HomePage() {
       <SessionInsightProvider>
         <JarvisExplainProvider explanations={content.jarvisExplanations}>
           <main className={styles.cvPage}>
-          <LanguageToggle />
-          <ThemeToggle labels={content.uiLabels} />
-          <XrayToggle labels={content.uiLabels} />
+          <ControlStack labels={content.uiLabels} />
           <JarvisPresence
             observations={content.jarvisObservations}
             label={content.uiLabels.jarvisPresenceLabel}
@@ -45,6 +41,14 @@ export default function HomePage() {
           />
 
           <Hero content={content.hero} />
+
+          <CVSection id="about" title={content.aboutMe.heading}>
+            <p className={styles.aboutMeBody}>{t(content.aboutMe.body)}</p>
+          </CVSection>
+
+          <CVSection id="lowi" title={content.sectionTitles.lowi}>
+            <LowiSection content={content.lowi} labels={content.uiLabels} />
+          </CVSection>
 
           <CVSection id="experience" title={content.sectionTitles.experience}>
             <ExperienceTimeline
@@ -67,10 +71,6 @@ export default function HomePage() {
               projects={content.projects}
               labels={content.uiLabels}
             />
-          </CVSection>
-
-          <CVSection id="lowi" title={content.sectionTitles.lowi}>
-            <LowiSection content={content.lowi} labels={content.uiLabels} />
           </CVSection>
 
           {/* Visuele brug tussen "Wat ik bouw" en "Projecten" - lazy mount */}

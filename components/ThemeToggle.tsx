@@ -11,7 +11,7 @@ interface ThemeToggleProps {
   labels: UILabels;
 }
 
-// Vast knopje in de toggle-kolom: schakelt tussen het donkere en lichte thema.
+// Knop in de control-stack: schakelt tussen het donkere en lichte thema.
 export default function ThemeToggle({ labels }: ThemeToggleProps) {
   const { t } = useLanguage();
   const { theme, toggleTheme } = useTheme();

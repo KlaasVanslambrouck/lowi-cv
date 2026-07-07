@@ -58,9 +58,20 @@ De globale limiet beperkt spam met telkens nieuwe sessionIds zonder IP-opslag,
 maar is geen betrouwbare client-identiteit. Bij hoge publieke traffic hoort dit
 vervangen te worden door infrastructuur die rate limiting expliciet ondersteunt.
 
-`/api/auth/login-attempt` gebruikt een in-memory IP-teller als basisdrempel.
-Omdat die bij cold starts of meerdere instances reset, is ook dat geen volledig
-distributed brute-force mechanisme.
+`POST /api/auth/login` voert de volledige loginflow server-side uit: eerst een
+in-memory IP-teller (5 pogingen per 10 minuten), daarna pas de echte
+`signInWithPassword`-call. Omdat teller en auth-call in dezelfde route zitten,
+is de rate-limit niet meer te omzeilen door het formulier over te slaan. De
+route retourneert alleen generieke antwoorden (`{ ok: false, error: "generic" }`),
+nooit Supabase-foutdetails.
+
+Wie Supabase's eigen auth-endpoint rechtstreeks met de publieke anon key
+aanroept, praat buiten deze app om; dat pad valt onder Supabase's eigen
+infrastructuur-rate-limits en levert alleen een bruikbare dashboard-sessie op
+als de sessie-cookies correct in de browser staan.
+
+Omdat de IP-teller in-memory is en bij cold starts of meerdere instances reset,
+is dit nog steeds geen volledig distributed brute-force mechanisme.
 
 ## Headers And CSP
 

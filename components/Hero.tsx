@@ -59,6 +59,12 @@ export default function Hero({ content }: HeroProps) {
           <span className={styles.roleTarget}>{t(content.targetRole)}</span>
         </p>
         <p className={styles.heroThesis}>{t(content.thesis)}</p>
+        <p className={styles.heroIdentityLine}>{t(content.identityLine)}</p>
+        <ul className={styles.heroFocusStrip} aria-label="Focus areas">
+          {content.focusAreas.map((focusArea) => (
+            <li key={focusArea}>{focusArea}</li>
+          ))}
+        </ul>
         <span className={styles.liveBadge}>
           <span className={styles.liveDot} aria-hidden="true" />
           {t(content.liveLabel)}

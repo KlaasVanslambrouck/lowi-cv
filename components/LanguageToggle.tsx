@@ -5,7 +5,7 @@ import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { trackEvent } from "@/lib/analytics/trackEvent";
 import styles from "@/styles/cv.module.css";
 
-// Vast knopje rechtsboven om tussen Nederlands en Engels te wisselen.
+// Knop in de control-stack om tussen Nederlands en Engels te wisselen.
 export default function LanguageToggle() {
   const { language, toggleLanguage } = useLanguage();
   const sessionId = useAnalyticsSession();
