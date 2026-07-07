@@ -6,19 +6,22 @@ import type { PortfolioContent } from "@/types/content";
 
 export const placeholderContent: PortfolioContent = {
   hero: {
-    name: "Klaas Van Slambrouck",
+    name: "Klaas Vanslambrouck",
     currentRole: { nl: "Functioneel Analist", en: "Functional Analyst" },
-    targetRole: { nl: "AI Business Engineer", en: "AI Business Engineer" },
+    targetRole: {
+      nl: "Bouwer van AI-gedreven systemen",
+      en: "Builder of AI-enabled systems",
+    },
     thesis: {
-      nl: "Ik vertaal businessprocessen naar werkende AI-systemen — van analyse tot draaiende productie.",
-      en: "I translate business processes into working AI systems — from analysis to running production.",
+      nl: "Ik vertaal complexe business- en systeemcontext naar werkende, AI-gedreven oplossingen — van scherpe analyse tot prototypes en productarchitectuur.",
+      en: "I translate complex business and systems context into working, AI-enabled solutions — from sharp analysis to prototypes and product architecture.",
     },
     identityLine: {
-      nl: "LOWI is mijn persoonlijke lab voor AI, systemen en verbeelding. Met Nidus bouw ik een levend platform dat mijn gezin, huis, data en automatisering samenbrengt — niet als demo, maar als werkend bewijs van wat ik kan bouwen.",
-      en: "LOWI is my personal lab for AI, systems and imagination. With Nidus, I'm building a living platform that brings together my family, home, data and automation — not as a demo, but as working proof of what I can build.",
+      nl: "Mijn kracht zit op de brug tussen business, techniek en AI. Nidus is daar het bewijs van: een echt, zelfgebouwd platform dat data, automatisering en intelligentie samenbrengt — geen demo, maar een werkend systeem.",
+      en: "My strength sits at the intersection of business, technology and AI. Nidus is the proof: a real, self-built platform that brings together data, automation and intelligence — not a demo, but a working system.",
     },
-    focusAreas: ["AI Systems", "Business Analysis", "Production Engineering"],
-    liveLabel: { nl: "live", en: "live" },
+    focusAreas: ["Systems Thinking", "Business Analysis", "AI-Enabled Products"],
+    liveLabel: { nl: "beschikbaar", en: "available" },
   },
 
   aboutMe: {
@@ -205,8 +208,7 @@ export const placeholderContent: PortfolioContent = {
           nl: "Nidus is het eerste echte systeem binnen LOWI: een persoonlijk operating system voor mijn gezin, huis en dagelijkse routines. Ik bouw er koppelingen in met energieverbruik, locatie, automatisering, dashboards, Raspberry Pi-workers, Supabase, mobiele interfaces en uiteindelijk Jarvis als intelligente laag erbovenop. Het doel is geen demo, maar een levend systeem dat context begrijpt, helpt beslissen en stap voor stap slimmer wordt.",
           en: "Nidus is the first real system within LOWI: a personal operating system for my family, home and daily routines. I'm building in connections to energy usage, location, automation, dashboards, Raspberry Pi workers, Supabase, mobile interfaces, and eventually Jarvis as an intelligent layer on top. The goal isn't a demo, but a living system that understands context, helps make decisions, and gets a little smarter step by step.",
         },
-        status: { nl: "In productie", en: "In production" },
-        url: "https://example.com/nidus",
+        status: { nl: "In productie · persoonlijk gebruik", en: "In production · personal use" },
       },
       {
         name: "CRISPR & CHICKN",
@@ -374,8 +376,8 @@ render(reply.text);`,
         en: "The career line shows why he can connect business and technology.",
       },
       suggestedQuestion: {
-        nl: "Welke ervaring is het meest relevant voor AI Business Engineering?",
-        en: "Which experience is most relevant for AI Business Engineering?",
+        nl: "Welke ervaring bereidt Klaas het best voor op het bouwen van AI-systemen?",
+        en: "Which experience best prepares Klaas for building AI systems?",
       },
     },
     {
@@ -469,6 +471,21 @@ render(reply.text);`,
       },
     },
     {
+      sectionId: "ai-playground",
+      text: {
+        nl: "retrieval-pipeline klaar",
+        en: "retrieval pipeline ready",
+      },
+      proactiveSuggestion: {
+        nl: "Deze laag toont hoe broncontext naar een onderbouwd antwoord gaat.",
+        en: "This layer shows how source context becomes a grounded answer.",
+      },
+      suggestedQuestion: {
+        nl: "Welke bronnen gebruikt deze portfolio om een antwoord te bouwen?",
+        en: "Which sources does this portfolio use to build an answer?",
+      },
+    },
+    {
       sectionId: "jarvis",
       text: {
         nl: "standby — terminal actief",
@@ -531,8 +548,8 @@ render(reply.text);`,
         },
       ],
       relevance: {
-        nl: "Voor AI Business Engineering is dit belangrijk: goede AI-systemen beginnen bij scherpe procesanalyse, betrouwbare context en heldere beslislogica.",
-        en: "For AI Business Engineering this matters: strong AI systems start with sharp process analysis, reliable context and clear decision logic.",
+        nl: "Dit is belangrijk voor het bouwen van AI-gedreven systemen: goede AI-systemen beginnen bij scherpe procesanalyse, betrouwbare context en heldere beslislogica.",
+        en: "This matters for building AI-enabled systems: strong AI systems start with sharp process analysis, reliable context and clear decision logic.",
       },
     },
     {
@@ -703,8 +720,8 @@ render(reply.text);`,
   ],
 
   contact: {
-    email: "klaas@example.com",
-    linkedinUrl: "https://www.linkedin.com/in/placeholder",
+    email: "klaas.d.g.vanslambrouck@gmail.com",
+    linkedinUrl: "",
     location: { nl: "Oudenaarde, België", en: "Oudenaarde, Belgium" },
     cvPdfUrl: "/cv-klaas.pdf",
     // Nog geen PDF in /public — knop blijft verborgen tot dit op true staat.
@@ -719,6 +736,10 @@ render(reply.text);`,
     lowi: { nl: "LOWI — mijn platform", en: "LOWI — my platform" },
     projects: { nl: "Projecten", en: "Projects" },
     liveStats: { nl: "Live systeem", en: "Live system" },
+    aiPlayground: {
+      nl: "Van vraag naar onderbouwd antwoord",
+      en: "From question to grounded answer",
+    },
     jarvis: { nl: "Spreek met Jarvis", en: "Talk to Jarvis" },
     contact: { nl: "Contact", en: "Contact" },
   },

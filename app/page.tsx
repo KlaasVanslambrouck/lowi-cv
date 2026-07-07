@@ -13,6 +13,7 @@ import LowiSection from "@/components/LowiSection";
 import ArchitectureSceneMini from "@/components/ArchitectureSceneMini";
 import ProjectCard from "@/components/ProjectCard";
 import LiveStatBadge from "@/components/LiveStatBadge";
+import AIEngineeringPlayground from "@/components/AIEngineeringPlayground";
 import JarvisTerminal from "@/components/JarvisTerminal";
 import JarvisPresence from "@/components/JarvisPresence";
 import ContactFooter from "@/components/ContactFooter";
@@ -106,6 +107,13 @@ export default function HomePage() {
             <p className={styles.statsNote}>
               {t(content.uiLabels.liveStatsNote)}
             </p>
+          </CVSection>
+
+          <CVSection
+            id="ai-playground"
+            title={content.sectionTitles.aiPlayground}
+          >
+            <AIEngineeringPlayground />
           </CVSection>
 
           <CVSection id="jarvis" title={content.sectionTitles.jarvis}>

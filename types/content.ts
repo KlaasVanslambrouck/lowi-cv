@@ -129,6 +129,7 @@ export interface SectionTitles {
   lowi: Bilingual;
   projects: Bilingual;
   liveStats: Bilingual;
+  aiPlayground: Bilingual;
   jarvis: Bilingual;
   contact: Bilingual;
 }

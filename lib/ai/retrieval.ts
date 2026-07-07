@@ -8,7 +8,10 @@ import type { Language } from "@/context/LanguageContext";
 import type {
   KnowledgeChunk,
   KnowledgeSourceType,
+  QueryAnalysis,
   RetrievalProvider,
+  RetrievalMatchBreakdown,
+  RetrievalMatchTier,
   RetrievalResult,
 } from "./types";
 import { getKnowledgeBase } from "./portfolioKnowledgeBase";
@@ -50,6 +53,16 @@ function stemToken(token: string): string {
 // Normaliseert vrije tekst naar ruwe tokens: lowercase, diacrieten weg (NFD),
 // leestekens eruit, splitsen op whitespace, stopwoorden en te korte tokens
 // weg. Taal-onafhankelijk: NL en EN gaan door exact dezelfde pijplijn.
+function rawTokens(text: string): string[] {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .split(/\s+/)
+    .filter((token) => token.length > 0);
+}
+
 function cleanTokens(text: string): string[] {
   return text
     .normalize("NFD")
@@ -73,16 +86,40 @@ interface QueryToken {
   stem: string;
 }
 
-function tokenizeQuery(text: string): QueryToken[] {
+export function analyzeQuery(text: string): QueryAnalysis {
   const seen = new Set<string>();
-  const tokens: QueryToken[] = [];
-  for (const raw of cleanTokens(text)) {
+  const terms: QueryAnalysis["terms"] = [];
+  const ignoredTerms: string[] = [];
+
+  for (const raw of rawTokens(text)) {
+    if (raw.length < 2 || STOPWORDS.has(raw)) {
+      ignoredTerms.push(raw);
+      continue;
+    }
+
     const stem = stemToken(raw);
-    if (seen.has(stem)) continue;
+    if (seen.has(stem)) {
+      ignoredTerms.push(raw);
+      continue;
+    }
+
     seen.add(stem);
-    tokens.push({ raw, stem });
+    terms.push({ raw, normalized: stem });
   }
-  return tokens;
+
+  return {
+    originalQuery: text,
+    retrievalMode: "local-keyword",
+    terms,
+    ignoredTerms,
+  };
+}
+
+function tokenizeQuery(text: string): QueryToken[] {
+  return analyzeQuery(text).terms.map((term) => ({
+    raw: term.raw,
+    stem: term.normalized,
+  }));
 }
 
 // ---------------------------------------------------------------------------
@@ -132,7 +169,7 @@ const OVERLAP_SHARE = 0.2;
 // ---------------------------------------------------------------------------
 
 // Volgorde = gewichtsvolgorde; de best scorende tier per querytoken telt.
-type MatchTier = "title" | "keyword" | "tag" | "content";
+type MatchTier = RetrievalMatchTier;
 
 const TIER_WEIGHTS: Record<MatchTier, number> = {
   title: TITLE_WEIGHT,
@@ -235,15 +272,23 @@ function scoreChunk(
 ): RetrievalResult | null {
   const matchesByTier = new Map<MatchTier, string[]>();
   const matchedTerms: string[] = [];
+  const matchBreakdown: RetrievalMatchBreakdown[] = [];
   let weightedSum = 0;
 
   for (const queryToken of queryTokens) {
     const match = bestMatchForToken(queryToken.stem, indexed);
     if (match === null) continue;
-    weightedSum += TIER_WEIGHTS[match.tier] * match.factor;
+    const weightedScore = TIER_WEIGHTS[match.tier] * match.factor;
+    weightedSum += weightedScore;
     // Voor de uitleg gebruiken we de leesbare vorm zoals de bezoeker die
     // typte, niet het gestemde token.
     matchedTerms.push(queryToken.raw);
+    matchBreakdown.push({
+      term: queryToken.raw,
+      tier: match.tier,
+      factor: match.factor,
+      weightedScore,
+    });
     const bucket = matchesByTier.get(match.tier) ?? [];
     bucket.push(queryToken.raw);
     matchesByTier.set(match.tier, bucket);
@@ -261,6 +306,7 @@ function scoreChunk(
     chunkId: indexed.chunk.id,
     score: Math.min(1, raw),
     matchedTerms,
+    matchBreakdown,
     reason: buildReason(matchesByTier),
   };
 }

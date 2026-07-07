@@ -37,12 +37,36 @@ export interface KnowledgeChunk {
   updatedAt?: string;
 }
 
+export type RetrievalMatchTier = "title" | "keyword" | "tag" | "content";
+
+export interface RetrievalMatchBreakdown {
+  term: string;
+  tier: RetrievalMatchTier;
+  factor: number;
+  weightedScore: number;
+}
+
+export interface QueryAnalysisTerm {
+  raw: string;
+  normalized: string;
+}
+
+export interface QueryAnalysis {
+  originalQuery: string;
+  retrievalMode: "local-keyword";
+  terms: QueryAnalysisTerm[];
+  ignoredTerms: string[];
+}
+
 export interface RetrievalResult {
   chunkId: string;
   // Genormaliseerde score in [0, 1] — zie retrieval.ts voor de exacte formule.
   score: number;
   // De query-termen (genormaliseerd) die daadwerkelijk matchten.
   matchedTerms: string[];
+  // Per gematchte term de echte scoring-tier uit retrieval.ts. Optioneel zodat
+  // bestaande testfixtures niet hoeven te doen alsof ze door de provider komen.
+  matchBreakdown?: RetrievalMatchBreakdown[];
   // Menselijk leesbare uitleg van wát er matchte (bv. "titel-match op 'nidus'"),
   // opgebouwd uit de echte matches — nooit een generieke tekst.
   reason: Bilingual;
