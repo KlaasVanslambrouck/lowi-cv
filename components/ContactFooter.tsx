@@ -28,14 +28,16 @@ export default function ContactFooter({
           <a className={styles.footerLink} href={`mailto:${contact.email}`}>
             {contact.email}
           </a>
-          <a
-            className={styles.footerLink}
-            href={contact.linkedinUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
+          {contact.linkedinUrl ? (
+            <a
+              className={styles.footerLink}
+              href={contact.linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+          ) : null}
           <span className={styles.footerLocation}>{t(contact.location)}</span>
         </div>
         {/* Knop verschijnt pas als het PDF-bestand echt in /public staat

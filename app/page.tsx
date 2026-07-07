@@ -12,10 +12,6 @@ import SkillConstellation from "@/components/SkillConstellation";
 import LowiSection from "@/components/LowiSection";
 import ArchitectureSceneMini from "@/components/ArchitectureSceneMini";
 import ProjectCard from "@/components/ProjectCard";
-import LiveStatBadge from "@/components/LiveStatBadge";
-import AIEngineeringPlayground from "@/components/AIEngineeringPlayground";
-import JarvisTerminal from "@/components/JarvisTerminal";
-import JarvisPresence from "@/components/JarvisPresence";
 import ContactFooter from "@/components/ContactFooter";
 import JarvisExplainPanel from "@/components/JarvisExplainPanel";
 import { JarvisExplainProvider } from "@/context/JarvisExplainContext";
@@ -35,11 +31,6 @@ export default function HomePage() {
         <JarvisExplainProvider explanations={content.jarvisExplanations}>
           <main className={styles.cvPage}>
           <ControlStack labels={content.uiLabels} />
-          <JarvisPresence
-            observations={content.jarvisObservations}
-            label={content.uiLabels.jarvisPresenceLabel}
-            askLabel={content.uiLabels.jarvisProactiveAsk}
-          />
 
           <Hero content={content.hero} />
 
@@ -47,15 +38,15 @@ export default function HomePage() {
             <p className={styles.aboutMeBody}>{t(content.aboutMe.body)}</p>
           </CVSection>
 
-          <CVSection id="lowi" title={content.sectionTitles.lowi}>
-            <LowiSection content={content.lowi} labels={content.uiLabels} />
-          </CVSection>
-
           <CVSection id="experience" title={content.sectionTitles.experience}>
             <ExperienceTimeline
               entries={content.experience}
               explainButtonLabel={content.uiLabels.jarvisExplainButton}
             />
+          </CVSection>
+
+          <CVSection id="lowi" title={content.sectionTitles.lowi}>
+            <LowiSection content={content.lowi} labels={content.uiLabels} />
           </CVSection>
 
           <CVSection id="education" title={content.sectionTitles.education}>
@@ -90,37 +81,6 @@ export default function HomePage() {
                 />
               ))}
             </div>
-          </CVSection>
-
-          <CVSection id="live-stats" title={content.sectionTitles.liveStats}>
-            <div className={styles.statsGrid}>
-              {content.liveStats.map((stat, index) => (
-                <LiveStatBadge
-                  key={stat.label.en}
-                  stat={stat}
-                  xrayDetail={content.uiLabels.xrayStatDetail}
-                  explanationId={index === 0 ? "live-system" : undefined}
-                  explainButtonLabel={content.uiLabels.jarvisExplainButton}
-                />
-              ))}
-            </div>
-            <p className={styles.statsNote}>
-              {t(content.uiLabels.liveStatsNote)}
-            </p>
-          </CVSection>
-
-          <CVSection
-            id="ai-playground"
-            title={content.sectionTitles.aiPlayground}
-          >
-            <AIEngineeringPlayground />
-          </CVSection>
-
-          <CVSection id="jarvis" title={content.sectionTitles.jarvis}>
-            <JarvisTerminal
-              messages={content.jarvisMessages}
-              labels={content.uiLabels}
-            />
           </CVSection>
 
           <ContactFooter
