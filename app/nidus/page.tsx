@@ -6,6 +6,7 @@ import NidusDecisionLog from "@/components/nidus/NidusDecisionLog";
 import NidusIntro from "@/components/nidus/NidusIntro";
 import NidusMockups from "@/components/nidus/NidusMockups";
 import NidusPlaceholder from "@/components/nidus/NidusPlaceholder";
+import JarvisAsk from "@/components/jarvis/JarvisAsk";
 import { nidusCaseStudy } from "@/content/nidusCaseStudy";
 import { placeholderContent } from "@/content/placeholderContent";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
@@ -67,6 +68,8 @@ export default function NidusPage() {
           <CVSection id="nidus-code" title={content.sectionTitles.code}>
             <NidusPlaceholder text={content.placeholderNote} />
           </CVSection>
+
+          <JarvisAsk />
         </main>
       </SessionInsightProvider>
     </ThemeProvider>
