@@ -1,0 +1,219 @@
+/* ---------------------------------------------------------------------------
+   Component-styling voor de Nidus case-study pagina (/nidus).
+   Design tokens komen uit app/globals.css, net als styles/cv.module.css.
+--------------------------------------------------------------------------- */
+
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--cv-bg);
+  color: var(--cv-text);
+}
+
+.introSection {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 6rem 1.5rem 1.5rem;
+}
+
+.introInner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.introTitle {
+  font-family: var(--cv-font-serif);
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-weight: 500;
+  line-height: 1.05;
+  color: var(--cv-bone);
+}
+
+.introSubtitle {
+  font-family: var(--cv-font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cv-copper);
+}
+
+.introPitch {
+  max-width: 42rem;
+  font-size: 1.05rem;
+  line-height: 1.68;
+  color: var(--cv-text-soft);
+}
+
+.placeholder {
+  font-family: var(--cv-font-mono);
+  font-size: 0.85rem;
+  color: var(--cv-muted);
+  border: 1px dashed rgb(var(--cv-text-rgb) / 0.2);
+  border-radius: var(--cv-radius);
+  padding: 1.5rem;
+}
+
+/* ===== Architectuur: gelaagd kaartendiagram ===== */
+
+.architecture {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.archLayer {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.archLayerLabel {
+  font-family: var(--cv-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cv-copper);
+  /* Optisch uitlijnen met de bovenrand van de kaarten */
+  padding-top: 1.15rem;
+}
+
+.archLayerCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.archCard {
+  border: 1px solid rgb(var(--cv-text-rgb) / 0.12);
+  border-radius: var(--cv-radius);
+  padding: 1.1rem 1.25rem;
+  background-color: rgb(var(--cv-text-rgb) / 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.archCardName {
+  font-size: 1.05rem;
+  color: var(--cv-bone);
+}
+
+.archCardMeta {
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--cv-muted);
+}
+
+.archCardRole {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--cv-text-soft);
+}
+
+.archPrinciples {
+  margin-top: 0.5rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.archPrinciple {
+  font-family: var(--cv-font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--cv-text-soft);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.archPrinciple::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--cv-copper);
+}
+
+/* Smalle schermen: laaglabel boven de kaarten in plaats van ernaast */
+@media (max-width: 640px) {
+  .archLayer {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .archLayerLabel {
+    padding-top: 0;
+  }
+}
+
+/* ===== Decision log: verticale tijdlijn ===== */
+
+.decisionLog {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.decisionEntry {
+  position: relative;
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Doorlopende tijdlijn-lijn achter de markeringen; stopt netjes bij de
+   laatste entry zodat er geen losse staart onder het diagram hangt. */
+.decisionEntry::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 0.55rem;
+  bottom: -1.5rem;
+  width: 1px;
+  background-color: rgb(var(--cv-text-rgb) / 0.14);
+}
+
+.decisionEntry:last-child::before {
+  display: none;
+}
+
+.decisionMarker {
+  position: absolute;
+  left: 0;
+  top: 0.35rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background-color: var(--cv-bg);
+  border: 2px solid var(--cv-copper);
+}
+
+.decisionDate {
+  font-family: var(--cv-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--cv-muted);
+}
+
+.decisionTitle {
+  font-family: var(--cv-font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--cv-bone);
+}
+
+.decisionDescription {
+  max-width: 46rem;
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: var(--cv-text-soft);
+}

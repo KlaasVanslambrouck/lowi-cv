@@ -1,0 +1,34 @@
+/* Glass-laag voor uitsluitend het zwevende controls-paneel. De layout en
+   pill-styles blijven in cv.module.css. Dubbele class-specificiteit zorgt
+   ervoor dat de glass-look ook de mobiele basisoverride gericht vervangt. */
+.glass.glass {
+  border-color: rgb(var(--cv-text-rgb) / 0.14);
+  background-color: rgb(var(--cv-bg-rgb) / 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow:
+    0 0.8rem 2.5rem rgb(var(--cv-bg-rgb) / 0.42),
+    inset 0 1px 0 rgb(var(--cv-text-rgb) / 0.06);
+}
+
+:global(html[data-cv-theme="light"]) .glass.glass {
+  border-color: rgb(var(--cv-text-rgb) / 0.18);
+  box-shadow:
+    0 0.8rem 2.5rem rgb(var(--cv-text-rgb) / 0.14),
+    inset 0 1px 0 rgb(var(--cv-text-rgb) / 0.08);
+}
+
+@media (prefers-color-scheme: light) {
+  :global(html:not([data-cv-theme])) .glass.glass {
+    border-color: rgb(var(--cv-text-rgb) / 0.18);
+    box-shadow:
+      0 0.8rem 2.5rem rgb(var(--cv-text-rgb) / 0.14),
+      inset 0 1px 0 rgb(var(--cv-text-rgb) / 0.08);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass.glass {
+    background-color: rgb(var(--cv-bg-rgb) / 0.94);
+  }
+}

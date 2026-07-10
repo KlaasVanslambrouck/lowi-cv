@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { LowiContent, LowiProject, UILabels } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import JarvisExplainButton from "@/components/JarvisExplainButton";
@@ -85,6 +86,11 @@ export default function LowiSection({ content, labels }: LowiSectionProps) {
               >
                 {project.url.replace(/^https?:\/\//, "")}
               </a>
+            ) : null}
+            {project.caseStudyPath ? (
+              <Link className={styles.lowiLink} href={project.caseStudyPath}>
+                {t(labels.caseStudyLinkLabel)}
+              </Link>
             ) : null}
           </article>
           );

@@ -209,6 +209,7 @@ export const placeholderContent: PortfolioContent = {
           en: "Nidus is the first real system within LOWI: a personal operating system for my family, home and daily routines. I'm building in connections to energy usage, location, automation, dashboards, Raspberry Pi workers, Supabase, mobile interfaces, and eventually Jarvis as an intelligent layer on top. The goal isn't a demo, but a living system that understands context, helps make decisions, and gets a little smarter step by step.",
         },
         status: { nl: "In productie · persoonlijk gebruik", en: "In production · personal use" },
+        caseStudyPath: "/nidus",
       },
       {
         name: "CRISPR & CHICKN",
@@ -805,6 +806,10 @@ render(reply.text);`,
     analyticsTransparencyNote: {
       nl: "Deze site verzamelt beperkte, privacyvriendelijke gebruiksstatistieken zonder advertentiecookies of cross-site tracking.",
       en: "This site collects limited, privacy-friendly usage statistics without advertising cookies or cross-site tracking.",
+    },
+    caseStudyLinkLabel: {
+      nl: "Meer info over dit project",
+      en: "More info about this project",
     },
   },
 };

@@ -51,6 +51,7 @@ export interface LowiProject {
   description: Bilingual;
   status: Bilingual;
   url?: string;
+  caseStudyPath?: string; // interne route naar een uitgebreide case study, bv. "/nidus"
 }
 
 export interface LowiContent {
@@ -158,6 +159,7 @@ export interface UILabels {
   jarvisExplainRelevanceLabel: Bilingual;
   jarvisProactiveAsk: Bilingual;
   analyticsTransparencyNote: Bilingual;
+  caseStudyLinkLabel: Bilingual; // knoplabel naar een interne case-study route
 }
 
 // De volledige content-payload zoals die later uit `portfolio_content` komt.

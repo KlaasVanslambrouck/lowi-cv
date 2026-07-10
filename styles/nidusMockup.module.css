@@ -1,0 +1,1349 @@
+.mockups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.note {
+  max-width: 48rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--cv-copper);
+  font-family: var(--cv-font-mono);
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: var(--cv-muted);
+}
+
+.deviceToggle {
+  align-self: flex-start;
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.25rem;
+  border: 1px solid var(--cv-border);
+  border-radius: 999px;
+  background: var(--cv-surface);
+}
+
+.deviceButton,
+.deviceActive {
+  min-width: 5.5rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-family: var(--cv-font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  color: var(--cv-muted);
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.deviceButton:hover {
+  color: var(--cv-text);
+}
+
+.deviceActive {
+  color: var(--cv-bg);
+  background-color: var(--cv-copper);
+}
+
+.nidusFrame {
+  --nidus-linen: #f2ede4;
+  --nidus-cream: #faf7f2;
+  --nidus-sage: #5a7358;
+  --nidus-amber: #c4820a;
+  --nidus-terra: #b85c38;
+  --nidus-parchment: #ddd5c8;
+  --nidus-ink: #1c1914;
+  --nidus-font-serif: var(--font-fraunces), Georgia, serif;
+  --nidus-font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --nidus-font-mono: var(--font-dm-mono), ui-monospace, monospace;
+
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--nidus-ink) 18%, transparent);
+  border-radius: 18px;
+  color: var(--nidus-ink);
+  background: var(--nidus-linen);
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.18);
+  font-family: var(--nidus-font-sans);
+}
+
+.nidusFrame button:focus-visible {
+  outline-color: var(--nidus-terra);
+}
+
+.browserFrame {
+  width: 100%;
+  max-width: 56rem;
+  height: 42rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.browserChrome {
+  flex: 0 0 auto;
+  min-height: 3.2rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--nidus-parchment);
+  background: var(--nidus-cream);
+}
+
+.windowControls {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.windowControls span {
+  width: 0.68rem;
+  height: 0.68rem;
+  border-radius: 50%;
+  background: var(--nidus-parchment);
+}
+
+.windowControls span:first-child {
+  background: var(--nidus-terra);
+}
+
+.windowControls span:nth-child(2) {
+  background: var(--nidus-amber);
+}
+
+.windowControls span:last-child {
+  background: var(--nidus-sage);
+}
+
+.webLayout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 11.5rem minmax(0, 1fr);
+  min-height: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 1rem 1.25rem;
+  border-right: 1px solid var(--nidus-parchment);
+  background: var(--nidus-cream);
+}
+
+.sidebarBrand {
+  padding: 0 0.65rem 1.5rem;
+}
+
+.sidebarBrand p {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--nidus-terra);
+}
+
+.sidebarBrand span {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--nidus-font-serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--nidus-ink);
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sidebarItem,
+.sidebarItemActive,
+.sidebarItemDisabled {
+  width: 100%;
+  min-height: 2.55rem;
+  display: grid;
+  grid-template-columns: 1.35rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.65rem;
+  border-left: 3px solid transparent;
+  border-radius: 0 10px 10px 0;
+  font-family: var(--nidus-font-sans);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: left;
+  color: color-mix(in srgb, var(--nidus-ink) 70%, transparent);
+}
+
+.sidebarItem > span,
+.sidebarItemActive > span,
+.sidebarItemDisabled > span {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.sidebarItem:hover {
+  color: var(--nidus-ink);
+  background: var(--nidus-linen);
+}
+
+.sidebarItemActive {
+  border-left-color: var(--nidus-sage);
+  color: var(--nidus-sage);
+  background: color-mix(in srgb, var(--nidus-sage) 9%, transparent);
+}
+
+.sidebarItemDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+.sidebarFooter {
+  margin-top: auto;
+  padding: 1rem 0.65rem 0;
+  border-top: 1px solid var(--nidus-parchment);
+  font-family: var(--nidus-font-mono);
+  font-size: 0.68rem;
+  color: color-mix(in srgb, var(--nidus-ink) 52%, transparent);
+}
+
+.contentPane {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.screenContent {
+  animation: screenFade 220ms ease both;
+}
+
+.productLabel {
+  margin-bottom: 0.35rem;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--nidus-terra);
+}
+
+.screenTitle {
+  margin-bottom: 1.5rem;
+  font-family: var(--nidus-font-sans);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--nidus-ink);
+}
+
+.dashboardDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboardHeader {
+  padding-bottom: 0.35rem;
+}
+
+.dashboardDate,
+.detailEyebrow {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--nidus-ink) 53%, transparent);
+}
+
+.dashboardGreeting {
+  margin-top: 0.3rem;
+  font-family: var(--nidus-font-sans);
+  font-size: clamp(1.45rem, 3.4vw, 2.15rem);
+  font-weight: 500;
+  color: var(--nidus-ink);
+}
+
+.dashboardGreeting span {
+  font-family: var(--nidus-font-serif);
+  font-style: italic;
+  color: var(--nidus-terra);
+}
+
+.aiInsightCard,
+.weekReportCard,
+.weatherCard,
+.agendaCard,
+.healthCard,
+.energyLiveCard {
+  border: 1px solid color-mix(in srgb, var(--nidus-parchment) 82%, transparent);
+  border-radius: 18px;
+  background: var(--nidus-cream);
+  box-shadow: 0 0.45rem 1.3rem rgb(28 25 20 / 0.055);
+}
+
+.aiInsightCard {
+  padding: 1.2rem 1.25rem;
+  border-left: 4px solid var(--nidus-terra);
+  background: color-mix(in srgb, var(--nidus-terra) 6%, var(--nidus-cream));
+}
+
+.aiInsightHeading {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.aiInsightIcon {
+  color: var(--nidus-terra);
+}
+
+.aiInsightText {
+  max-width: 46rem;
+  margin-top: 0.65rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--nidus-ink) 82%, transparent);
+}
+
+.weekReportCard {
+  padding: 1.2rem;
+}
+
+.weekReportRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.weekReportRow {
+  display: grid;
+  grid-template-columns: 1.3rem minmax(0, 1fr);
+  gap: 0.7rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--nidus-amber) 18%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--nidus-amber) 8%, var(--nidus-cream));
+}
+
+.weekReportIcon {
+  padding-top: 0.08rem;
+  color: var(--nidus-amber);
+}
+
+.weekReportMain {
+  min-width: 0;
+}
+
+.weekReportTopline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.86rem;
+}
+
+.weekReportTopline strong {
+  font-weight: 600;
+}
+
+.weekReportTopline span {
+  flex: 0 0 auto;
+  font-family: var(--nidus-font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--nidus-terra);
+}
+
+.weekReportChange,
+.weekReportDetail {
+  margin-top: 0.15rem;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+.weekReportChange {
+  color: color-mix(in srgb, var(--nidus-ink) 55%, transparent);
+}
+
+.weekReportDetail {
+  color: var(--nidus-amber);
+}
+
+.dashboardMiniGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.weatherCard,
+.agendaCard {
+  min-width: 0;
+  padding: 1.15rem;
+}
+
+.weatherPrimary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weatherTemp {
+  flex: 0 0 auto;
+  font-family: var(--nidus-font-serif);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.weatherCondition {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.weatherRange,
+.weatherTomorrow {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.64rem;
+  color: color-mix(in srgb, var(--nidus-ink) 56%, transparent);
+}
+
+.weatherTomorrow {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--nidus-parchment);
+  color: var(--nidus-sage);
+}
+
+.agendaList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.agendaList li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: baseline;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--nidus-parchment);
+  font-size: 0.78rem;
+}
+
+.agendaList li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.agendaList time {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.64rem;
+  color: var(--nidus-terra);
+}
+
+.healthCard {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.25rem;
+}
+
+.healthSummary {
+  padding-right: 1.25rem;
+  border-right: 1px solid var(--nidus-parchment);
+}
+
+.healthScore {
+  font-family: var(--nidus-font-serif);
+  font-size: clamp(2.7rem, 7vw, 4rem);
+  font-weight: 500;
+  line-height: 0.95;
+  color: var(--nidus-sage);
+}
+
+.healthScoreLabel {
+  margin-top: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.healthMetrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.healthMetricHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.68rem;
+}
+
+.healthMetricHeading span {
+  color: color-mix(in srgb, var(--nidus-ink) 62%, transparent);
+}
+
+.healthMetricHeading strong {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+}
+
+.healthTrack {
+  overflow: hidden;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: var(--nidus-parchment);
+}
+
+.healthFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--nidus-sage);
+}
+
+.energyLiveCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+}
+
+.energyWatts {
+  font-family: var(--nidus-font-serif);
+  font-size: clamp(1.65rem, 4vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  color: var(--nidus-sage);
+  background: color-mix(in srgb, var(--nidus-sage) 10%, transparent);
+}
+
+.liveDot {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: var(--nidus-sage);
+  animation: livePulse 1.7s ease-out infinite;
+}
+
+.energyDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.energyHero,
+.energyStatCard,
+.energyChartCard,
+.energyDeviceCard,
+.energyPeakCard,
+.energyMeterCard {
+  border: 1px solid color-mix(in srgb, var(--nidus-parchment) 82%, transparent);
+  border-radius: 18px;
+  background: var(--nidus-cream);
+  box-shadow: 0 0.45rem 1.3rem rgb(28 25 20 / 0.055);
+}
+
+.energyHero {
+  position: relative;
+  min-height: 15rem;
+  overflow: hidden;
+}
+
+.energyHeroScene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.energyHero::after {
+  content: "";
+  position: absolute;
+  inset: 35% 0 0;
+  background: linear-gradient(to bottom, transparent, rgb(28 25 20 / 0.33));
+}
+
+.energyHeroValue {
+  position: absolute;
+  z-index: 1;
+  bottom: 1.35rem;
+  left: 1.4rem;
+  color: var(--nidus-cream);
+  text-shadow: 0 1px 0.7rem rgb(28 25 20 / 0.38);
+}
+
+.energyHeroValue .detailEyebrow {
+  color: color-mix(in srgb, var(--nidus-cream) 85%, transparent);
+}
+
+.energyHeroValue > p:last-child {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin-top: 0.25rem;
+}
+
+.energyHeroValue strong {
+  font-family: var(--nidus-font-serif);
+  font-size: clamp(2.8rem, 8vw, 4.8rem);
+  font-weight: 500;
+  line-height: 0.9;
+}
+
+.energyHeroValue span {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.8rem;
+}
+
+.energyHeroBadge {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.62rem;
+  color: var(--nidus-sage);
+  background: color-mix(in srgb, var(--nidus-cream) 92%, transparent);
+  box-shadow: 0 0.35rem 1rem rgb(28 25 20 / 0.14);
+}
+
+.energyTip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--nidus-sage) 18%, transparent);
+  border-radius: 14px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--nidus-ink) 80%, transparent);
+  background: color-mix(in srgb, var(--nidus-sage) 10%, var(--nidus-cream));
+}
+
+.energyTip > span {
+  font-size: 0.8rem;
+  color: var(--nidus-amber);
+}
+
+.energyStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.energyStatCard {
+  min-width: 0;
+  padding: 1rem;
+}
+
+.energyStatValue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+}
+
+.energyStatValue strong {
+  overflow-wrap: anywhere;
+  font-family: var(--nidus-font-serif);
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.energyStatValue span {
+  flex: 0 0 auto;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.58rem;
+  color: color-mix(in srgb, var(--nidus-ink) 56%, transparent);
+}
+
+.energyMainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.energyChartColumn,
+.energySideColumn {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.energyChartCard,
+.energyDeviceCard,
+.energyPeakCard,
+.energyMeterCard {
+  min-width: 0;
+  padding: 1.1rem;
+}
+
+.energyCardHeader h4,
+.energyPeakHeading h4,
+.energyMeterCard h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--nidus-font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--nidus-ink);
+}
+
+.energyCardHeader p {
+  margin-top: 0.2rem;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.6rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--nidus-ink) 50%, transparent);
+}
+
+.energyChart {
+  width: 100%;
+  height: auto;
+  margin-top: 0.8rem;
+  overflow: visible;
+}
+
+.chartGrid line {
+  stroke: var(--nidus-parchment);
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+}
+
+.chartGrid line:nth-child(2) {
+  stroke: color-mix(in srgb, var(--nidus-ink) 32%, transparent);
+  stroke-dasharray: 2 4;
+}
+
+.chartLabels text {
+  fill: color-mix(in srgb, var(--nidus-ink) 48%, transparent);
+  font-family: var(--nidus-font-mono);
+  font-size: 10px;
+}
+
+.powerLine {
+  fill: none;
+  stroke: var(--nidus-sage);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.gasBars rect {
+  fill: var(--nidus-amber);
+  opacity: 0.78;
+}
+
+.energyDeviceControls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.energyFakeSelect,
+.energyStartButton {
+  min-height: 2.45rem;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 0.7rem;
+}
+
+.energyFakeSelect {
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--nidus-parchment);
+  color: color-mix(in srgb, var(--nidus-ink) 66%, transparent);
+  background: var(--nidus-linen);
+}
+
+.energyStartButton {
+  justify-content: center;
+  padding: 0.55rem 0.85rem;
+  font-family: var(--nidus-font-mono);
+  color: var(--nidus-cream);
+  background: var(--nidus-sage);
+  user-select: none;
+}
+
+.energyPeakHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.energyOkBadge {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.56rem;
+  color: var(--nidus-cream);
+  background: var(--nidus-sage);
+}
+
+.energyPeakPeriod,
+.energyMeterSubtitle {
+  margin-top: 0.25rem;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.6rem;
+  color: color-mix(in srgb, var(--nidus-ink) 50%, transparent);
+}
+
+.energyPeakScale {
+  position: relative;
+  height: 0.55rem;
+  margin-top: 1rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--nidus-sage),
+    var(--nidus-amber) 68%,
+    var(--nidus-terra)
+  );
+}
+
+.energyPeakScale span {
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 2px solid var(--nidus-cream);
+  border-radius: 50%;
+  background: var(--nidus-ink);
+  box-shadow: 0 0 0 1px rgb(28 25 20 / 0.24);
+  transform: translate(-50%, -50%);
+}
+
+.energyPeakValues {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.85rem;
+}
+
+.energyPeakValues > div:last-child {
+  text-align: right;
+}
+
+.energyPeakValues p {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--nidus-ink) 50%, transparent);
+}
+
+.energyPeakValues strong {
+  display: block;
+  margin-top: 0.1rem;
+  font-family: var(--nidus-font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.energyPeakRemaining {
+  margin-top: 0.85rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 9px;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.58rem;
+  line-height: 1.4;
+  color: var(--nidus-sage);
+  background: color-mix(in srgb, var(--nidus-sage) 9%, transparent);
+}
+
+.energyMeterValue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+}
+
+.energyMeterValue strong {
+  overflow-wrap: anywhere;
+  font-family: var(--nidus-font-serif);
+  font-size: clamp(1.75rem, 4vw, 2.4rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.energyMeterValue span {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.65rem;
+  color: color-mix(in srgb, var(--nidus-ink) 55%, transparent);
+}
+
+.widgetGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.widgetStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.widgetCard {
+  min-width: 0;
+  min-height: 9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--nidus-parchment) 82%, transparent);
+  border-radius: 18px;
+  background: var(--nidus-cream);
+  box-shadow: 0 0.45rem 1.3rem rgb(28 25 20 / 0.06);
+}
+
+.widgetLabel {
+  font-family: var(--nidus-font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--nidus-ink) 55%, transparent);
+}
+
+.widgetValue {
+  overflow-wrap: anywhere;
+  font-family: var(--nidus-font-serif);
+  font-size: clamp(1.45rem, 4vw, 2.15rem);
+  font-variation-settings: "SOFT" 50, "WONK" 0;
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--nidus-ink);
+}
+
+.widgetMeta {
+  font-family: var(--nidus-font-mono);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: var(--nidus-sage);
+}
+
+.phoneFrame {
+  width: min(100%, 19.5rem);
+  height: 38rem;
+  margin-inline: auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  border: 0.55rem solid var(--nidus-ink);
+  background: var(--nidus-linen);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--nidus-cream) 40%, transparent),
+    0 1.5rem 4rem rgb(0 0 0 / 0.26);
+}
+
+.phoneStatus {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  background: var(--nidus-cream);
+}
+
+.phoneNotch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 7.2rem;
+  height: 1.45rem;
+  border-radius: 0 0 0.9rem 0.9rem;
+  background: var(--nidus-ink);
+  transform: translateX(-50%);
+}
+
+.phoneBody {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.85rem 0.75rem 1rem;
+}
+
+.phoneBody .screenTitle {
+  margin-bottom: 0.85rem;
+  font-size: 1.2rem;
+}
+
+.phoneBody .widgetCard {
+  min-height: 6.5rem;
+  padding: 0.75rem;
+}
+
+.phoneBody .widgetValue {
+  font-size: 1.35rem;
+}
+
+.phoneBody .dashboardDetail {
+  gap: 0.65rem;
+}
+
+.phoneBody .dashboardGreeting {
+  font-size: 1.15rem;
+}
+
+.phoneBody .aiInsightCard,
+.phoneBody .weekReportCard,
+.phoneBody .weatherCard,
+.phoneBody .agendaCard,
+.phoneBody .healthCard {
+  padding: 0.75rem;
+}
+
+.phoneBody .aiInsightText {
+  font-size: 0.72rem;
+}
+
+.phoneBody .dashboardMiniGrid,
+.phoneBody .healthCard {
+  grid-template-columns: 1fr;
+}
+
+.phoneBody .healthCard {
+  gap: 0.75rem;
+}
+
+.phoneBody .healthSummary {
+  padding: 0 0 0.7rem;
+  border-right: 0;
+  border-bottom: 1px solid var(--nidus-parchment);
+}
+
+.phoneBody .healthScore {
+  font-size: 2.2rem;
+}
+
+.phoneBody .weekReportRow {
+  padding: 0.65rem;
+}
+
+.phoneBody .energyDetail {
+  gap: 0.65rem;
+}
+
+.phoneBody .energyHero {
+  min-height: 10rem;
+}
+
+.phoneBody .energyHeroValue {
+  bottom: 0.75rem;
+  left: 0.75rem;
+}
+
+.phoneBody .energyHeroValue strong {
+  font-size: 2.25rem;
+}
+
+.phoneBody .energyHeroBadge {
+  top: 0.6rem;
+  right: 0.6rem;
+  bottom: auto;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.52rem;
+}
+
+.phoneBody .energyTip {
+  padding: 0.65rem;
+  font-size: 0.68rem;
+}
+
+.phoneBody .energyStats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.phoneBody .energyStatCard,
+.phoneBody .energyChartCard,
+.phoneBody .energyDeviceCard,
+.phoneBody .energyPeakCard,
+.phoneBody .energyMeterCard {
+  padding: 0.7rem;
+}
+
+.phoneBody .energyMainGrid {
+  grid-template-columns: 1fr;
+}
+
+.phoneBody .energyStatValue strong {
+  font-size: 1.15rem;
+}
+
+.mobileTabs {
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.25rem;
+  padding: 0.45rem 0.75rem calc(0.45rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--nidus-parchment);
+  background: color-mix(in srgb, var(--nidus-cream) 94%, transparent);
+}
+
+.mobileTab,
+.mobileTabActive {
+  min-height: 3.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.65rem 0.4rem;
+  border-radius: 12px;
+  font-family: var(--nidus-font-mono);
+  font-size: 0.62rem;
+  color: color-mix(in srgb, var(--nidus-ink) 55%, transparent);
+}
+
+.mobileTab > span,
+.mobileTabActive > span {
+  font-size: 0.9rem;
+}
+
+.mobileTab:hover {
+  color: var(--nidus-ink);
+}
+
+.mobileTabActive {
+  color: var(--nidus-cream);
+  background: var(--nidus-sage);
+}
+
+@keyframes livePulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--nidus-sage) 50%, transparent);
+  }
+
+  70%,
+  100% {
+    box-shadow: 0 0 0 0.45rem transparent;
+  }
+}
+
+@keyframes screenFade {
+  from {
+    opacity: 0;
+    transform: translateY(0.3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .deviceToggle {
+    width: 100%;
+  }
+
+  .deviceButton,
+  .deviceActive {
+    flex: 1;
+  }
+
+  .webLayout {
+    grid-template-columns: 7rem minmax(0, 1fr);
+  }
+
+  .sidebar {
+    padding: 1rem 0.35rem;
+  }
+
+  .sidebarBrand {
+    padding: 0 0.4rem 1rem;
+  }
+
+  .sidebarBrand p {
+    font-size: 0.66rem;
+  }
+
+  .sidebarBrand span {
+    font-size: 0.9rem;
+  }
+
+  .sidebarItem,
+  .sidebarItemActive,
+  .sidebarItemDisabled {
+    grid-template-columns: 1rem minmax(0, 1fr);
+    gap: 0.25rem;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.25rem;
+    font-size: 0.58rem;
+  }
+
+  .sidebarItem > span,
+  .sidebarItemActive > span,
+  .sidebarItemDisabled > span {
+    font-size: 0.72rem;
+  }
+
+  .sidebarFooter {
+    padding-inline: 0.4rem;
+    font-size: 0.58rem;
+  }
+
+  .contentPane {
+    padding: 0.85rem;
+  }
+
+  .widgetGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .energyHero {
+    min-height: 12rem;
+  }
+
+  .energyHeroValue {
+    bottom: 0.85rem;
+    left: 0.85rem;
+  }
+
+  .energyHeroValue strong {
+    font-size: 2.4rem;
+  }
+
+  .energyHeroBadge {
+    top: 0.65rem;
+    right: 0.65rem;
+    bottom: auto;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.52rem;
+  }
+
+  .energyTip {
+    padding: 0.65rem;
+    font-size: 0.68rem;
+  }
+
+  .energyStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .energyStatCard,
+  .energyChartCard,
+  .energyDeviceCard,
+  .energyPeakCard,
+  .energyMeterCard {
+    padding: 0.7rem;
+  }
+
+  .energyStatValue {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .energyStatValue strong {
+    font-size: 1.15rem;
+  }
+
+  .energyMainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .energyDeviceControls {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboardGreeting {
+    font-size: 1.2rem;
+  }
+
+  .dashboardMiniGrid,
+  .healthCard {
+    grid-template-columns: 1fr;
+  }
+
+  .healthCard {
+    gap: 1rem;
+  }
+
+  .healthSummary {
+    padding: 0 0 0.85rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--nidus-parchment);
+  }
+
+  .aiInsightCard,
+  .weekReportCard,
+  .weatherCard,
+  .agendaCard,
+  .healthCard {
+    padding: 0.8rem;
+  }
+
+  .weekReportRow {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding: 0.65rem;
+  }
+
+  .weekReportIcon {
+    display: none;
+  }
+
+  .weekReportTopline {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .widgetCard {
+    min-height: 7.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screenContent,
+  .liveDot {
+    animation: none;
+  }
+}
