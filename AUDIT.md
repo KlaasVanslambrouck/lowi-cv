@@ -69,8 +69,8 @@ dark/light-systeem, maar niet wat de prompt vroeg), er is een duplicate route
 
 | Check | Status | Toelichting |
 |---|---|---|
-| "AI Business Engineer" nergens als huidige titel | ✅ | Enkel als `targetRole` in de current→target-weergave in de Hero ([Hero.tsx:38-58](components/Hero.tsx#L38-L58)) en inhoudelijk in de Jarvis-uitlegteksten ("op weg naar", "AI-richting"). |
-| layout.tsx-metadata | ✅ | Titel is "Klaas Van Slambrouck — CV"; de description zegt "Functioneel Analist **op weg naar** AI Business Engineer" — correcte framing. |
+| "Bouwer van AI-gedreven systemen" / "Builder of AI-enabled systems" nergens als huidige titel | ✅ | Enkel als `targetRole` in de current→target-weergave in de Hero ([Hero.tsx:38-58](components/Hero.tsx#L38-L58)) en inhoudelijk in de Jarvis-uitlegteksten als AI-richting. |
+| layout.tsx-metadata | ✅ | Titel is "Klaas Van Slambrouck — CV"; de description positioneert hem als "Functioneel Analist die business, technologie en AI vertaalt naar werkende systemen", in lijn met de doelrol "Bouwer van AI-gedreven systemen" / "Builder of AI-enabled systems". |
 
 ### 3D, performance & mobiel
 
@@ -167,9 +167,10 @@ Meer heb ik bewust **niet** aangepast — alle overige bevindingen vallen buiten
     Bilingual-patroon strikt wil, horen die via `uiLabels` te lopen zoals bij de
     X-ray-toggle.
 
-11. **TODO in content**: bij Student Kick-Off staat "TODO: exacte jaren nog te
-    bevestigen door gebruiker" ([placeholderContent.ts:37](content/placeholderContent.ts#L37)) —
-    periode 2012–2020 zelf verifiëren.
+11. **Student Kick-Off-periode bewust weggelaten**: de nooit bevestigde periode is
+    verwijderd en het `period`-veld is opzettelijk leeg gelaten
+    ([placeholderContent.ts](content/placeholderContent.ts)). Dit is afgehandeld en
+    niet langer een open TODO of verificatiepunt.
 
 12. **Geen linter geconfigureerd** — er is geen ESLint in het project (geen
     dependency, geen config, build draait enkel TypeScript). Voor een publiek

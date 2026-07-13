@@ -8,11 +8,11 @@
 - Bestaande code is niet aangepast. De enige beoogde wijziging is het aanmaken van dit bestand.
 - Lokale secrets zijn niet gelezen of gerapporteerd. `.env.local` bestaat lokaal, maar alleen `.env.local.example` en codeverwijzingen naar variabelen zijn onderzocht.
 - Werkboom bij eindcontrole: `app/page.tsx`, `content/placeholderContent.ts`, `types/content.ts`, `lib/ai/retrieval.ts` en `lib/ai/types.ts` waren gewijzigd; `lib/ai/answers.ts`, `lib/ai/answers.test.ts`, `components/AIEngineeringPlayground.tsx` en `components/ai/` waren untracked. Deze zijn als huidige lokale toestand geanalyseerd, maar niet aangepast.
-- Verificatie: laatste `npm run test` op de actuele werkboom faalt: 5 testbestanden, 17 tests, 1 failure in `lib/ai/answers.test.ts`. De falende assertie zegt dat `ai-business-engineering-fit` `system-lowi-intro` in de retrieved top-k verwacht, maar die bron niet terugkomt.
+- Verificatie: laatste `npm run test` op de actuele werkboom faalt: 5 testbestanden, 17 tests, 1 failure in `lib/ai/answers.test.ts`. De falende assertie zegt dat `ai-enabled-systems-fit` `system-lowi-intro` in de retrieved top-k verwacht, maar die bron niet terugkomt.
 
 # 1. Executive Summary
 
-De applicatie is vandaag een interactieve, tweetalige CV- en portfolio-onepager voor Klaas Van Slambrouck. Ze positioneert hem expliciet als "Functioneel Analist" met een beweging richting "AI Business Engineer". De site is geen klassieke statische CV-pagina alleen: ze combineert professionele loopbaaninformatie, LOWI als persoonlijk platformverhaal, projectkaarten, live-systeemtaal, 3D-visualisaties, X-Ray technische overlays, een actieve AI Engineering Playground, Jarvis-achtige contextuele uitleg en privacyvriendelijke analytics met een afgeschermd beheerdashboard.
+De applicatie is vandaag een interactieve, tweetalige CV- en portfolio-onepager voor Klaas Van Slambrouck. Ze positioneert hem expliciet als "Functioneel Analist" met een beweging richting "Bouwer van AI-gedreven systemen" / "Builder of AI-enabled systems". De site is geen klassieke statische CV-pagina alleen: ze combineert professionele loopbaaninformatie, LOWI als persoonlijk platformverhaal, projectkaarten, live-systeemtaal, 3D-visualisaties, X-Ray technische overlays, een actieve AI Engineering Playground, Jarvis-achtige contextuele uitleg en privacyvriendelijke analytics met een afgeschermd beheerdashboard.
 
 Het primaire doel lijkt: een professioneel profiel tonen dat businessanalyse, systems thinking, AI-interesse en bouwcapaciteit samenbrengt. De centrale bezoekerservaring is een verticale scroll door secties: hero, persoonlijk profiel, LOWI, ervaring, opleiding, talen, skills, projecten, live stats, AI Playground, Jarvis en contact. De ervaring communiceert niet alleen "dit is mijn CV", maar ook "ik denk in systemen en bouw richting werkende platformen".
 
@@ -265,7 +265,7 @@ Hero:
 - Tells: name, current role, target role, thesis, identity line, focus areas and live label.
 - Weight: very high; first viewport, full hero, 3D/fallback architecture background.
 - Interaction: none in text; background nodes have pointer handlers but currently only cursor behavior and TODO comments.
-- Role: establishes "Functioneel Analist -> AI Business Engineer" and LOWI/Nidus as proof of building capacity.
+- Role: establishes "Functioneel Analist -> Bouwer van AI-gedreven systemen" / "Functional Analyst -> Builder of AI-enabled systems" and LOWI/Nidus as proof of building capacity.
 - Reachability: immediate at `/`.
 
 About / "Wie ik ben":
@@ -303,7 +303,7 @@ CRISPR & CHICKN:
 Experience:
 
 - Source: `placeholderContent.experience`.
-- Items: Soundfield NV, Student Kick-Off Gent, Event Explorers, EGOV VZW project bij FOD Financien, Itineris NV.
+- Items: freelance sound engineering voor meerdere opdrachtgevers (waaronder Soundfield NV), Student Kick-Off Gent, Event Explorers, vast dienstverband als hoofd van de geluidsafdeling bij Soundfield NV, EGOV VZW project bij FOD Financien, Itineris NV.
 - Weight: high; timeline with motifs and active marker.
 - Interaction: current entry has Jarvis explanation button; timeline marker reacts to visible item.
 - Role: establishes long career arc from sound/live production to functional analysis/consulting.
@@ -311,7 +311,7 @@ Experience:
 Education:
 
 - Source: `placeholderContent.education`.
-- Items: Industrial Engineering Electromechanics at Universiteit Gent, not completed; Functional Analyst career switch at Switchfully/Cegeka.
+- Items: Functional Analyst career switch at Switchfully/Cegeka. The Universiteit Gent / Electromechanics item was intentionally removed from the current CV content.
 - Weight: medium.
 - Interaction: motif background where configured.
 - Role: supports technical and analysis background.
@@ -464,21 +464,21 @@ AI Engineering Playground:
 Huidige positionering:
 
 - Current role: Functioneel Analist / Functional Analyst.
-- Target role: AI Business Engineer.
-- Metadata reinforces: "Functioneel Analist op weg naar AI Business Engineer".
+- Target role: Bouwer van AI-gedreven systemen / Builder of AI-enabled systems.
+- Metadata reinforces the current role and working-systems direction; the content uses "Bouwer van AI-gedreven systemen" / "Builder of AI-enabled systems" as the target role.
 - Core claim: translating business processes into working AI systems.
 
 Work experience:
 
-- Sound Engineer & Head of Audio at Soundfield NV, 2010-2021.
-- Team Lead Productie at Student Kick-Off Gent, 2012-2020, with a TODO that exact years still need confirmation.
+- Freelance Sound Engineer for multiple companies, 2010-2017, including Soundfield NV as a client.
+- Team Lead Productie at Student Kick-Off Gent; period intentionally left blank because it was never confirmed.
 - Founder at Event Explorers, 2016-2017.
+- Sound Engineer — Head of Sound Department at Soundfield NV in fixed employment, 2018-Jan 2021.
 - Functional Analyst at EGOV VZW project bij FOD Financien, 2021-2022.
 - Functional Consultant at Itineris NV, 2022-present, domain lead for service delivery in an upgrade project for De Watergroep.
 
 Education:
 
-- Universiteit Gent, Industrial Engineering Electromechanics, not completed.
 - Switchfully/Cegeka, Functional Analyst career switch, 2021.
 
 Technical skills visible:
@@ -493,7 +493,7 @@ Functional/professional skills visible:
 Soft skills and ambition:
 
 - Curiosity, learning drive, building drive, practical translation of ideas into working systems.
-- Ambition to move from analysis toward AI Business Engineering.
+- Ambition to move from analysis toward becoming a Builder of AI-enabled systems.
 
 Identity tensions:
 
@@ -854,7 +854,7 @@ Build/runtime verification:
 
 - This analysis did not run `npm run build` to avoid unnecessary build-output churn.
 - Latest `npm run test` failed: 5 files ran, 17 tests total, 1 failed in `lib/ai/answers.test.ts`.
-- The failure is an AI retrieval/answer grounding mismatch: expected source `system-lowi-intro` is not in the top-k for `ai-business-engineering-fit`.
+- The failure is an AI retrieval/answer grounding mismatch: expected source `system-lowi-intro` is not in the top-k for `ai-enabled-systems-fit`.
 
 # 15. Analytics en Bezoekersinzicht
 
@@ -914,7 +914,7 @@ Unknown:
 
 ## Eerste 10 seconden
 
-A visitor likely understands this is Klaas Van Slambrouck's CV/portfolio, but not a conventional one. The hero states Functioneel Analist -> AI Business Engineer and frames LOWI/Nidus as a working proof layer. The architecture visual suggests systems, cloud/data, automation and AI.
+A visitor likely understands this is Klaas Van Slambrouck's CV/portfolio, but not a conventional one. The hero states Functioneel Analist -> Bouwer van AI-gedreven systemen / Functional Analyst -> Builder of AI-enabled systems and frames LOWI/Nidus as a working proof layer. The architecture visual suggests systems, cloud/data, automation and AI.
 
 ## Na 30 seconden
 
@@ -932,7 +932,7 @@ Identity that emerges:
 
 - A functional analyst with delivery and service-domain experience.
 - A system-oriented builder using a portfolio as an interactive proof environment.
-- An AI-curious product thinker moving toward AI Business Engineering.
+- An AI-curious product thinker moving toward becoming a Builder of AI-enabled systems.
 
 Projects with most weight:
 
@@ -1047,11 +1047,11 @@ Unanswered visitor questions:
 - Live stats are explicit placeholders.
 - Jarvis claims future nidus-api/Claude/tool/memory behavior, but current UI has disabled input and no API call.
 - AI retrieval/evaluation code is now connected to an active `#ai-playground` section in the local worktree, but the related component files are untracked and the latest test-run fails.
-- `lib/ai/answers.test.ts` is untracked and currently fails because a preauthored answer expects `system-lowi-intro` in the retrieved top-k for `ai-business-engineering-fit`.
+- `lib/ai/answers.test.ts` is untracked and currently fails because a preauthored answer expects `system-lowi-intro` in the retrieved top-k for `ai-enabled-systems-fit`.
 - `components/AIEngineeringPlayground.tsx` and `components/ai` are untracked even though `app/page.tsx` imports the playground.
 - Contact email and LinkedIn are placeholders.
 - No public CV PDF exists and no `public/` directory exists; download button is hidden by config.
-- Student Kick-Off period has a TODO noting exact years still need confirmation.
+- Student Kick-Off deliberately has no period: the unconfirmed years were removed and the empty value is an intentional, resolved decision rather than an open TODO.
 - Prior audit docs contain historical/stale statements: old `/cv` duplicate and `app/cv` structure are no longer present; `AUDIT-2026-07-07.md` includes references to `/api/auth/login-attempt` even though current code uses `/api/auth/login`.
 - No custom not-found page or loading states are present.
 - No live browser render was executed during this report; mobile/browser conclusions are based on current code plus existing audits.
@@ -1059,9 +1059,9 @@ Unanswered visitor questions:
 
 # 21. Samenvattende Current-State Brief voor Extern Onderzoek
 
-Deze applicatie representeert Klaas Van Slambrouck als een functioneel analist die zich nadrukkelijk beweegt richting AI Business Engineering. De site noemt hem niet simpelweg developer, onderzoeker of consultant, maar bouwt een brugidentiteit: iemand die bedrijfsprocessen begrijpt, frictie in systemen herkent en die inzichten wil vertalen naar werkende digitale en AI-gedreven systemen. De publieke vorm is een interactieve CV- en portfolio-onepager, maar de toon, visuals en features maken haar meer dan een gewone CV-pagina. Ze wil tegelijk professioneel profiel, persoonlijk lab, technisch bewijsstuk en interactieve showcase zijn.
+Deze applicatie representeert Klaas Van Slambrouck als een functioneel analist die zich nadrukkelijk beweegt richting "Bouwer van AI-gedreven systemen" / "Builder of AI-enabled systems". De site noemt hem niet simpelweg developer, onderzoeker of consultant, maar bouwt een brugidentiteit: iemand die bedrijfsprocessen begrijpt, frictie in systemen herkent en die inzichten wil vertalen naar werkende digitale en AI-gedreven systemen. De publieke vorm is een interactieve CV- en portfolio-onepager, maar de toon, visuals en features maken haar meer dan een gewone CV-pagina. Ze wil tegelijk professioneel profiel, persoonlijk lab, technisch bewijsstuk en interactieve showcase zijn.
 
-De eerste ervaring begint op `/` met een hero waarin de naam "Klaas Van Slambrouck" centraal staat, gevolgd door de rolrichting "Functioneel Analist -> AI Business Engineer". De thesis zegt dat hij businessprocessen vertaalt naar werkende AI-systemen. De hero wordt gedragen door een 3D- of SVG-architectuurscene met nodes als Next.js, Supabase, Railway, Databricks, Raspberry Pi, mobile en Jarvis. Daardoor communiceert de eerste viewport meteen dat dit profiel rond systemen, infrastructuur, data en AI draait. De pagina heeft geen klassieke navigatiebalk; bezoekers scrollen door een lineaire ervaring. Wel is er een vaste control stack voor LOWI-status, taal, thema en X-Ray.
+De eerste ervaring begint op `/` met een hero waarin de naam "Klaas Van Slambrouck" centraal staat, gevolgd door de rolrichting "Functioneel Analist -> Bouwer van AI-gedreven systemen" / "Functional Analyst -> Builder of AI-enabled systems". De thesis zegt dat hij businessprocessen vertaalt naar werkende AI-systemen. De hero wordt gedragen door een 3D- of SVG-architectuurscene met nodes als Next.js, Supabase, Railway, Databricks, Raspberry Pi, mobile en Jarvis. Daardoor communiceert de eerste viewport meteen dat dit profiel rond systemen, infrastructuur, data en AI draait. De pagina heeft geen klassieke navigatiebalk; bezoekers scrollen door een lineaire ervaring. Wel is er een vaste control stack voor LOWI-status, taal, thema en X-Ray.
 
 Na de hero volgt een persoonlijke introductie die Klaas neerzet als functioneel analist met bouwdrang. Daarna komt LOWI vroeg in de flow, voor de formele werkervaring. Dat is inhoudelijk belangrijk: LOWI wordt niet als bijlage behandeld, maar als kern van het verhaal. LOWI staat voor "Lab of Wonder and Imagination" en wordt beschreven als een leer- en bouwomgeving rond AI, biologie, automatisering en creatieve technologie. De site suggereert dat LOWI laat zien hoe Klaas denkt: conceptueel, maar altijd richting iets bruikbaars en technisch degelijks. Deze sectie positioneert de portfolio als levend platform in plaats van statische projectlijst.
 
@@ -1069,7 +1069,7 @@ Binnen LOWI krijgt Nidus het grootste gewicht. Nidus wordt gepresenteerd als het
 
 LOWI bevat ook CRISPR & CHICKN. Dat project wordt beschreven als een experimenteel datalab voor speelse analyses, gebouwd op Databricks-notebooks en een lichte Next.js-frontend. Het brengt biologie/wetenschap en data/ML in het verhaal, maar is in de huidige applicatie inhoudelijk minder diep uitgewerkt dan Nidus of Jarvis. Er zijn geen screenshots, procesbeschrijvingen of repo-implementaties aanwezig. Het fungeert vooral als signaal van onderzoekende nieuwsgierigheid en science-flavored experimentation.
 
-De CV-laag bestaat uit een tijdlijn met vijf ervaringen. De eerste ervaringen liggen in sound engineering, event production en ondernemerschap: Soundfield NV, Student Kick-Off Gent en Event Explorers. Daarna verschuift de lijn naar functionele analyse: EGOV VZW bij FOD Financien en Itineris NV, waar hij als functioneel consultant en domeinverantwoordelijke service delivery werkt op een grootschalig upgrade-project voor De Watergroep. Deze tijdlijn ondersteunt het verhaal dat Klaas niet alleen digitale systemen analyseert, maar een achtergrond heeft in complexe live/productieomgevingen, cooordinatie, technische uitvoering en stakeholdercontext. De education-sectie noemt een niet-afgeronde industrieel ingenieur elektromechanica aan Universiteit Gent en een Switchfully/Cegeka omscholingstraject tot functioneel analist.
+De CV-laag bestaat uit een tijdlijn met zes ervaringen. De eerste ervaringen liggen in sound engineering, event production en ondernemerschap: freelance sound engineering voor meerdere opdrachtgevers van 2010 tot 2017 (waaronder Soundfield NV als klant), Student Kick-Off Gent zonder vermelde periode en Event Explorers. Daarna volgt het vaste dienstverband als Sound Engineer — Hoofd afdeling geluid bij Soundfield NV van 2018 tot jan 2021, gevolgd door functionele analyse bij EGOV VZW en Itineris NV, waar hij als functioneel consultant en domeinverantwoordelijke service delivery werkt op een grootschalig upgrade-project voor De Watergroep. Deze tijdlijn ondersteunt het verhaal dat Klaas niet alleen digitale systemen analyseert, maar een achtergrond heeft in complexe live/productieomgevingen, cooordinatie, technische uitvoering en stakeholdercontext. De education-sectie bevat enkel het Switchfully/Cegeka-omscholingstraject tot functioneel analist; het Universiteit Gent / elektromechanica-item is bewust uit de actuele CV-content verwijderd.
 
 De skills worden niet als gewone badge-lijst gepresenteerd, maar als skill-constellation. De nodes zijn AI, LLMs, Automation, Data, APIs, Systems Thinking, Functional Analysis en Product. Op desktop kan dit een WebGL-graaf zijn waarbij hover gerelateerde projecten toont; op mobiele of reduced-motion contexten valt dit terug op tags. Deze ontwerpkeuze versterkt de centrale boodschap: de waarde zit in verbindingen tussen analyse, data, API's, automatisering en productdenken. De app bewijst frontend- en interaction-capaciteit door dit als interactieve visualisatie te bouwen.
 
@@ -1087,7 +1087,7 @@ Er is ook een beheerlaag. `/beheer` is een loginpagina die post naar `/api/auth/
 
 Visueel heeft de site een uitgesproken technisch-cinematische identiteit. Het dark theme is standaard, met copper als signatuuraccent, blue voor live/actief en violet voor Jarvis/AI. Er is ook een light theme. De fonts zijn Fraunces, DM Sans en DM Mono. Animaties, 3D-scenes, terminalmotieven en codeblokken geven de site een engineering-lab gevoel. Responsive gedrag is bewust uitgewerkt: onder 768px en bij lage viewporthoogte vallen WebGL-scenes terug, JarvisPresence verdwijnt op mobiel, JarvisExplainPanel wordt een bottom sheet en touch targets worden vergroot. Reduced motion wordt breed gerespecteerd via CSS en scene-support.
 
-Naast de zichtbare Jarvis-laag staat in de actuele lokale werkboom ook een actieve AI Engineering Playground-sectie. Die bestaat uit een untracked parent component en subcomponenten voor vraaginput, pipeline stages, retrieval-inspectie, context-inspectie en antwoordweergave. Hij gebruikt de lokale keyword retrieval, evaluatie en grounded-answer code uit `lib/ai`. Dit maakt de AI-laag concreter dan alleen losse library-code: bezoekers kunnen in principe zien hoe een vraag wordt geanalyseerd, welke bronnen worden gematcht, hoe context wordt samengesteld en welk brongebonden antwoord verschijnt. Tegelijk is deze laag experimenteel. De relevante componenten en answer-code zijn oncommitted/untracked, en de laatste test-run faalt op een retrieval/answer-grounding mismatch waarbij `system-lowi-intro` niet in de verwachte top-k terechtkomt voor de AI Business Engineering-vraag.
+Naast de zichtbare Jarvis-laag staat in de actuele lokale werkboom ook een actieve AI Engineering Playground-sectie. Die bestaat uit een untracked parent component en subcomponenten voor vraaginput, pipeline stages, retrieval-inspectie, context-inspectie en antwoordweergave. Hij gebruikt de lokale keyword retrieval, evaluatie en grounded-answer code uit `lib/ai`. Dit maakt de AI-laag concreter dan alleen losse library-code: bezoekers kunnen in principe zien hoe een vraag wordt geanalyseerd, welke bronnen worden gematcht, hoe context wordt samengesteld en welk brongebonden antwoord verschijnt. Tegelijk is deze laag experimenteel. De relevante componenten en answer-code zijn oncommitted/untracked, en de laatste test-run faalt op een retrieval/answer-grounding mismatch waarbij `system-lowi-intro` niet in de verwachte top-k terechtkomt voor de `ai-enabled-systems-fit`-vraag.
 
 Als gebruikerservaring is de site sterk gericht op progressieve verdieping. De eerste laag is emotioneel en positionerend: naam, rolrichting, thesis en visuele systeemmetaforiek. De tweede laag is inhoudelijk: over-mij, LOWI, ervaring, opleiding, talen en projecten. De derde laag is technisch: X-Ray, code snippets, tech tags, 3D-architectuur, analytics en security. De vierde laag is meta/AI: Jarvis legt content uit, observeert secties en suggereert vragen. Hierdoor kan een gewone bezoeker vooral de professionele richting lezen, terwijl een technische bezoeker onderliggende implementatiepatronen kan herkennen. Die gelaagdheid is een duidelijke sterkte, maar ze vraagt ook cognitieve ordening: niet elke bezoeker zal vanzelf begrijpen welke onderdelen live, welke conceptueel en welke voorbereid zijn.
 
