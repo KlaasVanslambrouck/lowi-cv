@@ -725,8 +725,7 @@ render(reply.text);`,
     linkedinUrl: "",
     location: { nl: "Oudenaarde, België", en: "Oudenaarde, Belgium" },
     cvPdfUrl: "/cv-klaas.pdf",
-    // Nog geen PDF in /public — knop blijft verborgen tot dit op true staat.
-    cvPdfAvailable: false,
+    cvPdfAvailable: true,
   },
 
   sectionTitles: {
