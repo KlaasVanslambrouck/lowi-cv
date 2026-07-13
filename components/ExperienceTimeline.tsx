@@ -91,7 +91,9 @@ export default function ExperienceTimeline({
                   <h3 className={styles.timelineRole}>{t(entry.role)}</h3>
                   <span className={styles.timelineCompany}>{entry.company}</span>
                 </div>
-                <span className={styles.timelinePeriod}>{entry.period}</span>
+                {entry.period ? (
+                  <span className={styles.timelinePeriod}>{entry.period}</span>
+                ) : null}
                 <p className={styles.timelineDescription}>
                   {t(entry.description)}
                 </p>

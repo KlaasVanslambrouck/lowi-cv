@@ -35,22 +35,21 @@ export const placeholderContent: PortfolioContent = {
   experience: [
     {
       role: {
-        nl: "Sound Engineer & Hoofd Geluidsafdeling",
-        en: "Sound Engineer & Head of Audio",
+        nl: "Sound Engineer",
+        en: "Sound Engineer",
       },
-      company: "Soundfield NV (freelance & vast)",
-      period: "2010 — 2021",
+      company: "Freelance (diverse opdrachtgevers, o.a. Soundfield NV)",
+      period: "2010 — 2017",
       motif: "soundwave",
       description: {
-        nl: "Ontwierp geluidsinstallaties en verzorgde live-mixing bij internationale evenementen voor Adecco, Samsonite, AWS en meer.",
-        en: "Designed sound systems and ran live mixing at international events for Adecco, Samsonite, AWS and more.",
+        nl: "Freelance sound engineer voor meerdere bedrijven: ontwerp en live-mixing van geluidsinstallaties bij diverse events.",
+        en: "Freelance sound engineer for multiple companies: designed sound systems and ran live mixing at various events.",
       },
     },
     {
       role: { nl: "Team Lead Productie", en: "Production Team Lead" },
       company: "Student Kick-Off, Gent (vrijwilliger / volunteer)",
-      period: "2012 — 2020",
-      // TODO: exacte jaren nog te bevestigen door gebruiker.
+      period: "",
       motif: "stage-lights",
       description: {
         nl: "Programmeerde de Mainstage en onderhandelde artiestencontracten voor een studentenevenement met 30.000+ bezoekers.",
@@ -65,6 +64,19 @@ export const placeholderContent: PortfolioContent = {
       description: {
         nl: "Eigen onderneming: begeleidde events en projecten van concept en engineering tot volledige realisatie.",
         en: "Own company: guided events and projects from concept and engineering through to full realisation.",
+      },
+    },
+    {
+      role: {
+        nl: "Sound Engineer — Hoofd afdeling geluid",
+        en: "Sound Engineer — Head of Sound Department",
+      },
+      company: "Soundfield NV",
+      period: "2018 — jan 2021",
+      motif: "soundwave",
+      description: {
+        nl: "Verantwoordelijk voor het projectmanagement van de geluidsafdeling. Ontwierp geluidsinstallaties en verzorgde live-mixing bij internationale evenementen voor Adecco, Samsonite, AWS en meer.",
+        en: "Responsible for project management of the sound department. Designed sound systems and ran live mixing at international events for Adecco, Samsonite, AWS and more.",
       },
     },
     {
@@ -90,15 +102,6 @@ export const placeholderContent: PortfolioContent = {
   ],
 
   education: [
-    {
-      degree: {
-        nl: "Industrieel Ingenieur Elektromechanica (niet afgerond)",
-        en: "Industrial Engineering – Electromechanics (not completed)",
-      },
-      institution: "Universiteit Gent",
-      period: "2010 — 2015",
-      motif: "blueprint",
-    },
     {
       degree: {
         nl: "Functioneel Analist — Omscholingstraject",
