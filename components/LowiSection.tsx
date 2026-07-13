@@ -40,8 +40,7 @@ export default function LowiSection({ content, labels }: LowiSectionProps) {
       </div>
       <div className={styles.lowiGrid}>
         {content.projects.map((project) => {
-          const projectExplanationId =
-            project.name.toLowerCase() === "nidus" ? "nidus-project" : null;
+          const projectExplanationId = project.jarvisExplanationId ?? null;
           const projectExplainActive = projectExplanationId
             ? isExplanationActive(projectExplanationId)
             : false;
@@ -89,7 +88,7 @@ export default function LowiSection({ content, labels }: LowiSectionProps) {
             ) : null}
             {project.caseStudyPath ? (
               <Link className={styles.lowiLink} href={project.caseStudyPath}>
-                {t(labels.caseStudyLinkLabel)}
+                {t(project.caseStudyLinkLabel ?? labels.caseStudyLinkLabel)}
               </Link>
             ) : null}
           </article>

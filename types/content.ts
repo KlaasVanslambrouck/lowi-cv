@@ -52,6 +52,8 @@ export interface LowiProject {
   status: Bilingual;
   url?: string;
   caseStudyPath?: string; // interne route naar een uitgebreide case study, bv. "/nidus"
+  caseStudyLinkLabel?: Bilingual; // project-specifieke override op het generieke label
+  jarvisExplanationId?: string; // toont CTA en koppelt aan een bestaande Jarvis-uitleg
 }
 
 export interface LowiContent {

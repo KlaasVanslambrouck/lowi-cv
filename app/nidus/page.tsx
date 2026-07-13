@@ -14,7 +14,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import styles from "@/styles/nidus.module.css";
 
 export const metadata: Metadata = {
-  title: "Nidus — case study | Klaas Van Slambrouck",
+  title: "Nidus — case study | Klaas Vanslambrouck",
   description:
     "Diepere case study van Nidus: architectuur, decision log, screenshots en code.",
 };

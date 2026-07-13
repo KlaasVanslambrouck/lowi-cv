@@ -197,34 +197,37 @@ export const placeholderContent: PortfolioContent = {
 
   lowi: {
     intro: {
-      nl: "LOWI — Lab of Wonder and Imagination — is mijn eigen leer- en bouwomgeving rond AI, biologie, automatisering en creatieve technologie. Het begon als nieuwsgierigheid, maar groeit uit tot een persoonlijk platform waarin ik onderzoek, prototypes en echte systemen samenbreng. LOWI toont hoe ik denk: niet alleen conceptueel, maar altijd richting iets dat bruikbaar, begrijpelijk en technisch degelijk is.",
-      en: "LOWI — Lab of Wonder and Imagination — is my own learning and building environment around AI, biology, automation and creative technology. It started as curiosity, but is growing into a personal platform where I bring together research, prototypes and real systems. LOWI shows how I think: not just conceptually, but always aimed at something usable, understandable and technically sound.",
+      nl: "LOWI — Lab of Wonder and Imagination — is mijn persoonlijke leer-, onderzoeks- en bouwomgeving op het snijvlak van AI, biologie, automatisering en creatieve technologie. Wat begon vanuit nieuwsgierigheid, groeit uit tot een plek waar ik ideeën onderzoek, prototypes bouw en verschillende disciplines met elkaar verbind. LOWI toont niet alleen wat ik bedenk, maar vooral hoe ik denk: onderzoekend, systemisch en altijd gericht op iets dat bruikbaar, begrijpelijk en technisch degelijk is.",
+      en: "LOWI — Lab of Wonder and Imagination — is my personal learning, research and building environment at the intersection of AI, biology, automation and creative technology. What started from curiosity is growing into a place where I research ideas, build prototypes and connect different disciplines. LOWI shows not just what I come up with, but above all how I think: inquisitive, systemic, and always aimed at something usable, understandable and technically sound.",
     },
     projects: [
       {
         name: "Nidus",
         tagline: {
-          nl: "Het zenuwcentrum van het LOWI-platform",
-          en: "The nerve centre of the LOWI platform",
+          nl: "Het digitale zenuwstelsel van mijn dagelijks leven",
+          en: "The digital nervous system of my daily life",
         },
         description: {
-          nl: "Nidus is het eerste echte systeem binnen LOWI: een persoonlijk operating system voor mijn gezin, huis en dagelijkse routines. Ik bouw er koppelingen in met energieverbruik, locatie, automatisering, dashboards, Raspberry Pi-workers, Supabase, mobiele interfaces en uiteindelijk Jarvis als intelligente laag erbovenop. Het doel is geen demo, maar een levend systeem dat context begrijpt, helpt beslissen en stap voor stap slimmer wordt.",
-          en: "Nidus is the first real system within LOWI: a personal operating system for my family, home and daily routines. I'm building in connections to energy usage, location, automation, dashboards, Raspberry Pi workers, Supabase, mobile interfaces, and eventually Jarvis as an intelligent layer on top. The goal isn't a demo, but a living system that understands context, helps make decisions, and gets a little smarter step by step.",
+          nl: "Nidus is het eerste volwaardige systeem binnen LOWI: een persoonlijk operating system dat gegevens uit mijn gezin, woning en dagelijkse routines samenbrengt. Ik bouw koppelingen met onder meer energieverbruik, locatiegegevens, automatiseringen, dashboards, Raspberry Pi-workers, Supabase en mobiele interfaces. Daarboven groeit Jarvis als intelligente laag die context begrijpt, verbanden legt, beslissingen ondersteunt en geleidelijk proactiever wordt. Nidus is geen losstaande demo, maar een levend systeem dat voortdurend wordt uitgebreid en verfijnd.",
+          en: "Nidus is the first fully-fledged system within LOWI: a personal operating system that brings together data from my family, home and daily routines. I'm building in connections to energy usage, location data, automations, dashboards, Raspberry Pi workers, Supabase and mobile interfaces. On top of that, Jarvis is growing as an intelligent layer that understands context, spots connections, supports decisions and gradually becomes more proactive. Nidus isn't a standalone demo, but a living system that is continuously expanded and refined.",
         },
         status: { nl: "In productie · persoonlijk gebruik", en: "In production · personal use" },
         caseStudyPath: "/nidus",
+        caseStudyLinkLabel: { nl: "Ontdek Nidus", en: "Explore Nidus" },
+        jarvisExplanationId: "nidus-project",
       },
       {
         name: "CRISPR & CHICKN",
         tagline: {
-          nl: "Experimenteel datalab voor speelse analyses",
-          en: "Experimental data lab for playful analyses",
+          nl: "Theater op het snijvlak van wetenschap, technologie en verbeelding",
+          en: "Theatre at the intersection of science, technology and imagination",
         },
         description: {
-          nl: "Speeltuin voor datavisualisatie en ML-experimenten, gebouwd op Databricks-notebooks en een lichte Next.js-frontend.",
-          en: "Playground for data visualisation and ML experiments, built on Databricks notebooks and a light Next.js frontend.",
+          nl: "CRISPR & CHICKN is een artistiek-wetenschappelijk theaterproject over genetische technologie, maakbaarheid en de vraag hoe ver de mens mag gaan in het herschrijven van leven. Via performance, experiment en verbeelding maakt het project complexe onderwerpen zoals CRISPR, genetische modificatie en synthetische biologie tastbaar voor een breed publiek. Het doel is niet om eenvoudige antwoorden te geven, maar om verwondering, ongemak en gesprek te creëren rond technologieën die onze toekomst mee vormgeven. Binnen LOWI vormt CRISPR & CHICKN de brug tussen mijn interesse in biologie, technologie, educatie en podiumkunst.",
+          en: "CRISPR & CHICKN is an artistic-scientific theatre project about genetic technology, the malleability of life, and the question of how far humanity may go in rewriting it. Through performance, experimentation and imagination, the project makes complex topics such as CRISPR, genetic modification and synthetic biology tangible for a broad audience. The goal isn't to offer easy answers, but to create wonder, unease and conversation around the technologies shaping our future. Within LOWI, CRISPR & CHICKN forms the bridge between my interest in biology, technology, education and performing arts.",
         },
         status: { nl: "In ontwikkeling", en: "In development" },
+        jarvisExplanationId: "lowi-project",
       },
     ],
   },
@@ -331,8 +334,8 @@ render(reply.text);`,
     {
       role: "jarvis",
       text: {
-        nl: "Aan CRISPR & CHICKN — een experimenteel datalab. Vraag hem er gerust naar via de contactgegevens hieronder.",
-        en: "On CRISPR & CHICKN — an experimental data lab. Feel free to ask him about it via the contact details below.",
+        nl: "Aan CRISPR & CHICKN — een artistiek-wetenschappelijk theaterproject. Vraag hem er gerust naar via de contactgegevens hieronder.",
+        en: "On CRISPR & CHICKN — an artistic-scientific theatre project. Feel free to ask him about it via the contact details below.",
       },
     },
   ],
