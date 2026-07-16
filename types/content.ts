@@ -115,6 +115,24 @@ export interface SkillNode {
   relatedProjectIds: string[]; // matcht Project.id
 }
 
+// Eén vaardigheidscluster in de proof-first Skills-sectie ("Wat ik bouw").
+// Geen niveaus of scores — de context-regel verankert de skill in wat live
+// draait, niet in een zelfverklaarde score.
+export interface SkillCluster {
+  id: string;
+  title: Bilingual;
+  context: Bilingual; // één eerlijke zin: waar de skill echt gebruikt is
+  items: string[]; // taalneutrale tech-tags (mono-chips)
+  proofAnchor?: "nidus" | null; // toont een subtiele "→ Nidus"-link naar #projects
+}
+
+// De volledige Skills-sectie: proof-first onderregel + de clusters.
+export interface SkillsSection {
+  lead: Bilingual; // korte proof-first onderregel onder de sectietitel
+  proofLinkLabel: Bilingual; // zichtbare tekst van de bewijslink ("→ Nidus")
+  clusters: SkillCluster[];
+}
+
 export interface ContactInfo {
   email: string;
   linkedinUrl: string;
@@ -173,6 +191,7 @@ export interface PortfolioContent {
   languageSkills: LanguageSkill[];
   skills: Skill[];
   skillNodes: SkillNode[];
+  skillsSection: SkillsSection;
   lowi: LowiContent;
   projects: Project[];
   liveStats: LiveStat[];

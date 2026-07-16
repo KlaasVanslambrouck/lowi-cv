@@ -195,6 +195,103 @@ export const placeholderContent: PortfolioContent = {
     },
   ],
 
+  // Proof-first Skills-sectie ("Wat ik bouw"). Geen niveaubalkjes of scores:
+  // elke cluster wordt verankerd in wat live draait. proofAnchor: "nidus" toont
+  // een subtiele "→ Nidus"-link (scrollt naar #projects); null verbergt hem.
+  // LET OP — deze clusters moeten in sync blijven met de PDF-CV in nidus-api.
+  skillsSection: {
+    lead: {
+      nl: "// niet hoe goed — waar echt gebruikt",
+      en: "// not how good — where actually used",
+    },
+    proofLinkLabel: { nl: "→ Nidus", en: "→ Nidus" },
+    clusters: [
+      {
+        id: "analyse-systeemdenken",
+        title: {
+          nl: "Analyse & Systeemdenken",
+          en: "Analysis & Systems Thinking",
+        },
+        context: {
+          nl: "Mijn dagelijkse vak als functioneel analist bij De Watergroep (Billing/SDL); Nidus is daar mijn eigen bewijs van.",
+          en: "My daily craft as a functional analyst at De Watergroep (Billing/SDL); Nidus is my own proof of it.",
+        },
+        items: [
+          "Functionele analyse",
+          "Requirements engineering",
+          "Procesvertaling business ↔ techniek",
+          "Solution design",
+        ],
+        proofAnchor: "nidus",
+      },
+      {
+        id: "ai-machine-learning",
+        title: { nl: "AI & Machine Learning", en: "AI & Machine Learning" },
+        context: {
+          nl: "Draait in Nidus: LLM-assistent, kasticket-OCR en budgetclassificatie — plus een gevalideerd metabolisch model.",
+          en: "Running in Nidus: an LLM assistant, receipt OCR and budget classification — plus a validated metabolic model.",
+        },
+        items: [
+          "LLM-integratie (Claude tool-calling)",
+          "RAG",
+          "Prompt engineering",
+          "OCR (Claude Vision)",
+          "TF-IDF + logistische regressie",
+          "Mader/Hauser-model",
+        ],
+        proofAnchor: "nidus",
+      },
+      {
+        id: "backend-data",
+        title: { nl: "Backend & Data", en: "Backend & Data" },
+        context: {
+          nl: "De productie-backend van Nidus: TypeScript/Node en Python, PostgreSQL met RLS, nachtelijke datapijplijnen.",
+          en: "The production backend of Nidus: TypeScript/Node and Python, PostgreSQL with RLS, nightly data pipelines.",
+        },
+        items: [
+          "TypeScript · Node (Fastify)",
+          "Python (FastAPI)",
+          "PostgreSQL + RLS",
+          "Supabase",
+          "Databricks / Spark",
+          "Datapijplijnen",
+        ],
+        proofAnchor: null,
+      },
+      {
+        id: "frontend-mobile",
+        title: { nl: "Frontend & Mobile", en: "Frontend & Mobile" },
+        context: {
+          nl: "De schermen die mensen echt gebruiken: het Nidus-web, de mobiele app en deze portfolio zelf.",
+          en: "The screens people actually use: the Nidus web app, the mobile app and this portfolio itself.",
+        },
+        items: [
+          "Next.js · React",
+          "React Native · Expo",
+          "CSS Modules",
+          "Datavisualisatie",
+        ],
+        proofAnchor: null,
+      },
+      {
+        id: "platform-delivery",
+        title: { nl: "Platform & Delivery", en: "Platform & Delivery" },
+        context: {
+          nl: "De volledige Nidus-topologie draait in productie: hosting, CI-discipline en een Raspberry Pi thuis.",
+          en: "The full Nidus topology runs in production: hosting, CI discipline and a Raspberry Pi at home.",
+        },
+        items: [
+          "Railway",
+          "Vercel",
+          "CI (tsc · eslint · build)",
+          "Git-workflow",
+          "Raspberry Pi · IoT",
+        ],
+        proofAnchor: null,
+      },
+    ],
+  },
+
   lowi: {
     intro: {
       nl: "LOWI — Lab of Wonder and Imagination — is mijn persoonlijke leer-, onderzoeks- en bouwomgeving op het snijvlak van AI, biologie, automatisering en creatieve technologie. Wat begon vanuit nieuwsgierigheid, groeit uit tot een plek waar ik ideeën onderzoek, prototypes bouw en verschillende disciplines met elkaar verbind. LOWI toont niet alleen wat ik bedenk, maar vooral hoe ik denk: onderzoekend, systemisch en altijd gericht op iets dat bruikbaar, begrijpelijk en technisch degelijk is.",

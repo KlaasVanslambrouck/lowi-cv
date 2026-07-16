@@ -2041,3 +2041,134 @@
     gap: 0.25rem;
   }
 }
+
+/* ===== Skills-sectie ("Wat ik bouw") — proof-first clusterkaarten =====
+   Geen niveaubalkjes of scores. Cluster 1 (het beroep) is het anker en krijgt
+   de volle breedte + copper-accent; de bouw-clusters vormen het bewijsraster
+   eronder. Signature-interactie: de kaarten faden gestaffeld in bij scroll-
+   reveal (--reveal-delay wordt per kaart in de component gezet). */
+
+.skillsBlock {
+  /* wrapper met de IntersectionObserver-ref; data-revealed stuurt de reveal */
+  position: relative;
+}
+
+.skillsLead {
+  margin-top: -1.25rem;
+  margin-bottom: 2rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--cv-muted);
+}
+
+.skillsClusterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.skillClusterCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.5rem;
+  border: 1px solid rgb(var(--cv-text-rgb) / 0.12);
+  border-radius: var(--cv-radius);
+  background-color: rgb(var(--cv-text-rgb) / 0.03);
+  /* Reveal-startstaat; --reveal-delay geeft de cascade per kaart. */
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.55s ease var(--reveal-delay, 0ms),
+    transform 0.55s ease var(--reveal-delay, 0ms),
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Cluster 1 (het beroep) = het anker: volle breedte + copper-rand bovenaan. */
+.skillClusterCardLead {
+  grid-column: 1 / -1;
+  border-top: 2px solid var(--cv-copper);
+}
+
+.skillsBlock[data-revealed="true"] .skillClusterCard {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skillClusterCard:hover {
+  border-color: rgb(var(--cv-copper-rgb) / 0.5);
+  box-shadow: 0 6px 20px rgb(var(--cv-bg-rgb) / 0.35);
+}
+
+.skillClusterName {
+  font-size: 1.3rem;
+  color: var(--cv-bone);
+}
+
+.skillClusterCardLead .skillClusterName {
+  font-size: 1.5rem;
+}
+
+.skillClusterContext {
+  max-width: 46rem;
+  color: var(--cv-text-soft);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.skillClusterChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.15rem;
+}
+
+.skillClusterChip {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgb(var(--cv-text-rgb) / 0.18);
+  border-radius: 10px;
+  background-color: rgb(var(--cv-surface-raised-rgb) / 0.5);
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--cv-text-soft);
+}
+
+.skillProofLink {
+  align-self: flex-start;
+  margin-top: 0.35rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--cv-copper-soft);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.skillProofLink:hover {
+  color: var(--cv-copper);
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .skillsClusterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .skillClusterCardLead .skillClusterName {
+    font-size: 1.35rem;
+  }
+}
+
+/* Reduced motion: geen cascade, kaarten meteen zichtbaar. */
+@media (prefers-reduced-motion: reduce) {
+  .skillClusterCard {
+    opacity: 1;
+    transform: none;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+}

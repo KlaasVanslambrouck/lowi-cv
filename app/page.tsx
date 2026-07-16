@@ -8,7 +8,7 @@ import CVSection from "@/components/CVSection";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
 import EducationList from "@/components/EducationList";
 import LanguageSkillsList from "@/components/LanguageSkillsList";
-import SkillConstellation from "@/components/SkillConstellation";
+import Skills from "@/components/Skills";
 import LowiSection from "@/components/LowiSection";
 import ArchitectureSceneMini from "@/components/ArchitectureSceneMini";
 import ProjectCard from "@/components/ProjectCard";
@@ -59,11 +59,7 @@ export default function HomePage() {
           </CVSection>
 
           <CVSection id="skills" title={content.sectionTitles.skills}>
-            <SkillConstellation
-              nodes={content.skillNodes}
-              projects={content.projects}
-              labels={content.uiLabels}
-            />
+            <Skills content={content.skillsSection} />
           </CVSection>
 
           {/* Visuele brug tussen "Wat ik bouw" en "Projecten" - lazy mount */}
