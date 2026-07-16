@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { SkillsSection } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -47,9 +48,11 @@ export default function Skills({ content }: SkillsProps) {
               ))}
             </ul>
             {cluster.proofAnchor === "nidus" ? (
-              <a className={styles.skillProofLink} href="#projects">
+              // Zelfde patroon als de "Ontdek Nidus"-knop in LowiSection:
+              // Next.js Link naar de volwaardige /nidus case-study-route.
+              <Link className={styles.skillProofLink} href="/nidus">
                 {t(content.proofLinkLabel)}
-              </a>
+              </Link>
             ) : null}
           </article>
         ))}

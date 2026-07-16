@@ -197,7 +197,7 @@ export const placeholderContent: PortfolioContent = {
 
   // Proof-first Skills-sectie ("Wat ik bouw"). Geen niveaubalkjes of scores:
   // elke cluster wordt verankerd in wat live draait. proofAnchor: "nidus" toont
-  // een subtiele "→ Nidus"-link (scrollt naar #projects); null verbergt hem.
+  // een subtiele "→ Nidus"-link naar de /nidus case-study; null verbergt hem.
   // LET OP — deze clusters moeten in sync blijven met de PDF-CV in nidus-api.
   skillsSection: {
     lead: {

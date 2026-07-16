@@ -123,7 +123,7 @@ export interface SkillCluster {
   title: Bilingual;
   context: Bilingual; // één eerlijke zin: waar de skill echt gebruikt is
   items: string[]; // taalneutrale tech-tags (mono-chips)
-  proofAnchor?: "nidus" | null; // toont een subtiele "→ Nidus"-link naar #projects
+  proofAnchor?: "nidus" | null; // toont een subtiele "→ Nidus"-link naar de /nidus case-study
 }
 
 // De volledige Skills-sectie: proof-first onderregel + de clusters.
