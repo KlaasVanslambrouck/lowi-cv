@@ -23,12 +23,16 @@
 .timer,
 .startButton,
 .endButton,
+.resetButton,
 .panelLabel,
 .transcriptNote,
 .speakerLabel,
+.notUnderstoodBadge,
 .observationsTitle,
 .noScoreBadge,
-.observationGrid dt {
+.observationGrid dt,
+.notAssessable h5,
+.notAssessable li span {
   font-family: var(--cv-font-mono);
 }
 
@@ -122,12 +126,13 @@
 
 .controls {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
   gap: 0.65rem;
 }
 
 .startButton,
-.endButton {
+.endButton,
+.resetButton {
   min-height: 2.9rem;
   border: 1px solid var(--cv-border);
   padding: 0.65rem 0.9rem;
@@ -155,19 +160,28 @@
   color: var(--cv-text);
 }
 
-.endButton:hover:not(:disabled) {
+.endButton:hover:not(:disabled),
+.resetButton:hover:not(:disabled) {
   border-color: var(--cv-copper-soft);
   background-color: rgb(var(--cv-copper-rgb) / 0.09);
 }
 
+.resetButton {
+  border-color: rgb(var(--cv-copper-rgb) / 0.65);
+  background-color: rgb(var(--cv-copper-rgb) / 0.08);
+  color: var(--cv-copper-soft);
+}
+
 .startButton:focus-visible,
-.endButton:focus-visible {
+.endButton:focus-visible,
+.resetButton:focus-visible {
   outline: 2px solid var(--cv-copper-soft);
   outline-offset: 2px;
 }
 
 .startButton:disabled,
-.endButton:disabled {
+.endButton:disabled,
+.resetButton:disabled {
   cursor: not-allowed;
   opacity: 0.42;
 }
@@ -253,6 +267,23 @@
   white-space: pre-wrap;
 }
 
+.speakerLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.notUnderstoodBadge {
+  border: 1px solid var(--cv-border);
+  padding: 0.12rem 0.35rem;
+  color: var(--cv-text-soft);
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
 .agentEntry {
   justify-self: start;
   border-left-color: var(--cv-copper);
@@ -301,6 +332,60 @@
   color: var(--cv-text-soft);
   font-size: 0.79rem;
   line-height: 1.5;
+}
+
+.observationsError {
+  border-left: 2px solid var(--cv-copper);
+  padding: 0.65rem 0.75rem;
+  background-color: rgb(var(--cv-copper-rgb) / 0.07);
+  color: var(--cv-text-soft);
+  font-size: 0.79rem;
+  line-height: 1.5;
+}
+
+.notAssessable {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid rgb(var(--cv-copper-rgb) / 0.5);
+  border-left: 3px solid var(--cv-copper);
+  padding: 0.8rem;
+  background:
+    linear-gradient(90deg, rgb(var(--cv-copper-rgb) / 0.12), transparent 70%),
+    rgb(var(--cv-bg-rgb) / 0.28);
+}
+
+.notAssessable h5 {
+  color: var(--cv-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.notAssessable ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notAssessable li {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, auto) minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: baseline;
+}
+
+.notAssessable li span {
+  color: var(--cv-copper-soft);
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+}
+
+.notAssessable li p {
+  color: var(--cv-text-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
 .phaseStatement {
@@ -352,6 +437,11 @@
 
   .observationGrid {
     grid-template-columns: 1fr;
+  }
+
+  .notAssessable li {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
   }
 }
 

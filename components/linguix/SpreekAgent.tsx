@@ -6,19 +6,24 @@ import styles from "./SpreekAgent.module.css";
 const baseUrl = process.env.NEXT_PUBLIC_NIDUS_API_URL?.trim();
 const apiBaseUrl = baseUrl?.replace(/\/+$/, "") ?? "";
 const tokenEndpoint = `${apiBaseUrl}/api/portfolio/linguix/realtime-token`;
+const observationsEndpoint = `${apiBaseUrl}/api/portfolio/linguix/observaties`;
 const openAIRealtimeEndpoint = "https://api.openai.com/v1/realtime/calls";
 const defaultSessionDurationSeconds = 4 * 60;
+const notUnderstoodMarker = "[[NIET_VERSTAAN]]";
+const firstMisunderstandingResponse =
+  "Sorry, ik heb u niet goed verstaan. Kan u dat nog eens zeggen?";
+const secondMisunderstandingResponse =
+  "Ik krijg dit niet duidelijk. We gaan verder.";
+const closingResponse = "Dank u. Het gesprek is afgelopen.";
 
-type ConnectionStatus =
-  | "idle"
-  | "requesting-permission"
-  | "connecting"
-  | "connected"
-  | "ended"
-  | "error";
-
+type SessionStatus = "inactief" | "verbinden" | "actief" | "beeindigd";
 type TranscriptSpeaker = "candidate" | "agent";
 type EndReason = "completed" | "manual" | "timeout" | "remote";
+type ObservationKey = "taakvervulling" | "vloeiendheid" | "interactie";
+type SignalCode =
+  | "ONVERSTAANBAAR"
+  | "TAALWISSEL"
+  | "TE_WEINIG_BEURTEN";
 
 interface RealtimeTokenResponse {
   value: string;
@@ -30,27 +35,44 @@ interface RealtimeTokenResponse {
 
 interface TranscriptEntry {
   id: number;
+  itemId: string | null;
+  order: number;
   speaker: TranscriptSpeaker;
   text: string;
+  notUnderstood: boolean;
 }
 
-interface SpeakingObservations {
-  taskCompletion: string;
-  fluency: string;
-  interaction: string;
+interface SpeakingObservation {
+  sleutel: ObservationKey;
+  label: string;
+  tekst: string;
+}
+
+interface SpeakingSignal {
+  code: SignalCode;
+  toelichting: string;
+}
+
+interface SpeakingObservationsResponse {
+  aantalKandidaatBeurten: number;
+  aantalOnverstaanbaar: number;
+  beoordeelbaar: boolean;
+  observaties: SpeakingObservation[];
+  signalen: SpeakingSignal[];
 }
 
 interface RealtimeServerEvent {
   type: string;
   delta?: string;
   transcript?: string;
+  itemId?: string;
   error?: {
     message?: string;
   };
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function isRealtimeTokenResponse(value: unknown): value is RealtimeTokenResponse {
@@ -69,6 +91,72 @@ function isRealtimeTokenResponse(value: unknown): value is RealtimeTokenResponse
   );
 }
 
+function isObservationKey(value: unknown): value is ObservationKey {
+  return (
+    value === "taakvervulling" ||
+    value === "vloeiendheid" ||
+    value === "interactie"
+  );
+}
+
+function isSignalCode(value: unknown): value is SignalCode {
+  return (
+    value === "ONVERSTAANBAAR" ||
+    value === "TAALWISSEL" ||
+    value === "TE_WEINIG_BEURTEN"
+  );
+}
+
+function isSpeakingObservation(value: unknown): value is SpeakingObservation {
+  if (!isRecord(value)) return false;
+  return (
+    isObservationKey(value.sleutel) &&
+    typeof value.label === "string" &&
+    value.label.trim().length > 0 &&
+    typeof value.tekst === "string" &&
+    value.tekst.trim().length > 0
+  );
+}
+
+function isSpeakingSignal(value: unknown): value is SpeakingSignal {
+  if (!isRecord(value)) return false;
+  return (
+    isSignalCode(value.code) &&
+    typeof value.toelichting === "string" &&
+    value.toelichting.trim().length > 0
+  );
+}
+
+function isSpeakingObservationsResponse(
+  value: unknown,
+): value is SpeakingObservationsResponse {
+  if (!isRecord(value)) return false;
+  if (!Array.isArray(value.observaties) || !Array.isArray(value.signalen)) {
+    return false;
+  }
+
+  const observations = value.observaties;
+  const observationKeys = new Set(
+    observations
+      .filter(isSpeakingObservation)
+      .map((observation) => observation.sleutel),
+  );
+
+  return (
+    typeof value.aantalKandidaatBeurten === "number" &&
+    Number.isInteger(value.aantalKandidaatBeurten) &&
+    value.aantalKandidaatBeurten >= 0 &&
+    typeof value.aantalOnverstaanbaar === "number" &&
+    Number.isInteger(value.aantalOnverstaanbaar) &&
+    value.aantalOnverstaanbaar >= 0 &&
+    typeof value.beoordeelbaar === "boolean" &&
+    observations.length === 3 &&
+    observations.every(isSpeakingObservation) &&
+    observationKeys.size === 3 &&
+    value.signalen.every(isSpeakingSignal)
+  );
+}
+
 function parseServerEvent(rawData: string): RealtimeServerEvent | null {
   let parsed: unknown;
   try {
@@ -80,20 +168,25 @@ function parseServerEvent(rawData: string): RealtimeServerEvent | null {
   if (!isRecord(parsed) || typeof parsed.type !== "string") return null;
 
   const errorValue = parsed.error;
-  const error = isRecord(errorValue) && typeof errorValue.message === "string"
-    ? { message: errorValue.message }
-    : undefined;
+  const error =
+    isRecord(errorValue) && typeof errorValue.message === "string"
+      ? { message: errorValue.message }
+      : undefined;
 
   return {
     type: parsed.type,
     delta: typeof parsed.delta === "string" ? parsed.delta : undefined,
     transcript:
       typeof parsed.transcript === "string" ? parsed.transcript : undefined,
+    itemId: typeof parsed.item_id === "string" ? parsed.item_id : undefined,
     error,
   };
 }
 
-async function readApiError(response: Response): Promise<string> {
+async function readApiError(
+  response: Response,
+  fallbackMessage: string,
+): Promise<string> {
   try {
     const payload: unknown = await response.json();
     if (isRecord(payload)) {
@@ -109,7 +202,7 @@ async function readApiError(response: Response): Promise<string> {
     // Het antwoord bevatte geen JSON-foutobject.
   }
 
-  return "De spreekagent kon niet worden gestart. Probeer het later opnieuw.";
+  return fallbackMessage;
 }
 
 function getErrorName(error: unknown): string {
@@ -135,100 +228,167 @@ function formatTimer(totalSeconds: number): string {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-function extractObservation(
-  transcript: string,
-  label: string,
-  nextLabel?: string,
-): string | null {
-  const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const boundary = nextLabel
-    ? `(?=\\s*${nextLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*:)`
-    : "$";
-  const match = transcript.match(
-    new RegExp(`${escapedLabel}\\s*:\\s*([\\s\\S]*?)${boundary}`, "i"),
-  );
-  const observation = match?.[1]?.trim();
-  return observation ? observation : null;
-}
-
-function parseObservations(transcript: string): SpeakingObservations | null {
-  const taskCompletion = extractObservation(
-    transcript,
-    "Taakvervulling",
-    "Vloeiendheid",
-  );
-  const fluency = extractObservation(transcript, "Vloeiendheid", "Interactie");
-  const interaction = extractObservation(transcript, "Interactie");
-
-  if (!taskCompletion || !fluency || !interaction) return null;
-  return { taskCompletion, fluency, interaction };
-}
-
-function buildFallbackObservations(
-  transcriptEntries: readonly TranscriptEntry[],
-): SpeakingObservations {
-  const candidateTurns = transcriptEntries.filter(
-    (entry) => entry.speaker === "candidate",
-  ).length;
-
-  return {
-    taskCompletion:
-      candidateTurns === 0
-        ? "Er was in dit korte gesprek onvoldoende bewijs om de taakvervulling te beschrijven."
-        : "Het gesprek eindigde voordat alle drie de taakstappen waren afgerond.",
-    fluency:
-      "Er was in dit korte gesprek onvoldoende bewijs om de vloeiendheid zorgvuldig te beschrijven.",
-    interaction:
-      candidateTurns === 0
-        ? "Er vond geen volledige inhoudelijke gespreksbeurt plaats."
-        : `Er ${candidateTurns === 1 ? "vond" : "vonden"} ${candidateTurns} inhoudelijke ${candidateTurns === 1 ? "gespreksbeurt" : "gespreksbeurten"} plaats.`,
-  };
-}
-
-function statusLabel(status: ConnectionStatus): string {
+function statusLabel(status: SessionStatus): string {
   switch (status) {
-    case "idle":
+    case "inactief":
       return "Klaar om te starten";
-    case "requesting-permission":
-      return "Wacht op microfoontoestemming";
-    case "connecting":
-      return "Veilige verbinding opbouwen";
-    case "connected":
+    case "verbinden":
+      return "Microfoon en verbinding voorbereiden";
+    case "actief":
       return "Gesprek actief";
-    case "ended":
+    case "beeindigd":
       return "Gesprek beëindigd";
-    case "error":
-      return "Verbinding mislukt";
+  }
+}
+
+function endReasonMessage(reason: EndReason): string {
+  switch (reason) {
+    case "completed":
+      return "De drie taakbeurten zijn afgerond.";
+    case "manual":
+      return "Je hebt het gesprek beëindigd.";
+    case "timeout":
+      return "De maximale sessieduur van vier minuten is bereikt.";
+    case "remote":
+      return "De Realtime-sessie is gesloten.";
   }
 }
 
 export default function SpreekAgent() {
-  const [status, setStatus] = useState<ConnectionStatus>("idle");
+  const [sessionStatus, setSessionStatus] =
+    useState<SessionStatus>("inactief");
   const [remainingSeconds, setRemainingSeconds] = useState(
     defaultSessionDurationSeconds,
   );
-  const [transcriptEntries, setTranscriptEntries] = useState<TranscriptEntry[]>([]);
-  const [agentDraft, setAgentDraft] = useState("");
-  const [observations, setObservations] = useState<SpeakingObservations | null>(
-    null,
+  const [transcriptEntries, setTranscriptEntries] = useState<TranscriptEntry[]>(
+    [],
   );
+  const [agentDraft, setAgentDraft] = useState("");
+  const [observations, setObservations] =
+    useState<SpeakingObservationsResponse | null>(null);
+  const [observationsLoading, setObservationsLoading] = useState(false);
+  const [observationsError, setObservationsError] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [endMessage, setEndMessage] = useState<string | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const transcriptRef = useRef<HTMLDivElement | null>(null);
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
   const dataChannelRef = useRef<RTCDataChannel | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const observationsAbortControllerRef = useRef<AbortController | null>(null);
   const completionTimeoutRef = useRef<number | null>(null);
   const deadlineRef = useRef<number | null>(null);
   const generationRef = useRef(0);
   const entryIdRef = useRef(0);
+  const eventOrderRef = useRef(0);
   const agentDraftRef = useRef("");
+  const agentDraftOrderRef = useRef<number | null>(null);
   const transcriptEntriesRef = useRef<TranscriptEntry[]>([]);
-  const observationsRef = useRef<SpeakingObservations | null>(null);
+  const candidateOrderByItemIdRef = useRef<Map<string, number>>(new Map());
+  const candidateItemIdsRef = useRef<string[]>([]);
+  const notUnderstoodItemIdsRef = useRef<Set<string>>(new Set());
+  const closingDetectedRef = useRef(false);
   const finishSessionRef = useRef<(reason: EndReason) => void>(() => undefined);
   const failSessionRef = useRef<(message: string) => void>(() => undefined);
+
+  const replaceTranscriptEntries = useCallback(
+    (entries: TranscriptEntry[]): void => {
+      const sortedEntries = [...entries].sort(
+        (first, second) => first.order - second.order || first.id - second.id,
+      );
+      transcriptEntriesRef.current = sortedEntries;
+      setTranscriptEntries(sortedEntries);
+    },
+    [],
+  );
+
+  const addTranscriptEntry = useCallback(
+    (
+      speaker: TranscriptSpeaker,
+      text: string,
+      order: number,
+      itemId: string | null,
+      notUnderstood: boolean,
+    ): void => {
+      const cleanText = text.trim();
+      if (!cleanText) return;
+
+      if (itemId) {
+        const existingEntry = transcriptEntriesRef.current.find(
+          (entry) => entry.itemId === itemId && entry.speaker === speaker,
+        );
+        if (existingEntry) {
+          replaceTranscriptEntries(
+            transcriptEntriesRef.current.map((entry) =>
+              entry.id === existingEntry.id
+                ? {
+                    ...entry,
+                    text: cleanText,
+                    notUnderstood: entry.notUnderstood || notUnderstood,
+                  }
+                : entry,
+            ),
+          );
+          return;
+        }
+      }
+
+      entryIdRef.current += 1;
+      replaceTranscriptEntries([
+        ...transcriptEntriesRef.current,
+        {
+          id: entryIdRef.current,
+          itemId,
+          order,
+          speaker,
+          text: cleanText,
+          notUnderstood,
+        },
+      ]);
+    },
+    [replaceTranscriptEntries],
+  );
+
+  const reserveCandidateOrder = useCallback((itemId: string): number => {
+    const existingOrder = candidateOrderByItemIdRef.current.get(itemId);
+    if (existingOrder !== undefined) return existingOrder;
+
+    eventOrderRef.current += 1;
+    const order = eventOrderRef.current;
+    candidateOrderByItemIdRef.current.set(itemId, order);
+    candidateItemIdsRef.current.push(itemId);
+    return order;
+  }, []);
+
+  const markLatestCandidateNotUnderstood = useCallback((): void => {
+    const latestItemId = candidateItemIdsRef.current.at(-1);
+    if (latestItemId) {
+      notUnderstoodItemIdsRef.current.add(latestItemId);
+      replaceTranscriptEntries(
+        transcriptEntriesRef.current.map((entry) =>
+          entry.itemId === latestItemId && entry.speaker === "candidate"
+            ? { ...entry, notUnderstood: true }
+            : entry,
+        ),
+      );
+      return;
+    }
+
+    const latestCandidate = [...transcriptEntriesRef.current]
+      .reverse()
+      .find((entry) => entry.speaker === "candidate");
+    if (!latestCandidate) return;
+
+    replaceTranscriptEntries(
+      transcriptEntriesRef.current.map((entry) =>
+        entry.id === latestCandidate.id
+          ? { ...entry, notUnderstood: true }
+          : entry,
+      ),
+    );
+  }, [replaceTranscriptEntries]);
 
   const cleanupConnection = useCallback((): void => {
     abortControllerRef.current?.abort();
@@ -268,47 +428,130 @@ export default function SpreekAgent() {
     deadlineRef.current = null;
   }, []);
 
+  const requestObservations = useCallback(
+    async (
+      entries: readonly TranscriptEntry[],
+      generation: number,
+    ): Promise<void> => {
+      if (!apiBaseUrl || entries.length === 0) {
+        setObservationsLoading(false);
+        setObservationsError(
+          entries.length === 0
+            ? "Er is geen transcript beschikbaar voor observaties."
+            : "De API-URL voor de observaties ontbreekt in de configuratie.",
+        );
+        return;
+      }
+
+      observationsAbortControllerRef.current?.abort();
+      const controller = new AbortController();
+      observationsAbortControllerRef.current = controller;
+      setObservationsLoading(true);
+      setObservationsError(null);
+
+      const turns = entries.map((entry) => ({
+        spreker: entry.speaker === "agent" ? "agent" : "kandidaat",
+        tekst:
+          entry.speaker === "candidate" && entry.notUnderstood
+            ? `${notUnderstoodMarker} ${entry.text}`
+            : entry.text,
+      }));
+
+      try {
+        const response = await fetch(observationsEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ beurten: turns }),
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            await readApiError(
+              response,
+              "De observaties konden niet worden opgebouwd.",
+            ),
+          );
+        }
+
+        const payload: unknown = await response.json();
+        if (!isSpeakingObservationsResponse(payload)) {
+          throw new Error("De observatieservice gaf een onverwacht antwoord.");
+        }
+
+        if (generationRef.current !== generation) return;
+        setObservations(payload);
+      } catch (error: unknown) {
+        if (
+          generationRef.current !== generation ||
+          getErrorName(error) === "AbortError"
+        ) {
+          return;
+        }
+        setObservationsError(
+          error instanceof Error && error.message.trim()
+            ? error.message
+            : "De observaties konden niet worden opgebouwd.",
+        );
+      } finally {
+        if (generationRef.current === generation) {
+          observationsAbortControllerRef.current = null;
+          setObservationsLoading(false);
+        }
+      }
+    },
+    [],
+  );
+
+  const finalizeAgentDraft = useCallback((): void => {
+    const draft = agentDraftRef.current.trim();
+    if (draft) {
+      eventOrderRef.current += agentDraftOrderRef.current === null ? 1 : 0;
+      const order = agentDraftOrderRef.current ?? eventOrderRef.current;
+      addTranscriptEntry("agent", draft, order, null, false);
+    }
+
+    agentDraftRef.current = "";
+    agentDraftOrderRef.current = null;
+    setAgentDraft("");
+  }, [addTranscriptEntry]);
+
   const finishSession = useCallback(
     (reason: EndReason): void => {
       generationRef.current += 1;
+      const generation = generationRef.current;
+      finalizeAgentDraft();
+      const entries = transcriptEntriesRef.current;
       cleanupConnection();
-      agentDraftRef.current = "";
-      setAgentDraft("");
+      closingDetectedRef.current = false;
 
-      if (!observationsRef.current) {
-        const fallbackObservations = buildFallbackObservations(
-          transcriptEntriesRef.current,
-        );
-        observationsRef.current = fallbackObservations;
-        setObservations(fallbackObservations);
-      }
-
-      setStatus("ended");
+      setSessionStatus("beeindigd");
+      setRemainingSeconds(0);
       setErrorMessage(null);
-      setEndMessage(
-        reason === "timeout"
-          ? "De maximale sessieduur van vier minuten is bereikt."
-          : reason === "completed"
-            ? "De drie taakbeurten zijn afgerond."
-            : reason === "remote"
-              ? "De Realtime-sessie is gesloten."
-              : "Je hebt het gesprek beëindigd.",
-      );
+      setEndMessage(endReasonMessage(reason));
+      setObservations(null);
+      void requestObservations(entries, generation);
     },
-    [cleanupConnection],
+    [cleanupConnection, finalizeAgentDraft, requestObservations],
   );
 
   const failSession = useCallback(
     (message: string): void => {
       generationRef.current += 1;
+      const generation = generationRef.current;
+      finalizeAgentDraft();
+      const entries = transcriptEntriesRef.current;
       cleanupConnection();
-      agentDraftRef.current = "";
-      setAgentDraft("");
-      setStatus("error");
+      closingDetectedRef.current = false;
+
+      setSessionStatus("beeindigd");
+      setRemainingSeconds(0);
       setErrorMessage(message);
       setEndMessage(null);
+      setObservations(null);
+      void requestObservations(entries, generation);
     },
-    [cleanupConnection],
+    [cleanupConnection, finalizeAgentDraft, requestObservations],
   );
 
   useEffect(() => {
@@ -319,12 +562,19 @@ export default function SpreekAgent() {
   useEffect(() => {
     return () => {
       generationRef.current += 1;
+      observationsAbortControllerRef.current?.abort();
       cleanupConnection();
     };
   }, [cleanupConnection]);
 
   useEffect(() => {
-    if (status !== "connected") return;
+    const transcript = transcriptRef.current;
+    if (!transcript) return;
+    transcript.scrollTo({ top: transcript.scrollHeight, behavior: "smooth" });
+  }, [agentDraft, transcriptEntries]);
+
+  useEffect(() => {
+    if (sessionStatus !== "actief") return;
 
     const updateTimer = (): void => {
       const deadline = deadlineRef.current;
@@ -344,28 +594,7 @@ export default function SpreekAgent() {
     updateTimer();
     const timerId = window.setInterval(updateTimer, 250);
     return () => window.clearInterval(timerId);
-  }, [status]);
-
-  const addTranscriptEntry = useCallback(
-    (speaker: TranscriptSpeaker, text: string): void => {
-      const cleanText = text.trim();
-      if (!cleanText) return;
-
-      entryIdRef.current += 1;
-      const nextEntry: TranscriptEntry = {
-        id: entryIdRef.current,
-        speaker,
-        text: cleanText,
-      };
-
-      transcriptEntriesRef.current = [
-        ...transcriptEntriesRef.current,
-        nextEntry,
-      ];
-      setTranscriptEntries(transcriptEntriesRef.current);
-    },
-    [],
-  );
+  }, [sessionStatus]);
 
   const handleServerMessage = useCallback(
     (generation: number, rawData: string): void => {
@@ -375,14 +604,52 @@ export default function SpreekAgent() {
       if (!event) return;
 
       switch (event.type) {
-        case "conversation.item.input_audio_transcription.completed":
-        case "input_audio_transcription.completed":
-          addTranscriptEntry("candidate", event.transcript ?? "");
+        case "input_audio_buffer.committed":
+        case "input_audio_buffer.speech_stopped":
+          if (event.itemId) reserveCandidateOrder(event.itemId);
           break;
+
+        case "conversation.item.input_audio_transcription.completed":
+        case "input_audio_transcription.completed": {
+          const itemId = event.itemId ?? null;
+          eventOrderRef.current += itemId ? 0 : 1;
+          const order = itemId
+            ? reserveCandidateOrder(itemId)
+            : eventOrderRef.current;
+          addTranscriptEntry(
+            "candidate",
+            event.transcript ?? "",
+            order,
+            itemId,
+            itemId ? notUnderstoodItemIdsRef.current.has(itemId) : false,
+          );
+          break;
+        }
+
+        case "conversation.item.input_audio_transcription.failed": {
+          const itemId = event.itemId ?? null;
+          eventOrderRef.current += itemId ? 0 : 1;
+          const order = itemId
+            ? reserveCandidateOrder(itemId)
+            : eventOrderRef.current;
+          if (itemId) notUnderstoodItemIdsRef.current.add(itemId);
+          addTranscriptEntry(
+            "candidate",
+            "Transcriptie niet beschikbaar.",
+            order,
+            itemId,
+            true,
+          );
+          break;
+        }
 
         case "response.output_audio_transcript.delta": {
           const delta = event.delta ?? "";
           if (!delta) break;
+          if (agentDraftOrderRef.current === null) {
+            eventOrderRef.current += 1;
+            agentDraftOrderRef.current = eventOrderRef.current;
+          }
           agentDraftRef.current += delta;
           setAgentDraft(agentDraftRef.current);
           break;
@@ -392,27 +659,44 @@ export default function SpreekAgent() {
           const completedTranscript = (
             event.transcript ?? agentDraftRef.current
           ).trim();
+          if (agentDraftOrderRef.current === null) {
+            eventOrderRef.current += 1;
+            agentDraftOrderRef.current = eventOrderRef.current;
+          }
+          const order = agentDraftOrderRef.current;
           agentDraftRef.current = "";
+          agentDraftOrderRef.current = null;
           setAgentDraft("");
-          addTranscriptEntry("agent", completedTranscript);
+          addTranscriptEntry(
+            "agent",
+            completedTranscript,
+            order,
+            event.itemId ?? null,
+            false,
+          );
 
-          const parsedObservations = parseObservations(completedTranscript);
-          if (parsedObservations) {
-            observationsRef.current = parsedObservations;
-            setObservations(parsedObservations);
+          if (
+            completedTranscript.includes(firstMisunderstandingResponse) ||
+            completedTranscript.includes(secondMisunderstandingResponse)
+          ) {
+            markLatestCandidateNotUnderstood();
+          }
+
+          if (completedTranscript.includes(closingResponse)) {
+            closingDetectedRef.current = true;
           }
           break;
         }
 
         case "response.done":
           if (
-            observationsRef.current &&
+            closingDetectedRef.current &&
             completionTimeoutRef.current === null
           ) {
             completionTimeoutRef.current = window.setTimeout(() => {
               completionTimeoutRef.current = null;
               finishSessionRef.current("completed");
-            }, 1800);
+            }, 1200);
           }
           break;
 
@@ -427,42 +711,40 @@ export default function SpreekAgent() {
           break;
       }
     },
-    [addTranscriptEntry],
+    [
+      addTranscriptEntry,
+      markLatestCandidateNotUnderstood,
+      reserveCandidateOrder,
+    ],
   );
 
   const startConversation = useCallback(async (): Promise<void> => {
+    if (sessionStatus !== "inactief") return;
+
     generationRef.current += 1;
     const generation = generationRef.current;
     cleanupConnection();
-
-    transcriptEntriesRef.current = [];
-    observationsRef.current = null;
-    agentDraftRef.current = "";
-    entryIdRef.current = 0;
-    setTranscriptEntries([]);
-    setObservations(null);
-    setAgentDraft("");
+    setSessionStatus("verbinden");
     setErrorMessage(null);
     setEndMessage(null);
+    setObservations(null);
+    setObservationsError(null);
+    setObservationsLoading(false);
     setRemainingSeconds(defaultSessionDurationSeconds);
 
     if (!apiBaseUrl) {
-      setStatus("error");
-      setErrorMessage(
+      failSessionRef.current(
         "De API-URL voor de spreekagent ontbreekt in de configuratie.",
       );
       return;
     }
 
     if (!navigator.mediaDevices?.getUserMedia) {
-      setStatus("error");
-      setErrorMessage(
+      failSessionRef.current(
         "Deze browser ondersteunt geen microfoontoegang voor het gesprek.",
       );
       return;
     }
-
-    setStatus("requesting-permission");
 
     let mediaStream: MediaStream;
     try {
@@ -477,13 +759,12 @@ export default function SpreekAgent() {
     } catch (error: unknown) {
       if (generationRef.current !== generation) return;
 
-      setStatus("error");
-      setErrorMessage(
+      failSessionRef.current(
         isMicrophonePermissionDenied(error)
-          ? "Microfoontoegang is geweigerd. Geef deze site toestemming om je microfoon te gebruiken en start daarna opnieuw."
+          ? "Microfoontoegang is geweigerd. Geef deze site toestemming om je microfoon te gebruiken en kies daarna ‘Nieuw gesprek’."
           : getErrorName(error) === "NotFoundError"
-            ? "Er is geen beschikbare microfoon gevonden. Sluit een microfoon aan en probeer opnieuw."
-            : "De microfoon kon niet worden geopend. Controleer je browser- en apparaatinstellingen.",
+            ? "Er is geen beschikbare microfoon gevonden. Sluit een microfoon aan en kies daarna ‘Nieuw gesprek’."
+            : "De microfoon kon niet worden geopend. Controleer je browser- en apparaatinstellingen en kies daarna ‘Nieuw gesprek’.",
       );
       return;
     }
@@ -494,7 +775,6 @@ export default function SpreekAgent() {
     }
 
     mediaStreamRef.current = mediaStream;
-    setStatus("connecting");
 
     const peerConnection = new RTCPeerConnection();
     peerConnectionRef.current = peerConnection;
@@ -505,7 +785,7 @@ export default function SpreekAgent() {
       const remoteStream = event.streams[0] ?? new MediaStream([event.track]);
       audioRef.current.srcObject = remoteStream;
       void audioRef.current.play().catch(() => {
-        // De gebruiker start vanuit een klik; sommige browsers vragen toch extra interactie.
+        // Sommige browsers vragen ondanks de startklik nog extra interactie.
       });
     };
 
@@ -513,7 +793,7 @@ export default function SpreekAgent() {
       if (generationRef.current !== generation) return;
       if (peerConnection.connectionState === "failed") {
         failSessionRef.current(
-          "De audioverbinding kon niet worden opgebouwd. Probeer opnieuw.",
+          "De audioverbinding kon niet worden opgebouwd. Kies ‘Nieuw gesprek’ en probeer opnieuw.",
         );
       }
     };
@@ -531,7 +811,7 @@ export default function SpreekAgent() {
 
     dataChannel.onopen = (): void => {
       if (generationRef.current !== generation) return;
-      setStatus("connected");
+      setSessionStatus("actief");
 
       // Geen client-instructies: dit activeert uitsluitend de server-side prompt.
       dataChannel.send(JSON.stringify({ type: "response.create" }));
@@ -539,7 +819,9 @@ export default function SpreekAgent() {
 
     dataChannel.onerror = (): void => {
       if (generationRef.current !== generation) return;
-      failSessionRef.current("Het datakanaal van de spreekagent is uitgevallen.");
+      failSessionRef.current(
+        "Het datakanaal van de spreekagent is uitgevallen.",
+      );
     };
 
     dataChannel.onclose = (): void => {
@@ -563,7 +845,12 @@ export default function SpreekAgent() {
         signal: abortController.signal,
       });
       if (!tokenResponse.ok) {
-        throw new Error(await readApiError(tokenResponse));
+        throw new Error(
+          await readApiError(
+            tokenResponse,
+            "De spreekagent kon niet worden gestart. Probeer het later opnieuw.",
+          ),
+        );
       }
 
       const tokenPayload: unknown = await tokenResponse.json();
@@ -607,12 +894,36 @@ export default function SpreekAgent() {
 
       failSessionRef.current(getErrorMessage(error));
     }
-  }, [cleanupConnection, handleServerMessage]);
+  }, [cleanupConnection, handleServerMessage, sessionStatus]);
 
-  const isActive =
-    status === "requesting-permission" ||
-    status === "connecting" ||
-    status === "connected";
+  const resetConversation = useCallback((): void => {
+    generationRef.current += 1;
+    observationsAbortControllerRef.current?.abort();
+    observationsAbortControllerRef.current = null;
+    cleanupConnection();
+
+    entryIdRef.current = 0;
+    eventOrderRef.current = 0;
+    agentDraftRef.current = "";
+    agentDraftOrderRef.current = null;
+    transcriptEntriesRef.current = [];
+    candidateOrderByItemIdRef.current.clear();
+    candidateItemIdsRef.current = [];
+    notUnderstoodItemIdsRef.current.clear();
+    closingDetectedRef.current = false;
+
+    setSessionStatus("inactief");
+    setRemainingSeconds(defaultSessionDurationSeconds);
+    setTranscriptEntries([]);
+    setAgentDraft("");
+    setObservations(null);
+    setObservationsLoading(false);
+    setObservationsError(null);
+    setErrorMessage(null);
+    setEndMessage(null);
+  }, [cleanupConnection]);
+
+  const canEnd = sessionStatus === "verbinden" || sessionStatus === "actief";
 
   return (
     <section className={styles.agent} aria-labelledby="spreekagent-title">
@@ -632,20 +943,24 @@ export default function SpreekAgent() {
         <div className={styles.status} role="status" aria-live="polite">
           <span
             className={`${styles.statusDot} ${
-              status === "connected" ? styles.statusDotActive : ""
+              sessionStatus === "actief" ? styles.statusDotActive : ""
             }`}
             aria-hidden="true"
           />
-          <span>{statusLabel(status)}</span>
+          <span>{statusLabel(sessionStatus)}</span>
         </div>
         <div
           className={`${styles.timer} ${
-            remainingSeconds <= 30 && isActive ? styles.timerUrgent : ""
+            remainingSeconds <= 30 && sessionStatus === "actief"
+              ? styles.timerUrgent
+              : ""
           }`}
           aria-label={`Resterende gesprekstijd: ${formatTimer(remainingSeconds)}`}
         >
           <span className={styles.timerLabel}>Resterend</span>
-          <span className={styles.timerValue}>{formatTimer(remainingSeconds)}</span>
+          <span className={styles.timerValue}>
+            {formatTimer(remainingSeconds)}
+          </span>
         </div>
       </div>
 
@@ -654,7 +969,7 @@ export default function SpreekAgent() {
           type="button"
           className={styles.startButton}
           onClick={() => void startConversation()}
-          disabled={isActive}
+          disabled={sessionStatus !== "inactief"}
         >
           Start gesprek
         </button>
@@ -662,10 +977,19 @@ export default function SpreekAgent() {
           type="button"
           className={styles.endButton}
           onClick={() => finishSession("manual")}
-          disabled={!isActive}
+          disabled={!canEnd}
         >
           Beëindig
         </button>
+        {sessionStatus === "beeindigd" ? (
+          <button
+            type="button"
+            className={styles.resetButton}
+            onClick={resetConversation}
+          >
+            Nieuw gesprek
+          </button>
+        ) : null}
       </div>
 
       {errorMessage ? (
@@ -683,10 +1007,17 @@ export default function SpreekAgent() {
       <div className={styles.transcriptPanel}>
         <div className={styles.panelHeading}>
           <span className={styles.panelLabel}>Live transcript</span>
-          <span className={styles.transcriptNote}>Audio wordt niet opgeslagen</span>
+          <span className={styles.transcriptNote}>
+            Audio en transcript worden niet opgeslagen
+          </span>
         </div>
 
-        <div className={styles.transcript} aria-live="polite" aria-relevant="additions">
+        <div
+          ref={transcriptRef}
+          className={styles.transcript}
+          aria-live="polite"
+          aria-relevant="additions text"
+        >
           {transcriptEntries.length === 0 && !agentDraft ? (
             <p className={styles.emptyTranscript}>
               Het transcript verschijnt hier zodra het gesprek start.
@@ -702,9 +1033,16 @@ export default function SpreekAgent() {
                   : styles.candidateEntry
               }`}
             >
-              <span className={styles.speakerLabel}>
-                {entry.speaker === "agent" ? "AI-agent" : "Kandidaat"}
-              </span>
+              <div className={styles.speakerLine}>
+                <span className={styles.speakerLabel}>
+                  {entry.speaker === "agent" ? "AI-agent" : "Kandidaat"}
+                </span>
+                {entry.notUnderstood ? (
+                  <span className={styles.notUnderstoodBadge}>
+                    Niet verstaan
+                  </span>
+                ) : null}
+              </div>
               <p>{entry.text}</p>
             </article>
           ))}
@@ -726,26 +1064,48 @@ export default function SpreekAgent() {
           <span className={styles.noScoreBadge}>Geen score</span>
         </div>
 
+        {observationsLoading ? (
+          <p className={styles.observationsPlaceholder} role="status">
+            Beschrijvende observaties worden opgebouwd…
+          </p>
+        ) : null}
+
+        {observationsError ? (
+          <p className={styles.observationsError} role="alert">
+            {observationsError}
+          </p>
+        ) : null}
+
+        {observations && !observations.beoordeelbaar ? (
+          <section className={styles.notAssessable} aria-label="Niet beoordeelbaar">
+            <h5>Deze afname is niet beoordeelbaar.</h5>
+            <ul>
+              {observations.signalen.map((signal) => (
+                <li key={signal.code}>
+                  <span>{signal.code.replaceAll("_", " ")}</span>
+                  <p>{signal.toelichting}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
         {observations ? (
           <dl className={styles.observationGrid}>
-            <div>
-              <dt>Taakvervulling</dt>
-              <dd>{observations.taskCompletion}</dd>
-            </div>
-            <div>
-              <dt>Vloeiendheid</dt>
-              <dd>{observations.fluency}</dd>
-            </div>
-            <div>
-              <dt>Interactie</dt>
-              <dd>{observations.interaction}</dd>
-            </div>
+            {observations.observaties.map((observation) => (
+              <div key={observation.sleutel}>
+                <dt>{observation.label}</dt>
+                <dd>{observation.tekst}</dd>
+              </div>
+            ))}
           </dl>
-        ) : (
+        ) : null}
+
+        {!observations && !observationsLoading && !observationsError ? (
           <p className={styles.observationsPlaceholder}>
             Na het gesprek verschijnen hier korte, beschrijvende observaties.
           </p>
-        )}
+        ) : null}
 
         <p className={styles.phaseStatement}>
           Fase 3: de agent neemt af en observeert. Het oordeel blijft bij de
@@ -753,7 +1113,12 @@ export default function SpreekAgent() {
         </p>
       </aside>
 
-      <audio ref={audioRef} autoPlay className={styles.remoteAudio} aria-hidden="true" />
+      <audio
+        ref={audioRef}
+        autoPlay
+        className={styles.remoteAudio}
+        aria-hidden="true"
+      />
     </section>
   );
 }
