@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { LowiContent, LowiProject, UILabels } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import JarvisExplainButton from "@/components/JarvisExplainButton";
+import NidusCta from "@/components/NidusCta";
 import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
@@ -86,7 +87,15 @@ export default function LowiSection({ content, labels }: LowiSectionProps) {
                 {project.url.replace(/^https?:\/\//, "")}
               </a>
             ) : null}
-            {project.caseStudyPath ? (
+            {project.caseStudyPath === "/nidus" ? (
+              <NidusCta
+                className={styles.lowiLink}
+                interactionId="nidus_cta_lowi"
+                variant="secondary"
+              >
+                {t(project.caseStudyLinkLabel ?? labels.caseStudyLinkLabel)}
+              </NidusCta>
+            ) : project.caseStudyPath ? (
               <Link className={styles.lowiLink} href={project.caseStudyPath}>
                 {t(project.caseStudyLinkLabel ?? labels.caseStudyLinkLabel)}
               </Link>

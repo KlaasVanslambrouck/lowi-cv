@@ -4,6 +4,7 @@ import { placeholderContent } from "@/content/placeholderContent";
 import { useLanguage } from "@/hooks/useLanguage";
 import ControlStack from "@/components/ControlStack";
 import Hero from "@/components/Hero";
+import NidusCta from "@/components/NidusCta";
 import CVSection from "@/components/CVSection";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
 import EducationList from "@/components/EducationList";
@@ -18,7 +19,23 @@ import JarvisAsk from "@/components/jarvis/JarvisAsk";
 import { JarvisExplainProvider } from "@/context/JarvisExplainContext";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import type { Bilingual } from "@/types/content";
 import styles from "@/styles/cv.module.css";
+
+const NIDUS_CTA_LABELS = {
+  hero: {
+    nl: "Bekijk de Nidus-case",
+    en: "Explore the Nidus case study",
+  },
+  about: {
+    nl: "Zie hoe ik dit toepas in Nidus",
+    en: "See how I apply this in Nidus",
+  },
+  projects: {
+    nl: "Bekijk hoe deze projecten samenkomen in Nidus",
+    en: "See how these projects connect in Nidus",
+  },
+} satisfies Record<"hero" | "about" | "projects", Bilingual>;
 
 // De volledige CV-pagina. Alle content komt uit placeholderContent en wordt
 // later vervangen door een fetch uit de Supabase-tabel `portfolio_content`.
@@ -33,10 +50,16 @@ export default function HomePage() {
           <main className={styles.cvPage}>
           <ControlStack labels={content.uiLabels} />
 
-          <Hero content={content.hero} />
+          <Hero
+            content={content.hero}
+            nidusCtaLabel={NIDUS_CTA_LABELS.hero}
+          />
 
           <CVSection id="about" title={content.aboutMe.heading}>
             <p className={styles.aboutMeBody}>{t(content.aboutMe.body)}</p>
+            <NidusCta interactionId="nidus_cta_about" variant="secondary">
+              {t(NIDUS_CTA_LABELS.about)}
+            </NidusCta>
           </CVSection>
 
           <CVSection id="experience" title={content.sectionTitles.experience}>
@@ -78,6 +101,9 @@ export default function HomePage() {
                 />
               ))}
             </div>
+            <NidusCta interactionId="nidus_cta_projects" variant="secondary">
+              {t(NIDUS_CTA_LABELS.projects)}
+            </NidusCta>
           </CVSection>
 
           <ContactFooter

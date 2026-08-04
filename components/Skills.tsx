@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { SkillsSection } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useInViewOnce } from "@/hooks/useInViewOnce";
+import NidusCta from "@/components/NidusCta";
 import styles from "@/styles/cv.module.css";
 
 interface SkillsProps {
@@ -48,11 +48,13 @@ export default function Skills({ content }: SkillsProps) {
               ))}
             </ul>
             {cluster.proofAnchor === "nidus" ? (
-              // Zelfde patroon als de "Ontdek Nidus"-knop in LowiSection:
-              // Next.js Link naar de volwaardige /nidus case-study-route.
-              <Link className={styles.skillProofLink} href="/nidus">
+              <NidusCta
+                className={styles.skillProofLink}
+                interactionId="nidus_cta_skills"
+                variant="secondary"
+              >
                 {t(content.proofLinkLabel)}
-              </Link>
+              </NidusCta>
             ) : null}
           </article>
         ))}

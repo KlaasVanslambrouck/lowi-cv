@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { HeroContent } from "@/types/content";
+import type { Bilingual, HeroContent } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useSceneSupport } from "@/hooks/useSceneSupport";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import ArchitectureSceneFallback from "@/components/ArchitectureSceneFallback";
+import NidusCta from "@/components/NidusCta";
 import styles from "@/styles/cv.module.css";
 
 // 3D-scene lazy laden, uitsluitend client-side; SVG-netwerk als loading-fallback
@@ -16,9 +17,10 @@ const ArchitectureScene = dynamic(
 
 interface HeroProps {
   content: HeroContent;
+  nidusCtaLabel: Bilingual;
 }
 
-export default function Hero({ content }: HeroProps) {
+export default function Hero({ content, nidusCtaLabel }: HeroProps) {
   const { t } = useLanguage();
   const [heroRef] = useSectionTracking<HTMLElement>("hero");
   // Gedeelde detectie (reduced motion, <768px, WebGL); vóór mount tonen we
@@ -69,6 +71,9 @@ export default function Hero({ content }: HeroProps) {
           <span className={styles.liveDot} aria-hidden="true" />
           {t(content.liveLabel)}
         </span>
+        <NidusCta interactionId="nidus_cta_hero" variant="primary">
+          {t(nidusCtaLabel)}
+        </NidusCta>
       </div>
     </header>
   );

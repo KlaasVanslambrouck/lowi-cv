@@ -1,0 +1,42 @@
+:where(.cta) {
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--cv-font-mono);
+  text-decoration: none;
+}
+
+:where(.primary) {
+  min-height: 2.75rem;
+  display: flex;
+  margin-top: 1.35rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.7rem 1.5rem;
+  color: var(--cv-ink);
+  background-color: var(--cv-copper);
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+:where(.primary):hover {
+  background-color: var(--cv-copper-soft);
+  box-shadow: 0 6px 24px rgb(var(--cv-copper-rgb) / 0.35);
+  transform: translateY(-2px);
+}
+
+:where(.secondary) {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: 1rem;
+  color: var(--cv-copper);
+  font-size: 0.8rem;
+}
+
+:where(.secondary):hover {
+  text-decoration: underline;
+}

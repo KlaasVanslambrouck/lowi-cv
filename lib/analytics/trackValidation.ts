@@ -33,10 +33,21 @@ const INTERACTION_IDS = [
   "jarvis_terminal_open",
   "jarvis_proactive_shown",
   "jarvis_proactive_clicked",
+  "nidus_cta_hero",
+  "nidus_cta_about",
+  "nidus_cta_projects",
+  "nidus_cta_lowi",
+  "nidus_cta_skills",
 ] as const;
 
 export type EventType = (typeof EVENT_TYPES)[number];
 export type DeviceType = (typeof DEVICE_TYPES)[number];
+export type NidusCtaInteractionId =
+  | "nidus_cta_hero"
+  | "nidus_cta_about"
+  | "nidus_cta_projects"
+  | "nidus_cta_lowi"
+  | "nidus_cta_skills";
 type SectionEventData = {
   sectionId: string;
 };
@@ -54,6 +65,7 @@ type InteractionEventData =
   | { interactionId: "skill_node_hover"; skillId: string }
   | { interactionId: "jarvis_terminal_open" }
   | { interactionId: "jarvis_proactive_shown"; sectionId: string }
+  | { interactionId: NidusCtaInteractionId }
   | {
       interactionId: "jarvis_proactive_clicked";
       sectionId: string;
@@ -212,6 +224,15 @@ function validateInteractionEventData(
       return skillId ? { interactionId, skillId } : null;
     }
     case "jarvis_terminal_open": {
+      return hasOnlyKeys(eventData, ["interactionId"])
+        ? { interactionId }
+        : null;
+    }
+    case "nidus_cta_hero":
+    case "nidus_cta_about":
+    case "nidus_cta_projects":
+    case "nidus_cta_lowi":
+    case "nidus_cta_skills": {
       return hasOnlyKeys(eventData, ["interactionId"])
         ? { interactionId }
         : null;
