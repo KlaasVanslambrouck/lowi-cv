@@ -1,0 +1,278 @@
+.contentStack {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.paragraphBlock {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.contentLabel,
+.quoteLabel,
+.listTitle,
+.calloutTitle,
+.placeholderStatus,
+.tableCaption,
+.tableHeader {
+  font-family: var(--cv-font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.contentLabel,
+.quoteLabel,
+.placeholderStatus {
+  color: var(--cv-copper-soft);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.paragraph {
+  max-width: 70ch;
+  color: var(--cv-text-soft);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.paragraphLead {
+  max-width: 64ch;
+  color: var(--cv-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.paragraphSmall {
+  color: var(--cv-muted);
+}
+
+.quoteBlock {
+  display: grid;
+  gap: 0.75rem;
+  border-left: 3px solid var(--cv-copper);
+  padding: 1.25rem 1.4rem;
+  background-color: rgb(var(--cv-copper-rgb) / 0.09);
+}
+
+.quoteText {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 72ch;
+  color: var(--cv-text);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.tableFigure {
+  display: grid;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.tableViewport {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--cv-border);
+  background-color: var(--cv-surface);
+  overscroll-behavior-inline: contain;
+}
+
+.table {
+  width: 100%;
+  min-width: 48rem;
+  border-collapse: collapse;
+  color: var(--cv-text-soft);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.tableCaption {
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--cv-border);
+  color: var(--cv-text);
+  text-align: left;
+}
+
+.tableHeader {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgb(var(--cv-text-rgb) / 0.28);
+  color: var(--cv-text);
+  letter-spacing: 0.03em;
+  vertical-align: bottom;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--cv-border);
+}
+
+.tableRow:last-child {
+  border-bottom: 0;
+}
+
+.tableRow:hover {
+  background-color: rgb(var(--cv-text-rgb) / 0.035);
+}
+
+.tableCell {
+  padding: 0.85rem 1rem;
+  vertical-align: top;
+}
+
+.numericCell {
+  font-family: var(--cv-font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.alignStart {
+  text-align: left;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+.alignEnd {
+  text-align: right;
+}
+
+.tableNote {
+  color: var(--cv-muted);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.listBlock {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.listTitle {
+  max-width: 68ch;
+  color: var(--cv-text);
+  line-height: 1.5;
+}
+
+.list {
+  display: grid;
+  gap: 0.7rem;
+  max-width: 76ch;
+  padding-left: 1.4rem;
+  color: var(--cv-text-soft);
+  font-size: 1rem;
+  line-height: 1.6;
+  list-style: disc;
+}
+
+.orderedList {
+  list-style: decimal;
+}
+
+.listItem {
+  padding-left: 0.25rem;
+}
+
+.listItem::marker,
+.nestedList li::marker {
+  color: var(--cv-copper-soft);
+  font-family: var(--cv-font-mono);
+  font-weight: 500;
+}
+
+.nestedList {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.6rem;
+  padding-left: 1.25rem;
+  list-style: square;
+}
+
+.callout {
+  display: grid;
+  gap: 0.7rem;
+  border: 1px solid var(--cv-border);
+  border-left-width: 3px;
+  padding: 1.1rem 1.25rem;
+  background-color: var(--cv-surface);
+}
+
+.calloutAccent {
+  border-left-color: var(--cv-copper);
+}
+
+.calloutInfo {
+  border-left-color: var(--cv-blue);
+  background-color: rgb(var(--cv-blue-rgb) / 0.07);
+}
+
+.calloutWarning {
+  border-left-color: var(--cv-copper-soft);
+  background-color: rgb(var(--cv-copper-rgb) / 0.08);
+}
+
+.calloutRisk {
+  border-left-color: var(--cv-violet);
+  background-color: rgb(var(--cv-violet-rgb) / 0.08);
+}
+
+.calloutTitle {
+  color: var(--cv-text);
+  line-height: 1.5;
+}
+
+.calloutBody {
+  display: grid;
+  gap: 0.7rem;
+  max-width: 76ch;
+  color: var(--cv-text-soft);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.structuredText {
+  overflow-x: auto;
+  font-family: var(--cv-font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+
+.placeholder {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px dashed rgb(var(--cv-copper-rgb) / 0.72);
+  padding: 1.2rem 1.3rem;
+  background:
+    linear-gradient(135deg, rgb(var(--cv-copper-rgb) / 0.07), transparent 55%),
+    var(--cv-surface);
+}
+
+.placeholderTitle {
+  color: var(--cv-text);
+  font-family: var(--cv-font-serif);
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+
+.placeholderDescription {
+  max-width: 72ch;
+  color: var(--cv-text-soft);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .contentStack {
+    gap: 1rem;
+  }
+
+  .quoteBlock,
+  .callout,
+  .placeholder {
+    padding: 1rem;
+  }
+
+  .quoteText,
+  .paragraphLead {
+    font-size: 1rem;
+  }
+}

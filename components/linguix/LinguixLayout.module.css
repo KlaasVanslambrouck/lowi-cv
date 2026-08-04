@@ -1,0 +1,224 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--cv-bg);
+  color: var(--cv-text);
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 16.5rem minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4.5rem);
+  width: min(100% - 3rem, 90rem);
+  margin: 0 auto;
+}
+
+.sidebar {
+  min-width: 0;
+}
+
+.desktopNavigation {
+  position: sticky;
+  top: 1.5rem;
+  display: grid;
+  gap: 1.25rem;
+  max-height: calc(100vh - 3rem);
+  max-height: calc(100dvh - 3rem);
+  padding: 1.5rem 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.caseTitle {
+  color: var(--cv-text);
+  font-family: var(--cv-font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.desktopLinks {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.desktopLink {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 2.75rem;
+  border-left: 1px solid var(--cv-border);
+  padding: 0.55rem 0.6rem 0.55rem 0.8rem;
+  color: var(--cv-muted);
+  text-decoration: none;
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.desktopLink:hover {
+  border-left-color: var(--cv-copper-soft);
+  color: var(--cv-text);
+  background-color: rgb(var(--cv-text-rgb) / 0.035);
+}
+
+.desktopLinkActive {
+  border-left: 3px solid var(--cv-copper);
+  padding-left: calc(0.8rem - 2px);
+  color: var(--cv-text);
+  background-color: rgb(var(--cv-copper-rgb) / 0.1);
+}
+
+.desktopLinkNumber,
+.desktopLinkTitle {
+  font-family: var(--cv-font-mono);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.desktopLinkNumber {
+  color: var(--cv-copper-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.main {
+  min-width: 0;
+  max-width: 66rem;
+  padding-bottom: 4rem;
+}
+
+.hero {
+  display: grid;
+  gap: 1.25rem;
+  min-height: min(52vh, 34rem);
+  padding: clamp(4rem, 9vh, 7rem) 0 3rem;
+  align-content: center;
+}
+
+.heroTitle {
+  max-width: 18ch;
+  color: var(--cv-text);
+  font-family: var(--cv-font-serif);
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  font-weight: 500;
+  line-height: 0.98;
+}
+
+.heroThesis {
+  max-width: 32ch;
+  border-left: 3px solid var(--cv-copper);
+  padding-left: 1rem;
+  color: var(--cv-text-soft);
+  font-size: clamp(1.25rem, 2.3vw, 1.8rem);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.sections {
+  display: grid;
+}
+
+.mobileNavigation {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .mobileNavigation {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: block;
+    border-bottom: 1px solid rgb(var(--cv-text-rgb) / 0.22);
+    background-color: rgb(var(--cv-bg-rgb) / 0.96);
+    backdrop-filter: blur(12px);
+  }
+
+  .mobileNavigationInner {
+    display: grid;
+    gap: 0.45rem;
+    width: min(100% - 2rem, 66rem);
+    margin: 0 auto;
+    padding: 0.55rem 0 0.65rem;
+  }
+
+  .mobileCurrentSection {
+    overflow: hidden;
+    color: var(--cv-text);
+    font-family: var(--cv-font-mono);
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobileLinks {
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .mobileLink {
+    display: grid;
+    flex: 0 0 2.75rem;
+    width: 2.75rem;
+    min-height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--cv-border);
+    color: var(--cv-muted);
+    font-family: var(--cv-font-mono);
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .mobileLinkActive {
+    border-color: var(--cv-copper);
+    color: var(--cv-text);
+    background-color: rgb(var(--cv-copper-rgb) / 0.14);
+  }
+
+  .shell {
+    display: block;
+    width: min(100% - 2rem, 66rem);
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    max-width: none;
+  }
+
+  .hero {
+    min-height: min(46vh, 28rem);
+    padding: 3rem 0 2.5rem;
+  }
+
+  .sections > section {
+    scroll-margin-top: 6.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .heroTitle {
+    font-size: clamp(2.5rem, 13vw, 4rem);
+  }
+
+  .heroThesis {
+    font-size: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktopLink {
+    transition: none;
+  }
+}

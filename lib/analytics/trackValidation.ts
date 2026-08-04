@@ -24,13 +24,15 @@ const TOP_LEVEL_KEYS = [
 const LANGUAGE_VALUES = ["nl", "en"] as const;
 const THEME_VALUES = ["dark", "light"] as const;
 const XRAY_VALUES = ["on", "off"] as const;
+const JARVIS_QUESTION_SOURCE_VALUES = ["suggested", "typed"] as const;
 const INTERACTION_IDS = [
   "language_toggle",
   "theme_toggle",
   "xray_toggle",
   "project_exploded_open",
   "skill_node_hover",
-  "jarvis_terminal_open",
+  "jarvis_panel_open",
+  "jarvis_question_asked",
   "jarvis_proactive_shown",
   "jarvis_proactive_clicked",
   "nidus_cta_hero",
@@ -63,7 +65,11 @@ type InteractionEventData =
   | { interactionId: "xray_toggle"; value: "on" | "off" }
   | { interactionId: "project_exploded_open"; projectId: string }
   | { interactionId: "skill_node_hover"; skillId: string }
-  | { interactionId: "jarvis_terminal_open" }
+  | { interactionId: "jarvis_panel_open" }
+  | {
+      interactionId: "jarvis_question_asked";
+      questionSource: "suggested" | "typed";
+    }
   | { interactionId: "jarvis_proactive_shown"; sectionId: string }
   | { interactionId: NidusCtaInteractionId }
   | {
@@ -223,10 +229,21 @@ function validateInteractionEventData(
       const skillId = readSlugId(eventData.skillId);
       return skillId ? { interactionId, skillId } : null;
     }
-    case "jarvis_terminal_open": {
+    case "jarvis_panel_open": {
       return hasOnlyKeys(eventData, ["interactionId"])
         ? { interactionId }
         : null;
+    }
+    case "jarvis_question_asked": {
+      if (!hasOnlyKeys(eventData, ["interactionId", "questionSource"])) {
+        return null;
+      }
+
+      const questionSource = readEnum(
+        eventData.questionSource,
+        JARVIS_QUESTION_SOURCE_VALUES,
+      );
+      return questionSource ? { interactionId, questionSource } : null;
     }
     case "nidus_cta_hero":
     case "nidus_cta_about":

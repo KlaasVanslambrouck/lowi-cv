@@ -1,8 +1,16 @@
 "use client";
 
-import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useLanguage } from "@/hooks/useLanguage";
+import { trackEvent } from "@/lib/analytics/trackEvent";
 import type { Bilingual } from "@/types/content";
 import styles from "./JarvisAsk.module.css";
 
@@ -16,6 +24,7 @@ interface JarvisSuccessResponse {
 }
 
 type RequestStatus = "idle" | "loading" | "success" | "error";
+type JarvisQuestionSource = "suggested" | "typed";
 
 const JARVIS_ENDPOINT_PATH = "/api/portfolio/jarvis";
 
@@ -161,6 +170,7 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
   const sessionId = useAnalyticsSession();
   const titleId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
+  const isPanelOpenRef = useRef(false);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [status, setStatus] = useState<RequestStatus>("idle");
@@ -168,6 +178,26 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
   const [answer, setAnswer] = useState<string | null>(null);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const closePanel = useCallback(() => {
+    isPanelOpenRef.current = false;
+    setIsOpen(false);
+  }, []);
+
+  function handleOpenPanel() {
+    if (isPanelOpenRef.current) return;
+
+    isPanelOpenRef.current = true;
+    setIsOpen(true);
+
+    if (sessionId) {
+      trackEvent({
+        sessionId,
+        eventType: "interaction",
+        eventData: { interactionId: "jarvis_panel_open" },
+      });
+    }
+  }
 
   useEffect(() => {
     if (!isOpen) return;
@@ -179,15 +209,18 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsOpen(false);
+        closePanel();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, [closePanel, isOpen]);
 
-  async function askJarvis(question: string) {
+  async function askJarvis(
+    question: string,
+    questionSource: JarvisQuestionSource,
+  ) {
     const normalizedQuestion = question.trim();
     if (!normalizedQuestion || status === "loading") return;
 
@@ -207,6 +240,15 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
       setErrorMessage(t(copy.missingSession));
       return;
     }
+
+    trackEvent({
+      sessionId,
+      eventType: "interaction",
+      eventData: {
+        interactionId: "jarvis_question_asked",
+        questionSource,
+      },
+    });
 
     setStatus("loading");
     setLastQuestion(normalizedQuestion);
@@ -254,12 +296,12 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    void askJarvis(input);
+    void askJarvis(input, "typed");
   }
 
   function handleQuestionChip(question: string) {
     setInput(question);
-    void askJarvis(question);
+    void askJarvis(question, "suggested");
   }
 
   const rootClassName =
@@ -276,7 +318,7 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
       <button
         type="button"
         className={styles.openButton}
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpenPanel}
         aria-expanded={isOpen}
       >
         <span className={styles.openButtonDot} aria-hidden="true" />
@@ -288,7 +330,7 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
           <button
             type="button"
             className={styles.scrim}
-            onClick={() => setIsOpen(false)}
+            onClick={closePanel}
             aria-label={t(copy.close)}
           />
           <aside className={styles.panel} role="dialog" aria-labelledby={titleId}>
@@ -302,7 +344,7 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
               <button
                 type="button"
                 className={styles.closeButton}
-                onClick={() => setIsOpen(false)}
+                onClick={closePanel}
                 aria-label={t(copy.close)}
               >
                 x
@@ -395,7 +437,7 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
                     <a
                       className={styles.contactLink}
                       href="#contact"
-                      onClick={() => setIsOpen(false)}
+                      onClick={closePanel}
                     >
                       {t(copy.contactLink)}
                     </a>

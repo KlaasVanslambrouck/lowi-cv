@@ -52,6 +52,87 @@ describe("Nidus CTA interaction validation", () => {
   });
 });
 
+describe("Jarvis interaction validation", () => {
+  it("accepts jarvis_panel_open", () => {
+    expect(
+      validateTrackPayload(interactionPayload("jarvis_panel_open")),
+    ).toEqual({
+      sessionId: SESSION_ID,
+      eventType: "interaction",
+      eventData: { interactionId: "jarvis_panel_open" },
+      referrer: null,
+      deviceType: null,
+    });
+  });
+
+  it("rejects extra event data for jarvis_panel_open", () => {
+    expect(
+      validateTrackPayload({
+        ...interactionPayload("jarvis_panel_open"),
+        eventData: {
+          interactionId: "jarvis_panel_open",
+          questionSource: "typed",
+        },
+      }),
+    ).toBeNull();
+  });
+
+  it.each(["suggested", "typed"] as const)(
+    "accepts jarvis_question_asked with a %s source",
+    (questionSource) => {
+      expect(
+        validateTrackPayload({
+          ...interactionPayload("jarvis_question_asked"),
+          eventData: {
+            interactionId: "jarvis_question_asked",
+            questionSource,
+          },
+        }),
+      ).toEqual({
+        sessionId: SESSION_ID,
+        eventType: "interaction",
+        eventData: {
+          interactionId: "jarvis_question_asked",
+          questionSource,
+        },
+        referrer: null,
+        deviceType: null,
+      });
+    },
+  );
+
+  it("rejects jarvis_question_asked without a question source", () => {
+    expect(
+      validateTrackPayload(interactionPayload("jarvis_question_asked")),
+    ).toBeNull();
+  });
+
+  it("rejects jarvis_question_asked with an unknown question source", () => {
+    expect(
+      validateTrackPayload({
+        ...interactionPayload("jarvis_question_asked"),
+        eventData: {
+          interactionId: "jarvis_question_asked",
+          questionSource: "unknown",
+        },
+      }),
+    ).toBeNull();
+  });
+
+  it("rejects extra event data for jarvis_question_asked", () => {
+    expect(
+      validateTrackPayload({
+        ...interactionPayload("jarvis_question_asked"),
+        eventData: {
+          interactionId: "jarvis_question_asked",
+          questionSource: "typed",
+          question: "What did Klaas build?",
+        },
+      }),
+    ).toBeNull();
+  });
+});
+
 describe("analytics JSON content type validation", () => {
   it("accepts the JSON content types used by fetch and the existing beacon blob", () => {
     expect(isJsonContentType("application/json")).toBe(true);
