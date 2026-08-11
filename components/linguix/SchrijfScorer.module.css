@@ -70,6 +70,95 @@
   align-items: start;
 }
 
+/* ── Presentatiemodus ───────────────────────────────────────────────────
+   Een derde minder padding en marge, geen eigen kader of kop, en de twee
+   kolommen naast elkaar met elk een eigen begrensde hoogte. Die interne scroll
+   is bewust: de kandidaattekst en de motiveringen zijn inhoud die de spreker
+   doorloopt. */
+
+.scorerCompact {
+  gap: 0.65rem;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+.scorerCompact .columns {
+  gap: 0.7rem;
+  align-items: stretch;
+}
+
+.scorerCompact .inputColumn,
+.scorerCompact .resultColumn {
+  gap: 0.5rem;
+  min-height: 0;
+  max-height: 32rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.2rem;
+  scrollbar-width: thin;
+}
+
+.scorerCompact .taskCard {
+  gap: 0.45rem;
+  padding: 0.6rem;
+}
+
+.taakInklapbaar {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.taakSamenvatting {
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.taakSamenvatting::marker {
+  color: var(--cv-copper-soft);
+}
+
+.taakSamenvatting > * {
+  display: inline-flex;
+  width: calc(100% - 1.2rem);
+  vertical-align: middle;
+}
+
+.taakSamenvatting:focus-visible {
+  outline: 2px solid var(--cv-copper-soft);
+  outline-offset: 2px;
+}
+
+.scorerCompact .exampleButtons {
+  gap: 0.4rem;
+}
+
+.scorerCompact .textFieldGroup {
+  gap: 0.3rem;
+}
+
+.scorerCompact .textarea,
+.scorerCompact .markedTextFrame {
+  min-height: 12rem;
+}
+
+.scorerCompact .markedTextFrame {
+  max-height: 14rem;
+}
+
+.scorerCompact .reviewBlock {
+  gap: 0.4rem;
+  padding: 0.65rem;
+}
+
+.scorerCompact .criterionCard {
+  padding: 0.45rem 0.55rem;
+}
+
+.scorerCompact .summary > div {
+  padding: 0.5rem;
+}
+
 .inputColumn,
 .resultColumn {
   display: grid;

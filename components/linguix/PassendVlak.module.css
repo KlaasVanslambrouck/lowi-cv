@@ -1,0 +1,21 @@
+.buiten {
+  height: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  /* De enige plek waar scrollen in presentatiemodus is toegestaan: wanneer de
+     schaal op 0,72 vastloopt en het component nóg niet past. */
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* Past het geschaalde component wél, dan mag er geen balk staan — Chromium
+   houdt het scrollgebied namelijk op de ongeschaalde hoogte. */
+.buitenPast {
+  overflow-y: hidden;
+}
+
+.binnen {
+  width: 100%;
+  min-height: 0;
+  transform-origin: top center;
+}

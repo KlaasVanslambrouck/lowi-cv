@@ -29,12 +29,69 @@ interface EscalationPathProps {
   markerId: string;
 }
 
+/** Welk spoor het schema toont. Documentmodus toont er twee, de slide één. */
+export type OplossingSpoor = "A" | "B" | "beide";
+
+interface OplossingSchemaProps {
+  spoor?: OplossingSpoor;
+  /**
+   * Documentmodus toont de eigen kicker, titel en omkadering. In
+   * presentatiemodus draagt de slide die kop al; het beeld laat ze weg en de
+   * viewBox krimpt tot het getoonde spoor, zodat één spoor het scherm vult.
+   */
+  toonKop?: boolean;
+}
+
+/**
+ * ViewBoxen per combinatie van spoor en kop. Eén spoor alleen krijgt ruwweg
+ * twee keer zoveel schaal als beide sporen samen — dat is precies wat de
+ * beslispunten en de escalatiedozen nodig hebben om uit te lezen.
+ */
+const DESKTOP_VIEWBOX: Readonly<Record<OplossingSpoor, string>> = {
+  A: "16 92 1288 466",
+  B: "16 562 1288 308",
+  beide: "16 92 1288 786",
+};
+
+const MOBIEL_VIEWBOX: Readonly<Record<OplossingSpoor, string>> = {
+  A: "10 130 660 1066",
+  B: "10 1202 660 536",
+  beide: "10 130 660 1610",
+};
+
+const DESKTOP_VIEWBOX_MET_KOP = "0 0 1320 890";
+const MOBIEL_VIEWBOX_MET_KOP = "0 0 680 1760";
+
+const SPOOR_OMSCHRIJVING: Readonly<Record<OplossingSpoor, string>> = {
+  A: "Spoor schrijven: AI en mens scoren onafhankelijk, drie beslispunten bepalen of de score vaststaat. Dikke koperkleurige paden tonen wanneer een beoordeling naar een mens of derde beoordelaar escaleert.",
+  B: "Spoor spreken: de AI-agent neemt af en levert een controleerbaar dossier; in fase 3 beoordeelt een mens dat dossier, in fase 4 stelt de AI selectief een score voor.",
+  beide:
+    "Architectuurschema met een spoor voor schrijven en een spoor voor spreken. Dikke koperkleurige paden tonen wanneer een beoordeling naar een mens of derde beoordelaar escaleert.",
+};
+
+function viewBoxVoor(
+  varianten: Readonly<Record<OplossingSpoor, string>>,
+  metKop: string,
+  spoor: OplossingSpoor,
+  toonKop: boolean,
+): string {
+  if (toonKop && spoor === "beide") return metKop;
+  return varianten[spoor];
+}
+
 const SVG_STYLES = `
   .oplossingDesktop,
   .oplossingMobile {
     width: 100%;
     height: auto;
     overflow: visible;
+  }
+
+  /* Presentatiemodus: het beeld vult de rij en schaalt via de viewBox mee.
+     Geen vaste pixelhoogte, dus ook geen scrollbalk. */
+  .oplossingVullend .oplossingDesktop,
+  .oplossingVullend .oplossingMobile {
+    height: 100%;
   }
 
   .oplossingDesktop {
@@ -386,41 +443,12 @@ function DiagramMarkers({ prefix }: { prefix: string }) {
   );
 }
 
-function DesktopDiagram() {
+function DesktopSpoorA() {
   const quietMarkerId = "oplossing-desktop-quiet-arrow";
   const escalationMarkerId = "oplossing-desktop-escalation-arrow";
 
   return (
-    <svg
-      className="oplossingDesktop"
-      viewBox="0 0 1320 890"
-      role="img"
-      aria-labelledby="oplossing-desktop-title oplossing-desktop-description"
-    >
-      <title id="oplossing-desktop-title">Oplossingsschema Linguix</title>
-      <desc id="oplossing-desktop-description">
-        Architectuurschema met een spoor voor schrijven en een spoor voor
-        spreken. Dikke koperkleurige paden tonen wanneer een beoordeling naar
-        een mens of derde beoordelaar escaleert.
-      </desc>
-      <style>{SVG_STYLES}</style>
-      <DiagramMarkers prefix="oplossing-desktop" />
-
-      <rect
-        className="oplossingFrame"
-        x="1"
-        y="1"
-        width="1318"
-        height="888"
-        rx="18"
-      />
-      <text className="oplossingKicker" x="34" y="42">
-        TWEE SPOREN · ÉÉN PRINCIPE
-      </text>
-      <text className="oplossingTitle" x="34" y="76">
-        Menselijk toezicht is de architectuur.
-      </text>
-
+    <>
       <rect
         className="oplossingPanel"
         x="24"
@@ -577,7 +605,15 @@ function DesktopDiagram() {
         lines={["arbitreert discrepantie", "tussen AI en mens"]}
         tone="human"
       />
+    </>
+  );
+}
 
+function DesktopSpoorB() {
+  const quietMarkerId = "oplossing-desktop-quiet-arrow";
+
+  return (
+    <>
       <rect
         className="oplossingPanel"
         x="24"
@@ -639,6 +675,60 @@ function DesktopDiagram() {
         lines={["AI stelt score voor", "mens bevestigt", "of corrigeert"]}
         tone="phase"
       />
+    </>
+  );
+}
+
+function DesktopDiagram({
+  spoor,
+  toonKop,
+}: {
+  spoor: OplossingSpoor;
+  toonKop: boolean;
+}) {
+  return (
+    <svg
+      className="oplossingDesktop"
+      viewBox={viewBoxVoor(
+        DESKTOP_VIEWBOX,
+        DESKTOP_VIEWBOX_MET_KOP,
+        spoor,
+        toonKop,
+      )}
+      preserveAspectRatio="xMidYMid meet"
+      width="100%"
+      height="100%"
+      role="img"
+      aria-labelledby="oplossing-desktop-title oplossing-desktop-description"
+    >
+      <title id="oplossing-desktop-title">Oplossingsschema Linguix</title>
+      <desc id="oplossing-desktop-description">
+        {SPOOR_OMSCHRIJVING[spoor]}
+      </desc>
+      <style>{SVG_STYLES}</style>
+      <DiagramMarkers prefix="oplossing-desktop" />
+
+      {toonKop ? (
+        <>
+          <rect
+            className="oplossingFrame"
+            x="1"
+            y="1"
+            width="1318"
+            height="888"
+            rx="18"
+          />
+          <text className="oplossingKicker" x="34" y="42">
+            TWEE SPOREN · ÉÉN PRINCIPE
+          </text>
+          <text className="oplossingTitle" x="34" y="76">
+            Menselijk toezicht is de architectuur.
+          </text>
+        </>
+      ) : null}
+
+      {spoor === "B" ? null : <DesktopSpoorA />}
+      {spoor === "A" ? null : <DesktopSpoorB />}
     </svg>
   );
 }
@@ -701,44 +791,12 @@ function MobileHumanRail() {
   );
 }
 
-function MobileDiagram() {
+function MobileSpoorA() {
   const quietMarkerId = "oplossing-mobile-quiet-arrow";
   const escalationMarkerId = "oplossing-mobile-escalation-arrow";
 
   return (
-    <svg
-      className="oplossingMobile"
-      viewBox="0 0 680 1760"
-      role="img"
-      aria-labelledby="oplossing-mobile-title oplossing-mobile-description"
-    >
-      <title id="oplossing-mobile-title">Oplossingsschema Linguix</title>
-      <desc id="oplossing-mobile-description">
-        Architectuurschema met een spoor voor schrijven en een spoor voor
-        spreken. Dikke koperkleurige paden tonen wanneer een beoordeling naar
-        een mens of derde beoordelaar escaleert.
-      </desc>
-      <style>{SVG_STYLES}</style>
-      <DiagramMarkers prefix="oplossing-mobile" />
-
-      <rect
-        className="oplossingFrame"
-        x="1"
-        y="1"
-        width="678"
-        height="1758"
-        rx="18"
-      />
-      <text className="oplossingKicker" x="30" y="43">
-        TWEE SPOREN · ÉÉN PRINCIPE
-      </text>
-      <text className="oplossingTitle" x="30" y="80">
-        Menselijk toezicht
-      </text>
-      <text className="oplossingTitle" x="30" y="114">
-        is de architectuur.
-      </text>
-
+    <>
       <rect
         className="oplossingPanel"
         x="18"
@@ -891,7 +949,15 @@ function MobileDiagram() {
         lines={["consensus + hoge confidence"]}
         tone="success"
       />
+    </>
+  );
+}
 
+function MobileSpoorB() {
+  const quietMarkerId = "oplossing-mobile-quiet-arrow";
+
+  return (
+    <>
       <rect
         className="oplossingPanel"
         x="18"
@@ -961,15 +1027,81 @@ function MobileDiagram() {
         lines={["AI stelt voor", "mens bevestigt"]}
         tone="phase"
       />
+    </>
+  );
+}
+
+function MobileDiagram({
+  spoor,
+  toonKop,
+}: {
+  spoor: OplossingSpoor;
+  toonKop: boolean;
+}) {
+  return (
+    <svg
+      className="oplossingMobile"
+      viewBox={viewBoxVoor(
+        MOBIEL_VIEWBOX,
+        MOBIEL_VIEWBOX_MET_KOP,
+        spoor,
+        toonKop,
+      )}
+      preserveAspectRatio="xMidYMid meet"
+      width="100%"
+      height="100%"
+      role="img"
+      aria-labelledby="oplossing-mobile-title oplossing-mobile-description"
+    >
+      <title id="oplossing-mobile-title">Oplossingsschema Linguix</title>
+      <desc id="oplossing-mobile-description">{SPOOR_OMSCHRIJVING[spoor]}</desc>
+      <style>{SVG_STYLES}</style>
+      <DiagramMarkers prefix="oplossing-mobile" />
+
+      {toonKop ? (
+        <>
+          <rect
+            className="oplossingFrame"
+            x="1"
+            y="1"
+            width="678"
+            height="1758"
+            rx="18"
+          />
+          <text className="oplossingKicker" x="30" y="43">
+            TWEE SPOREN · ÉÉN PRINCIPE
+          </text>
+          <text className="oplossingTitle" x="30" y="80">
+            Menselijk toezicht
+          </text>
+          <text className="oplossingTitle" x="30" y="114">
+            is de architectuur.
+          </text>
+        </>
+      ) : null}
+
+      {spoor === "B" ? null : <MobileSpoorA />}
+      {spoor === "A" ? null : <MobileSpoorB />}
     </svg>
   );
 }
 
-export default function OplossingSchema() {
+export default function OplossingSchema({
+  spoor = "beide",
+  toonKop = true,
+}: OplossingSchemaProps) {
   return (
-    <figure style={{ width: "100%", margin: 0 }}>
-      <DesktopDiagram />
-      <MobileDiagram />
+    <figure
+      className={toonKop ? undefined : "oplossingVullend"}
+      style={{
+        width: "100%",
+        height: toonKop ? undefined : "100%",
+        minHeight: 0,
+        margin: 0,
+      }}
+    >
+      <DesktopDiagram spoor={spoor} toonKop={toonKop} />
+      <MobileDiagram spoor={spoor} toonKop={toonKop} />
     </figure>
   );
 }

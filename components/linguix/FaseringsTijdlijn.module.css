@@ -1,0 +1,422 @@
+.tijdlijn {
+  container-type: inline-size;
+  display: grid;
+  gap: clamp(0.85rem, 2cqi, 1.15rem);
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--cv-border);
+  padding: clamp(1rem, 2.5cqi, 1.45rem);
+  background:
+    linear-gradient(145deg, rgb(var(--cv-copper-rgb) / 0.055), transparent 26rem),
+    var(--cv-surface);
+}
+
+/* Presentatiemodus: geen eigen kader of achtergrond — dat is een genest vlak
+   binnen de slide en kost alleen hoogte. Het raster neemt de vrije ruimte, het
+   gatepaneel houdt zijn eigen hoogte. De min-height-0-keten loopt van de
+   sliderij tot in de fasekaarten door. */
+.tijdlijnVullend {
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+.tijdlijnVullend .raster,
+.tijdlijnVullend .faseKaart,
+.tijdlijnVullend .paneel {
+  min-height: 0;
+}
+
+.tijdlijnVullend .paneel {
+  overflow: hidden;
+}
+
+.eyebrow,
+.spoorLabel,
+.faseNummer,
+.faseDuur,
+.gateLabel,
+.gateOvergang,
+.paneelKop,
+.paneelHint,
+.parallelTekst {
+  font-family: var(--cv-font-mono);
+}
+
+.eyebrow {
+  color: var(--cv-copper-soft);
+  font-size: clamp(0.78rem, 1.2cqi, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.titel {
+  margin-top: 0.3rem;
+  color: var(--cv-text);
+  font-family: var(--cv-font-serif);
+  font-size: clamp(1.5rem, 3.4cqi, 2.35rem);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+/* ── Het raster: twee sporen, gates tussen de fasen ─────────────────── */
+
+.raster {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr) auto);
+  gap: clamp(0.45rem, 1cqi, 0.7rem) clamp(0.35rem, 0.9cqi, 0.7rem);
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* Kolom 1, 3 en 5 dragen de fasen, kolom 2, 4 en 6 de gates ertussen. Beide
+   sporen delen één raster, zodat fase 3 exact onder fase 1 uitkomt. */
+.raster > [data-kolom="1"] {
+  grid-column: 1;
+}
+
+.raster > [data-kolom="2"] {
+  grid-column: 2;
+}
+
+.raster > [data-kolom="3"] {
+  grid-column: 3;
+}
+
+.raster > [data-kolom="4"] {
+  grid-column: 4;
+}
+
+.raster > [data-kolom="5"] {
+  grid-column: 5;
+}
+
+.raster > [data-kolom="6"] {
+  grid-column: 6;
+}
+
+.spoorLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  color: var(--cv-muted);
+  font-size: clamp(0.68rem, 1cqi, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.spoorLabelSchrijven {
+  grid-row: 1;
+  grid-column: 1 / -1;
+}
+
+.spoorLabelSpreken {
+  grid-row: 3;
+  grid-column: 1 / 3;
+  align-self: center;
+}
+
+.rijSchrijven {
+  grid-row: 2;
+}
+
+.rijSpreken {
+  grid-row: 4;
+}
+
+/* De aftakking van spoor B: een streepjeslijn onder fase 1, in dezelfde
+   kolom, zodat 'parallel vanaf fase 1' ook zonder tekst afleesbaar is. */
+.parallel {
+  grid-row: 3;
+  grid-column: 3;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  padding-left: 2.1rem;
+}
+
+.parallel::before {
+  content: "";
+  position: absolute;
+  top: -0.9rem;
+  bottom: 0;
+  left: 1.4rem;
+  border-left: 2px dashed rgb(var(--cv-copper-rgb) / 0.6);
+}
+
+.parallel::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 1.4rem;
+  width: 0.7rem;
+  border-bottom: 2px dashed rgb(var(--cv-copper-rgb) / 0.6);
+}
+
+.parallelTekst {
+  color: var(--cv-copper-soft);
+  font-size: clamp(0.66rem, 0.95cqi, 0.78rem);
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+}
+
+/* ── Fasebalken ─────────────────────────────────────────────────────── */
+
+.faseKaart {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.3rem;
+  align-content: start;
+  min-width: 0;
+  border: 1px solid var(--cv-border);
+  border-left: 3px solid rgb(var(--cv-text-rgb) / 0.28);
+  padding: clamp(0.55rem, 1.3cqi, 0.8rem);
+  background-color: rgb(var(--cv-bg-rgb) / 0.4);
+}
+
+.faseKaartSpreken {
+  border-left-color: rgb(var(--cv-violet-rgb) / 0.75);
+}
+
+.faseNummer {
+  color: var(--cv-copper);
+  font-size: clamp(0.95rem, 1.7cqi, 1.3rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.faseTitel {
+  color: var(--cv-text);
+  font-size: clamp(0.82rem, 1.35cqi, 1.05rem);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.faseDuur {
+  color: var(--cv-muted);
+  font-size: clamp(0.68rem, 1cqi, 0.82rem);
+  line-height: 1.35;
+}
+
+/* ── Gates: het punt van dit beeld ──────────────────────────────────── */
+
+.gate {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  align-content: center;
+  min-width: 4.5rem;
+  min-height: 2.75rem;
+  border: 0;
+  padding: 0.35rem 0.25rem;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.gate:hover .ruitVlak,
+.gate:focus-visible .ruitVlak {
+  fill: rgb(var(--cv-blue-rgb) / 0.28);
+  stroke: var(--cv-blue);
+}
+
+.gate:focus-visible {
+  outline: 2px solid var(--cv-copper-soft);
+  outline-offset: 2px;
+}
+
+.gateActief .ruitVlak {
+  fill: rgb(var(--cv-blue-rgb) / 0.28);
+  stroke: var(--cv-blue);
+}
+
+.ruit {
+  width: clamp(1.9rem, 3.4cqi, 2.75rem);
+  height: auto;
+  overflow: visible;
+}
+
+.ruitVlak {
+  fill: var(--cv-surface-raised);
+  stroke: var(--cv-text-soft);
+  stroke-width: 2;
+  transition:
+    fill 0.16s ease,
+    stroke 0.16s ease;
+}
+
+.ruitRing {
+  fill: none;
+  stroke: rgb(var(--cv-copper-rgb) / 0.55);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.gateLabel {
+  color: var(--cv-text-soft);
+  font-size: clamp(0.6rem, 0.9cqi, 0.72rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.gateOvergang {
+  color: var(--cv-muted);
+  font-size: clamp(0.58rem, 0.85cqi, 0.7rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* De gate tussen fase 0 en 1 is de beslissing die verkocht wordt. */
+.gateNadruk .ruit {
+  width: clamp(2.6rem, 4.6cqi, 3.75rem);
+}
+
+.gateNadruk .ruitVlak {
+  fill: rgb(var(--cv-copper-rgb) / 0.2);
+  stroke: var(--cv-copper);
+  stroke-width: 3;
+}
+
+.gateNadruk:hover .ruitVlak,
+.gateNadruk:focus-visible .ruitVlak,
+.gateNadruk.gateActief .ruitVlak {
+  fill: rgb(var(--cv-copper-rgb) / 0.42);
+  stroke: var(--cv-copper);
+}
+
+.gateNadruk .gateLabel {
+  color: var(--cv-copper-soft);
+  font-weight: 700;
+}
+
+/* ── Paneel met de go/no-go-voorwaarde ──────────────────────────────── */
+
+.paneel {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  min-height: 6.75rem;
+  border: 1px solid var(--cv-border);
+  border-left: 3px solid var(--cv-copper);
+  padding: clamp(0.8rem, 1.8cqi, 1.15rem);
+  background-color: rgb(var(--cv-copper-rgb) / 0.07);
+}
+
+.paneelKop {
+  color: var(--cv-copper-soft);
+  font-size: clamp(0.68rem, 1cqi, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.paneelFase {
+  color: var(--cv-text);
+  font-size: clamp(0.95rem, 1.6cqi, 1.2rem);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.paneelVoorwaarde {
+  max-width: 78ch;
+  color: var(--cv-text-soft);
+  font-size: clamp(0.88rem, 1.4cqi, 1.05rem);
+  line-height: 1.5;
+}
+
+.paneelHint {
+  color: var(--cv-muted);
+  font-size: clamp(0.68rem, 1cqi, 0.8rem);
+  line-height: 1.4;
+}
+
+/* ── Onder 700px: gestapelde lijstweergave ──────────────────────────── */
+
+@container (max-width: 700px) {
+  .raster {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .spoorLabelSchrijven,
+  .spoorLabelSpreken,
+  .rijSchrijven,
+  .rijSpreken,
+  .parallel,
+  .raster > [data-kolom] {
+    grid-row: auto;
+    grid-column: auto;
+  }
+
+  .parallel {
+    min-height: 0;
+    padding-left: 1.5rem;
+  }
+
+  .parallel::before {
+    top: -0.6rem;
+    left: 0.6rem;
+  }
+
+  .parallel::after {
+    left: 0.6rem;
+    width: 0.5rem;
+  }
+
+  .faseKaart {
+    grid-template-rows: none;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.75rem;
+  }
+
+  .faseNummer {
+    grid-row: 1 / span 2;
+    align-self: center;
+    font-size: 1.25rem;
+  }
+
+  .faseTitel,
+  .faseDuur {
+    font-size: 0.9rem;
+  }
+
+  .faseDuur {
+    font-size: 0.78rem;
+  }
+
+  .gate {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    justify-items: start;
+    gap: 0.65rem;
+    align-items: center;
+    width: 100%;
+    border: 1px dashed rgb(var(--cv-text-rgb) / 0.24);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .ruit {
+    width: 1.75rem;
+  }
+
+  .gateNadruk .ruit {
+    width: 2.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ruitVlak {
+    transition: none;
+  }
+}

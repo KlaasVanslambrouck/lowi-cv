@@ -11,6 +11,13 @@ import styles from "./LinguixLayout.module.css";
 
 interface LinguixLayoutProps {
   content: LinguixCaseContent;
+  /**
+   * Blok waar het document bij het openen naartoe springt. Wordt gebruikt om
+   * terug te keren uit de presentatiemodus op het blok waar de spreker stond.
+   */
+  startSectionId?: LinguixBlockId | null;
+  /** Meldt welk blok in beeld is, zodat de presentatiemodus daar kan openen. */
+  onActiveSectionChange?: (sectionId: LinguixBlockId) => void;
 }
 
 interface NavigationLinkProps {
@@ -58,14 +65,34 @@ function NavigationLink({
   );
 }
 
-export default function LinguixLayout({ content }: LinguixLayoutProps) {
+export default function LinguixLayout({
+  content,
+  startSectionId = null,
+  onActiveSectionChange,
+}: LinguixLayoutProps) {
   const sectionIds = useMemo(
     () => content.secties.map((section) => section.id),
     [content.secties],
   );
   const [activeSectionId, setActiveSectionId] = useState<LinguixBlockId>(
-    content.secties[0].id,
+    startSectionId ?? content.secties[0].id,
   );
+
+  // Bij terugkeer uit de presentatiemodus meteen naar het juiste blok springen,
+  // zonder animatie: de spreker verwacht het blok waar hij stond.
+  useEffect(() => {
+    if (!startSectionId) return;
+
+    const target = document.getElementById(startSectionId);
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: "auto", block: "start" });
+  }, [startSectionId]);
+
+  useEffect(() => {
+    if (!onActiveSectionChange) return;
+    onActiveSectionChange(activeSectionId);
+  }, [activeSectionId, onActiveSectionChange]);
 
   useEffect(() => {
     const sectionElements = sectionIds

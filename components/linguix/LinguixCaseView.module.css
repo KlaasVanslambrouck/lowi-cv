@@ -1,0 +1,56 @@
+.modusKnop {
+  position: fixed;
+  z-index: 60;
+  top: 0.9rem;
+  right: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2rem;
+  border: 1px solid var(--cv-border);
+  padding: 0.3rem 0.7rem;
+  background-color: rgb(var(--cv-bg-rgb) / 0.72);
+  color: var(--cv-muted);
+  font-family: var(--cv-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  opacity: 0.45;
+  transition:
+    opacity 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.modusKnop:hover,
+.modusKnop:focus-visible {
+  border-color: var(--cv-copper-soft);
+  color: var(--cv-text);
+  opacity: 1;
+}
+
+.modusToets {
+  color: var(--cv-copper-soft);
+  font-weight: 500;
+}
+
+/* In presentatiemodus staat de knop buiten het presentatievlak: hij blijft
+   op zijn plek maar trekt geen aandacht tot je hem zoekt. */
+.modusKnopPresentatie {
+  opacity: 0.16;
+}
+
+@media print {
+  .modusKnop {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modusKnop {
+    transition: none;
+  }
+}

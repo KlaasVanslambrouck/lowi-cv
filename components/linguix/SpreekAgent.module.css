@@ -17,6 +17,51 @@
   gap: 1rem;
 }
 
+/* ── Presentatiemodus ───────────────────────────────────────────────────
+   Een derde minder padding en marge, geen eigen kader of kop, en een
+   transcript met vaste hoogte. Het transcript scrolt zichzelf al mee naar de
+   laatste beurt, dus de observaties eronder blijven op hun plek staan in
+   plaats van bij elke beurt weg te schuiven. */
+
+.agentCompact {
+  gap: 0.65rem;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+.agentCompact .sessionBar {
+  padding-block: 0.45rem;
+}
+
+.agentCompact .controls {
+  gap: 0.45rem;
+}
+
+.agentCompact .transcriptPanel,
+.agentCompact .observations {
+  gap: 0.45rem;
+  padding: 0.6rem;
+}
+
+.agentCompact .transcript {
+  min-height: 12rem;
+  max-height: 12rem;
+}
+
+.agentCompact .transcriptEntry {
+  gap: 0.2rem;
+  padding: 0.45rem 0.55rem;
+}
+
+.agentCompact .observationGrid {
+  gap: 0.45rem;
+}
+
+.agentCompact .phaseStatement {
+  padding-top: 0.5rem;
+}
+
 .eyebrow,
 .headerNote,
 .status,

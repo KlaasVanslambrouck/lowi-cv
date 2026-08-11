@@ -14,6 +14,9 @@ const firstMisunderstandingResponse =
   "Sorry, ik heb u niet goed verstaan. Kan u dat nog eens zeggen?";
 const secondMisunderstandingResponse =
   "Ik krijg dit niet duidelijk. We gaan verder.";
+// Een taalwissel telt volgens de agentinstructies als een onbruikbare uiting,
+// dus die beurt krijgt dezelfde markering als een niet verstane beurt.
+const dutchOnlyResponse = "Dit gesprek is in het Nederlands.";
 const closingResponse = "Dank u. Het gesprek is afgelopen.";
 
 type SessionStatus = "inactief" | "verbinden" | "actief" | "beeindigd";
@@ -59,6 +62,15 @@ interface SpeakingObservationsResponse {
   beoordeelbaar: boolean;
   observaties: SpeakingObservation[];
   signalen: SpeakingSignal[];
+}
+
+interface SpreekAgentProps {
+  /**
+   * Presentatiemodus: een derde minder padding en marge, geen eigen kop of
+   * omkadering, en een transcript met vaste hoogte (het scrolt zichzelf al mee)
+   * zodat de observaties eronder op hun plek blijven staan.
+   */
+  compact?: boolean;
 }
 
 interface RealtimeServerEvent {
@@ -254,7 +266,7 @@ function endReasonMessage(reason: EndReason): string {
   }
 }
 
-export default function SpreekAgent() {
+export default function SpreekAgent({ compact = false }: SpreekAgentProps) {
   const [sessionStatus, setSessionStatus] =
     useState<SessionStatus>("inactief");
   const [remainingSeconds, setRemainingSeconds] = useState(
@@ -433,12 +445,24 @@ export default function SpreekAgent() {
       entries: readonly TranscriptEntry[],
       generation: number,
     ): Promise<void> => {
-      if (!apiBaseUrl || entries.length === 0) {
+      const hasCandidateTurn = entries.some(
+        (entry) => entry.speaker === "candidate",
+      );
+
+      // Zonder kandidaatbeurt valt er niets te observeren: de aanvraag wordt
+      // overgeslagen in plaats van het model een leeg transcript te sturen.
+      if (!hasCandidateTurn) {
         setObservationsLoading(false);
         setObservationsError(
-          entries.length === 0
-            ? "Er is geen transcript beschikbaar voor observaties."
-            : "De API-URL voor de observaties ontbreekt in de configuratie.",
+          "Er zijn geen kandidaatbeurten vastgelegd. Er worden geen observaties opgebouwd.",
+        );
+        return;
+      }
+
+      if (!apiBaseUrl) {
+        setObservationsLoading(false);
+        setObservationsError(
+          "De API-URL voor de observaties ontbreekt in de configuratie.",
         );
         return;
       }
@@ -677,7 +701,8 @@ export default function SpreekAgent() {
 
           if (
             completedTranscript.includes(firstMisunderstandingResponse) ||
-            completedTranscript.includes(secondMisunderstandingResponse)
+            completedTranscript.includes(secondMisunderstandingResponse) ||
+            completedTranscript.includes(dutchOnlyResponse)
           ) {
             markLatestCandidateNotUnderstood();
           }
@@ -926,18 +951,24 @@ export default function SpreekAgent() {
   const canEnd = sessionStatus === "verbinden" || sessionStatus === "actief";
 
   return (
-    <section className={styles.agent} aria-labelledby="spreekagent-title">
-      <header className={styles.header}>
-        <div>
-          <span className={styles.eyebrow}>Live demo · WebRTC</span>
-          <h3 id="spreekagent-title" className={styles.title}>
-            Spreekagent
-          </h3>
-        </div>
-        <p className={styles.headerNote}>
-          Kort taakgesprek met een maximale duur van vier minuten.
-        </p>
-      </header>
+    <section
+      className={`${styles.agent} ${compact ? styles.agentCompact : ""}`}
+      aria-labelledby={compact ? undefined : "spreekagent-title"}
+      aria-label={compact ? "Spreekagent" : undefined}
+    >
+      {compact ? null : (
+        <header className={styles.header}>
+          <div>
+            <span className={styles.eyebrow}>Live demo · WebRTC</span>
+            <h3 id="spreekagent-title" className={styles.title}>
+              Spreekagent
+            </h3>
+          </div>
+          <p className={styles.headerNote}>
+            Kort taakgesprek met een maximale duur van vier minuten.
+          </p>
+        </header>
+      )}
 
       <div className={styles.sessionBar}>
         <div className={styles.status} role="status" aria-live="polite">

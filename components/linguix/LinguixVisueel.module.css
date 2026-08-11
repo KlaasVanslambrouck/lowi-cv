@@ -1,0 +1,16 @@
+/* Elke schakel in de keten van de sliderij tot aan het SVG-element krijgt
+   `min-height: 0`. Zonder dat weigert een grid- of flex-kind onder zijn
+   inhoudsgrootte te krimpen, en dat is precies waar de scrollbalk vandaan
+   kwam. */
+.diagram {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.diagram > * {
+  min-height: 0;
+}

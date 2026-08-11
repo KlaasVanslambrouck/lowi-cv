@@ -68,6 +68,16 @@ interface CandidateTextSegment {
   explanations: readonly string[];
 }
 
+interface SchrijfScorerProps {
+  /**
+   * Presentatiemodus: een derde minder padding en marge, geen eigen kop of
+   * omkadering, de examentaak inklapbaar, en kandidaattekst en resultaat naast
+   * elkaar met elk een eigen interne scroll — die tekst is de inhoud die de
+   * spreker doorloopt, dus daar is scrollen wél gewenst.
+   */
+  compact?: boolean;
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -355,7 +365,7 @@ function ScoreSkeleton() {
   );
 }
 
-export default function SchrijfScorer() {
+export default function SchrijfScorer({ compact = false }: SchrijfScorerProps) {
   const [examplesStatus, setExamplesStatus] =
     useState<ExamplesStatus>("loading");
   const [examplesData, setExamplesData] =
@@ -503,64 +513,92 @@ export default function SchrijfScorer() {
     );
   };
 
-  return (
-    <section className={styles.scorer} aria-labelledby="schrijfscorer-title">
-      <header className={styles.header}>
-        <div>
-          <p className={styles.eyebrow}>Interactieve demonstratie</p>
-          <h3 id="schrijfscorer-title" className={styles.title}>
-            Schrijfscorer
-          </h3>
-        </div>
-        <p className={styles.headerNote}>
-          De beoordelingswijzer is demonstratief en niet door de klant
-          gevalideerd.
+  const taakKop = (
+    <div className={styles.taskHeader}>
+      <p className={styles.columnLabel}>Examentaak</p>
+      {examplesData ? (
+        <span className={styles.taskMeta}>
+          {examplesData.examentaak.niveau} ·{" "}
+          {examplesData.examentaak.tijdMinuten} min
+        </span>
+      ) : null}
+    </div>
+  );
+
+  const taakInhoud =
+    examplesStatus === "loading" && !examplesData ? (
+      <TaskSkeleton />
+    ) : examplesData ? (
+      <div className={styles.taskContent}>
+        <p id="exam-task-title" className={styles.taskSituation}>
+          {examplesData.examentaak.situatie}
         </p>
-      </header>
+        <p className={styles.taskInstruction}>
+          {examplesData.examentaak.opdracht}
+        </p>
+        <ol className={styles.subtasks}>
+          {examplesData.examentaak.deelopdrachten.map((subtask) => (
+            <li key={subtask}>{subtask}</li>
+          ))}
+        </ol>
+        <p className={styles.taskClosing}>
+          {examplesData.examentaak.slotinstructie}
+        </p>
+      </div>
+    ) : (
+      <div className={styles.taskError} role="status">
+        <p>De examentaak kon niet worden geladen.</p>
+        <button
+          type="button"
+          className={styles.secondaryButton}
+          onClick={() => void loadExamples()}
+        >
+          Opnieuw proberen
+        </button>
+      </div>
+    );
+
+  return (
+    <section
+      className={`${styles.scorer} ${compact ? styles.scorerCompact : ""}`}
+      aria-labelledby={compact ? undefined : "schrijfscorer-title"}
+      aria-label={compact ? "Schrijfscorer" : undefined}
+    >
+      {compact ? null : (
+        <header className={styles.header}>
+          <div>
+            <p className={styles.eyebrow}>Interactieve demonstratie</p>
+            <h3 id="schrijfscorer-title" className={styles.title}>
+              Schrijfscorer
+            </h3>
+          </div>
+          <p className={styles.headerNote}>
+            De beoordelingswijzer is demonstratief en niet door de klant
+            gevalideerd.
+          </p>
+        </header>
+      )}
 
       <div className={styles.columns}>
         <form className={styles.inputColumn} onSubmit={handleSubmit}>
-          <section className={styles.taskCard} aria-labelledby="exam-task-title">
-            <div className={styles.taskHeader}>
-              <p className={styles.columnLabel}>Examentaak</p>
-              {examplesData ? (
-                <span className={styles.taskMeta}>
-                  {examplesData.examentaak.niveau} ·{" "}
-                  {examplesData.examentaak.tijdMinuten} min
-                </span>
-              ) : null}
-            </div>
-
-            {examplesStatus === "loading" && !examplesData ? (
-              <TaskSkeleton />
-            ) : examplesData ? (
-              <div className={styles.taskContent}>
-                <p id="exam-task-title" className={styles.taskSituation}>
-                  {examplesData.examentaak.situatie}
-                </p>
-                <p className={styles.taskInstruction}>
-                  {examplesData.examentaak.opdracht}
-                </p>
-                <ol className={styles.subtasks}>
-                  {examplesData.examentaak.deelopdrachten.map((subtask) => (
-                    <li key={subtask}>{subtask}</li>
-                  ))}
-                </ol>
-                <p className={styles.taskClosing}>
-                  {examplesData.examentaak.slotinstructie}
-                </p>
-              </div>
+          <section
+            className={styles.taskCard}
+            aria-labelledby={compact ? undefined : "exam-task-title"}
+            aria-label={compact ? "Examentaak" : undefined}
+          >
+            {compact ? (
+              // Ingeklapt begint de taak: de slide vertelt al waar het over
+              // gaat, en de spreker klapt hem alleen open als iemand ernaar
+              // vraagt.
+              <details className={styles.taakInklapbaar}>
+                <summary className={styles.taakSamenvatting}>{taakKop}</summary>
+                {taakInhoud}
+              </details>
             ) : (
-              <div className={styles.taskError} role="status">
-                <p>De examentaak kon niet worden geladen.</p>
-                <button
-                  type="button"
-                  className={styles.secondaryButton}
-                  onClick={() => void loadExamples()}
-                >
-                  Opnieuw proberen
-                </button>
-              </div>
+              <>
+                {taakKop}
+                {taakInhoud}
+              </>
             )}
           </section>
 

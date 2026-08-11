@@ -1,5 +1,18 @@
 import type { LinguixCaseContent } from "@/types/linguix";
 
+/*
+ * ┌──────────────────────────────────────────────────────────────────────┐
+ * │ LET OP — VOORLOPIGE PRESENTATIETEKSTEN                               │
+ * │                                                                      │
+ * │ Het document "De presentatielaag — inhoud" was niet beschikbaar bij  │
+ * │ het bouwen van deze laag. Elk `presentatie`-veld hieronder is        │
+ * │ daarom samengesteld uit zinnen die al in de documentinhoud van       │
+ * │ hetzelfde blok staan, zodat de formulering van de auteur is.         │
+ * │ Vervang ze één op één door de teksten uit dat document zodra het     │
+ * │ er is. De rest van de presentatielaag hangt er niet van af.          │
+ * └──────────────────────────────────────────────────────────────────────┘
+ */
+
 export const linguixContent = {
   titel: "Project Linguix — case",
   kernstelling: "AI als tweede corrector, niet als eerste.",
@@ -10,6 +23,17 @@ export const linguixContent = {
       titel: "De drie klokken",
       eyebrow: "Urgentie",
       spreektijdMinuten: 2,
+      presentatie: {
+        kernclaim:
+          "Er lopen drie klokken en ze lopen niet gelijk. De volgorde is ongunstig.",
+        steunpunten: [
+          "September 2027: de examens worden gecentraliseerd afgenomen. Dat is uw go-live.",
+          "December 2027: de hoog-risicoverplichtingen gelden. Drie maanden ná uw go-live.",
+          "Augustus 2026: artikel 50 geldt al. Transparantie is geen 2027-vraagstuk.",
+        ],
+        visueelId: "drie-klokken",
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -69,6 +93,16 @@ export const linguixContent = {
       titel: "Wat hier echt gebeurt",
       eyebrow: "Herkadering",
       spreektijdMinuten: 3,
+      presentatie: {
+        kernclaim: "AI als tweede corrector, niet als eerste.",
+        steunpunten: [
+          "U vraagt twee AI-systemen. Beide zijn bouwbaar — maar dat is niet uw project.",
+          "Uw project: dezelfde examens, minder mensen, één plek, strengste regels van Europa.",
+          "Het systeem scoort, vergelijkt, en escaleert alles waar het niet zeker van is.",
+        ],
+        visueelId: "herkadering",
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -103,6 +137,17 @@ export const linguixContent = {
       titel: "De opportuniteit",
       eyebrow: "Waarde · interactief",
       spreektijdMinuten: 4,
+      presentatie: {
+        kernclaim:
+          "Ik heb geen business case gemaakt. Ik heb een businesscase-model gemaakt.",
+        steunpunten: [
+          "Doorlooptijd eerst: een kandidaat wacht vandaag weken op een testmoment.",
+          "Dan consistentie tussen beoordelaars — bij civiel effect een rechtszekerheidsvraag.",
+          "Kost per afname komt laatst. Begin niet bij de besparing.",
+        ],
+        visueelId: "businesscase-model",
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -339,6 +384,24 @@ export const linguixContent = {
       titel: "De oplossing",
       eyebrow: "Oplossingsontwerp",
       spreektijdMinuten: 4,
+      presentatie: {
+        kernclaim:
+          "Bij spreken zit de kost niet in het beoordelen. Ze zit in de afname.",
+        steunpunten: [
+          "Spoor A — schrijven: AI en mens scoren, discrepantie escaleert naar een derde.",
+          "Spoor B — spreken: de agent neemt af, het oordeel blijft bij de mens.",
+          "Automatiseer eerst de afname: bijna alle capaciteitswinst, nul beoordelingsrisico.",
+        ],
+        visueelId: "oplossing-schema",
+        // Twee sporen naast elkaar laten de beslispunten en de escalatiedozen
+        // niet uitlezen op een laptopscherm. Elk spoor krijgt daarom een eigen
+        // scherm; samen blijven ze één blok.
+        visueleStappen: [
+          { id: "spoorA", bijschrift: "Spoor A — schrijven" },
+          { id: "spoorB", bijschrift: "Spoor B — spreken" },
+        ],
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -421,6 +484,17 @@ export const linguixContent = {
       titel: "Demo: schrijfscorer",
       eyebrow: "Demo · schrijven",
       spreektijdMinuten: 3,
+      presentatie: {
+        kernclaim:
+          "Een systeem dat weet wanneer het niet mag antwoorden, is betrouwbaar.",
+        steunpunten: [
+          "Helder geval: score per criterium, met de tekstfragmenten die de score dragen.",
+          "Twijfelgeval: het systeem hééft een score, maar geeft ze niet als eindoordeel.",
+          "Escalatie mét reden — onzekerheidsmarge, spreiding, lengte, niet toepasbaar.",
+        ],
+        visueelId: "schrijf-scorer",
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -476,6 +550,17 @@ export const linguixContent = {
       titel: "Demo: spreekagent",
       eyebrow: "Demo · spreken",
       spreektijdMinuten: 3,
+      presentatie: {
+        kernclaim:
+          "Wat u hier ziet is geen beoordeling. De agent neemt af en observeert.",
+        steunpunten: [
+          "De agent kondigt zichzelf aan als AI. Dat is artikel 50, vandaag al van kracht.",
+          "Probeer hem te ontsporen: hij erkent, weigert, en keert terug naar de taak.",
+          "Na afloop gestructureerde observaties, géén eindscore. Dat is fase drie.",
+        ],
+        visueelId: "spreek-agent",
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -531,12 +616,31 @@ export const linguixContent = {
       titel: "Aanpak & fasering",
       eyebrow: "Fasering",
       spreektijdMinuten: 4,
+      presentatie: {
+        kernclaim:
+          "De belangrijkste meting van dit programma is geen AI-meting.",
+        steunpunten: [
+          "Hoe consistent zijn uw menselijke beoordelaars vandaag onderling?",
+          "Dat cijfer is uw benchmark, uw labelplafond én uw argument voor centralisatie.",
+          "Elke fase heeft een gate. Fase 1 is schaduwmodus: er verandert nog niets.",
+        ],
+        visueelId: "faserings-tijdlijn",
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
           label: "Doel",
           text: "Tonen dat je een project structureert, met gates die de klant beschermen.",
           variant: "lead",
+        },
+        {
+          type: "placeholder",
+          feature: "diagram",
+          title: "Fasering met gates",
+          description:
+            "Twee sporen met vijf fasen en een expliciete gate tussen elke fase; spoor spreken loopt parallel vanaf fase 1. De gate tussen fase 0 en 1 krijgt de nadruk.",
+          statusLabel: "Placeholder · vervangen door de faseringstijdlijn",
         },
         {
           type: "table",
@@ -633,6 +737,17 @@ export const linguixContent = {
       titel: "Risico's & valkuilen",
       eyebrow: "Risicobeheer",
       spreektijdMinuten: 3,
+      presentatie: {
+        kernclaim:
+          "U denkt een AI-systeem aan te kopen. Onder de AI Act bent u dat mogelijk niet.",
+        steunpunten: [
+          "Wie laat ontwikkelen en onder eigen naam in gebruik neemt, is juridisch de aanbieder.",
+          "Dat betekent conformiteitsbeoordeling, documentatie, kwaliteitssysteem, registratie.",
+          "Geen reden om niet te bouwen. Wel om de rollen nu al vast te leggen.",
+        ],
+        visueelId: "risico-matrix",
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -750,6 +865,16 @@ export const linguixContent = {
       titel: "Waarom Datashift",
       eyebrow: "Partnerfit",
       spreektijdMinuten: 1,
+      presentatie: {
+        kernclaim:
+          "De naad tussen bouwer en compliance-adviseur is het grootste risico.",
+        steunpunten: [
+          "Onafhankelijke data- en AI-consultancy: Leuven, Mechelen, Gent, Rotterdam.",
+          "Data Trust Associates in huis — compliance, geen ingehuurde derde partij.",
+          "AI Act-governance bij KBC: één kader over verschillende teamperspectieven heen.",
+        ],
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",
@@ -781,6 +906,15 @@ export const linguixContent = {
       titel: "De vraag",
       eyebrow: "Volgende stap",
       spreektijdMinuten: 1,
+      presentatie: {
+        kernclaim: "Ik vraag u zes weken.",
+        steunpunten: [
+          "Fase 0, vaste prijs, vier concrete opleveringen.",
+          "Uw businesscase-model gevuld, uw baseline gemeten, uw AI Act-gap in kaart.",
+          "Draagt de data het niet, dan zeggen wij dat. Zes weken, geen achttien maanden.",
+        ],
+      },
+      spreekNotities: [],
       inhoud: [
         {
           type: "paragraph",

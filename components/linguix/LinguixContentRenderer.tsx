@@ -10,8 +10,11 @@ import type {
 } from "@/types/linguix";
 import BusinessCaseModel from "./BusinessCaseModel";
 import DrieKlokken from "./DrieKlokken";
+import FaseringsTijdlijn from "./FaseringsTijdlijn";
+import Herkadering from "./Herkadering";
 import LinguixPlaceholder from "./LinguixPlaceholder";
 import OplossingSchema from "./OplossingSchema";
+import RisicoMatrix from "./RisicoMatrix";
 import SchrijfScorer from "./SchrijfScorer";
 import SpreekAgent from "./SpreekAgent";
 import styles from "./LinguixContent.module.css";
@@ -73,6 +76,14 @@ function getCellClass(column: LinguixTableColumn): string {
   ]
     .filter(Boolean)
     .join(" ");
+}
+
+function eersteTabel(
+  blocks: readonly LinguixContentBlock[],
+): LinguixTableBlock | undefined {
+  return blocks.find(
+    (block): block is LinguixTableBlock => block.type === "table",
+  );
 }
 
 function TableRenderer({ block }: BlockRendererProps<LinguixTableBlock>) {
@@ -175,7 +186,11 @@ function assertNever(block: never): never {
   throw new Error(`Onbekend Linguix-inhoudstype: ${JSON.stringify(block)}`);
 }
 
-function renderBlock(block: LinguixContentBlock, index: number) {
+function renderBlock(
+  block: LinguixContentBlock,
+  index: number,
+  blocks: readonly LinguixContentBlock[],
+) {
   const key = `${block.type}-${index}`;
 
   switch (block.type) {
@@ -184,6 +199,12 @@ function renderBlock(block: LinguixContentBlock, index: number) {
     case "quote":
       return <QuoteRenderer key={key} block={block} />;
     case "table":
+      // Het risicoregister van blok 8 leest als matrix beter dan als tabel van
+      // negen rijen. De tabel blijft de bron van beschrijving en mitigatie.
+      if (block.caption === "Risicoregister") {
+        return <RisicoMatrix key={key} tabel={block} />;
+      }
+
       return <TableRenderer key={key} block={block} />;
     case "list":
       return <ListRenderer key={key} block={block} />;
@@ -206,6 +227,18 @@ function renderBlock(block: LinguixContentBlock, index: number) {
         block.title === "Architectuur met twee sporen"
       ) {
         return <OplossingSchema key={key} />;
+      }
+
+      if (
+        block.feature === "diagram" &&
+        block.title === "AI als tweede corrector"
+      ) {
+        return <Herkadering key={key} />;
+      }
+
+      if (block.feature === "diagram" && block.title === "Fasering met gates") {
+        const tabel = eersteTabel(blocks);
+        if (tabel) return <FaseringsTijdlijn key={key} tabel={tabel} />;
       }
 
       if (block.feature === "scorer") {

@@ -16,6 +16,74 @@
   gap: 1.25rem;
 }
 
+/* ── Presentatiemodus ───────────────────────────────────────────────────
+   Padding en marges ongeveer een derde kleiner, geen eigen kader (dat is een
+   genest vlak binnen de slide) en geen eigen kop. De maatvoering van de
+   bedieningselementen zelf blijft staan: die moeten ook bij schaal 0,72 nog
+   te bedienen zijn. */
+
+.modelCompact {
+  gap: 0.8rem;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+.modelCompact .header {
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+
+.modelCompact .resultGrid {
+  gap: 0.5rem;
+}
+
+.modelCompact .resultCard {
+  grid-template-rows: auto minmax(3.6rem, 1fr) auto;
+  gap: 0.5rem;
+  min-height: 8.6rem;
+  padding: 0.65rem;
+}
+
+.modelCompact .resultLabel {
+  min-height: 2.6em;
+  font-size: 0.76rem;
+}
+
+.modelCompact .parametersHeader {
+  padding-top: 0.8rem;
+}
+
+.modelCompact .parameterGrid {
+  gap: 0.55rem;
+}
+
+.modelCompact .parameter {
+  gap: 0.3rem;
+  padding: 0.6rem 0.65rem 0.5rem;
+}
+
+.modelCompact .parameterHeader {
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.modelCompact .fixedParameter {
+  min-height: 0;
+  padding: 0.55rem 0.65rem;
+}
+
+/* De disclaimer en de modelnoot samen op één regel onderaan. */
+.compactVoetnoot {
+  border-left: 3px solid var(--cv-copper);
+  padding: 0.45rem 0.7rem;
+  background-color: rgb(var(--cv-copper-rgb) / 0.09);
+  color: var(--cv-text-soft);
+  font-family: var(--cv-font-mono);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
 .eyebrow,
 .resultLabel,
 .transitionCaption,

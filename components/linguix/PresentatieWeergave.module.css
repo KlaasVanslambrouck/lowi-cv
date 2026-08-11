@@ -1,0 +1,280 @@
+.deck {
+  --presentatie-marge: clamp(1.5rem, 4vw, 4.5rem);
+
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  display: grid;
+  /* De slide neemt alles wat de voortgangsvoet overlaat. */
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--cv-bg);
+  color: var(--cv-text);
+}
+
+/* ── Slide: kop + claim, steunpunten, visueel ───────────────────────────
+   Drie rijen, waarvan alleen de derde meegroeit. `min-height: 0` staat op elke
+   schakel van hier tot aan het SVG-element: zonder dat weigert een grid- of
+   flex-kind onder zijn inhoudsgrootte te krimpen en verschijnt er een
+   scrollbalk in plaats van een kleiner beeld. `overflow: hidden` maakt zichtbaar
+   wanneer iets tóch niet past — een scrollbalk gebruik je tijdens een
+   presentatie niet. */
+
+.slide {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: clamp(0.55rem, 1.2vh, 0.95rem);
+  min-height: 0;
+  padding: clamp(0.8rem, 1.8vh, 1.4rem) var(--presentatie-marge)
+    clamp(0.4rem, 1vh, 0.7rem);
+  overflow: hidden;
+}
+
+.claimRij {
+  display: grid;
+  gap: clamp(0.25rem, 0.7vh, 0.5rem);
+  min-height: 0;
+}
+
+/* Bloknummer, korte titel en — bij subslides — het bijschrift van de stap.
+   Rechts blijft ruimte vrij voor de modusknop. */
+.kopRegel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding-right: 10rem;
+}
+
+.kopNummer,
+.kopTitel,
+.stapBijschrift {
+  font-family: var(--cv-font-mono);
+  font-size: clamp(0.8rem, 0.95vw, 1rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.kopNummer {
+  color: var(--cv-copper);
+  font-weight: 500;
+}
+
+.kopTitel {
+  color: var(--cv-text-soft);
+}
+
+.stapBijschrift {
+  border-left: 1px solid rgb(var(--cv-copper-rgb) / 0.5);
+  padding-left: 0.85rem;
+  color: var(--cv-copper-soft);
+  font-weight: 500;
+}
+
+/* De claim mag twee regels zijn, niet drie — elke extra regel gaat
+   rechtstreeks van de hoogte van het visuele element af. */
+.kernclaim {
+  max-width: 40ch;
+  color: var(--cv-text);
+  font-family: var(--cv-font-serif);
+  font-size: clamp(28px, 3.6vw, 52px);
+  font-weight: 500;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.steunpunten {
+  display: grid;
+  gap: clamp(0.2rem, 0.45vh, 0.4rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.steunpunten:empty {
+  display: none;
+}
+
+.steunpunt {
+  display: grid;
+  grid-template-columns: 1.15rem minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: baseline;
+  color: var(--cv-text-soft);
+  font-size: clamp(15px, 1.35vw, 21px);
+  line-height: 1.35;
+}
+
+.steunpuntMarkering {
+  color: var(--cv-copper);
+  font-family: var(--cv-font-mono);
+  font-size: 0.85em;
+  line-height: inherit;
+}
+
+/* Het visuele element krijgt de meeste ruimte van allemaal. Geen rand, geen
+   achtergrond: dat zou een genest kader binnen de slide zijn dat alleen hoogte
+   kost. `position: relative` geeft het kind een vaste hoogte om tegen te
+   schalen — daardoor hoeft niets meer terug te rekenen op de inhoudshoogte. */
+.visueel {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.visueel > * {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+}
+
+/* Zonder visueel element mag de claim de vrijgekomen ruimte innemen. */
+.slideZonderVisueel {
+  align-content: center;
+  grid-template-rows: auto auto;
+  padding-bottom: clamp(2rem, 6vh, 5rem);
+}
+
+.slideZonderVisueel .kernclaim {
+  max-width: 20ch;
+  font-size: clamp(34px, 4.6vw, 68px);
+}
+
+.slideZonderVisueel .steunpunten {
+  gap: clamp(0.45rem, 1vh, 0.8rem);
+  margin-top: clamp(0.6rem, 1.6vh, 1.2rem);
+}
+
+.slideZonderVisueel .steunpunt {
+  font-size: clamp(16px, 1.55vw, 24px);
+}
+
+/* ── Voet: voortgangsindicator ──────────────────────────────────────── */
+
+.voet {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 var(--presentatie-marge) clamp(0.5rem, 1.2vh, 0.9rem);
+}
+
+.voortgang {
+  color: var(--cv-muted);
+  font-family: var(--cv-font-mono);
+  font-size: clamp(0.75rem, 0.85vw, 0.9rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.voortgangBalk {
+  display: flex;
+  flex: 1;
+  gap: 3px;
+  max-width: 24rem;
+}
+
+.voortgangStap {
+  height: 2px;
+  flex: 1;
+  background-color: rgb(var(--cv-text-rgb) / 0.16);
+}
+
+.voortgangStapGezien {
+  background-color: rgb(var(--cv-copper-rgb) / 0.5);
+}
+
+.voortgangStapActief {
+  background-color: var(--cv-copper);
+}
+
+/* ── Sneltoetsen: één keer bij het betreden, daarna weg ─────────────── */
+
+.sneltoetsen {
+  position: absolute;
+  right: var(--presentatie-marge);
+  bottom: clamp(2.4rem, 5vh, 3.4rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  justify-content: flex-end;
+  border: 1px solid var(--cv-border);
+  padding: 0.55rem 0.8rem;
+  background-color: rgb(var(--cv-bg-rgb) / 0.92);
+  color: var(--cv-text-soft);
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  pointer-events: none;
+  animation: sneltoetsenVervagen 5s ease-out both;
+}
+
+.sneltoetsen span {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.sneltoetsen kbd {
+  border: 1px solid var(--cv-border);
+  border-radius: 3px;
+  padding: 0.05rem 0.32rem;
+  background-color: rgb(var(--cv-text-rgb) / 0.07);
+  color: var(--cv-text);
+  font-family: inherit;
+  font-size: 0.72rem;
+}
+
+@keyframes sneltoetsenVervagen {
+  0%,
+  62% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── Responsief ─────────────────────────────────────────────────────── */
+
+@media (min-width: 1600px) {
+  .deck {
+    --presentatie-marge: clamp(4.5rem, 6vw, 8rem);
+  }
+}
+
+/* Onder 1024px is dit geen presentatiescherm meer; blijf leesbaar en laat
+   het blok in zijn geheel scrollen in plaats van te knijpen. */
+@media (max-width: 1023px) {
+  .slide,
+  .slideZonderVisueel {
+    grid-template-rows: auto auto auto;
+    align-content: start;
+    overflow-y: auto;
+  }
+
+  .visueel {
+    position: static;
+    overflow: visible;
+  }
+
+  .visueel > * {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sneltoetsen {
+    animation: none;
+  }
+}
+
+@media print {
+  .deck {
+    display: none;
+  }
+}

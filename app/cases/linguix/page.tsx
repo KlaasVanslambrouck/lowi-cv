@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import LinguixLayout from "@/components/linguix/LinguixLayout";
+import LinguixCaseView from "@/components/linguix/LinguixCaseView";
 import { linguixContent } from "@/content/linguixContent";
 import { ThemeProvider } from "@/context/ThemeContext";
 
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function LinguixPage() {
   return (
     <ThemeProvider>
-      <LinguixLayout content={linguixContent} />
+      <LinguixCaseView content={linguixContent} />
     </ThemeProvider>
   );
 }

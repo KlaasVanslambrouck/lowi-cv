@@ -92,6 +92,50 @@ export type LinguixContentBlock =
   | LinguixCalloutBlock
   | LinguixPlaceholderBlock;
 
+/**
+ * Identificeert het visuele element dat een blok in presentatiemodus vult.
+ * Elk id verwijst naar hetzelfde component als in documentmodus. De laatste
+ * twee lezen hun tekst uit een tabel die al in de documentinhoud van het blok
+ * staat — één contentbron, twee renderings.
+ */
+export type LinguixVisualId =
+  | "drie-klokken"
+  | "herkadering"
+  | "businesscase-model"
+  | "oplossing-schema"
+  | "schrijf-scorer"
+  | "spreek-agent"
+  | "faserings-tijdlijn"
+  | "risico-matrix";
+
+/**
+ * Maximaal drie steunpunten — als tuple-unie zodat een vierde steunpunt
+ * een compileerfout geeft in plaats van een te volle slide.
+ */
+export type LinguixSteunpunten =
+  | readonly []
+  | readonly [string]
+  | readonly [string, string]
+  | readonly [string, string, string];
+
+/**
+ * Eén visuele stap binnen een blok — een subslide met dezelfde kernclaim en
+ * steunpunten, maar een ander deel van het visuele element. Het `id` gaat als
+ * `stapId` naar het component; dat bepaalt zelf wat het per stap toont.
+ */
+export interface LinguixVisueleStap {
+  id: string;
+  bijschrift?: string;
+}
+
+export interface LinguixPresentationContent {
+  kernclaim: string;
+  steunpunten: LinguixSteunpunten;
+  visueelId?: LinguixVisualId;
+  /** Ontbreekt dit, dan heeft het blok precies één scherm. */
+  visueleStappen?: readonly LinguixVisueleStap[];
+}
+
 export interface LinguixSectionContent {
   id: LinguixBlockId;
   nummer: LinguixBlockNumber;
@@ -99,7 +143,13 @@ export interface LinguixSectionContent {
   eyebrow: string;
   spreektijdMinuten: number;
   inhoud: readonly LinguixContentBlock[];
+  /** De presentatielaag: dezelfde inhoud, teruggebracht tot claim en steun. */
+  presentatie: LinguixPresentationContent;
+  /** Alleen voor de afdrukbare notitieroute — nooit zichtbaar in beide modi. */
+  spreekNotities: readonly string[];
 }
+
+export type LinguixWeergaveModus = "document" | "presentatie";
 
 export interface LinguixCaseContent {
   titel: string;

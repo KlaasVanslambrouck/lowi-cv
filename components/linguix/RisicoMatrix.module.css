@@ -1,0 +1,391 @@
+.matrix {
+  container-type: inline-size;
+  display: grid;
+  gap: clamp(0.9rem, 2cqi, 1.2rem);
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--cv-border);
+  padding: clamp(1rem, 2.5cqi, 1.45rem);
+  background:
+    linear-gradient(145deg, rgb(var(--cv-copper-rgb) / 0.055), transparent 26rem),
+    var(--cv-surface);
+}
+
+/* Presentatiemodus: geen eigen kader of achtergrond — dat is een genest vlak
+   binnen de slide en kost alleen hoogte. De vijf rijen van het raster verdelen
+   de beschikbare hoogte in plaats van hun eigen minimum af te dwingen. */
+.matrixVullend {
+  grid-template-rows: minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+.matrixVullend .lichaam,
+.matrixVullend .raster,
+.matrixVullend .paneel {
+  min-height: 0;
+}
+
+.matrixVullend .lichaam {
+  height: 100%;
+  align-items: stretch;
+}
+
+/* `min-content` in plaats van 0 als ondergrens: de rijen verdelen de hoogte,
+   maar een rij zakt nooit onder de punten die erin staan. Anders schuift de
+   cel met twee risico's (1 en 7 delen dezelfde coördinaat) over de as erboven
+   heen. */
+.matrixVullend .raster {
+  grid-template-rows: repeat(5, minmax(min-content, 1fr)) auto auto;
+}
+
+.matrixVullend .paneel {
+  overflow: hidden;
+}
+
+.eyebrow,
+.asTitel,
+.asTick,
+.stip,
+.puntLabel,
+.paneelKop,
+.paneelCoordinaten,
+.paneelHint,
+.lijstCoordinaten {
+  font-family: var(--cv-font-mono);
+}
+
+.eyebrow {
+  color: var(--cv-copper-soft);
+  font-size: clamp(0.78rem, 1.2cqi, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.titel {
+  margin-top: 0.3rem;
+  color: var(--cv-text);
+  font-family: var(--cv-font-serif);
+  font-size: clamp(1.5rem, 3.4cqi, 2.35rem);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.lichaam {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+  gap: clamp(0.9rem, 2cqi, 1.6rem);
+  align-items: start;
+  min-width: 0;
+}
+
+/* ── Het raster: positie draagt de betekenis ────────────────────────── */
+
+/* De rijhoogte is bewust begrensd: vijf gelijke rijen moeten samen binnen de
+   hoogte van één presentatieblok passen, ook op 1920 bij 1080. */
+.raster {
+  display: grid;
+  grid-template-columns: auto auto repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(clamp(3.25rem, 6cqi, 5.75rem), 1fr)) auto auto;
+  min-width: 0;
+}
+
+.asTitel {
+  color: var(--cv-muted);
+  font-size: clamp(0.62rem, 0.95cqi, 0.76rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.asTitelImpact {
+  grid-row: 1 / 6;
+  grid-column: 1;
+  align-self: center;
+  justify-self: center;
+  padding-right: 0.35rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.asTitelWaarschijnlijkheid {
+  grid-row: 7;
+  grid-column: 3 / -1;
+  padding-top: 0.5rem;
+  text-align: center;
+}
+
+.asTick {
+  color: var(--cv-muted);
+  font-size: clamp(0.62rem, 0.95cqi, 0.76rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.asTickImpact {
+  grid-column: 2;
+  align-self: center;
+  justify-self: end;
+  padding-right: 0.5rem;
+}
+
+.asTickWaarschijnlijkheid {
+  grid-row: 6;
+  justify-self: center;
+  padding-top: 0.4rem;
+}
+
+.cel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: 0;
+  border-right: 1px solid rgb(var(--cv-text-rgb) / 0.1);
+  border-bottom: 1px solid rgb(var(--cv-text-rgb) / 0.1);
+  padding: 0.3rem;
+}
+
+.cel[data-waarschijnlijkheid="1"] {
+  border-left: 1px solid rgb(var(--cv-text-rgb) / 0.1);
+}
+
+.cel[data-impact="5"] {
+  border-top: 1px solid rgb(var(--cv-text-rgb) / 0.1);
+}
+
+/* ── De negen punten ────────────────────────────────────────────────── */
+
+.punt {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.4rem;
+  align-items: center;
+  min-width: 0;
+  border: 0;
+  padding: 0.1rem;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.punt:focus-visible {
+  outline: 2px solid var(--cv-copper-soft);
+  outline-offset: 2px;
+}
+
+/* Geen risicozones in kleur: alleen positie en puntgrootte dragen de
+   zwaarte. De grootte volgt uit waarschijnlijkheid maal impact. */
+.stip {
+  display: grid;
+  place-items: center;
+  width: var(--stip-grootte);
+  height: var(--stip-grootte);
+  border: 1.5px solid var(--cv-text-soft);
+  border-radius: 50%;
+  background-color: rgb(var(--cv-text-rgb) / 0.1);
+  color: var(--cv-text);
+  font-size: clamp(0.58rem, 0.9cqi, 0.72rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.stipKlein {
+  --stip-grootte: clamp(1.1rem, 1.8cqi, 1.25rem);
+}
+
+.stipMidden {
+  --stip-grootte: clamp(1.25rem, 2.1cqi, 1.45rem);
+}
+
+.stipGroot {
+  --stip-grootte: clamp(1.4rem, 2.4cqi, 1.65rem);
+}
+
+.puntLabel {
+  color: var(--cv-text-soft);
+  font-size: clamp(0.58rem, 0.92cqi, 0.7rem);
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+
+.punt:hover .stip {
+  border-color: var(--cv-blue);
+  background-color: rgb(var(--cv-blue-rgb) / 0.3);
+}
+
+.puntActief .stip {
+  border-color: var(--cv-blue);
+  background-color: rgb(var(--cv-blue-rgb) / 0.3);
+}
+
+.punt:hover .puntLabel,
+.puntActief .puntLabel {
+  color: var(--cv-text);
+}
+
+/* Risico 7 — de AI Act-rolverdeling — staat apart in het beeld. */
+.puntUitgelicht .stip {
+  border-width: 2.5px;
+  border-color: var(--cv-copper);
+  background-color: rgb(var(--cv-copper-rgb) / 0.24);
+}
+
+.puntUitgelicht:hover .stip,
+.puntUitgelicht.puntActief .stip {
+  background-color: rgb(var(--cv-copper-rgb) / 0.5);
+}
+
+.puntUitgelicht .puntLabel {
+  color: var(--cv-copper-soft);
+  font-weight: 650;
+}
+
+/* ── Paneel naast de matrix ─────────────────────────────────────────── */
+
+.paneel {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  min-height: 14rem;
+  border: 1px solid var(--cv-border);
+  border-left: 3px solid var(--cv-copper);
+  padding: clamp(0.8rem, 1.8cqi, 1.15rem);
+  background-color: rgb(var(--cv-bg-rgb) / 0.4);
+}
+
+.paneelKop {
+  color: var(--cv-copper-soft);
+  font-size: clamp(0.68rem, 1cqi, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.paneelNaam {
+  color: var(--cv-text);
+  font-size: clamp(1rem, 1.7cqi, 1.25rem);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.paneelCoordinaten {
+  color: var(--cv-muted);
+  font-size: clamp(0.68rem, 1cqi, 0.8rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.paneelVeldLabel {
+  margin-top: 0.35rem;
+  color: var(--cv-muted);
+  font-family: var(--cv-font-mono);
+  font-size: clamp(0.62rem, 0.95cqi, 0.74rem);
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.paneelTekst {
+  color: var(--cv-text-soft);
+  font-size: clamp(0.85rem, 1.3cqi, 1rem);
+  line-height: 1.5;
+}
+
+.paneelHint {
+  color: var(--cv-muted);
+  font-size: clamp(0.72rem, 1.1cqi, 0.85rem);
+  line-height: 1.5;
+}
+
+/* ── Onder 700px: gestapelde lijstweergave ──────────────────────────── */
+
+.lijst {
+  display: none;
+  gap: 0.4rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lijstKnop {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--cv-border);
+  padding: 0.55rem 0.7rem;
+  background-color: rgb(var(--cv-bg-rgb) / 0.4);
+  text-align: left;
+  cursor: pointer;
+}
+
+.lijstKnop:focus-visible {
+  outline: 2px solid var(--cv-copper-soft);
+  outline-offset: 2px;
+}
+
+.lijstKnopActief {
+  border-color: var(--cv-blue);
+  background-color: rgb(var(--cv-blue-rgb) / 0.1);
+}
+
+.lijstKnopUitgelicht {
+  border-color: var(--cv-copper);
+}
+
+.lijstNaam {
+  color: var(--cv-text);
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.lijstCoordinaten {
+  color: var(--cv-muted);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+
+/* Onder 980px is er geen ruimte voor matrix én paneel naast elkaar; het
+   paneel zakt dan onder de matrix in plaats van ernaast. */
+@container (max-width: 980px) {
+  .lichaam {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container (max-width: 700px) {
+  .raster {
+    display: none;
+  }
+
+  .lijst {
+    display: grid;
+  }
+
+  .paneel {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stip {
+    transition: none;
+  }
+}

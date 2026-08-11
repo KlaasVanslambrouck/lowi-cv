@@ -35,6 +35,15 @@ interface TransitionValueProps {
   readonly unit: string;
 }
 
+interface BusinessCaseModelProps {
+  /**
+   * Presentatiemodus: een derde minder padding en marge, geen eigen kop of
+   * omkadering (de slide toont die al) en de disclaimer teruggebracht tot één
+   * regel onderaan.
+   */
+  readonly compact?: boolean;
+}
+
 const SLIDER_DEFINITIONS: readonly SliderDefinition[] = [
   {
     key: "volumeSchrijven",
@@ -181,7 +190,9 @@ function TransitionValue({ current, future, unit }: TransitionValueProps) {
   );
 }
 
-export default function BusinessCaseModel() {
+export default function BusinessCaseModel({
+  compact = false,
+}: BusinessCaseModelProps) {
   const [parameters, setParameters] =
     useState<LinguixBusinessCaseParameters>(() => ({
       ...LINGUIX_BUSINESS_CASE_DEFAULTS,
@@ -203,14 +214,22 @@ export default function BusinessCaseModel() {
   };
 
   return (
-    <section className={styles.model} aria-labelledby="businesscase-model-title">
+    <section
+      className={`${styles.model} ${compact ? styles.modelCompact : ""}`}
+      aria-labelledby={compact ? undefined : "businesscase-model-title"}
+      aria-label={compact ? "Businesscase-model" : undefined}
+    >
       <header className={styles.header}>
-        <div>
-          <p className={styles.eyebrow}>Interactief · illustratieve startwaarden</p>
-          <h3 id="businesscase-model-title" className={styles.title}>
-            Businesscase-model
-          </h3>
-        </div>
+        {compact ? null : (
+          <div>
+            <p className={styles.eyebrow}>
+              Interactief · illustratieve startwaarden
+            </p>
+            <h3 id="businesscase-model-title" className={styles.title}>
+              Businesscase-model
+            </h3>
+          </div>
+        )}
         <button
           className={styles.resetButton}
           type="button"
@@ -261,15 +280,19 @@ export default function BusinessCaseModel() {
         </article>
       </div>
 
-      <p className={styles.disclaimer}>
-        Illustratieve waarden. Geen enkel cijfer op deze pagina is afkomstig
-        van de klant.
-      </p>
+      {compact ? null : (
+        <>
+          <p className={styles.disclaimer}>
+            Illustratieve waarden. Geen enkel cijfer op deze pagina is afkomstig
+            van de klant.
+          </p>
 
-      <p className={styles.modelNote}>
-        Wachttijd is een vereenvoudiging. Ze hangt ook van planning en
-        zaalcapaciteit af; het model toont de capaciteitscomponent.
-      </p>
+          <p className={styles.modelNote}>
+            Wachttijd is een vereenvoudiging. Ze hangt ook van planning en
+            zaalcapaciteit af; het model toont de capaciteitscomponent.
+          </p>
+        </>
+      )}
 
       <div className={styles.parametersHeader}>
         <h4 className={styles.parametersTitle}>Modelparameters</h4>
@@ -333,6 +356,13 @@ export default function BusinessCaseModel() {
           </span>
         </div>
       </div>
+
+      {compact ? (
+        <p className={styles.compactVoetnoot}>
+          Illustratieve waarden — geen enkel cijfer komt van de klant. Wachttijd
+          toont de capaciteitscomponent, niet planning of zaalcapaciteit.
+        </p>
+      ) : null}
     </section>
   );
 }

@@ -23,6 +23,15 @@ interface TodayMarkerProps {
   labelY: number;
 }
 
+interface DrieKlokkenProps {
+  /**
+   * Documentmodus toont de eigen kicker, titel en omkadering. In
+   * presentatiemodus draagt de slide die kop al; het beeld laat ze weg en de
+   * viewBox krimpt mee, zodat de vrijgekomen hoogte naar het diagram gaat.
+   */
+  toonKop?: boolean;
+}
+
 const TIMELINE_START = new Date(Date.UTC(2026, 5, 1));
 const TIMELINE_END = new Date(Date.UTC(2028, 1, 1));
 const TRANSPARENCY_DATE = new Date(Date.UTC(2026, 7, 2));
@@ -61,12 +70,27 @@ const DUTCH_MONTHS = [
   "dec",
 ] as const;
 
+/**
+ * ViewBoxen per modus. Zonder kop begint het beeld bij de tijdas en eindigt
+ * het bij de laatste badge; die 120 eenheden minder hoogte zijn in
+ * presentatiemodus rechtstreeks winst in schaalfactor.
+ */
+const DESKTOP_VIEWBOX = { met: "0 0 1120 590", zonder: "28 94 1086 468" } as const;
+const MOBILE_VIEWBOX = { met: "0 0 680 920", zonder: "20 124 650 720" } as const;
+
 const SVG_STYLES = `
   .drieKlokkenDesktop,
   .drieKlokkenMobile {
     width: 100%;
     height: auto;
     overflow: visible;
+  }
+
+  /* Presentatiemodus: het beeld vult de rij en schaalt via de viewBox mee.
+     Geen vaste pixelhoogte, dus ook geen scrollbalk. */
+  .drieKlokkenVullend .drieKlokkenDesktop,
+  .drieKlokkenVullend .drieKlokkenMobile {
+    height: 100%;
   }
 
   .drieKlokkenDesktop {
@@ -418,7 +442,13 @@ function TodayMarker({
   );
 }
 
-function DesktopTimeline({ today }: { today: Date | null }) {
+function DesktopTimeline({
+  today,
+  toonKop,
+}: {
+  today: Date | null;
+  toonKop: boolean;
+}) {
   const transparencyX = dateToX(TRANSPARENCY_DATE, DESKTOP_GEOMETRY);
   const goLiveX = dateToX(GO_LIVE_DATE, DESKTOP_GEOMETRY);
   const highRiskX = dateToX(HIGH_RISK_DATE, DESKTOP_GEOMETRY);
@@ -454,7 +484,10 @@ function DesktopTimeline({ today }: { today: Date | null }) {
   return (
     <svg
       className="drieKlokkenDesktop"
-      viewBox="0 0 1120 590"
+      viewBox={toonKop ? DESKTOP_VIEWBOX.met : DESKTOP_VIEWBOX.zonder}
+      preserveAspectRatio="xMidYMid meet"
+      width="100%"
+      height="100%"
       role="img"
       aria-labelledby="drie-klokken-desktop-title drie-klokken-desktop-description"
     >
@@ -504,22 +537,28 @@ function DesktopTimeline({ today }: { today: Date | null }) {
         </marker>
       </defs>
 
-      <rect
-        className="drieKlokkenFrame"
-        x="1"
-        y="1"
-        width="1118"
-        height="588"
-        rx="18"
-      />
+      {toonKop ? (
+        <rect
+          className="drieKlokkenFrame"
+          x="1"
+          y="1"
+          width="1118"
+          height="588"
+          rx="18"
+        />
+      ) : null}
 
       <g clipPath="url(#drie-klokken-desktop-reveal)">
-        <text className="drieKlokkenKicker" x="40" y="50">
-          MEDIO 2026 → BEGIN 2028
-        </text>
-        <text className="drieKlokkenTitle" x="40" y="84">
-          Drie klokken. Eén ongunstige volgorde.
-        </text>
+        {toonKop ? (
+          <>
+            <text className="drieKlokkenKicker" x="40" y="50">
+              MEDIO 2026 → BEGIN 2028
+            </text>
+            <text className="drieKlokkenTitle" x="40" y="84">
+              Drie klokken. Eén ongunstige volgorde.
+            </text>
+          </>
+        ) : null}
 
         <line
           className="drieKlokkenAxis"
@@ -771,7 +810,13 @@ function DesktopTimeline({ today }: { today: Date | null }) {
   );
 }
 
-function MobileTimeline({ today }: { today: Date | null }) {
+function MobileTimeline({
+  today,
+  toonKop,
+}: {
+  today: Date | null;
+  toonKop: boolean;
+}) {
   const transparencyX = dateToX(TRANSPARENCY_DATE, MOBILE_GEOMETRY);
   const goLiveX = dateToX(GO_LIVE_DATE, MOBILE_GEOMETRY);
   const highRiskX = dateToX(HIGH_RISK_DATE, MOBILE_GEOMETRY);
@@ -797,7 +842,10 @@ function MobileTimeline({ today }: { today: Date | null }) {
   return (
     <svg
       className="drieKlokkenMobile"
-      viewBox="0 0 680 920"
+      viewBox={toonKop ? MOBILE_VIEWBOX.met : MOBILE_VIEWBOX.zonder}
+      preserveAspectRatio="xMidYMid meet"
+      width="100%"
+      height="100%"
       role="img"
       aria-labelledby="drie-klokken-mobile-title drie-klokken-mobile-description"
     >
@@ -847,25 +895,31 @@ function MobileTimeline({ today }: { today: Date | null }) {
         </marker>
       </defs>
 
-      <rect
-        className="drieKlokkenFrame"
-        x="1"
-        y="1"
-        width="678"
-        height="918"
-        rx="18"
-      />
+      {toonKop ? (
+        <rect
+          className="drieKlokkenFrame"
+          x="1"
+          y="1"
+          width="678"
+          height="918"
+          rx="18"
+        />
+      ) : null}
 
       <g clipPath="url(#drie-klokken-mobile-reveal)">
-        <text className="drieKlokkenKicker" x="34" y="48">
-          MEDIO 2026 → BEGIN 2028
-        </text>
-        <text className="drieKlokkenTitle" x="34" y="86">
-          Drie klokken.
-        </text>
-        <text className="drieKlokkenTitle" x="34" y="120">
-          Eén ongunstige volgorde.
-        </text>
+        {toonKop ? (
+          <>
+            <text className="drieKlokkenKicker" x="34" y="48">
+              MEDIO 2026 → BEGIN 2028
+            </text>
+            <text className="drieKlokkenTitle" x="34" y="86">
+              Drie klokken.
+            </text>
+            <text className="drieKlokkenTitle" x="34" y="120">
+              Eén ongunstige volgorde.
+            </text>
+          </>
+        ) : null}
 
         <line
           className="drieKlokkenAxis"
@@ -1126,7 +1180,7 @@ function MobileTimeline({ today }: { today: Date | null }) {
   );
 }
 
-export default function DrieKlokken() {
+export default function DrieKlokken({ toonKop = true }: DrieKlokkenProps) {
   const currentDateKey = useSyncExternalStore(
     subscribeToCurrentDate,
     getClientDateSnapshot,
@@ -1135,9 +1189,17 @@ export default function DrieKlokken() {
   const today = currentDateKey ? dateFromKey(currentDateKey) : null;
 
   return (
-    <figure style={{ width: "100%", margin: 0 }}>
-      <DesktopTimeline today={today} />
-      <MobileTimeline today={today} />
+    <figure
+      className={toonKop ? undefined : "drieKlokkenVullend"}
+      style={{
+        width: "100%",
+        height: toonKop ? undefined : "100%",
+        minHeight: 0,
+        margin: 0,
+      }}
+    >
+      <DesktopTimeline today={today} toonKop={toonKop} />
+      <MobileTimeline today={today} toonKop={toonKop} />
     </figure>
   );
 }

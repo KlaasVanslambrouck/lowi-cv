@@ -1,0 +1,190 @@
+.pagina {
+  min-height: 100vh;
+  padding: clamp(2rem, 5vw, 4rem) 0 5rem;
+  background-color: var(--cv-bg);
+  color: var(--cv-text);
+}
+
+.binnen {
+  width: min(100% - 3rem, 52rem);
+  margin: 0 auto;
+}
+
+.kop {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--cv-border);
+  padding-bottom: 1.5rem;
+}
+
+.titel {
+  color: var(--cv-text);
+  font-family: var(--cv-font-serif);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.ondertitel,
+.blokNummer,
+.blokEyebrow,
+.notitieLabel {
+  font-family: var(--cv-font-mono);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+.ondertitel {
+  color: var(--cv-muted);
+}
+
+.blokken {
+  display: grid;
+  gap: 3rem;
+}
+
+.blok {
+  display: grid;
+  gap: 0.9rem;
+  break-inside: avoid;
+}
+
+.blokKop {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--cv-border);
+  padding-bottom: 0.5rem;
+}
+
+.blokNummer {
+  color: var(--cv-copper);
+  font-weight: 500;
+}
+
+.blokTitel {
+  color: var(--cv-text);
+  font-family: var(--cv-font-serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.blokEyebrow {
+  margin-left: auto;
+  color: var(--cv-muted);
+  text-transform: uppercase;
+}
+
+.kernclaim {
+  border-left: 3px solid var(--cv-copper);
+  padding-left: 0.9rem;
+  color: var(--cv-text);
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.notitieLabel {
+  color: var(--cv-copper-soft);
+  text-transform: uppercase;
+}
+
+.notities {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.notitie {
+  color: var(--cv-text-soft);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.geenNotities {
+  color: var(--cv-muted);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ── Afdruk: zwart op wit, één blok per pagina ──────────────────────── */
+
+/* Buiten @media print: sommige engines negeren een genestelde @page-regel.
+   De regel heeft sowieso alleen effect bij het afdrukken. */
+@page {
+  margin: 16mm 14mm;
+}
+
+@media print {
+  .pagina {
+    min-height: 0;
+    /* Eigen marge bovenop @page, zodat de tekst ook afdrukt met ruimte
+       wanneer de browser de @page-marges negeert. */
+    padding: 8mm 7mm;
+    background: #fff;
+    color: #000;
+  }
+
+  .binnen {
+    width: 100%;
+    max-width: none;
+  }
+
+  .kop {
+    margin-bottom: 1.5rem;
+    border-bottom: 1pt solid #000;
+    padding-bottom: 0.75rem;
+    break-after: page;
+  }
+
+  .titel,
+  .blokTitel,
+  .kernclaim,
+  .blokNummer,
+  .notitie {
+    color: #000;
+  }
+
+  .ondertitel,
+  .blokEyebrow,
+  .notitieLabel,
+  .geenNotities {
+    color: #333;
+  }
+
+  .blokken {
+    display: block;
+  }
+
+  .blok {
+    gap: 0.6rem;
+    /* Paginaonderbreking per blok. */
+    break-after: page;
+    break-inside: avoid;
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+
+  .blok:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .blokKop {
+    border-bottom: 0.5pt solid #000;
+  }
+
+  .kernclaim {
+    border-left: 2pt solid #000;
+    font-size: 13pt;
+  }
+
+  .notitie {
+    font-size: 11pt;
+  }
+}
