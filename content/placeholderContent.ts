@@ -297,6 +297,8 @@ export const placeholderContent: PortfolioContent = {
       nl: "LOWI — Lab of Wonder and Imagination — is mijn persoonlijke leer-, onderzoeks- en bouwomgeving op het snijvlak van AI, biologie, automatisering en creatieve technologie. Wat begon vanuit nieuwsgierigheid, groeit uit tot een plek waar ik ideeën onderzoek, prototypes bouw en verschillende disciplines met elkaar verbind. LOWI toont niet alleen wat ik bedenk, maar vooral hoe ik denk: onderzoekend, systemisch en altijd gericht op iets dat bruikbaar, begrijpelijk en technisch degelijk is.",
       en: "LOWI — Lab of Wonder and Imagination — is my personal learning, research and building environment at the intersection of AI, biology, automation and creative technology. What started from curiosity is growing into a place where I research ideas, build prototypes and connect different disciplines. LOWI shows not just what I come up with, but above all how I think: inquisitive, systemic, and always aimed at something usable, understandable and technically sound.",
     },
+    celPath: "/lowi",
+    celLinkLabel: { nl: "Bekijk de cel", en: "Explore the cell" },
     projects: [
       {
         name: "Nidus",

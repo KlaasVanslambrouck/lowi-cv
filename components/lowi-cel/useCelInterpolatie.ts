@@ -18,10 +18,12 @@ export interface CelStaat {
   dnaOntvouwing: number;
   intensiteit: Record<OrganelId, number>;
   kleuren: Record<OrganelId, Color>;
+  deeltjesDichtheid: number;
 }
 
 export function maakCelStaat(): CelStaat {
   return {
+    deeltjesDichtheid: 1,
     cameraPositie: new Vector3(...lowiCelBeginStaat.cameraPositie),
     kijkNaar: new Vector3(...lowiCelBeginStaat.kijkNaar),
     focusPunt: new Vector3(...lowiCelBeginStaat.kijkNaar),

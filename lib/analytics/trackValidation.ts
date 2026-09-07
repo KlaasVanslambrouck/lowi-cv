@@ -43,6 +43,7 @@ const INTERACTION_IDS = [
   "nidus_cta_lowi",
   "nidus_cta_skills",
   "lowi_cel_cta_nidus",
+  "lowi_cta_celpagina",
 ] as const;
 
 export type EventType = (typeof EVENT_TYPES)[number];
@@ -53,7 +54,8 @@ export type CtaInteractionId =
   | "nidus_cta_projects"
   | "nidus_cta_lowi"
   | "nidus_cta_skills"
-  | "lowi_cel_cta_nidus";
+  | "lowi_cel_cta_nidus"
+  | "lowi_cta_celpagina";
 type SectionEventData = {
   sectionId: string;
 };
@@ -254,7 +256,8 @@ function validateInteractionEventData(
     case "nidus_cta_projects":
     case "nidus_cta_lowi":
     case "nidus_cta_skills":
-    case "lowi_cel_cta_nidus": {
+    case "lowi_cel_cta_nidus":
+    case "lowi_cta_celpagina": {
       return hasOnlyKeys(eventData, ["interactionId"])
         ? { interactionId }
         : null;

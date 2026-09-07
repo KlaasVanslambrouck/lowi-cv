@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import type { LowiContent, LowiProject, UILabels } from "@/types/content";
+import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useLanguage } from "@/hooks/useLanguage";
 import JarvisExplainButton from "@/components/JarvisExplainButton";
 import NidusCta from "@/components/NidusCta";
 import { useJarvisExplain } from "@/hooks/useJarvisExplain";
+import { trackEvent } from "@/lib/analytics/trackEvent";
+import type { CtaInteractionId } from "@/lib/analytics/trackValidation";
 import styles from "@/styles/cv.module.css";
 
 interface LowiSectionProps {
@@ -22,7 +25,20 @@ function isActiveStatus(project: LowiProject): boolean {
 export default function LowiSection({ content, labels }: LowiSectionProps) {
   const { t } = useLanguage();
   const { isExplanationActive } = useJarvisExplain();
+  const sessionId = useAnalyticsSession();
   const lowiExplanationId = "lowi-project";
+
+  // Zelfde opzet als de CTA op de celpagina zelf: een gewone Link met een
+  // getrackte klik. NidusCta is niet herbruikbaar, die wijst hard naar /nidus.
+  function handleCelKlik(): void {
+    if (!sessionId) return;
+    const interactionId: CtaInteractionId = "lowi_cta_celpagina";
+    trackEvent({
+      sessionId,
+      eventType: "interaction",
+      eventData: { interactionId },
+    });
+  }
 
   return (
     <div>
@@ -34,10 +50,20 @@ export default function LowiSection({ content, labels }: LowiSectionProps) {
         }
       >
         <p className={styles.lowiIntro}>{t(content.intro)}</p>
-        <JarvisExplainButton
-          explanationId={lowiExplanationId}
-          label={labels.jarvisExplainButton}
-        />
+        <div className={styles.lowiIntroActies}>
+          <JarvisExplainButton
+            explanationId={lowiExplanationId}
+            label={labels.jarvisExplainButton}
+          />
+          <Link
+            className={styles.lowiLink}
+            href={content.celPath}
+            onClick={handleCelKlik}
+          >
+            {t(content.celLinkLabel)}
+            <span aria-hidden="true"> →</span>
+          </Link>
+        </div>
       </div>
       <div className={styles.lowiGrid}>
         {content.projects.map((project) => {

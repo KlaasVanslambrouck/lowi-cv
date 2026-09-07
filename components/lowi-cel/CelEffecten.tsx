@@ -3,7 +3,7 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { EffectComposer } from "@react-three/postprocessing";
-import { BlendFunction, BloomEffect, DepthOfFieldEffect, EffectPass, NoiseEffect, VignetteEffect, ToneMappingEffect, ToneMappingMode, type EffectComposer as Composer } from "postprocessing";
+import { BlendFunction, BloomEffect, DepthOfFieldEffect, EffectPass, KernelSize, NoiseEffect, VignetteEffect, ToneMappingEffect, ToneMappingMode, type EffectComposer as Composer } from "postprocessing";
 import { celInstellingen as c } from "./celInstellingen";
 import type { CelStaat } from "./useCelInterpolatie";
 
@@ -13,7 +13,7 @@ function CelEffecten({ staat }: { staat: CelStaat }) {
   const [effecten] = useState(() => {
     const dof = new DepthOfFieldEffect(camera, { focusRange: staat.focusBereik, bokehScale: c.effecten.bokeh, resolutionScale: c.effecten.resolutie });
     dof.target = staat.focusPunt;
-    const bloom = new BloomEffect({ intensity: c.effecten.bloomIntensiteit, luminanceThreshold: c.effecten.bloomDrempel, luminanceSmoothing: .15, mipmapBlur: false, resolutionScale: .5 });
+    const bloom = new BloomEffect({ intensity: c.effecten.bloomIntensiteit, luminanceThreshold: c.effecten.bloomDrempel, luminanceSmoothing: .15, mipmapBlur: false, kernelSize: KernelSize.SMALL, resolutionScale: .5 });
     const korrel = new NoiseEffect({ blendFunction: BlendFunction.SOFT_LIGHT }); korrel.blendMode.opacity.value = c.effecten.korrel;
     return {
       dof, bloom,
@@ -47,8 +47,8 @@ function CelEffecten({ staat }: { staat: CelStaat }) {
     m.tijd += delta; m.frames++;
     if (m.tijd < c.effecten.meetSeconden) return;
     const fps = m.frames / m.tijd;
-    if (m.niveau === 0 && fps < c.effecten.bloomOnderFps) {
-      e.gloed.enabled = false; m.niveau = 1;
+    if (m.niveau === 0 && fps < c.effecten.deeltjesOnderFps) {
+      staat.deeltjesDichtheid = c.effecten.beperkteDichtheid; m.niveau = 1;
     } else if (m.niveau === 1 && fps < c.effecten.dofOnderFps) {
       e.scherpte.enabled = false; m.niveau = 2;
     }
@@ -56,6 +56,7 @@ function CelEffecten({ staat }: { staat: CelStaat }) {
     gl.domElement.dataset.lowiFps = fps.toFixed(1);
     gl.domElement.dataset.lowiDof = String(e.scherpte.enabled);
     gl.domElement.dataset.lowiBloom = String(e.gloed.enabled);
+    gl.domElement.dataset.lowiDeeltjes = String(staat.deeltjesDichtheid);
     m.tijd = 0; m.frames = 0;
   }, 0);
   return <EffectComposer ref={composer} multisampling={0} enableNormalPass={false}>

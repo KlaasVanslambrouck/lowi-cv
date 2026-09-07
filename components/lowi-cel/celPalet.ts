@@ -6,5 +6,5 @@ export const celPalet = {
   weefsel: "#c08a63",
   amber: "#e0913c",
   karmijn: "#9e3341",
-  violet: "#6f6ce0",
+  violet: "#555f99",
 } as const;

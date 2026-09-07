@@ -1,0 +1,75 @@
+{
+  "states": [
+    {
+      "id": "grens",
+      "performance": {
+        "engine": "three.js r185",
+        "lowiFps": "49.4",
+        "lowiDof": "true",
+        "lowiBloom": "true",
+        "lowiDeeltjes": "1"
+      }
+    },
+    {
+      "id": "werkvloer",
+      "performance": {
+        "engine": "three.js r185",
+        "lowiFps": "49.4",
+        "lowiDof": "true",
+        "lowiBloom": "true",
+        "lowiDeeltjes": "1"
+      }
+    },
+    {
+      "id": "code",
+      "performance": {
+        "engine": "three.js r185",
+        "lowiFps": "37.8",
+        "lowiDof": "true",
+        "lowiBloom": "true",
+        "lowiDeeltjes": "0.5"
+      }
+    },
+    {
+      "id": "bouwen",
+      "performance": {
+        "engine": "three.js r185",
+        "lowiFps": "54.3",
+        "lowiDof": "true",
+        "lowiBloom": "true",
+        "lowiDeeltjes": "0.5"
+      }
+    },
+    {
+      "id": "brandstof",
+      "performance": {
+        "engine": "three.js r185",
+        "lowiFps": "54.3",
+        "lowiDof": "true",
+        "lowiBloom": "true",
+        "lowiDeeltjes": "0.5"
+      }
+    },
+    {
+      "id": "verfijnen",
+      "performance": {
+        "engine": "three.js r185",
+        "lowiFps": "49.7",
+        "lowiDof": "true",
+        "lowiBloom": "true",
+        "lowiDeeltjes": "0.5"
+      }
+    },
+    {
+      "id": "groei",
+      "performance": {
+        "engine": "three.js r185",
+        "lowiFps": "49.7",
+        "lowiDof": "true",
+        "lowiBloom": "true",
+        "lowiDeeltjes": "0.5"
+      }
+    }
+  ],
+  "errors": []
+}

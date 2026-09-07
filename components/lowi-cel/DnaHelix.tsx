@@ -7,6 +7,7 @@ import { celInstellingen } from "./celInstellingen";
 import { vervormDeling } from "./celGeometrie";
 import type { CelStaat } from "./useCelInterpolatie";
 import { maakInstrumentMateriaal } from "./celMaterialen";
+import { celPalet } from "./celPalet";
 
 const instellingen = celInstellingen.dna;
 const SEGMENTEN = instellingen.segmenten;
@@ -68,11 +69,12 @@ function maakDna(staat: CelStaat) {
     return { compact, uitgestrekt, curve, geometrie, ringen };
   });
   const basenGeometrie = new THREE.CylinderGeometry(instellingen.basisDikte, instellingen.basisDikte, 1, RADIAAL);
-  const basen = new THREE.InstancedMesh(basenGeometrie, materiaal, BASENPAREN);
+  const basisBinding = maakInstrumentMateriaal(staat.kleuren.kern.clone().lerp(new THREE.Color(celPalet.weefsel), .3), { emissie: instellingen.emissieBasis });
+  const basen = new THREE.InstancedMesh(basenGeometrie, basisBinding.materiaal, BASENPAREN);
   basen.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
   basen.frustumCulled = false;
   groep.add(basen);
-  return { groep, materiaal, binding, strengen, basenGeometrie, basen };
+  return { groep, materiaal, binding, basisBinding, strengen, basenGeometrie, basen };
 }
 
 function DnaHelix({ staat }: { staat: CelStaat }): ReactElement {
@@ -93,6 +95,9 @@ function DnaHelix({ staat }: { staat: CelStaat }): ReactElement {
     dna.basenGeometrie.dispose();
     dna.basen.dispose();
     dna.materiaal.dispose();
+    dna.binding.ruis.dispose();
+    dna.basisBinding.materiaal.dispose();
+    dna.basisBinding.ruis.dispose();
   }, [dna]);
 
   useFrame(({ clock }) => {
@@ -100,6 +105,7 @@ function DnaHelix({ staat }: { staat: CelStaat }): ReactElement {
     const werk = werkRef.current;
     const deling = staat.intensiteit.celdeling;
     dna.binding.tijd.value = clock.elapsedTime;
+    dna.basisBinding.tijd.value = clock.elapsedTime;
     dna.materiaal.emissiveIntensity = instellingen.emissieBasis + instellingen.emissieActief * staat.intensiteit.kern;
     if (Math.abs(werk.vorigeOntvouwing - staat.dnaOntvouwing) < celInstellingen.geometrieDrempel && Math.abs(werk.vorigeDeling - deling) < celInstellingen.geometrieDrempel) return;
     werk.vorigeOntvouwing = staat.dnaOntvouwing;

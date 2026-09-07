@@ -954,6 +954,20 @@
   border-radius: var(--cv-radius);
 }
 
+/* Actierij onder de LOWI-intro: de Jarvis-uitlegknop naast de link naar de
+   celpagina. .lowiLink is voor de kaarten gemaakt en duwt zichzelf daar met
+   margin-top:auto naar beneden; in deze rij is dat ongewenst. */
+.lowiIntroActies {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.lowiIntroActies .lowiLink {
+  margin-top: 0;
+}
+
 .lowiGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

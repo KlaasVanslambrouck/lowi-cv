@@ -264,6 +264,14 @@
   outline-offset: 4px;
 }
 
+/* CTA en JarvisAsk op een rij; wrapt naar twee regels als de breedte krap is. */
+.slotActies {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
 @media (max-width: 767px) {
   .intro,
   .slot {

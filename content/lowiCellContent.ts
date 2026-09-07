@@ -84,8 +84,8 @@ export const lowiCelIntro: LowiCelIntro = {
  * Extreme macro: de onthulling van de hele cel volgt pas in hoofdstuk 2.
  */
 export const lowiCelBeginStaat: VisueleStaat = {
-  cameraPositie: [0.04, 0.955, 0.1],
-  kijkNaar: [0.32, 0.77, 0.14],
+  cameraPositie: [0, 0, 1.035],
+  kijkNaar: [0, 0, 0.995],
   fov: 82,
   actieveOrganellen: [],
   doorsnede: 0,
@@ -111,8 +111,8 @@ export const lowiCelHoofdstukken = [
     },
     accentToken: "--cv-blue",
     visueel: {
-      cameraPositie: [0.26, 0.913, 0.21],
-      kijkNaar: [0.5, 0.7, 0.27],
+      cameraPositie: [0.18, 0.08, 1.025],
+      kijkNaar: [0.18, 0.08, 0.95],
       fov: 78,
       actieveOrganellen: ["membraan"],
       doorsnede: 0,

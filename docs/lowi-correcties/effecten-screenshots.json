@@ -1,0 +1,145 @@
+[
+  {
+    "name": "intro",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "1-grens",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "onthulling",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "2-werkvloer",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "3-code",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "4-bouwen",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "5-brandstof",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "6-verfijnen",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "7-groei",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "themawissel-code",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  },
+  {
+    "name": "lichte-pagina",
+    "before": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    },
+    "after": {
+      "dof": true,
+      "bloom": true,
+      "finishing": true
+    }
+  }
+]

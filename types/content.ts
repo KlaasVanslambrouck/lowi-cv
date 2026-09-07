@@ -58,6 +58,8 @@ export interface LowiProject {
 
 export interface LowiContent {
   intro: Bilingual;
+  celPath: string; // interne route naar de scroll-gedreven celpagina, "/lowi"
+  celLinkLabel: Bilingual; // knoplabel vanuit de sectie-intro naar die pagina
   projects: LowiProject[];
 }
 

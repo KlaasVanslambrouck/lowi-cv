@@ -6,13 +6,14 @@ import {
 } from "./trackValidation";
 
 const SESSION_ID = "123e4567-e89b-42d3-a456-426614174000";
-const NIDUS_CTA_INTERACTION_IDS = [
+const CTA_INTERACTION_IDS = [
   "nidus_cta_hero",
   "nidus_cta_about",
   "nidus_cta_projects",
   "nidus_cta_lowi",
   "nidus_cta_skills",
   "lowi_cel_cta_nidus",
+  "lowi_cta_celpagina",
 ] as const satisfies readonly CtaInteractionId[];
 
 function interactionPayload(interactionId: string) {
@@ -23,8 +24,8 @@ function interactionPayload(interactionId: string) {
   };
 }
 
-describe("Nidus CTA interaction validation", () => {
-  it.each(NIDUS_CTA_INTERACTION_IDS)("accepts %s", (interactionId) => {
+describe("CTA interaction validation", () => {
+  it.each(CTA_INTERACTION_IDS)("accepts %s", (interactionId) => {
     expect(validateTrackPayload(interactionPayload(interactionId))).toEqual({
       sessionId: SESSION_ID,
       eventType: "interaction",
@@ -34,13 +35,13 @@ describe("Nidus CTA interaction validation", () => {
     });
   });
 
-  it("rejects an unknown Nidus CTA interaction id", () => {
+  it("rejects an unknown CTA interaction id", () => {
     expect(
       validateTrackPayload(interactionPayload("nidus_cta_unknown")),
     ).toBeNull();
   });
 
-  it.each(NIDUS_CTA_INTERACTION_IDS)(
+  it.each(CTA_INTERACTION_IDS)(
     "rejects extra event data for %s",
     (interactionId) => {
       expect(

@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useRef, type CSSProperties, type ReactElement } from "react";
+import { memo, useRef, type CSSProperties, type ReactElement, type RefObject } from "react";
 import {
   lowiCelHoofdstukken,
   lowiCelIntro,
   lowiCelSectieId,
   lowiCelSlot,
 } from "@/content/lowiCellContent";
+import JarvisAsk from "@/components/jarvis/JarvisAsk";
 import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useSceneSupport } from "@/hooks/useSceneSupport";
@@ -38,10 +39,16 @@ interface HoofdstukSectieProps {
   index: number;
 }
 
-function HoofdstukSectie({ hoofdstuk, index }: HoofdstukSectieProps): ReactElement {
+// Alleen deze kleine adapter leest de veranderende trackingcontext. Dezelfde
+// ref en hoofdstukprops houden de tekstsubtree stabiel bij verblijfsduurupdates.
+const HoofdstukMetTracking = memo(function HoofdstukMetTracking(props: HoofdstukSectieProps): ReactElement {
+  const [sectieRef] = useSectionTracking<HTMLElement>(lowiCelSectieId(props.hoofdstuk.id));
+  return <HoofdstukSectie {...props} sectieRef={sectieRef} />;
+});
+
+const HoofdstukSectie = memo(function HoofdstukSectie({ hoofdstuk, index, sectieRef }: HoofdstukSectieProps & { sectieRef: RefObject<HTMLElement | null> }): ReactElement {
   const { t } = useLanguage();
   const sectieId = lowiCelSectieId(hoofdstuk.id);
-  const [sectieRef] = useSectionTracking<HTMLElement>(sectieId);
   const accent: AccentVariabelen = {
     "--hoofdstuk-accent": `var(${hoofdstuk.accentToken})`,
   };
@@ -68,7 +75,7 @@ function HoofdstukSectie({ hoofdstuk, index }: HoofdstukSectieProps): ReactEleme
       </div>
     </section>
   );
-}
+});
 
 export default function LowiCelPagina(): ReactElement {
   const { t } = useLanguage();
@@ -139,7 +146,7 @@ export default function LowiCelPagina(): ReactElement {
         {sceneLaag}
         <div className={styles.hoofdstukken}>
           {lowiCelHoofdstukken.map((hoofdstuk, index) => (
-            <HoofdstukSectie
+            <HoofdstukMetTracking
               key={hoofdstuk.id}
               hoofdstuk={hoofdstuk}
               index={index}
@@ -151,14 +158,20 @@ export default function LowiCelPagina(): ReactElement {
       <footer className={styles.slot}>
         <h2 className={styles.slotTitel}>{t(lowiCelSlot.titel)}</h2>
         <p className={styles.slotTekst}>{t(lowiCelSlot.tekst)}</p>
-        <Link
-          className={styles.cta}
-          href={lowiCelSlot.ctaHref}
-          onClick={handleCtaKlik}
-        >
-          {t(lowiCelSlot.ctaLabel)}
-          <span aria-hidden="true"> →</span>
-        </Link>
+        {/* Het slot ligt buiten het instrumentvenster en volgt het thema.
+            JarvisAsk staat naast de CTA i.p.v. ervoor: de link naar /nidus
+            blijft zo de primaire actie, met Jarvis als tweede aanbod. */}
+        <div className={styles.slotActies}>
+          <Link
+            className={styles.cta}
+            href={lowiCelSlot.ctaHref}
+            onClick={handleCtaKlik}
+          >
+            {t(lowiCelSlot.ctaLabel)}
+            <span aria-hidden="true"> →</span>
+          </Link>
+          <JarvisAsk placement="inline" />
+        </div>
       </footer>
     </div>
   );

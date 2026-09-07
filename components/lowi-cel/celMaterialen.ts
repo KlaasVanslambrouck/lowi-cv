@@ -1,28 +1,43 @@
 import * as THREE from "three";
 import { celInstellingen as config } from "./celInstellingen";
 
-// Procedurele meerlagige ruis: geen textures, externe assets of raymarching.
-export const ruisGlsl = `
-float hash3(vec3 p) { p = fract(p * .3183099 + vec3(.13,.17,.19)); p *= 17.; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
-float ruis3(vec3 p) {
-  vec3 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
-  return mix(mix(mix(hash3(i),hash3(i+vec3(1,0,0)),f.x),mix(hash3(i+vec3(0,1,0)),hash3(i+vec3(1,1,0)),f.x),f.y),
-    mix(mix(hash3(i+vec3(0,0,1)),hash3(i+vec3(1,0,1)),f.x),mix(hash3(i+vec3(0,1,1)),hash3(i+vec3(1,1,1)),f.x),f.y),f.z);
+// Een lokaal gegenereerd ruisvolume vervangt tientallen hashberekeningen per
+// fragment. De GPU filtert het volume; de drie octaven blijven behouden.
+export function maakRuisVolume(): THREE.Data3DTexture {
+  const data = new Uint8Array(64 * 64 * 64);
+  let seed = 731;
+  for (let i = 0; i < data.length; i++) {
+    seed = (Math.imul(seed, 1664525) + 1013904223) | 0;
+    data[i] = seed >>> 24;
+  }
+  const texture = new THREE.Data3DTexture(data, 64, 64, 64);
+  texture.format = THREE.RedFormat;
+  texture.minFilter = texture.magFilter = THREE.LinearFilter;
+  texture.wrapS = texture.wrapT = texture.wrapR = THREE.RepeatWrapping;
+  texture.unpackAlignment = 1;
+  texture.needsUpdate = true;
+  return texture;
 }
+
+export const ruisGlsl = `
+uniform highp sampler3D uRuis;
+float ruis3(vec3 p) { vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return texture(uRuis,(i+f+.5)/64.).r; }
 float lagen(vec3 p) { return .57*ruis3(p)+.28*ruis3(p*2.03)+.15*ruis3(p*4.09); }
 `;
 
 export interface InstrumentMateriaal {
   materiaal: THREE.MeshStandardMaterial;
+  ruis: THREE.Data3DTexture;
   tijd: { value: number };
   deling: { value: number };
   opening: { value: number };
 }
 
 export function maakInstrumentMateriaal(kleur: THREE.ColorRepresentation, opties: {
-  opacity?: number; emissie?: number; schil?: boolean; kern?: boolean; instanced?: boolean;
+  opacity?: number; emissie?: number; schil?: boolean; kern?: boolean; instanced?: boolean; randlicht?: number;
 } = {}): InstrumentMateriaal {
   const tijd = { value: 0 }, deling = { value: 0 }, opening = { value: 0 };
+  const ruis = maakRuisVolume();
   const schil = opties.schil ?? false;
   const kern = opties.kern ?? false;
   const materiaal = new THREE.MeshStandardMaterial({
@@ -31,13 +46,14 @@ export function maakInstrumentMateriaal(kleur: THREE.ColorRepresentation, opties
     opacity: opties.opacity ?? 1, transparent: (opties.opacity ?? 1) < 1,
     depthWrite: (opties.opacity ?? 1) === 1, side: THREE.DoubleSide,
   });
-  materiaal.customProgramCacheKey = () => `instrument-${schil}-${kern}-${opties.instanced ?? false}`;
+  materiaal.customProgramCacheKey = () => `instrument-${schil}-${kern}-${opties.instanced ?? false}-${opties.randlicht ?? 0}`;
   materiaal.onBeforeCompile = (shader) => {
+    shader.uniforms.uRuis = { value: ruis };
     shader.uniforms.uTijd = tijd; shader.uniforms.uDeling = deling; shader.uniforms.uOpening = opening;
     shader.vertexShader = `uniform float uTijd; uniform float uDeling; varying vec3 vInstrument; ${schil ? "attribute float aZijde;" : ""}\n${ruisGlsl}\n` + shader.vertexShader;
     shader.vertexShader = shader.vertexShader.replace("#include <begin_vertex>", `
       #include <begin_vertex>
-      transformed += normal * (lagen(position * ${schil ? "9." : "45."})-.5) * ${schil ? ".065" : config.materiaal.ruis.toFixed(4)};
+      transformed += normal * (lagen(position * ${schil ? "9." : "45."})-.5) * ${schil ? ".035" : config.materiaal.ruis.toFixed(4)};
       ${schil ? `
         transformed *= 1. + ${config.instrument.adem} * sin(uTijd*.31 + position.y*2.);
         float u = clamp(abs(transformed.x / ${kern ? ".32" : "1.1"}),0.,1.);
@@ -59,19 +75,23 @@ export function maakInstrumentMateriaal(kleur: THREE.ColorRepresentation, opties
     shader.fragmentShader = shader.fragmentShader.replace("#include <color_fragment>", `
       #include <color_fragment>
       float weefsel = lagen(vInstrument*23.);
-      diffuseColor.rgb *= .64 + .65 * weefsel;
+      ${schil && !kern ? `
+        float macro=1.-smoothstep(.08,.3,length(vViewPosition));
+        weefsel=mix(weefsel,.25*lagen(vInstrument*80.)+.75*lagen(vInstrument*500.),macro);
+      ` : ""}
+      diffuseColor.rgb *= .35 + 1.3 * weefsel;
       ${schil ? `
         float rand = pow(1.-abs(dot(normalize(vNormal),normalize(vViewPosition))),2.2);
         float venster = smoothstep(.45,.82,normalize(vInstrument).z) * uOpening;
-        diffuseColor.a *= ${kern ? "(.48 + .35*weefsel) * (1.-venster*.88)" : "(.1 + rand * 1.8) * (1.-venster*.98) * (.55+weefsel)"};
+        diffuseColor.a *= ${kern ? "(.18 + 1.7*weefsel*weefsel + rand*.7) * (1.-venster*.65)" : "mix((.1 + rand * 1.8) * (.55+weefsel),2.6,(1.-smoothstep(.08,.3,length(vViewPosition)))*(1.-uOpening)) * (1.-venster*.98)"};
       ` : ""}
     `);
-    if (schil) shader.fragmentShader = shader.fragmentShader.replace("#include <opaque_fragment>", `
-      outgoingLight += diffuseColor.rgb * pow(1.-abs(dot(normal,normalize(vViewPosition))),2.) * ${kern ? ".18" : ".65"};
+    if (schil || opties.randlicht) shader.fragmentShader = shader.fragmentShader.replace("#include <opaque_fragment>", `
+      outgoingLight += diffuseColor.rgb * pow(1.-abs(dot(normal,normalize(vViewPosition))),2.) * ${opties.randlicht ?? (kern ? ".7" : ".65")};
       #include <opaque_fragment>
     `);
   };
-  return { materiaal, tijd, deling, opening };
+  return { materiaal, ruis, tijd, deling, opening };
 }
 
 // Splitst driehoeken exact op x=0. Beide naden kunnen zonder overspannende

@@ -39,7 +39,7 @@ function CelScene({ voortgangRef }: { voortgangRef: MutableRefObject<number> }):
     }
   }, -1);
   return <>
-    <color attach="background" args={[celPalet.achtergrond]}/>
+    <color attach="background" args={[fogKleur]}/>
     <fogExp2 attach="fog" args={[fogKleur,c.instrument.fogDichtheid]}/>
     <ambientLight color={celPalet.weefsel} intensity={c.licht.omgeving}/>
     <directionalLight position={[...c.licht.hoofdPositie]} intensity={c.licht.hoofd} color={celPalet.weefsel}/>
