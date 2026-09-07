@@ -1,0 +1,11 @@
+{
+  "expected": 53,
+  "disposed": 53,
+  "contextLost": true,
+  "canvas": 0,
+  "effects": [
+    "scherpte",
+    "gloed",
+    "afwerking"
+  ]
+}

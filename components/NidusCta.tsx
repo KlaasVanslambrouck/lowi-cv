@@ -4,12 +4,12 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { trackEvent } from "@/lib/analytics/trackEvent";
-import type { NidusCtaInteractionId } from "@/lib/analytics/trackValidation";
+import type { CtaInteractionId } from "@/lib/analytics/trackValidation";
 import styles from "@/components/NidusCta.module.css";
 
 interface NidusCtaProps {
   children: ReactNode;
-  interactionId: NidusCtaInteractionId;
+  interactionId: CtaInteractionId;
   variant: "primary" | "secondary";
   className?: string;
 }

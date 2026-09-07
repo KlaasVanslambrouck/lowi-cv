@@ -12,6 +12,8 @@ const MAX_SUGGESTED_QUESTION_LENGTH = 240;
 const MAX_DWELL_SECONDS = 24 * 60 * 60;
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+// Sectie-ID's zijn kebab-case vanwege deze slug-regex. Interactie-ID's volgen
+// snake_case en worden afzonderlijk gecontroleerd via de expliciete allowlist.
 const SLUG_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
 const TOP_LEVEL_KEYS = [
@@ -40,16 +42,18 @@ const INTERACTION_IDS = [
   "nidus_cta_projects",
   "nidus_cta_lowi",
   "nidus_cta_skills",
+  "lowi_cel_cta_nidus",
 ] as const;
 
 export type EventType = (typeof EVENT_TYPES)[number];
 export type DeviceType = (typeof DEVICE_TYPES)[number];
-export type NidusCtaInteractionId =
+export type CtaInteractionId =
   | "nidus_cta_hero"
   | "nidus_cta_about"
   | "nidus_cta_projects"
   | "nidus_cta_lowi"
-  | "nidus_cta_skills";
+  | "nidus_cta_skills"
+  | "lowi_cel_cta_nidus";
 type SectionEventData = {
   sectionId: string;
 };
@@ -71,7 +75,7 @@ type InteractionEventData =
       questionSource: "suggested" | "typed";
     }
   | { interactionId: "jarvis_proactive_shown"; sectionId: string }
-  | { interactionId: NidusCtaInteractionId }
+  | { interactionId: CtaInteractionId }
   | {
       interactionId: "jarvis_proactive_clicked";
       sectionId: string;
@@ -249,7 +253,8 @@ function validateInteractionEventData(
     case "nidus_cta_about":
     case "nidus_cta_projects":
     case "nidus_cta_lowi":
-    case "nidus_cta_skills": {
+    case "nidus_cta_skills":
+    case "lowi_cel_cta_nidus": {
       return hasOnlyKeys(eventData, ["interactionId"])
         ? { interactionId }
         : null;

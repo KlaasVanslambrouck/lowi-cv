@@ -1,0 +1,32 @@
+{
+  "results": [
+    {
+      "name": "artikel-mobiel",
+      "mode": "artikel",
+      "chapters": 7,
+      "canvas": 0,
+      "pendingScrollFrames": 0,
+      "overflow": false,
+      "firstChapterHeight": 542.84375
+    },
+    {
+      "name": "reduced-motion",
+      "mode": "artikel",
+      "chapters": 7,
+      "canvas": 0,
+      "pendingScrollFrames": 0,
+      "overflow": false,
+      "firstChapterHeight": 454.046875
+    },
+    {
+      "name": "artikel-zonder-webgl",
+      "mode": "artikel",
+      "chapters": 7,
+      "canvas": 0,
+      "pendingScrollFrames": 0,
+      "overflow": false,
+      "firstChapterHeight": 454.046875
+    }
+  ],
+  "pageErrors": []
+}

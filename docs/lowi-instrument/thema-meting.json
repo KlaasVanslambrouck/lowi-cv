@@ -1,0 +1,36 @@
+{
+  "coldDark": {
+    "theme": "dark",
+    "neutral": "6f6ce0",
+    "target": "6f6ce0",
+    "fov": 82
+  },
+  "coldLight": {
+    "theme": "light",
+    "neutral": "6f6ce0",
+    "target": "6f6ce0",
+    "fov": 82
+  },
+  "beforeTheme": {
+    "membraan": "c08a63",
+    "cytoplasma": "c08a63",
+    "kern": "6f6ce0",
+    "ribosoom": "c08a63",
+    "mitochondrion": "e0913c",
+    "golgi": "c08a63",
+    "celdeling": "c08a63"
+  },
+  "themeSwitch": {
+    "sameCanvas": true,
+    "colours": {
+      "membraan": "c08a63",
+      "cytoplasma": "c08a63",
+      "kern": "6f6ce0",
+      "ribosoom": "c08a63",
+      "mitochondrion": "e0913c",
+      "golgi": "c08a63",
+      "celdeling": "c08a63"
+    },
+    "contextLost": false
+  }
+}

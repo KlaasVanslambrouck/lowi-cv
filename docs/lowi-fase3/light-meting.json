@@ -1,0 +1,190 @@
+{
+  "cold": {
+    "theme": "light",
+    "neutral": "635f65",
+    "target": "635f65",
+    "light": "f3efe7"
+  },
+  "renderCounts": {
+    "SessionInsightProvider": 22,
+    "HoofdstukSectie": 196,
+    "LowiCelPagina": 6
+  },
+  "measurement": {
+    "durationMs": 10976.599999964237,
+    "scrollFrames": 82,
+    "maxPendingScrollFrames": 1
+  },
+  "themeBefore": {
+    "color": [
+      0.14125997460220346,
+      0.05952305754802615,
+      0.6723274384191609
+    ],
+    "target": [
+      0.14126329113044458,
+      0.059511238155621766,
+      0.6724431569510133
+    ],
+    "camera": [
+      0.000004861113612426827,
+      0.10005916742690411,
+      2.200474683376499
+    ]
+  },
+  "themeImmediate": {
+    "color": [
+      0.2490319168506953,
+      0.13957281651026612,
+      0.8767746464289892
+    ],
+    "target": [
+      0.3139887133649649,
+      0.1878207722902346,
+      1
+    ],
+    "camera": [
+      0.000001828082402598025,
+      0.10002225064883362,
+      2.2001785106040654
+    ]
+  },
+  "themeAfter": {
+    "color": [
+      0.31398354333926887,
+      0.18781693215056408,
+      0.9999901922773512
+    ],
+    "target": [
+      0.3139887133649649,
+      0.1878207722902346,
+      1
+    ],
+    "camera": [
+      1.455002940897458e-10,
+      0.10000000177096828,
+      2.200000014207973
+    ]
+  },
+  "endStates": [
+    {
+      "chapter": "grens",
+      "camera": [
+        0,
+        0.300045075450059,
+        3.6004357293505707
+      ],
+      "opening": 0,
+      "dna": 0,
+      "division": 0
+    },
+    {
+      "chapter": "werkvloer",
+      "camera": [
+        0.39998118941343747,
+        0.3000000000003519,
+        3.000028215883245
+      ],
+      "opening": 0.9999529735335936,
+      "dna": 0,
+      "division": 0
+    },
+    {
+      "chapter": "code",
+      "camera": [
+        0.000004505143807497881,
+        0.1000022525719348,
+        2.2000090102878325
+      ],
+      "opening": 0.9999999999998448,
+      "dna": 0.999988737140326,
+      "division": 0
+    },
+    {
+      "chapter": "bouwen",
+      "camera": [
+        0.5999678412384614,
+        0.3999839206192307,
+        2.499983920619231
+      ],
+      "opening": 1,
+      "dna": 0.00005359793589767628,
+      "division": 0
+    },
+    {
+      "chapter": "brandstof",
+      "camera": [
+        -0.6999483507949631,
+        0.20000794603122024,
+        2.499999999999532
+      ],
+      "opening": 1,
+      "dna": 1.5595871141053647e-12,
+      "division": 0
+    },
+    {
+      "chapter": "verfijnen",
+      "camera": [
+        0.5999149639916634,
+        -0.1999738350732557,
+        2.5
+      ],
+      "opening": 1,
+      "dna": 7.21167946645923e-20,
+      "division": 0
+    },
+    {
+      "chapter": "groei",
+      "camera": [
+        0.000016227135894465598,
+        0.39998377286367776,
+        4.499945909544959
+      ],
+      "opening": 0.00002704522752082974,
+      "dna": 5.241368371079865e-28,
+      "division": 0.9999729547724792
+    }
+  ],
+  "pageErrors": [],
+  "resources": [
+    "http://127.0.0.1:3005/lowi",
+    "http://127.0.0.1:3005/_next/static/chunks/%5Broot-of-the-server%5D__20etpxd._.css",
+    "http://127.0.0.1:3005/_next/static/media/03bda585a99c6450-s.p.32sris142tqlb.woff2",
+    "http://127.0.0.1:3005/_next/static/media/36363bfb06833f56-s.p.38hmww4cj4vme.woff2",
+    "http://127.0.0.1:3005/_next/static/chunks/_0yiea7_._.css",
+    "http://127.0.0.1:3005/_next/static/media/5c285b27cdda1fe8-s.p.2_mbdogr7ni8i.woff2",
+    "http://127.0.0.1:3005/_next/static/media/a73419dd2ba2d841-s.p.2yee423r7ahpo.woff2",
+    "http://127.0.0.1:3005/_next/static/chunks/styles_cv_module_096bmoq.css",
+    "http://127.0.0.1:3005/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1xx01vv._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_164kp-6._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_compiled_1amofcm._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/_1anvha4._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_%40swc_helpers_cjs_1r9vbqw._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/app_icon--metadata_007e4b2.js",
+    "http://127.0.0.1:3005/_next/static/chunks/turbopack-_01_ro95._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/_0b88b68._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_1e9_p6y._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_090k2jm.js",
+    "http://127.0.0.1:3005/_next/static/chunks/app_layout_tsx_007e4b2._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_client_0r5nbpw._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/app_error_tsx_1369jd2._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/components_lowi-cel_CelCanvas_tsx_0xk-ti1._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/_1nr89g9._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_1akklpe._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/app_lowi_page_tsx_1369jd2._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_next_dist_client_components_builtin_global-error_1369jd2.js",
+    "http://127.0.0.1:3005/_next/static/chunks/_0xvkf-w._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1xch-cm._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+    "http://127.0.0.1:3005/icon?b61c462c997a7bb1",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_1spg6od._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_three_build_three_module_1_wgwg8.js",
+    "http://127.0.0.1:3005/_next/static/chunks/components_lowi-cel_1f-drsx._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/components_lowi-cel_CelCanvas_tsx_0em13d3._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_three_build_three_module_03rsyo6.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_%40react-three_fiber_dist_0ml6gki._.js",
+    "http://127.0.0.1:3005/_next/static/chunks/node_modules_three_build_three_core_18d0oq6.js"
+  ]
+}

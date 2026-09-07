@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   isJsonContentType,
   validateTrackPayload,
-  type NidusCtaInteractionId,
+  type CtaInteractionId,
 } from "./trackValidation";
 
 const SESSION_ID = "123e4567-e89b-42d3-a456-426614174000";
@@ -12,7 +12,8 @@ const NIDUS_CTA_INTERACTION_IDS = [
   "nidus_cta_projects",
   "nidus_cta_lowi",
   "nidus_cta_skills",
-] as const satisfies readonly NidusCtaInteractionId[];
+  "lowi_cel_cta_nidus",
+] as const satisfies readonly CtaInteractionId[];
 
 function interactionPayload(interactionId: string) {
   return {
@@ -39,17 +40,20 @@ describe("Nidus CTA interaction validation", () => {
     ).toBeNull();
   });
 
-  it("rejects extra event data for a Nidus CTA interaction", () => {
-    expect(
-      validateTrackPayload({
-        ...interactionPayload("nidus_cta_hero"),
-        eventData: {
-          interactionId: "nidus_cta_hero",
-          sectionId: "hero",
-        },
-      }),
-    ).toBeNull();
-  });
+  it.each(NIDUS_CTA_INTERACTION_IDS)(
+    "rejects extra event data for %s",
+    (interactionId) => {
+      expect(
+        validateTrackPayload({
+          ...interactionPayload(interactionId),
+          eventData: {
+            interactionId,
+            sectionId: "hero",
+          },
+        }),
+      ).toBeNull();
+    },
+  );
 });
 
 describe("Jarvis interaction validation", () => {

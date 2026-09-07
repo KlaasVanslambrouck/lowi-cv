@@ -1,0 +1,276 @@
+.page {
+  min-height: 100dvh;
+  background-color: var(--cv-bg);
+  color: var(--cv-text);
+}
+
+.intro,
+.slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.25rem;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 4rem;
+}
+
+.titel {
+  font-family: var(--cv-font-serif);
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.ondertitel {
+  max-width: 30rem;
+  font-family: var(--cv-font-mono);
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  color: var(--cv-copper);
+}
+
+.scrollHint {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: var(--cv-muted);
+}
+
+.hoofdstukkenContainer {
+  position: relative;
+  isolation: isolate;
+}
+
+.sceneLaag {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.canvasSlot {
+  position: absolute;
+  inset: 1rem;
+  overflow: hidden;
+  border: 1px solid #c08a6359;
+  border-radius: var(--cv-radius);
+  background: #05060a;
+}
+
+.canvasVlak {
+  width: 100%;
+  height: 100%;
+}
+
+.scenePlaceholder {
+  display: none;
+}
+
+.indicator {
+  position: absolute;
+  top: 50%;
+  right: max(1.5rem, env(safe-area-inset-right));
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transform: translateY(-50%);
+  color: var(--hoofdstuk-accent);
+}
+
+.markering {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.25;
+}
+
+.markering[data-actief="true"] {
+  opacity: 1;
+  transform: scale(1.5);
+}
+
+.hoofdstukken {
+  position: relative;
+  z-index: 1;
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+.hoofdstuk {
+  padding: 2rem 1.5rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.tekstvlak {
+  width: 100%;
+  max-width: 38rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--cv-border);
+  border-inline-start: 3px solid var(--hoofdstuk-accent);
+  border-radius: var(--cv-radius);
+  background-color: color-mix(in srgb, var(--cv-bg) 92%, transparent);
+  pointer-events: auto;
+  overflow-wrap: anywhere;
+}
+
+.nummer {
+  margin-bottom: 1rem;
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--hoofdstuk-accent);
+}
+
+.hoofdstukTitel,
+.slotTitel {
+  font-family: var(--cv-font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.kernzin {
+  margin-top: 0.85rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--cv-text);
+}
+
+.biologie {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--cv-muted);
+}
+
+.lowi {
+  margin-top: 1rem;
+  line-height: 1.7;
+  color: var(--cv-text-soft);
+}
+
+.artikelPagina .tekstvlak,
+.wachtPagina .tekstvlak {
+  max-width: 44rem;
+}
+
+.artikelPagina .scrollHint,
+.wachtPagina .scrollHint {
+  margin-top: 0.5rem;
+}
+
+/* Zoals de hero: reserveer de scène-layout vóór de clientdetectie. De echte
+   artikeltak blijft leidend zodra useSceneSupport zijn resultaat heeft. */
+@media (min-width: 768px) and (min-height: 501px) and (prefers-reduced-motion: no-preference) {
+  .scenePlaceholder {
+    display: block;
+  }
+
+  :is(.scrollPagina, .wachtPagina) .intro,
+  :is(.scrollPagina, .wachtPagina) .slot {
+    min-height: 100dvh;
+  }
+
+  :is(.scrollPagina, .wachtPagina) .intro {
+    min-height: 36dvh;
+    padding-top: 5rem;
+    padding-bottom: 1.5rem;
+    gap: 0.6rem;
+  }
+
+  :is(.scrollPagina, .wachtPagina) .intro .titel {
+    font-size: clamp(4rem, 7vw, 6rem);
+  }
+
+  :is(.scrollPagina, .wachtPagina) .intro .scrollHint {
+    margin-top: 0.5rem;
+  }
+
+  :is(.scrollPagina, .wachtPagina) .hoofdstuk {
+    --cv-text: #f1ece2;
+    --cv-text-soft: #d8d2c8;
+    --cv-muted: #b5aaa2;
+    color: var(--cv-text);
+  }
+
+  :is(.scrollPagina, .wachtPagina) .tekstvlak {
+    max-width: 29rem;
+    border-color: #c08a6340;
+    border-inline-start-color: #c08a63;
+    background: linear-gradient(110deg, #05060aed, #05060acc);
+  }
+
+  :is(.scrollPagina, .wachtPagina) .nummer,
+  .scrollPagina .indicator {
+    color: #c08a63;
+  }
+
+  :is(.scrollPagina, .wachtPagina) .hoofdstukkenContainer {
+    height: calc(var(--aantal-hoofdstukken) * 100dvh);
+  }
+
+  :is(.scrollPagina, .wachtPagina) .hoofdstukken {
+    margin-top: -100dvh;
+    pointer-events: none;
+  }
+
+  :is(.scrollPagina, .wachtPagina) .hoofdstuk {
+    display: flex;
+    align-items: center;
+    height: 100dvh;
+    padding-right: 4rem;
+  }
+
+  .wachtPagina .scrollHint {
+    margin-top: 2rem;
+  }
+}
+
+.slot {
+  gap: 1.5rem;
+  padding-top: 4rem;
+  padding-bottom: max(5rem, env(safe-area-inset-bottom));
+}
+
+.slotTekst {
+  max-width: 38rem;
+  color: var(--cv-text-soft);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--cv-copper);
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--cv-copper) 12%, var(--cv-bg));
+  font-weight: 500;
+  color: var(--cv-text);
+  text-decoration: none;
+}
+
+.cta:hover {
+  background-color: color-mix(in srgb, var(--cv-copper) 22%, var(--cv-bg));
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--cv-copper);
+  outline-offset: 4px;
+}
+
+@media (max-width: 767px) {
+  .intro,
+  .slot {
+    padding-inline: 1.25rem;
+  }
+
+  .hoofdstuk {
+    padding: 1rem 1.25rem;
+  }
+}

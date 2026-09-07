@@ -1,0 +1,77 @@
+{
+  "results": [
+    {
+      "name": "artikel-mobiel",
+      "mode": "artikel",
+      "chapters": 7,
+      "canvas": 0,
+      "pendingScrollFrames": 0,
+      "overflow": false,
+      "scripts": [
+        "/_next/static/chunks/310vm2bl3xxpt.js",
+        "/_next/static/chunks/1bwlbc7i3n06z.js",
+        "/_next/static/chunks/27fk3_0pbm2ib.js",
+        "/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "/_next/static/chunks/0paxexg6-m0de.js",
+        "/_next/static/chunks/0_bdivyfur2bb.js",
+        "/_next/static/chunks/turbopack-0qmeyx5dbcvue.js",
+        "/_next/static/chunks/2d-mz68ci3fl7.js",
+        "/_next/static/chunks/05-c3ty_6dwfk.js",
+        "/_next/static/chunks/1_qshy5hfbl-d.js",
+        "/_next/static/chunks/14mrh2-p_w84d.js",
+        "/_next/static/chunks/08ecv212zjtnx.js"
+      ],
+      "firstChapterHeight": 542.84375,
+      "sceneChunksLoaded": []
+    },
+    {
+      "name": "reduced-motion",
+      "mode": "artikel",
+      "chapters": 7,
+      "canvas": 0,
+      "pendingScrollFrames": 0,
+      "overflow": false,
+      "scripts": [
+        "/_next/static/chunks/310vm2bl3xxpt.js",
+        "/_next/static/chunks/1bwlbc7i3n06z.js",
+        "/_next/static/chunks/27fk3_0pbm2ib.js",
+        "/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "/_next/static/chunks/0paxexg6-m0de.js",
+        "/_next/static/chunks/turbopack-0qmeyx5dbcvue.js",
+        "/_next/static/chunks/0_bdivyfur2bb.js",
+        "/_next/static/chunks/2d-mz68ci3fl7.js",
+        "/_next/static/chunks/05-c3ty_6dwfk.js",
+        "/_next/static/chunks/1_qshy5hfbl-d.js",
+        "/_next/static/chunks/14mrh2-p_w84d.js",
+        "/_next/static/chunks/08ecv212zjtnx.js"
+      ],
+      "firstChapterHeight": 454.046875,
+      "sceneChunksLoaded": []
+    },
+    {
+      "name": "artikel-zonder-webgl",
+      "mode": "artikel",
+      "chapters": 7,
+      "canvas": 0,
+      "pendingScrollFrames": 0,
+      "overflow": false,
+      "scripts": [
+        "/_next/static/chunks/310vm2bl3xxpt.js",
+        "/_next/static/chunks/1bwlbc7i3n06z.js",
+        "/_next/static/chunks/27fk3_0pbm2ib.js",
+        "/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "/_next/static/chunks/0paxexg6-m0de.js",
+        "/_next/static/chunks/0_bdivyfur2bb.js",
+        "/_next/static/chunks/turbopack-0qmeyx5dbcvue.js",
+        "/_next/static/chunks/2d-mz68ci3fl7.js",
+        "/_next/static/chunks/05-c3ty_6dwfk.js",
+        "/_next/static/chunks/14mrh2-p_w84d.js",
+        "/_next/static/chunks/1_qshy5hfbl-d.js",
+        "/_next/static/chunks/08ecv212zjtnx.js"
+      ],
+      "firstChapterHeight": 454.046875,
+      "sceneChunksLoaded": []
+    }
+  ],
+  "pageErrors": []
+}
