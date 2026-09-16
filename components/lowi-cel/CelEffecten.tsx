@@ -22,6 +22,8 @@ function CelEffecten({ staat }: { staat: CelStaat }) {
     };
   });
   const ref = useRef(effecten);
+  // Gedeelde mutable scene-werkstaat, geen React-renderstate.
+  const staatRef = useRef(staat);
   const meting = useRef({ warm: 0, tijd: 0, frames: 0, niveau: 0 });
   useEffect(() => {
     const waarde = composer.current;
@@ -48,7 +50,7 @@ function CelEffecten({ staat }: { staat: CelStaat }) {
     if (m.tijd < c.effecten.meetSeconden) return;
     const fps = m.frames / m.tijd;
     if (m.niveau === 0 && fps < c.effecten.deeltjesOnderFps) {
-      staat.deeltjesDichtheid = c.effecten.beperkteDichtheid; m.niveau = 1;
+      staatRef.current.deeltjesDichtheid = c.effecten.beperkteDichtheid; m.niveau = 1;
     } else if (m.niveau === 1 && fps < c.effecten.dofOnderFps) {
       e.scherpte.enabled = false; m.niveau = 2;
     }
@@ -59,7 +61,7 @@ function CelEffecten({ staat }: { staat: CelStaat }) {
     gl.domElement.dataset.lowiDeeltjes = String(staat.deeltjesDichtheid);
     m.tijd = 0; m.frames = 0;
   }, 0);
-  return <EffectComposer ref={composer} multisampling={0} enableNormalPass={false}>
+  return <EffectComposer ref={composer} multisampling={2} enableNormalPass={false}>
     <primitive object={effecten.scherpte} dispose={null}/>
     <primitive object={effecten.gloed} dispose={null}/>
     <primitive object={effecten.afwerking} dispose={null}/>

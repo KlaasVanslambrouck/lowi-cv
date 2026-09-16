@@ -28,7 +28,7 @@ function maakModel(staat: CelStaat) {
     geometrieen.push(geometrie); const object = new THREE.Mesh(geometrie, materiaal);
     object.frustumCulled = false; parent.add(object); return object;
   }
-  mesh(maakSchil(1, c.instrument.icoDetail, c.instrument.membraanSchaal), mat("membraan", { schil: true, opacity: .36, emissie: .16 })).renderOrder = 3;
+  mesh(maakSchil(1, c.instrument.icoDetail, c.instrument.membraanSchaal), mat("membraan", { schil: true, opacity: .22, emissie: .06 })).renderOrder = 3;
   const kernKleur = staat.kleuren.kern.clone().multiplyScalar(.75);
   mesh(maakSchil(.32, 18, [1, 1.06, .95]), mat("kern", { schil: true, kern: true, opacity: c.kern.schilOpacity, emissie: .12 }, kernKleur)).renderOrder = 2;
   mesh(maakSchil(.29, 12, [1, 1.06, .95]), mat("kern", { schil: true, kern: true, opacity: c.kern.binnenOpacity, emissie: .04 }, kernKleur)).renderOrder = 1;
@@ -38,9 +38,9 @@ function maakModel(staat: CelStaat) {
   organellen.push({ groep: nucleolusGroep, positie: new THREE.Vector3(...c.kern.nucleolusPositie), inKern: true });
 
   function wolk(aantal: number, basisStraal: number, blaasjes = false) {
-    const geometrie = new THREE.IcosahedronGeometry(basisStraal, 1); geometrieen.push(geometrie);
+    const geometrie = new THREE.IcosahedronGeometry(basisStraal, blaasjes ? 3 : 1); geometrieen.push(geometrie);
     const korrelKleur = staat.kleuren.ribosoom.clone().lerp(new THREE.Color(1,1,1),.35).multiplyScalar(.38);
-    const materiaal = mat("ribosoom", { instanced: true, emissie: blaasjes ? .22 : .09, opacity: blaasjes ? .6 : 1 }, korrelKleur);
+    const materiaal = mat("ribosoom", { instanced: true, emissie: blaasjes ? .22 : .09, opacity: blaasjes ? .2 : 1 }, korrelKleur);
     const object = new THREE.InstancedMesh(geometrie, materiaal, aantal); object.frustumCulled = false;
     groep.add(object);
     const posities: THREE.Vector3[] = [], schalen: number[] = [];
@@ -56,6 +56,12 @@ function maakModel(staat: CelStaat) {
         const dichtheid = .58 + .2*Math.sin(hoek*3+z*4) + .16*Math.cos(hoek*2-z*3);
         if (blaasjes || toeval(seed+5)<dichtheid) break;
       }
+      if (blaasjes) {
+        for (const focus of [c.focus.kern, c.focus.golgi, c.focus.mitochondrion]) {
+          const afstand = new THREE.Vector3(...focus);
+          if (p.distanceTo(afstand) < .24) p.multiplyScalar(.6);
+        }
+      }
       posities.push(p);
       schalen.push(blaasjes ? .55+toeval(i*7+4)*1.6 : c.ribosomen.grootteMin+toeval(i*7+4)*c.ribosomen.grootteVariatie);
       if (blaasjes && i % 4 === 0) object.setColorAt(i, new THREE.Color(celPalet.karmijn).multiplyScalar(.55));
@@ -64,7 +70,21 @@ function maakModel(staat: CelStaat) {
     instanties.push({ mesh: object, posities, schalen });
   }
   wolk(c.ribosomen.aantal, c.ribosomen.straal);
-  wolk(c.instrument.blaasjes, .018, true);
+  wolk(c.instrument.blaasjes, .009, true);
+
+  // Eén productiesite in dezelfde wereld: twee subunits en een korte keten.
+  const productie = new THREE.Group();
+  const productieMat = mat('ribosoom', { emissie: .18 });
+  mesh(new THREE.IcosahedronGeometry(.026, 3), productieMat, productie).scale.set(1.2, .8, 1);
+  mesh(new THREE.IcosahedronGeometry(.018, 3), productieMat, productie).position.set(0, -.028, .008);
+  const keten: THREE.Mesh[] = [];
+  for (let i = 0; i < 9; i++) {
+    const korrel = mesh(new THREE.IcosahedronGeometry(.004, 1), productieMat, productie);
+    korrel.position.set(.024 + i * .011, .008 * Math.sin(i * .8), .012);
+    keten.push(korrel);
+  }
+  groep.add(productie);
+  organellen.push({ groep: productie, positie: new THREE.Vector3(...c.focus.ribosoom) });
 
   const mitoBuiten = mat("mitochondrion", { opacity: c.mitochondrien.opacity, emissie: .035, randlicht: .3 }, new THREE.Color(celPalet.weefsel).multiplyScalar(c.mitochondrien.wandKleur));
   const mitoBinnen = mat("mitochondrion", { emissie: c.mitochondrien.binnenEmissie }, new THREE.Color(celPalet.amber).multiplyScalar(c.mitochondrien.binnenKleur));
@@ -96,16 +116,44 @@ function maakModel(staat: CelStaat) {
     }
     groep.add(mitochondrion); organellen.push({ groep: mitochondrion, positie: new THREE.Vector3(x,y,z) });
   }
-  const golgi = new THREE.Group(), golgiMat = mat("golgi", { emissie: .13 });
+  const golgi = new THREE.Group();
+  const golgiMat = mat("golgi", { emissie: .065 }, new THREE.Color(celPalet.weefsel).multiplyScalar(.68));
+  const randMat = mat("golgi", { emissie: .09 }, new THREE.Color(celPalet.weefsel).multiplyScalar(.8));
   for (let i = 0; i < c.golgi.schijven; i++) {
-    const geo = new THREE.LatheGeometry(c.golgi.profiel.map(([r,y])=>new THREE.Vector2(r,y)), 48);
-    const schijf = mesh(geo, golgiMat, golgi);
-    schijf.position.y = (i-(c.golgi.schijven-1)/2)*c.golgi.afstand;
-    schijf.scale.set(1-i*.035,.45,.67);
+    // Closed flattened cisternae with gently curled rims, not open lathe discs.
+    const geo = new THREE.SphereGeometry(1, 48, 20);
+    const pos = geo.attributes.position;
+    const punt = new THREE.Vector3();
+    const vorm = (x: number, y: number, z: number) => {
+      const a = Math.atan2(z, x), r = Math.hypot(x, z);
+      const rand = 1 + .065 * Math.sin(a * 3 + i * .55);
+      return punt.set(x * .21 * rand, y * .009 + .052 * x * x + .009 * Math.sin(a * 2 + i * .25) * r * r, z * .115 * rand);
+    };
+    for (let j = 0; j < pos.count; j++) {
+      vorm(pos.getX(j), pos.getY(j), pos.getZ(j));
+      pos.setXYZ(j, punt.x, punt.y, punt.z);
+    }
+    geo.computeVertexNormals();
+    const laag = new THREE.Group();
+    mesh(geo, golgiMat, laag);
+    const rand = new THREE.CatmullRomCurve3(Array.from({ length: 64 }, (_, j) => {
+      const a = j / 64 * Math.PI * 2;
+      return vorm(Math.cos(a), 0, Math.sin(a)).clone();
+    }), true);
+    mesh(new THREE.TubeGeometry(rand, 64, .0014, 4, true), randMat, laag);
+    laag.position.y = (i - (c.golgi.schijven - 1) / 2) * c.golgi.afstand;
+    laag.rotation.y = .025 * (i - 3);
+    laag.scale.set(1 - i * .035, 1, 1 - i * .02);
+    golgi.add(laag);
   }
   golgi.rotation.set(...c.golgi.rotatie); groep.add(golgi);
   organellen.push({ groep: golgi, positie: new THREE.Vector3(...c.golgi.positie) });
-  return { groep, geometrieen, materialen, organellen, instanties };
+  const transport = Array.from({ length: 4 }, (_, i) => {
+    const blaasje = mesh(new THREE.IcosahedronGeometry(.009, 2), golgiMat, golgi);
+    blaasje.position.set(-.2, (i - 1.5) * c.golgi.afstand, 0);
+    return blaasje;
+  });
+  return { groep, geometrieen, materialen, organellen, instanties, keten, transport };
 }
 
 function CelModel({ staat }: { staat: CelStaat }): ReactElement {
@@ -125,6 +173,14 @@ function CelModel({ staat }: { staat: CelStaat }): ReactElement {
       m.tijd.value = clock.elapsedTime; m.deling.value = deling; m.opening.value = staat.doorsnede;
       m.materiaal.emissiveIntensity = m.emissie * (.9 + .1*staat.intensiteit[m.id]);
     }
+    model.keten.forEach((korrel, i) => korrel.scale.setScalar(Math.max(.05, Math.min(1, staat.intensiteit.ribosoom * 10 - i))));
+    model.transport.forEach((blaasje, i) => {
+      const p = staat.intensiteit.golgi;
+      blaasje.visible = p > .02;
+      blaasje.position.x = -.2 + p * .43;
+      // Uit waaierende aanvoer naar geordende uitgaande blaasjes; scroll bepaalt de stap.
+      blaasje.position.y = (i - 1.5) * c.golgi.afstand * (1.6 - p * .6);
+    });
     if (Math.abs(deling-w.vorigeDeling)<c.geometrieDrempel) return;
     w.vorigeDeling = deling;
     for (const organel of model.organellen) {

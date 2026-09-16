@@ -1,0 +1,16 @@
+[
+  {
+    "theme": "light",
+    "background": "rgb(243, 239, 231)",
+    "samples": 44,
+    "minRatio": 4.610728720606902,
+    "failures": []
+  },
+  {
+    "theme": "dark",
+    "background": "rgb(16, 17, 24)",
+    "samples": 44,
+    "minRatio": 6.420160083485632,
+    "failures": []
+  }
+]

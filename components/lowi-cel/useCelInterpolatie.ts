@@ -42,13 +42,11 @@ export function maakCelStaat(): CelStaat {
 const smoothstep = (t: number): number => t * t * (3 - 2 * t);
 
 // Dezelfde twee lagen: exacte smoothstep-doelstaat, daarna demping met delta.
-// Alleen hoofdstuk 2 heeft een tussenpunt: eerst onthullen, dan naar binnen.
+// E?n doorlopende nadering, zonder terugwaartse onthullingssprong.
 export function maakCelDoelBerekening(): (p: number, doel: CelStaat) => void {
   const vanCamera = new Vector3(), naarCamera = new Vector3();
   const vanKijkpunt = new Vector3(), naarKijkpunt = new Vector3();
   const vanFocus = new Vector3(), naarFocus = new Vector3();
-  const onthulling = new Vector3(...celInstellingen.camera.onthulling);
-  const onthullingKijkpunt = new Vector3();
   function bereik(staat: VisueleStaat): number {
     if (!staat.actieveOrganellen.length) return celInstellingen.focusBereiken.membraan;
     let som = 0;
@@ -77,20 +75,6 @@ export function maakCelDoelBerekening(): (p: number, doel: CelStaat) => void {
     doel.cameraPositie.lerpVectors(vanCamera, naarCamera, t);
     doel.kijkNaar.lerpVectors(vanKijkpunt.fromArray(van.kijkNaar), naarKijkpunt.fromArray(naar.kijkNaar), t);
     doel.fov = van.fov + (naar.fov - van.fov) * t;
-    if (index === 1) {
-      const grens = celInstellingen.camera.onthullingMoment;
-      if (lokaal < grens) {
-        const reis = smoothstep(lokaal / grens);
-        doel.cameraPositie.lerpVectors(vanCamera, onthulling, reis);
-        doel.kijkNaar.lerpVectors(vanKijkpunt, onthullingKijkpunt, reis);
-        doel.fov = van.fov + (celInstellingen.camera.onthullingFov - van.fov) * reis;
-      } else {
-        const reis = smoothstep((lokaal - grens) / (1 - grens));
-        doel.cameraPositie.lerpVectors(onthulling, naarCamera, reis);
-        doel.kijkNaar.lerpVectors(onthullingKijkpunt, naarKijkpunt, reis);
-        doel.fov = celInstellingen.camera.onthullingFov + (naar.fov - celInstellingen.camera.onthullingFov) * reis;
-      }
-    }
     focus(van, vanFocus); focus(naar, naarFocus);
     doel.focusPunt.lerpVectors(vanFocus, naarFocus, t);
     doel.focusBereik = bereik(van) + (bereik(naar) - bereik(van)) * t;

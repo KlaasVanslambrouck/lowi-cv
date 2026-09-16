@@ -4,34 +4,32 @@ export const celInstellingen = {
   camera: {
     near: 0.008, far: 40, // Macrodetail en een rustig totaalbeeld.
     dpr: [1, 1.25] as const, // GPU-kosten begrenzen.
-    drift: 0.008, driftSnelheid: 0.17, // Trage beweging bij stilstaande scroll.
-    onderwerpRechts: 0.17, // Ruimte voor tekst links van het focuspunt.
-    onthulling: [0.25, 0.28, 3.8] as const, // Tussenpunt vóór de vlucht naar binnen.
-    onthullingFov: 45, onthullingMoment: 0.44, // Rustig totaalbeeld binnen hoofdstuk 2.
+    drift: 0.003, driftSnelheid: 0.17, // Trage beweging bij stilstaande scroll.
+    onderwerpRechts: 0, // Het canvas heeft een eigen kolom naast de copy.
   },
   licht: {
-    omgeving: 0.35, hoofd: 2.4, vulling: 0.45, // Sober zijlicht plus interne fluorescentie.
+    omgeving: 0.3, hoofd: 3.1, vulling: 0.65, // Sober zijlicht plus interne fluorescentie.
     hoofdPositie: [-2, 3, 2] as const, vulPositie: [2, -1, -1] as const,
   },
   materiaal: {
-    ruwheid: 0.82, ruis: 0.0012, // Microreliëf zonder ribosomen/strengen te vervormen tot klompen.
+    ruwheid: 0.42, ruis: 0.0012, // Microreliëf zonder ribosomen/strengen te vervormen tot klompen.
     emissieBasis: 0.12, // Scherpte stuurt aandacht; dimmen is subtiel.
   },
   instrument: {
     icoDetail: 36, // Viermaal meer vlakken om het frontale macrobeeld te dragen.
     membraanSchaal: [1.1, 0.91, 1] as const, // Geen perfecte bol.
     adem: 0.004, brown: 0.002, // Microscopische, laagfrequente beweging.
-    blaasjes: 180, // Kleine volumes op verschillende dieptes.
+    blaasjes: 24, // Kleine volumes op verschillende dieptes.
     filamenten: 46, filamentDikte: 0.00045, // Fijn cytoskelet.
-    deeltjes: 4200, // Parallax, ook vlak voor de macrolens.
-    fogDichtheid: 0.9, fogWarmte: 0.035, // Zichtbaar warm medium zonder de interne contrasten dicht te trekken.
-    billboards: 4, mediumOpacity: 0.14, // Vier zachte lagen op verschillende dieptes.
-    deeltjeMin: 0.014, deeltjeVariatie: 0.052, // Grote spreiding, ook zonder DOF zachte randen.
-    deeltjeHelderheid: 0.16, deeltjeFog: 1.6, // Verre deeltjes lossen snel op in het medium.
+    deeltjes: 640, // Rustige diepte; de organellen blijven het onderwerp.
+    fogDichtheid: 0.28, fogWarmte: 0.025, // Zichtbaar warm medium zonder de interne contrasten dicht te trekken.
+    billboards: 4, mediumOpacity: 0.035, // Vier zachte lagen op verschillende dieptes.
+    deeltjeMin: 0.005, deeltjeVariatie: 0.02, // Grote spreiding, ook zonder DOF zachte randen.
+    deeltjeHelderheid: 0.07, deeltjeFog: 1.6, // Verre deeltjes lossen snel op in het medium.
     buitenHelderheid: 0.12, // Extracellulaire vlokken zijn donkerder en groter.
   },
   ribosomen: {
-    aantal: 2600, straal: 0.006, // Eén InstancedMesh; kleine korrels.
+    aantal: 680, straal: 0.0035, // Eén InstancedMesh; kleine korrels.
     binnenStraal: 0.34, buitenStraal: 0.93, // Het hele cytoplasma, met meer dichtheid rond de kern.
     grootteMin: 0.8, grootteVariatie: 0.4, // Lichte variatie zonder grove zandkorrels.
   },
@@ -50,12 +48,12 @@ export const celInstellingen = {
   },
   dna: {
     segmenten: 192, radiaal: 8, controlepunten: 96, // Veelvoud van 4 voor delingsnaden.
-    basenparen: 48, windingen: 8, // Zes losse dwarsverbindingen per winding; geen dichtgeslibde kooi.
+    basenparen: 24, windingen: 3.5, // Fijn detail in de kern, geen dichtgeslibde veer.
     compacteStraal: 0.15, compacteStrengAfstand: 0.035, compacteHoogte: 0.08,
-    ontvouwenStraal: 0.105, ontvouwenHoogte: 0.72, // Past in het macrobeeld van de kern.
-    strengDikte: 0.009, basisDikte: 0.004, // Dikkere strengen, ruimte tussen de basenparen.
+    ontvouwenStraal: 0.065, ontvouwenHoogte: 0.4, // De helix blijft binnen de kern.
+    strengDikte: 0.003, basisDikte: 0.0014, // Open ruimte tussen dunne strengen.
     normaalGrens: 0.95, delingsStraal: 0.22,
-    emissieBasis: 1.1, emissieActief: 0.12, // Diepere tint; aandacht zonder sterke lichtpuls.
+    emissieBasis: 0.32, emissieActief: 0.08, // Gecontroleerd licht, geen zwevend symbool.
   },
   kern: {
     schilOpacity: 0.2, binnenOpacity: 0.09, // Eigen rand en verschillende dichtheidslagen.
@@ -77,8 +75,8 @@ export const celInstellingen = {
   },
   effecten: {
     bokeh: 2, resolutie: 0.5, // Dun focusvlak, halve DOF-resolutie.
-    bloomDrempel: 0.22, bloomIntensiteit: 0.22, // Afgestemd op de gedempte emissie; kleine kernel, halve resolutie.
-    vignette: 0.32, korrel: 0.035, // Subtiel instrumentbeeld.
+    bloomDrempel: 0.8, bloomIntensiteit: 0.12, // Afgestemd op de gedempte emissie; kleine kernel, halve resolutie.
+    vignette: 0.24, korrel: 0.008, // Subtiel instrumentbeeld.
     meetSeconden: 3, deeltjesOnderFps: 40, dofOnderFps: 20, // Bloom blijft altijd aan.
     beperkteDichtheid: 0.5, // Eerst fijne deeltjes halveren, pas daarna eventueel DOF.
     opwarmDelta: 0.1, // Eerste shadercompilatie telt hoogstens als één traag opwarmframe.

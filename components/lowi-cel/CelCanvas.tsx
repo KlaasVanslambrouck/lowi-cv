@@ -15,7 +15,7 @@ import { celInstellingen as c } from "./celInstellingen";
 const cameraInstellingen = { position: [...lowiCelBeginStaat.cameraPositie] as [number, number, number], fov: lowiCelBeginStaat.fov, near: c.camera.near, far: c.camera.far };
 const fogKleur = new Color(celPalet.weefsel).multiplyScalar(c.instrument.fogWarmte);
 
-interface CelCanvasProps { voortgangRef: MutableRefObject<number>; inBeeld: boolean; }
+interface CelCanvasProps { voortgangRef: MutableRefObject<number>; inBeeld: boolean; onFailure: () => void; }
 function CelScene({ voortgangRef }: { voortgangRef: MutableRefObject<number> }): ReactElement {
   const staat = useCelInterpolatie(voortgangRef);
   const afmeting = useRef({ breedte: 0, hoogte: 0 });
@@ -41,16 +41,17 @@ function CelScene({ voortgangRef }: { voortgangRef: MutableRefObject<number> }):
   return <>
     <color attach="background" args={[fogKleur]}/>
     <fogExp2 attach="fog" args={[fogKleur,c.instrument.fogDichtheid]}/>
-    <ambientLight color={celPalet.weefsel} intensity={c.licht.omgeving}/>
-    <directionalLight position={[...c.licht.hoofdPositie]} intensity={c.licht.hoofd} color={celPalet.weefsel}/>
+    <ambientLight color="#b8c4d5" intensity={c.licht.omgeving}/>
+    <directionalLight position={[...c.licht.hoofdPositie]} intensity={c.licht.hoofd} color="#eee9df"/>
     <directionalLight position={[...c.licht.vulPositie]} intensity={c.licht.vulling} color={celPalet.violet}/>
     <CelModel staat={staat}/><CelMedium staat={staat}/><CelEffecten staat={staat}/>
   </>;
 }
-function CelCanvas({ voortgangRef, inBeeld }: CelCanvasProps): ReactElement {
+function CelCanvas({ voortgangRef, inBeeld, onFailure }: CelCanvasProps): ReactElement {
   return <div className={styles.canvasVlak}>
     <Canvas dpr={[...c.camera.dpr]} frameloop={inBeeld ? "always" : "never"}
-      gl={{alpha:false,antialias:false,powerPreference:"high-performance"}} camera={cameraInstellingen}>
+      gl={{alpha:false,antialias:false,powerPreference:"default"}} camera={cameraInstellingen}
+      onCreated={({ gl }) => { gl.domElement.addEventListener('webglcontextlost', onFailure, { once: true }); }}>
       <CelScene voortgangRef={voortgangRef}/>
     </Canvas>
   </div>;

@@ -1,6 +1,4 @@
-// Alle teksten zijn placeholders die later worden herschreven. Deze content
-// verhuist later naar een database; de structuur blijft daarom plat en
-// serialiseerbaar, zonder componentafhankelijkheden of functies in de data.
+// Route-local, bilingual editorial content. Project claims follow existing case data.
 
 import type { Bilingual } from "@/types/content";
 
@@ -81,12 +79,12 @@ export const lowiCelIntro: LowiCelIntro = {
 /**
  * Staat van de scène tijdens de intro, vóór het eerste hoofdstuk.
  * De camera interpoleert hiervandaan naar hoofdstuk 1 ("grens").
- * Extreme macro: de onthulling van de hele cel volgt pas in hoofdstuk 2.
+ * Start buiten de cel; scroll nadert het membraan en onthult het interieur.
  */
 export const lowiCelBeginStaat: VisueleStaat = {
-  cameraPositie: [0, 0, 1.035],
-  kijkNaar: [0, 0, 0.995],
-  fov: 82,
+  cameraPositie: [0.15, 0.12, 3.8],
+  kijkNaar: [0, 0, 0],
+  fov: 45,
   actieveOrganellen: [],
   doorsnede: 0,
   dnaOntvouwing: 0,
@@ -102,18 +100,18 @@ export const lowiCelHoofdstukken = [
       en: "Every lab begins with a boundary.",
     },
     biologie: {
-      nl: "Het celmembraan bepaalt wat binnenkomt en wat buiten blijft. Het is geen muur maar een filter: selectief, doorlaatbaar, altijd in beweging.",
-      en: "The cell membrane determines what enters and what stays outside. It is not a wall but a filter: selective, permeable, always in motion.",
+      nl: "Het celmembraan regelt selectief welke stoffen de cel in en uit gaan. Die grens maakt een eigen binnenwereld mogelijk.",
+      en: "The cell membrane selectively regulates which substances enter and leave. That boundary makes an internal world possible.",
     },
     lowi: {
-      nl: "LOWI staat voor Lab of Wonder and Imagination. Het is de afgebakende ruimte waarin Klaas leert, onderzoekt en bouwt op het snijvlak van AI, biologie, automatisering en creatieve technologie. De grens is er niet om buiten te sluiten, maar om te bepalen wat er aandacht krijgt.",
-      en: "LOWI stands for Lab of Wonder and Imagination. It is the defined space where Klaas learns, explores and builds at the intersection of AI, biology, automation and creative technology. The boundary is not there to keep things out, but to decide what receives attention.",
+      nl: "Niet elke interessante vraag krijgt een project. Binnen LOWI geef ik een vraag genoeg aandacht om ze te begrijpen, te onderzoeken en er iets mee te bouwen. Focus maakt ruimte voor diepgang.",
+      en: "Not every interesting question becomes a project. Within LOWI, I give a question enough attention to understand it, explore it and build something from it. Focus makes room for depth.",
     },
     accentToken: "--cv-blue",
     visueel: {
-      cameraPositie: [0.18, 0.08, 1.025],
-      kijkNaar: [0.18, 0.08, 0.95],
-      fov: 78,
+      cameraPositie: [0.18, 0.08, 1.75],
+      kijkNaar: [0.12, 0.04, 0.3],
+      fov: 60,
       actieveOrganellen: ["membraan"],
       doorsnede: 0,
       dnaOntvouwing: 0,
@@ -128,12 +126,12 @@ export const lowiCelHoofdstukken = [
       en: "Not empty, but full of half-finished things.",
     },
     biologie: {
-      nl: "Het cytoplasma is de vloeistof waarin alle organellen drijven. Alles wat in de cel gebeurt, gebeurt hierin.",
-      en: "The cytoplasm is the fluid in which all organelles float. Everything that happens in the cell happens here.",
+      nl: "Het cytoplasma omvat het cytosol en de structuren buiten de celkern. Het is een drukke omgeving waarin transport en veel chemische reacties plaatsvinden.",
+      en: "The cytoplasm includes the cytosol and structures outside the nucleus. It is a busy environment for transport and many chemical reactions.",
     },
     lowi: {
-      nl: "Placeholder: over LOWI als werkomgeving waar meerdere projecten tegelijk half af zijn, en waarom dat een kenmerk is en geen probleem.",
-      en: "Placeholder: about LOWI as a workspace where several projects are half-finished at once, and why that is a feature rather than a problem.",
+      nl: "Hier mogen dingen onaf zijn. Een script, een onderzoeksvraag, een eerste interface. Ik combineer ze, test een vermoeden en verander van richting als het niet werkt. Een experiment hoeft geen product te worden. Het moet wel eerlijk als experiment herkenbaar blijven.",
+      en: "Things can be unfinished here. A script, a research question, a first interface. I combine them, test a hunch and change direction when it does not work. An experiment does not have to become a product. It should be clearly recognisable as an experiment.",
     },
     accentToken: "--cv-blue",
     visueel: {
@@ -150,16 +148,16 @@ export const lowiCelHoofdstukken = [
     organel: "kern",
     titel: { nl: "De kern", en: "The nucleus" },
     kernzin: {
-      nl: "In het DNA zit hoe iets denkt.",
-      en: "DNA holds the way something thinks.",
+      nl: "Eerst begrijpen. Dan bouwen.",
+      en: "Understand first. Then build.",
     },
     biologie: {
-      nl: "In de celkern ligt het DNA: een dubbele helix van vier basen die de instructies voor alles in de cel bevat.",
-      en: "The nucleus holds the DNA: a double helix of four bases containing the instructions for everything in the cell.",
+      nl: "De celkern bevat het grootste deel van het DNA. Genen bevatten informatie die via RNA bijdraagt aan de aanmaak van eiwitten. DNA denkt niet; het is erfelijke informatie.",
+      en: "The nucleus contains most of the cell’s DNA. Genes carry information that, through RNA, contributes to protein production. DNA does not think; it stores hereditary information.",
     },
     lowi: {
-      nl: "Placeholder: over hoe Klaas denkt — onderzoekend, systemisch, gericht op iets dat bruikbaar, begrijpelijk en technisch degelijk is. Dit is het hoofdstuk waar de DNA-helix ontvouwt.",
-      en: "Placeholder: about how Klaas thinks — inquisitive, systemic, focused on something useful, understandable and technically sound. This is the chapter where the DNA helix unfolds.",
+      nl: "Mijn vertrekpunt is kijken: wat gebeurt hier eigenlijk? Dan probeer ik het te begrijpen, verbanden te zien en er een model van te maken. Bouwen maakt dat model toetsbaar. Wat de test laat zien, bepaalt wat ik opnieuw moet bekijken.",
+      en: "I start by looking: what is actually happening here? Then I try to understand it, see connections and make a model. Building makes that model testable. What the test reveals determines what I need to look at again.",
     },
     accentToken: "--cv-violet",
     visueel: {
@@ -180,12 +178,12 @@ export const lowiCelHoofdstukken = [
       en: "An idea only counts when it runs.",
     },
     biologie: {
-      nl: "Ribosomen lezen de instructies en zetten ze om in eiwitten. Zij maken van informatie iets tastbaars.",
-      en: "Ribosomes read the instructions and turn them into proteins. They make something tangible out of information.",
+      nl: "Ribosomen lezen de informatie in boodschapper-RNA en verbinden aminozuren tot eiwitten. Zo wordt genetische informatie vertaald naar moleculen die werk doen.",
+      en: "Ribosomes read messenger RNA and join amino acids into proteins. Genetic information becomes molecules that do work.",
     },
     lowi: {
-      nl: "Placeholder: over Nidus als eerste volwaardige systeem binnen LOWI — een persoonlijk operating system dat energie, budget, gezondheid, locatie en AI samenbrengt.",
-      en: "Placeholder: about Nidus as the first fully fledged system within LOWI — a personal operating system bringing together energy, budget, health, location and AI.",
+      nl: "Nidus maakt die stap concreet: gegevens uit mijn dagelijks leven komen samen in een persoonlijk systeem. Een API verbindt de interfaces met de data; workers verzorgen terugkerende taken. De case laat zien hoe die onderdelen samenwerken, en waarom de grenzen ertussen ertoe doen.",
+      en: "Nidus makes that step concrete: data from my daily life comes together in a personal system. An API connects interfaces to data; workers handle recurring tasks. The case shows how these parts work together, and why their boundaries matter.",
     },
     accentToken: "--cv-copper",
     visueel: {
@@ -206,12 +204,12 @@ export const lowiCelHoofdstukken = [
       en: "Curiosity is the source of energy.",
     },
     biologie: {
-      nl: "Mitochondriën zetten voeding om in energie. Zonder hen valt elk proces in de cel stil.",
-      en: "Mitochondria turn nutrients into energy. Without them, every process in the cell comes to a halt.",
+      nl: "Mitochondriën maken bij de celademhaling veel van het ATP dat cellen gebruiken. ATP draagt chemische energie over aan processen die die nodig hebben.",
+      en: "During cellular respiration, mitochondria produce much of the ATP cells use. ATP transfers chemical energy to processes that need it.",
     },
     lowi: {
-      nl: "Placeholder: over verwondering en nieuwsgierigheid als motor, en waarom LOWI naast werk bestaat en niet in plaats daarvan.",
-      en: "Placeholder: about wonder and curiosity as the driving force, and why LOWI exists alongside work rather than in its place.",
+      nl: "LOWI bestaat naast mijn werk. Hier hoeft een vraag niet meteen commercieel nuttig te zijn of op een roadmap te passen. Waarom werkt een biologisch systeem zo? Wat kan AI zichtbaar maken? Kan een verhaal helpen om technologie te begrijpen? Nieuwsgierigheid krijgt hier tijd én een werkbank.",
+      en: "LOWI exists alongside my work. Here, a question does not need an immediate commercial use or a place on a roadmap. Why does a biological system work this way? What can AI reveal? Can a story help us understand technology? Curiosity gets both time and a workbench.",
     },
     accentToken: "--cv-copper",
     visueel: {
@@ -232,12 +230,12 @@ export const lowiCelHoofdstukken = [
       en: "Becoming usable is a separate step.",
     },
     biologie: {
-      nl: "Het golgi-apparaat verpakt en verfijnt wat de ribosomen maken, en stuurt het naar de juiste bestemming.",
-      en: "The Golgi apparatus packages and refines what the ribosomes make, and sends it to the right destination.",
+      nl: "Het golgi-apparaat bewerkt, sorteert en verpakt eiwitten en lipiden. Transportblaasjes brengen ze naar hun bestemming in of buiten de cel.",
+      en: "The Golgi apparatus modifies, sorts and packages proteins and lipids. Transport vesicles carry them to destinations inside or outside the cell.",
     },
     lowi: {
-      nl: "Placeholder: over het verschil tussen een prototype en iets dat iemand anders kan gebruiken — documentatie, design, betrouwbaarheid.",
-      en: "Placeholder: about the difference between a prototype and something someone else can use — documentation, design, reliability.",
+      nl: "Een prototype bewijst dat iets kan. Daarna begint het werk om het bruikbaar te maken: testen, overbodige stappen schrappen, uitleg schrijven, de interface verzorgen en toegang goed regelen. Ik wil niet alleen begrijpen hoe het werkt. Iemand anders moet er ook mee verder kunnen.",
+      en: "A prototype shows that something is possible. Then comes the work of making it useful: testing, removing unnecessary steps, writing explanations, shaping the interface and controlling access. I want more than to understand how it works. Someone else should be able to take it further.",
     },
     accentToken: "--cv-blue",
     visueel: {
@@ -254,16 +252,16 @@ export const lowiCelHoofdstukken = [
     organel: "celdeling",
     titel: { nl: "Deling", en: "Division" },
     kernzin: {
-      nl: "Eén systeem wordt een familie systemen.",
-      en: "One system becomes a family of systems.",
+      nl: "Uit één vraag groeien nieuwe richtingen.",
+      en: "One question grows into new directions.",
     },
     biologie: {
-      nl: "Bij celdeling geeft één cel haar volledige code door aan twee nieuwe. Groei is herhaling met variatie.",
-      en: "During cell division, one cell passes its complete code to two new cells. Growth is repetition with variation.",
+      nl: "Na het kopiëren van het DNA verdeelt een dierlijke cel bij mitose haar chromosomen over twee kernen. Daarna kan de cel zich splitsen in twee dochtercellen.",
+      en: "After copying its DNA, an animal cell undergoing mitosis distributes its chromosomes between two nuclei. The cell can then split into two daughter cells.",
     },
     lowi: {
-      nl: "Placeholder: over waar LOWI naartoe groeit — Nidus, CRISPR & CHICKN, en wat nog komt.",
-      en: "Placeholder: about where LOWI is growing — Nidus, CRISPR & CHICKN, and what comes next.",
+      nl: "Een experiment laat meer achter dan een resultaat. Een inzicht wordt een bouwsteen; een onopgeloste vraag wordt een nieuw begin. Nidus en CRISPR & CHICKN gaan verschillende kanten uit. Ze delen dezelfde gewoonte: onderzoeken, maken en opnieuw kijken.",
+      en: "An experiment leaves more than a result. An insight becomes a building block; an unresolved question becomes a new beginning. Nidus and CRISPR & CHICKN take different directions. They share the same habit: investigate, make and look again.",
     },
     accentToken: "--cv-violet",
     visueel: {
@@ -280,10 +278,10 @@ export const lowiCelHoofdstukken = [
 export type LowiCelHoofdstukId = (typeof lowiCelHoofdstukken)[number]["id"];
 
 export const lowiCelSlot: LowiCelSlot = {
-  titel: { nl: "Van dichtbij bekeken", en: "A closer look" },
+  titel: { nl: "Waar projecten beginnen.", en: "Where projects begin." },
   tekst: {
-    nl: "Placeholder: over hoe de onderdelen van LOWI samenkomen in Nidus, en wat je daar van dichtbij kunt bekijken.",
-    en: "Placeholder: about how the parts of LOWI come together in Nidus, and what you can explore there up close.",
+    nl: "LOWI is niet één project. Het is de plek waar projecten vandaan komen. Soms wordt een vraag een systeem dat ik dagelijks gebruik. Soms een verhaal dat een gesprek opent. Dit groeit er nu uit.",
+    en: "LOWI is not one project. It is where projects come from. Sometimes a question becomes a system I use every day. Sometimes a story that opens a conversation. This is what is growing here.",
   },
   ctaLabel: { nl: "Ontdek Nidus", en: "Explore Nidus" },
   ctaHref: "/nidus",

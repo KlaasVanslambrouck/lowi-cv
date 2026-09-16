@@ -1,0 +1,14 @@
+{
+  "gzipBytes": {
+    "desktop": 594721,
+    "mobile": 177362,
+    "lazy": 417359
+  },
+  "lazyChunks": [
+    "31ywf19g8yjy3.js",
+    "3kso8mu688f-_.js",
+    "341y5e274hp-5.js",
+    "2ek60ln48pwo9.js"
+  ],
+  "staticImageBytes": 268040
+}

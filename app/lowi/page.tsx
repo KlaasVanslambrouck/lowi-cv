@@ -19,7 +19,7 @@ export default function LowiPage() {
       <SessionInsightProvider>
         <main className={styles.page}>
           <ControlStack labels={placeholderContent.uiLabels} showXray={false} />
-          <LowiCelPagina />
+          <LowiCelPagina projects={placeholderContent.lowi.projects.map(({ name, status, tagline }) => ({ name, status, tagline }))} />
         </main>
       </SessionInsightProvider>
     </ThemeProvider>

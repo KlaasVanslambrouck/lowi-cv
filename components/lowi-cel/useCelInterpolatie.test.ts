@@ -12,7 +12,7 @@ describe("LOWI instrument interpolation", () => {
     maakCelDoelBerekening()(3/7,doel);dempCelStaat(staat,doel,1);
     expect(organelIds.map(id=>staat.kleuren[id].getHexString())).toEqual(kleuren);
   });
-  it("starts at the macro intro and reaches all camera/FOV/focus endpoints", () => {
+  it("starts outside the cell and reaches all camera/FOV/focus endpoints", () => {
     const bereken=maakCelDoelBerekening(),doel=maakCelStaat();bereken(0,doel);
     expect(doel.cameraPositie.toArray()).toEqual([...lowiCelBeginStaat.cameraPositie]);
     expect(doel.fov).toBe(lowiCelBeginStaat.fov);
@@ -36,14 +36,18 @@ describe("LOWI instrument interpolation", () => {
     expect(doel.intensiteit.kern).toBeCloseTo(t);
     expect(doel.intensiteit.cytoplasma).toBeCloseTo(1-t);
   });
-  it("reveals the whole cell before entering it in chapter two", () => {
-    const doel=maakCelStaat();maakCelDoelBerekening()((1+celInstellingen.camera.onthullingMoment)/7,doel);
-    doel.cameraPositie.toArray().forEach((v,i)=>expect(v).toBeCloseTo(celInstellingen.camera.onthulling[i],12));
-    expect(doel.fov).toBeCloseTo(celInstellingen.camera.onthullingFov,12);
+  it("approaches from outside without an outward detour", () => {
+    const doel=maakCelStaat(), bereken=maakCelDoelBerekening();
+    let vorige=Infinity;
+    for(let i=0;i<=200;i++) {
+      bereken(i/200*2/7,doel);
+      expect(doel.cameraPositie.length()).toBeLessThanOrEqual(vorige+1e-10);
+      vorige=doel.cameraPositie.length();
+    }
   });
-  it("is continuous at chapter boundaries and at the reveal waypoint", () => {
+  it("is continuous at chapter boundaries", () => {
     const bereken=maakCelDoelBerekening(),a=maakCelStaat(),b=maakCelStaat();
-    const grenzen=[...Array.from({length:6},(_,i)=>(i+1)/7),(1+celInstellingen.camera.onthullingMoment)/7];
+    const grenzen=Array.from({length:6},(_,i)=>(i+1)/7);
     for(const p of grenzen){bereken(p-1e-7,a);bereken(p+1e-7,b);
       expect(a.cameraPositie.distanceTo(b.cameraPositie)).toBeLessThan(1e-8);
       expect(a.fov).toBeCloseTo(b.fov,8);

@@ -3,8 +3,8 @@
 // Alles daarbuiten blijft medium of ontzadigd warm, ook bij een highlight.
 export const celPalet = {
   achtergrond: "#05060a",
-  weefsel: "#c08a63",
-  amber: "#e0913c",
-  karmijn: "#9e3341",
-  violet: "#555f99",
+  weefsel: "#bac1bc",
+  amber: "#ad8255",
+  karmijn: "#865f66",
+  violet: "#888aa3",
 } as const;

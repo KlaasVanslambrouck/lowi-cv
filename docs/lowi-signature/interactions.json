@@ -1,0 +1,33 @@
+{
+  "liveDraws": 3440,
+  "language": {
+    "lang": "en",
+    "chapter": "The nucleus",
+    "placeholders": false
+  },
+  "anchor": {
+    "hash": "#lowi-cel-bouwen",
+    "current": "04"
+  },
+  "disclosure": {
+    "open": true,
+    "focusOutline": "solid"
+  },
+  "revealStayedVisible": true,
+  "offscreenDraws": 0,
+  "canvasRect": {
+    "top": -951,
+    "bottom": -241
+  },
+  "jarvisOpens": true,
+  "liveReducedSwitch": {
+    "canvas": 0,
+    "hidden": 0
+  },
+  "noWebgl": {
+    "mode": "artikel",
+    "canvas": 0,
+    "chapters": 7
+  },
+  "contextLost": "artikel"
+}

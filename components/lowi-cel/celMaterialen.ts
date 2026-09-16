@@ -42,7 +42,7 @@ export function maakInstrumentMateriaal(kleur: THREE.ColorRepresentation, opties
   const kern = opties.kern ?? false;
   const materiaal = new THREE.MeshStandardMaterial({
     color: kleur, emissive: kleur, emissiveIntensity: opties.emissie ?? config.materiaal.emissieBasis,
-    roughness: config.materiaal.ruwheid, metalness: 0,
+    roughness: schil ? .26 : config.materiaal.ruwheid, metalness: 0,
     opacity: opties.opacity ?? 1, transparent: (opties.opacity ?? 1) < 1,
     depthWrite: (opties.opacity ?? 1) === 1, side: THREE.DoubleSide,
   });
@@ -70,7 +70,7 @@ export function maakInstrumentMateriaal(kleur: THREE.ColorRepresentation, opties
     shader.fragmentShader = shader.fragmentShader.replace("#include <normal_fragment_maps>", `
       #include <normal_fragment_maps>
       float relief = lagen(vInstrument * 95.);
-      normal = normalize(normal + .22*vec3(dFdx(relief),dFdy(relief),0.));
+      normal = normalize(normal + .1*vec3(dFdx(relief),dFdy(relief),0.));
     `);
     shader.fragmentShader = shader.fragmentShader.replace("#include <color_fragment>", `
       #include <color_fragment>
@@ -79,7 +79,7 @@ export function maakInstrumentMateriaal(kleur: THREE.ColorRepresentation, opties
         float macro=1.-smoothstep(.08,.3,length(vViewPosition));
         weefsel=mix(weefsel,.25*lagen(vInstrument*80.)+.75*lagen(vInstrument*500.),macro);
       ` : ""}
-      diffuseColor.rgb *= .35 + 1.3 * weefsel;
+      diffuseColor.rgb *= .75 + .45 * weefsel;
       ${schil ? `
         float rand = pow(1.-abs(dot(normalize(vNormal),normalize(vViewPosition))),2.2);
         float venster = smoothstep(.45,.82,normalize(vInstrument).z) * uOpening;

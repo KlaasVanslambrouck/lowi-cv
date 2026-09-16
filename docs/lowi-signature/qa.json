@@ -1,0 +1,965 @@
+[
+  {
+    "name": "1440-dark-motion",
+    "mode": "scroll",
+    "theme": "dark",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 1,
+    "hiddenCopy": 6,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "frames": {},
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/31ywf19g8yjy3.js",
+        "bytes": 672
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3kso8mu688f-_.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/341y5e274hp-5.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2ek60ln48pwo9.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "1440-dark-reduced",
+    "mode": "artikel",
+    "theme": "dark",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 0,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "1440-light-motion",
+    "mode": "scroll",
+    "theme": "light",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 1,
+    "hiddenCopy": 4,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "frames": {},
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/31ywf19g8yjy3.js",
+        "bytes": 672
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3kso8mu688f-_.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/341y5e274hp-5.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2ek60ln48pwo9.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "1440-light-reduced",
+    "mode": "artikel",
+    "theme": "light",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 0,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "1024-dark-motion",
+    "mode": "scroll",
+    "theme": "dark",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 1,
+    "hiddenCopy": 4,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "frames": {},
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      }
+    ],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/31ywf19g8yjy3.js",
+        "bytes": 672
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3kso8mu688f-_.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/341y5e274hp-5.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2ek60ln48pwo9.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "1024-dark-reduced",
+    "mode": "artikel",
+    "theme": "dark",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 0,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      }
+    ],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "1024-light-motion",
+    "mode": "scroll",
+    "theme": "light",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 1,
+    "hiddenCopy": 4,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "frames": {},
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      }
+    ],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/31ywf19g8yjy3.js",
+        "bytes": 672
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3kso8mu688f-_.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/341y5e274hp-5.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2ek60ln48pwo9.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "1024-light-reduced",
+    "mode": "artikel",
+    "theme": "light",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 0,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      }
+    ],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "390-dark-motion",
+    "mode": "artikel",
+    "theme": "dark",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 4,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      }
+    ],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "390-dark-reduced",
+    "mode": "artikel",
+    "theme": "dark",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 0,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      }
+    ],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "390-light-motion",
+    "mode": "artikel",
+    "theme": "light",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 4,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      },
+      {
+        "url": "http://localhost:3002/api/track",
+        "status": 429
+      }
+    ],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  },
+  {
+    "name": "390-light-reduced",
+    "mode": "artikel",
+    "theme": "light",
+    "overflow": false,
+    "h1": 1,
+    "h2": 8,
+    "canvas": 0,
+    "hiddenCopy": 0,
+    "placeholders": false,
+    "brokenImages": [],
+    "brokenAnchors": [],
+    "paragraphs": 0,
+    "exceptions": [],
+    "failedRequests": [],
+    "scripts": [
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2zjueh7t2vecu.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/35p2cb_v9hg0x.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/27fk3_0pbm2ib.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0paxexg6-m0de.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/turbopack-2rf4crtjz1apj.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/2d-mz68ci3fl7.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/3jh1u-s3k0bkk.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/05-c3ty_6dwfk.js",
+        "bytes": 704
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/0_bdivyfur2bb.js",
+        "bytes": 706
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/18_ksayqmhf82.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/14mrh2-p_w84d.js",
+        "bytes": 705
+      },
+      {
+        "url": "http://localhost:3002/_next/static/chunks/25dz-fn2xur10.js",
+        "bytes": 706
+      }
+    ]
+  }
+]
