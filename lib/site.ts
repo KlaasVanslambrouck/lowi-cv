@@ -1,4 +1,4 @@
-import type { MetadataRoute } from "next";
+import type { Metadata, MetadataRoute } from "next";
 
 // Canonieke basis-URL van de publieke site. Bron is NEXT_PUBLIC_SITE_URL;
 // NEXT_PUBLIC_-waarden worden tijdens de build ingelijnd, dus een wijziging
@@ -43,6 +43,17 @@ function normalizeSiteUrl(value: string | undefined): string {
 }
 
 export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
+
+export const SITE_NAME = "Klaas Vanslambrouck";
+
+// Open Graph-velden die elke pagina deelt. Next.js merget metadata ondiep:
+// een pagina die openGraph zet, vervangt het hele object uit de layout.
+// Spread dit object daarom in elke openGraph-definitie.
+export const SHARED_OPEN_GRAPH = {
+  siteName: SITE_NAME,
+  locale: "nl_BE",
+  alternateLocale: ["en_GB"],
+} satisfies NonNullable<Metadata["openGraph"]>;
 
 // Maakt van een pad een absolute URL op SITE_URL: "/nidus" → "https://…/nidus".
 export function absoluteUrl(path: string): string {

@@ -827,7 +827,7 @@ render(reply.text);`,
 
   contact: {
     email: "klaas.d.g.vanslambrouck@gmail.com",
-    linkedinUrl: "",
+    linkedinUrl: "https://www.linkedin.com/in/klaas-vanslambrouck-66a82934/",
     location: { nl: "Oudenaarde, België", en: "Oudenaarde, Belgium" },
     cvPdfUrl: "/cv-klaas.pdf",
     cvPdfAvailable: true,

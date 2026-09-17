@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ControlStack from "@/components/ControlStack";
 import CVSection from "@/components/CVSection";
+import JsonLd from "@/components/JsonLd";
 import NidusArchitecture from "@/components/nidus/NidusArchitecture";
 import NidusDecisionLog from "@/components/nidus/NidusDecisionLog";
 import NidusIntro from "@/components/nidus/NidusIntro";
@@ -11,12 +12,23 @@ import { nidusCaseStudy } from "@/content/nidusCaseStudy";
 import { placeholderContent } from "@/content/placeholderContent";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { SHARED_OPEN_GRAPH, absoluteUrl } from "@/lib/site";
+import { nidusSchema, personRef } from "@/lib/structuredData";
 import styles from "@/styles/nidus.module.css";
 
+// Titel zonder naam: de template uit app/layout.tsx voegt "| Klaas Vanslambrouck" toe.
 export const metadata: Metadata = {
-  title: "Nidus — case study | Klaas Vanslambrouck",
+  // TODO(prompt 4): definitieve title/description-copy volgt.
+  title: "Nidus — case study",
   description:
     "Diepere case study van Nidus: architectuur, decision log, screenshots en code.",
+  alternates: {
+    canonical: absoluteUrl("/nidus"),
+  },
+  openGraph: {
+    ...SHARED_OPEN_GRAPH,
+    type: "article",
+  },
 };
 
 // Server component: de content is statisch, vertaling gebeurt in de
@@ -25,53 +37,56 @@ export default function NidusPage() {
   const content = nidusCaseStudy;
 
   return (
-    <ThemeProvider>
-      <SessionInsightProvider>
-        <main className={styles.page}>
-          <ControlStack
-            labels={placeholderContent.uiLabels}
-            showXray={false}
-          />
-
-          <NidusIntro content={content.intro} />
-
-          <CVSection
-            id="nidus-architectuur"
-            title={content.sectionTitles.architecture}
-          >
-            <NidusArchitecture
-              components={content.architecture}
-              principles={content.principles}
+    <>
+      <JsonLd graph={[nidusSchema(), personRef()]} />
+      <ThemeProvider>
+        <SessionInsightProvider>
+          <main className={styles.page}>
+            <ControlStack
+              labels={placeholderContent.uiLabels}
+              showXray={false}
             />
-          </CVSection>
 
-          <CVSection
-            id="nidus-decision-log"
-            title={content.sectionTitles.decisionLog}
-          >
-            <NidusDecisionLog entries={content.decisionLog} />
-          </CVSection>
+            <NidusIntro content={content.intro} />
 
-          <CVSection
-            id="nidus-screenshots"
-            title={content.sectionTitles.screenshots}
-          >
-            <NidusMockups
-              mockups={content.mockups}
-              sidebarItems={content.sidebarItems}
-              dashboardDetail={content.dashboardDetail}
-              energyDetail={content.energyDetail}
-              note={content.mockupNote}
-            />
-          </CVSection>
+            <CVSection
+              id="nidus-architectuur"
+              title={content.sectionTitles.architecture}
+            >
+              <NidusArchitecture
+                components={content.architecture}
+                principles={content.principles}
+              />
+            </CVSection>
 
-          <CVSection id="nidus-code" title={content.sectionTitles.code}>
-            <NidusPlaceholder text={content.placeholderNote} />
-          </CVSection>
+            <CVSection
+              id="nidus-decision-log"
+              title={content.sectionTitles.decisionLog}
+            >
+              <NidusDecisionLog entries={content.decisionLog} />
+            </CVSection>
 
-          <JarvisAsk />
-        </main>
-      </SessionInsightProvider>
-    </ThemeProvider>
+            <CVSection
+              id="nidus-screenshots"
+              title={content.sectionTitles.screenshots}
+            >
+              <NidusMockups
+                mockups={content.mockups}
+                sidebarItems={content.sidebarItems}
+                dashboardDetail={content.dashboardDetail}
+                energyDetail={content.energyDetail}
+                note={content.mockupNote}
+              />
+            </CVSection>
+
+            <CVSection id="nidus-code" title={content.sectionTitles.code}>
+              <NidusPlaceholder text={content.placeholderNote} />
+            </CVSection>
+
+            <JarvisAsk />
+          </main>
+        </SessionInsightProvider>
+      </ThemeProvider>
+    </>
   );
 }

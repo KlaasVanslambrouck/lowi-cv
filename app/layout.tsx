@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, DM_Sans, DM_Mono } from "next/font/google";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { XrayProvider } from "@/context/XrayContext";
+import { SHARED_OPEN_GRAPH, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Fraunces: naam, headline en sectietitels
@@ -38,10 +39,40 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+// Let op: Next.js merget metadata ondiep. Een child-segment dat zelf
+// openGraph, twitter, alternates of robots zet, vervangt dat hele object.
 export const metadata: Metadata = {
-  title: "Klaas Vanslambrouck — CV",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    // TODO(prompt 4): placeholder — definitieve title-copy volgt.
+    default: "Klaas Vanslambrouck | AI Transformation & Functional Analysis",
+    template: "%s | Klaas Vanslambrouck",
+  },
+  // TODO(prompt 4): placeholder (bestaande tekst) — definitieve description volgt.
   description:
     "Functioneel Analist die business, technologie en AI vertaalt naar werkende systemen. CV en portfolio met live inkijk in het LOWI-platform.",
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  // Geen alternates.canonical hier: die zou elke route zonder eigen canonical
+  // naar de homepage laten wijzen. Canonicals staan per pagina.
+  openGraph: {
+    ...SHARED_OPEN_GRAPH,
+    type: "profile",
+    firstName: "Klaas",
+    lastName: "Vanslambrouck",
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@KVanslambrouck",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      "max-image-preview": "large",
+    },
+  },
 };
 
 export default function RootLayout({
