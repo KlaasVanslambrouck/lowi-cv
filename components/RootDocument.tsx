@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import AnalyticsObserver from "@/components/AnalyticsObserver";
 import { Fraunces, DM_Sans, DM_Mono } from "next/font/google";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { XrayProvider } from "@/context/XrayContext";
@@ -47,6 +48,7 @@ export default function RootDocument({ lang, children }: RootDocumentProps) {
   return (
     <html lang={lang} className={FONT_CLASS_NAMES} suppressHydrationWarning>
       <body>
+        <AnalyticsObserver />
         <LanguageProvider language={lang}>
           <XrayProvider>{children}</XrayProvider>
         </LanguageProvider>

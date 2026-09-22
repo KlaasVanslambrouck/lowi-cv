@@ -1,3 +1,8 @@
+import { normalizeReferrer } from "./privacy";
+export { normalizeReferrer } from "./privacy";
+import { validateSession, validateSignals, type SessionContext, type ClientSignals } from "./observationValidation";
+import { publicPath } from "./session";
+
 export const EVENT_TYPES = ["section_view", "dwell_time", "interaction"] as const;
 export const DEVICE_TYPES = ["mobile", "tablet", "desktop"] as const;
 
@@ -5,7 +10,6 @@ export const MAX_BODY_BYTES = 4096;
 export const MAX_EVENT_DATA_BYTES = 2048;
 export const MAX_REFERRER_LENGTH = 255;
 
-const MAX_RAW_REFERRER_LENGTH = 2048;
 const MAX_ID_LENGTH = 64;
 const MAX_INTERACTION_VALUE_LENGTH = 24;
 const MAX_SUGGESTED_QUESTION_LENGTH = 240;
@@ -22,12 +26,18 @@ const TOP_LEVEL_KEYS = [
   "eventData",
   "referrer",
   "deviceType",
+  "eventId",
+  "path",
+  "session",
+  "signals",
 ] as const;
 const LANGUAGE_VALUES = ["nl", "en"] as const;
 const THEME_VALUES = ["dark", "light"] as const;
 const XRAY_VALUES = ["on", "off"] as const;
 const JARVIS_QUESTION_SOURCE_VALUES = ["suggested", "typed"] as const;
 const INTERACTION_IDS = [
+  "page_view",
+  "cv_download",
   "language_toggle",
   "theme_toggle",
   "xray_toggle",
@@ -63,9 +73,13 @@ type SectionEventData = {
 type DwellTimeEventData = {
   sectionId: string;
   seconds: number;
+  activeSeconds?: number;
+  impressionId?: string;
+  dwellVersion?: 2;
 };
 
 type InteractionEventData =
+  | { interactionId: "page_view" | "cv_download" }
   | { interactionId: "language_toggle"; value: "nl" | "en" }
   | { interactionId: "theme_toggle"; value: "dark" | "light" }
   | { interactionId: "xray_toggle"; value: "on" | "off" }
@@ -95,6 +109,10 @@ export interface TrackPayload {
   eventData: AnalyticsEventData;
   referrer: string | null;
   deviceType: DeviceType | null;
+  eventId?: string;
+  path?: string;
+  session?: SessionContext;
+  signals?: ClientSignals;
 }
 
 export function byteLength(value: string): number {
@@ -110,24 +128,6 @@ export function isJsonContentType(contentType: string | null): boolean {
   );
 }
 
-export function normalizeReferrer(
-  referrer: string | null | undefined,
-): string | null {
-  const candidate = referrer?.trim();
-  if (!candidate || candidate.length > MAX_RAW_REFERRER_LENGTH) return null;
-
-  try {
-    const url = new URL(candidate);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
-
-    const normalized = url.origin === "null" ? url.hostname : url.origin;
-    if (!normalized || normalized.length > MAX_REFERRER_LENGTH) return null;
-
-    return normalized;
-  } catch {
-    return null;
-  }
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -185,7 +185,7 @@ function validateSectionEventData(
 function validateDwellTimeEventData(
   eventData: Record<string, unknown>,
 ): DwellTimeEventData | null {
-  if (!hasOnlyKeys(eventData, ["sectionId", "seconds"])) return null;
+  if (!hasOnlyKeys(eventData, ["sectionId", "seconds", "activeSeconds", "impressionId", "dwellVersion"])) return null;
 
   const sectionId = readSlugId(eventData.sectionId);
   const seconds = eventData.seconds;
@@ -200,6 +200,14 @@ function validateDwellTimeEventData(
     return null;
   }
 
+  if (eventData.dwellVersion !== undefined || eventData.activeSeconds !== undefined || eventData.impressionId !== undefined) {
+    const activeSeconds = eventData.activeSeconds;
+    const impressionId = readBoundedString(eventData.impressionId, 36, UUID_PATTERN);
+    if (eventData.dwellVersion !== 2 || !impressionId || typeof activeSeconds !== "number" || !Number.isFinite(activeSeconds) || activeSeconds < 0 || activeSeconds > MAX_DWELL_SECONDS) return null;
+    // A previously sub-second active remainder can cross the threshold in this packet.
+    if (activeSeconds > seconds + 1) return null;
+    return { sectionId, seconds, activeSeconds, impressionId, dwellVersion: 2 };
+  }
   return { sectionId, seconds };
 }
 
@@ -210,6 +218,9 @@ function validateInteractionEventData(
   if (!interactionId) return null;
 
   switch (interactionId) {
+    case "page_view":
+    case "cv_download":
+      return hasOnlyKeys(eventData, ["interactionId"]) ? { interactionId } : null;
     case "language_toggle": {
       if (!hasOnlyKeys(eventData, ["interactionId", "value"])) return null;
       const value = readEnum(eventData.value, LANGUAGE_VALUES);
@@ -328,6 +339,12 @@ export function validateTrackPayload(body: unknown): TrackPayload | null {
       : readEnum(body.deviceType, DEVICE_TYPES);
   if (body.deviceType !== undefined && !deviceType) return null;
 
+  const eventId = body.eventId === undefined ? undefined : readBoundedString(body.eventId, 36, UUID_PATTERN);
+  const path = body.path === undefined ? undefined : publicPath(body.path);
+  const session = body.session === undefined ? undefined : validateSession(body.session);
+  const signals = body.signals === undefined ? undefined : validateSignals(body.signals);
+  if (eventId === null || path === null || session === null || signals === null) return null;
+
   return {
     sessionId: sessionId.toLowerCase(),
     eventType,
@@ -337,5 +354,9 @@ export function validateTrackPayload(body: unknown): TrackPayload | null {
         ? normalizeReferrer(body.referrer)
         : null,
     deviceType,
+    ...(eventId ? { eventId } : {}),
+    ...(path ? { path } : {}),
+    ...(session ? { session } : {}),
+    ...(signals ? { signals } : {}),
   };
 }

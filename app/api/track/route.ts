@@ -9,10 +9,8 @@ import {
 } from "@/lib/analytics/trackValidation";
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/server";
 import { createCookieSupabaseClient } from "@/lib/supabase/serverClient";
-
-const SESSION_RATE_LIMIT = 30;
-const GLOBAL_RATE_LIMIT = 240;
-const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+import { classifyUserAgent } from "@/lib/analytics/classify";
+import { coarseGeography } from "@/lib/analytics/requestObservation";
 
 export const dynamic = "force-dynamic";
 
@@ -72,6 +70,8 @@ async function hasAdminSession() {
 }
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get("origin");
+  if ((origin && origin !== request.nextUrl.origin) || request.headers.get("sec-fetch-site") === "cross-site") return jsonError(403);
   const payloadResult = await readPayload(request);
   if (!payloadResult.ok) {
     return jsonError(payloadResult.status);
@@ -79,9 +79,7 @@ export async function POST(request: NextRequest) {
 
   const { payload } = payloadResult;
 
-  if (await hasAdminSession()) {
-    return NextResponse.json({ ok: true, skipped: true });
-  }
+  const isAdmin = await hasAdminSession();
 
   let supabase;
   try {
@@ -90,53 +88,33 @@ export async function POST(request: NextRequest) {
     return jsonError(500);
   }
 
-  const since = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
-
-  const { count: sessionCount, error: sessionCountError } = await supabase
-    .from("portfolio_analytics")
-    .select("*", { count: "exact", head: true })
-    .eq("session_id", payload.sessionId)
-    .gte("created_at", since);
-
-  if (sessionCountError) {
-    return jsonError(500);
-  }
-
-  if ((sessionCount ?? 0) >= SESSION_RATE_LIMIT) {
-    return jsonError(429);
-  }
-
-  // TODO: vervang deze grove globale DB-noodrem door een echte distributed
-  // rate limiter voor significante publieke traffic. Zonder IP-opslag blijft
-  // dit bewust een totale traffic-cap, geen betrouwbare client-identiteit.
-  const { count: globalCount, error: globalCountError } = await supabase
-    .from("portfolio_analytics")
-    .select("*", { count: "exact", head: true })
-    .gte("created_at", since);
-
-  if (globalCountError) {
-    return jsonError(500);
-  }
-
-  if ((globalCount ?? 0) >= GLOBAL_RATE_LIMIT) {
-    return jsonError(429);
-  }
-
-  const { error: insertError } = await supabase
-    .from("portfolio_analytics")
-    .insert({
+  const classification = classifyUserAgent(request.headers.get("user-agent"), payload.signals?.webdriver);
+  const isInternal = isAdmin || payload.session?.is_internal === true;
+  const { data: stored, error: insertError } = await supabase.rpc("record_portfolio_event", {
+    p_event: {
+      id: payload.eventId ?? crypto.randomUUID(),
       session_id: payload.sessionId,
       event_type: payload.eventType,
       event_data: payload.eventData,
       referrer: payload.referrer,
       device_type: payload.deviceType,
-    });
+      path: payload.path ?? null,
+    },
+    p_session: {
+      ...payload.session,
+      is_internal: isInternal,
+      ...classification,
+      ...coarseGeography(request.headers, process.env.VERCEL === "1"),
+      signals: payload.signals ?? {},
+    },
+  });
 
   if (insertError) {
     return jsonError(500);
   }
 
-  return NextResponse.json({ ok: true });
+  if (stored?.rate_limited) return jsonError(429);
+  return NextResponse.json({ ok: true, humanContextAllowed: stored?.human_context_allowed === true });
 }
 
 export const GET = methodNotAllowed;

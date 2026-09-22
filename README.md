@@ -4,6 +4,9 @@ Publieke CV/portfolio-pagina van Klaas Van Slambrouck: een interactieve,
 tweetalige Next.js one-pager met LOWI-visualisaties, privacyvriendelijke
 analytics en een klein admin-dashboard.
 
+Analytics-architectuur, database-rollout en testscenario's:
+[Human & Agent Observatory](docs/observatory.md).
+
 ## Tech stack
 
 - Next.js App Router met TypeScript

@@ -1,7 +1,8 @@
 # Database Security Contract
 
-Deze repo bevat geen Supabase migrations voor `portfolio_analytics`. De actuele
-productiepolicies zijn daardoor niet vanuit git verifieerbaar. Dit document legt
+De oorspronkelijke `portfolio_analytics`-baseline staat niet als migration in git.
+De additive observatory-migration staat nu in `supabase/migrations`; zie
+[observatory.md](./observatory.md) voor de live audit en rollout. Dit document legt
 het verwachte securitycontract vast en geeft veilige SQL-queries waarmee een
 reviewer de Supabase-configuratie kan controleren.
 

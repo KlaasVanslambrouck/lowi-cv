@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { initialAcquisition, publicPath } from "@/lib/analytics/session";
+import { isInternalBrowser } from "@/lib/analytics/browserActivity";
 
 const SESSION_STORAGE_KEY = "cv-session-id";
 
@@ -22,7 +24,9 @@ export function useAnalyticsSession() {
   useEffect(() => {
     try {
       const existingSessionId = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
-      if (existingSessionId) {
+      isInternalBrowser();
+      if (existingSessionId && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(existingSessionId)) {
+        if (publicPath(window.location.pathname)) initialAcquisition(existingSessionId, window.sessionStorage, window.location.pathname, window.location.search, document.referrer);
         // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage bestaat pas na mount
         setSessionId(existingSessionId);
         return;
@@ -30,6 +34,7 @@ export function useAnalyticsSession() {
 
       const nextSessionId = createSessionId();
       window.sessionStorage.setItem(SESSION_STORAGE_KEY, nextSessionId);
+      if (publicPath(window.location.pathname)) initialAcquisition(nextSessionId, window.sessionStorage, window.location.pathname, window.location.search, document.referrer);
       setSessionId(nextSessionId);
     } catch {
       // Zonder sessionStorage blijft analytics uit; geen fallback naar persistente opslag.

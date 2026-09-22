@@ -94,6 +94,7 @@ function summarizeSections(rows: AnalyticsRow[]) {
 
 function summarizeDwell(rows: AnalyticsRow[]): DwellEntry[] {
   const totals = new Map<string, { seconds: number; count: number }>();
+  const impressions = new Set<string>();
 
   rows.forEach((row) => {
     if (row.event_type !== "dwell_time") return;
@@ -102,9 +103,13 @@ function summarizeDwell(rows: AnalyticsRow[]): DwellEntry[] {
     if (!sectionId || seconds === null) return;
 
     const current = totals.get(sectionId) ?? { seconds: 0, count: 0 };
+    const impressionId = readStringEventData(row, "impressionId");
+    const impressionKey = impressionId ? `${row.session_id}:${sectionId}:${impressionId}` : null;
+    const newImpression = !impressionKey || !impressions.has(impressionKey);
+    if (impressionKey) impressions.add(impressionKey);
     totals.set(sectionId, {
       seconds: current.seconds + seconds,
-      count: current.count + 1,
+      count: current.count + (newImpression ? 1 : 0),
     });
   });
 

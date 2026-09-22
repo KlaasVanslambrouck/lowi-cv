@@ -5,8 +5,12 @@ import {
   useCallback,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { humanContextAllowed, subscribeEligibility } from "@/lib/analytics/browserActivity";
+
+const serverEligibility = () => false;
 
 export interface SectionInsight {
   sectionId: string;
@@ -37,6 +41,7 @@ export const SessionInsightContext =
   });
 
 export function SessionInsightProvider({ children }: { children: ReactNode }) {
+  const eligible = useSyncExternalStore(subscribeEligibility, humanContextAllowed, serverEligibility);
   const [insightsBySection, setInsightsBySection] = useState<
     Record<string, SectionInsight>
   >({});
@@ -48,6 +53,7 @@ export function SessionInsightProvider({ children }: { children: ReactNode }) {
   >(null);
 
   const recordSectionView = useCallback((sectionId: string) => {
+    if (!humanContextAllowed()) return;
     setInsightsBySection((previous) => {
       const current = previous[sectionId];
       return {
@@ -64,7 +70,7 @@ export function SessionInsightProvider({ children }: { children: ReactNode }) {
 
   const addSectionDwellTime = useCallback(
     (sectionId: string, seconds: number) => {
-      if (seconds <= 0) return;
+      if (seconds <= 0 || !humanContextAllowed()) return;
 
       setInsightsBySection((previous) => {
         const current = previous[sectionId];
@@ -104,16 +110,16 @@ export function SessionInsightProvider({ children }: { children: ReactNode }) {
 
   const sectionInsights = useMemo(
     () =>
-      Object.values(insightsBySection).sort(
+      Object.values(eligible ? insightsBySection : {}).sort(
         (left, right) => right.lastViewedAt - left.lastViewedAt,
       ),
-    [insightsBySection],
+    [insightsBySection, eligible],
   );
 
   const value = useMemo(
     () => ({
       sectionInsights,
-      activeProactiveSectionId,
+      activeProactiveSectionId: eligible ? activeProactiveSectionId : null,
       recordSectionView,
       addSectionDwellTime,
       hasShownProactiveSuggestion,
@@ -122,6 +128,7 @@ export function SessionInsightProvider({ children }: { children: ReactNode }) {
     }),
     [
       activeProactiveSectionId,
+      eligible,
       addSectionDwellTime,
       hasShownProactiveSuggestion,
       markProactiveSuggestionShown,

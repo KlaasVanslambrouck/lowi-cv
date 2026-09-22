@@ -1,12 +1,21 @@
 import { createServerClient } from "@supabase/ssr";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, type NextFetchEvent } from "next/server";
 import { verifyAdminAuth } from "@/lib/auth/admin";
+import { requestObservation } from "@/lib/analytics/requestObservation";
+import { logRequest } from "@/lib/analytics/logRequest";
 
 function redirectToLogin(request: NextRequest) {
   return NextResponse.redirect(new URL("/beheer", request.url));
 }
 
-export async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest, event: NextFetchEvent) {
+  if (!request.nextUrl.pathname.startsWith("/beheer/dashboard")) {
+    if (process.env.PORTFOLIO_REQUEST_LOGGING === "true") {
+      const observation = requestObservation(request.nextUrl, request.method, request.headers, process.env.VERCEL === "1");
+      if (observation) event.waitUntil(logRequest(observation));
+    }
+    return NextResponse.next();
+  }
   // De neutrale routenaam is GEEN beveiliging: dit is een public repo en de
   // bestandsstructuur is zichtbaar. Alleen de Supabase-auth-check hieronder telt.
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -44,5 +53,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/beheer/dashboard/:path*"],
+  matcher: ["/beheer/dashboard/:path*", "/", "/en/:path*", "/nidus", "/lowi", "/cases/:path*", "/projects/:path*", "/robots.txt", "/sitemap.xml", "/llms.txt", "/cv.pdf", "/cv.json"],
 };

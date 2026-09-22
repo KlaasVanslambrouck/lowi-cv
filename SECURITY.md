@@ -30,6 +30,12 @@ model kan afdwingen.
 
 ## Analytics Privacy
 
+De additive sessie- en requestcollectie, classificatie en privacygrenzen staan in
+[Human & Agent Observatory](docs/observatory.md). Request logging gebruikt alleen
+publieke paden, referrer-origin, grove geografie en genormaliseerde agentcategorie;
+geen ruwe IP-adressen of volledige User-Agent. De service-role client wordt ook
+server-side in de proxy gebruikt. Nieuwe tabellen en views zijn admin-only via RLS.
+
 De site slaat geen IP-adressen en geen volledige user-agent op in
 `portfolio_analytics`. De browser stuurt:
 
