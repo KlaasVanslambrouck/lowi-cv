@@ -51,6 +51,7 @@ export interface LowiCelSlot {
   titel: Bilingual;
   tekst: Bilingual;
   ctaLabel: Bilingual;
+  /** NL-basispad; LowiCelPagina zet het per taal om met localizedPath(). */
   ctaHref: string;
 }
 

@@ -9,6 +9,7 @@ import NidusCta from "@/components/NidusCta";
 import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import { trackEvent } from "@/lib/analytics/trackEvent";
 import type { CtaInteractionId } from "@/lib/analytics/trackValidation";
+import { localizedPath } from "@/lib/site";
 import styles from "@/styles/cv.module.css";
 
 interface LowiSectionProps {
@@ -23,7 +24,7 @@ function isActiveStatus(project: LowiProject): boolean {
 }
 
 export default function LowiSection({ content, labels }: LowiSectionProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const { isExplanationActive } = useJarvisExplain();
   const sessionId = useAnalyticsSession();
   const lowiExplanationId = "lowi-project";
@@ -57,7 +58,7 @@ export default function LowiSection({ content, labels }: LowiSectionProps) {
           />
           <Link
             className={styles.lowiLink}
-            href={content.celPath}
+            href={localizedPath(content.celPath, language)}
             onClick={handleCelKlik}
           >
             {t(content.celLinkLabel)}
@@ -122,7 +123,10 @@ export default function LowiSection({ content, labels }: LowiSectionProps) {
                 {t(project.caseStudyLinkLabel ?? labels.caseStudyLinkLabel)}
               </NidusCta>
             ) : project.caseStudyPath ? (
-              <Link className={styles.lowiLink} href={project.caseStudyPath}>
+              <Link
+                className={styles.lowiLink}
+                href={localizedPath(project.caseStudyPath, language)}
+              >
                 {t(project.caseStudyLinkLabel ?? labels.caseStudyLinkLabel)}
               </Link>
             ) : null}

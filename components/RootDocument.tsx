@@ -47,7 +47,7 @@ export default function RootDocument({ lang, children }: RootDocumentProps) {
   return (
     <html lang={lang} className={FONT_CLASS_NAMES} suppressHydrationWarning>
       <body>
-        <LanguageProvider>
+        <LanguageProvider language={lang}>
           <XrayProvider>{children}</XrayProvider>
         </LanguageProvider>
       </body>

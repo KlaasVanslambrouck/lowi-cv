@@ -12,6 +12,7 @@ import { useSceneSupport } from "@/hooks/useSceneSupport";
 import { useScrollVoortgang } from "@/hooks/useScrollVoortgang";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics/trackEvent";
+import { localizedPath } from "@/lib/site";
 import { useEenmaligeReveal } from "./useEenmaligeReveal";
 import type { Bilingual } from "@/types/content";
 import styles from "./LowiCelPagina.module.css";
@@ -39,7 +40,7 @@ const HoofdstukMetTracking = memo(function HoofdstukMetTracking(props: { hoofdst
 });
 
 const HoofdstukSectie = memo(function HoofdstukSectie({ hoofdstuk, index, sectieRef }: { hoofdstuk: Hoofdstuk; index: number; sectieRef: RefObject<HTMLElement | null> }) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const id = lowiCelSectieId(hoofdstuk.id);
   return <section ref={sectieRef} id={id} data-section-id={id} aria-labelledby={`${id}-titel`} className={styles.hoofdstuk}
     style={{ '--hoofdstuk-accent': `var(${hoofdstuk.accentToken})` } as CSSProperties}>
@@ -52,7 +53,7 @@ const HoofdstukSectie = memo(function HoofdstukSectie({ hoofdstuk, index, sectie
       {hoofdstuk.id === 'bouwen' && <details className={styles.bewijs}>
         <summary>{t({ nl: 'Van idee naar systeem · Nidus', en: 'From idea to system · Nidus' })}</summary>
         <p>{t({ nl: 'De mobiele interface spreekt met nidus-api. De API ontsluit data in Supabase; Raspberry Pi-workers voeren terugkerende taken uit. Interfaces, verwerking en opslag hebben elk hun eigen verantwoordelijkheid.', en: 'The mobile interface talks to nidus-api. The API exposes data in Supabase; Raspberry Pi workers run recurring tasks. Interfaces, processing and storage each have their own responsibility.' })}</p>
-        <Link href="/nidus#nidus-architectuur">{t({ nl: 'Bekijk de architectuur', en: 'Explore the architecture' })} <span aria-hidden="true">↗</span></Link>
+        <Link href={localizedPath('/nidus#nidus-architectuur', language)}>{t({ nl: 'Bekijk de architectuur', en: 'Explore the architecture' })} <span aria-hidden="true">↗</span></Link>
       </details>}
     </div>
     <Stilbeeld id={hoofdstuk.id} />
@@ -60,7 +61,7 @@ const HoofdstukSectie = memo(function HoofdstukSectie({ hoofdstuk, index, sectie
 });
 
 export default function LowiCelPagina({ projects }: { projects: Project[] }): ReactElement {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const { ready, showLiveScene, reducedMotion } = useSceneSupport();
   const [sceneFailed, setSceneFailed] = useState(false);
   const live = showLiveScene && !sceneFailed;
@@ -118,8 +119,8 @@ export default function LowiCelPagina({ projects }: { projects: Project[] }): Re
         </article>)}
       </div>
       <div className={styles.slotActies}>
-        <Link className={styles.cta} href={lowiCelSlot.ctaHref} onClick={handleCtaKlik}>{t(lowiCelSlot.ctaLabel)} <span aria-hidden="true">↗</span></Link>
-        <Link className={styles.secondary} href="/#projects">{t({ nl: 'Meer werk bekijken', en: 'Explore more work' })} <span aria-hidden="true">→</span></Link>
+        <Link className={styles.cta} href={localizedPath(lowiCelSlot.ctaHref, language)} onClick={handleCtaKlik}>{t(lowiCelSlot.ctaLabel)} <span aria-hidden="true">↗</span></Link>
+        <Link className={styles.secondary} href={localizedPath('/#projects', language)}>{t({ nl: 'Meer werk bekijken', en: 'Explore more work' })} <span aria-hidden="true">→</span></Link>
       </div>
       <div className={styles.jarvis}><JarvisAsk placement="inline" /></div>
     </footer>

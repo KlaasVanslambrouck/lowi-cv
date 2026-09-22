@@ -97,14 +97,18 @@ export interface LowiProject {
   description: Bilingual;
   status: Bilingual;
   url?: string;
-  caseStudyPath?: string; // interne route naar een uitgebreide case study, bv. "/nidus"
+  // NL-basispad naar een uitgebreide case study, bv. "/nidus". Componenten
+  // zetten het per taal om met localizedPath(); geen aparte /en-waarde.
+  caseStudyPath?: string;
   caseStudyLinkLabel?: Bilingual; // project-specifieke override op het generieke label
   jarvisExplanationId?: string; // toont CTA en koppelt aan een bestaande Jarvis-uitleg
 }
 
 export interface LowiContent {
   intro: Bilingual;
-  celPath: string; // interne route naar de scroll-gedreven celpagina, "/lowi"
+  // NL-basispad naar de scroll-gedreven celpagina, "/lowi"; per taal omgezet
+  // met localizedPath().
+  celPath: string;
   celLinkLabel: Bilingual; // knoplabel vanuit de sectie-intro naar die pagina
   projects: LowiProject[];
 }

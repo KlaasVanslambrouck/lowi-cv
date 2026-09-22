@@ -115,6 +115,8 @@
   font-family: var(--cv-font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.08em;
+  /* Een link sinds de taal in de URL zit; zonder onderlijning oogt hij als de andere knoppen. */
+  text-decoration: none;
 }
 
 .themeToggle {

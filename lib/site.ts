@@ -1,4 +1,4 @@
-import type { Metadata, MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import type { Language } from "@/types/content";
 
 // Canonieke basis-URL van de publieke site. Bron is NEXT_PUBLIC_SITE_URL;
@@ -20,6 +20,8 @@ export interface PublicRoute {
   priority: number;
   /** Handmatig bijgehouden; later automatiseerbaar (bv. uit de git-historiek). */
   lastModified: IsoDate;
+  /** true = er bestaat ook een Engelse versie onder /en (zie localizedPath). */
+  localized: boolean;
 }
 
 function normalizeSiteUrl(value: string | undefined): string {
@@ -58,15 +60,6 @@ export const INDEXNOW_KEY = "167e8c9f936b77cbb623005b267df08e";
 // (meta.lastModified) en de sitemap. Handmatig bijhouden.
 export const CV_LAST_MODIFIED: IsoDate = "2026-09-22";
 
-// Open Graph-velden die elke pagina deelt. Next.js merget metadata ondiep:
-// een pagina die openGraph zet, vervangt het hele object uit de layout.
-// Spread dit object daarom in elke openGraph-definitie.
-export const SHARED_OPEN_GRAPH = {
-  siteName: SITE_NAME,
-  locale: "nl_BE",
-  alternateLocale: ["en_GB"],
-} satisfies NonNullable<Metadata["openGraph"]>;
-
 // Maakt van een pad een absolute URL op SITE_URL: "/nidus" → "https://…/nidus".
 export function absoluteUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
@@ -99,6 +92,74 @@ export function localizedPath(path: string, language: Language): string {
   return isHomePath ? `${prefix}${rest}` : `${prefix}${path}`;
 }
 
+// Omgekeerde richting van localizedPath: maakt van een pathname (zonder hash
+// of query, zoals usePathname() hem geeft) het NL-basispad.
+// "/en" → "/", "/en/nidus" → "/nidus", "/nidus" → "/nidus".
+export function basePathOf(pathname: string): string {
+  if (pathname === LANGUAGE_PREFIX.en) return "/";
+  if (pathname.startsWith(`${LANGUAGE_PREFIX.en}/`)) {
+    return pathname.slice(LANGUAGE_PREFIX.en.length);
+  }
+  return pathname;
+}
+
+export function otherLanguage(language: Language): Language {
+  return language === "nl" ? "en" : "nl";
+}
+
+// Waar een pagina staat en waar haar vertaling staat. Eén bron voor de
+// canonical, de hreflang-links (lib/pageMetadata.ts) en de taalknop.
+export interface PageLocation {
+  /** NL-basispad van de pagina, bv. "/nidus". */
+  basePath: `/${string}`;
+  language: Language;
+  /**
+   * Pad van de vertaling, voor pagina's waar die geen simpele /en-prefix is
+   * (bv. een blogpost met een eigen slug per taal).
+   * Weggelaten: localizedPath(basePath, andere taal). null: geen vertaling.
+   */
+  alternateUrl?: string | null;
+}
+
+export interface PageLanguageLinks {
+  /** Pad van de pagina zelf. */
+  canonicalPath: string;
+  /** Pad van de vertaling; null als die niet bestaat. */
+  alternatePath: string | null;
+  /** Pad per bestaande taalversie, inclusief de pagina zelf. */
+  paths: Partial<Record<Language, string>>;
+}
+
+export function pageLanguageLinks(page: PageLocation): PageLanguageLinks {
+  const canonicalPath = localizedPath(page.basePath, page.language);
+  const alternatePath =
+    page.alternateUrl === undefined
+      ? localizedPath(page.basePath, otherLanguage(page.language))
+      : page.alternateUrl;
+
+  if (alternatePath !== null && !alternatePath.startsWith("/")) {
+    throw new Error(`alternateUrl moet een intern pad zijn, kreeg "${alternatePath}"`);
+  }
+
+  const paths: Partial<Record<Language, string>> = {
+    [page.language]: canonicalPath,
+  };
+  if (alternatePath !== null) {
+    paths[otherLanguage(page.language)] = alternatePath;
+  }
+
+  return { canonicalPath, alternatePath, paths };
+}
+
+// Heeft dit NL-basispad een Engelse versie? Bron: PUBLIC_ROUTES.localized;
+// bedoeld voor de sitemap. De taalknop leest de vertaling per pagina uit
+// pageLanguageLinks. NL-only routes (/cases/*, /beheer/*) → false.
+export function isLocalizedPath(basePath: string): boolean {
+  return PUBLIC_ROUTES.some(
+    (route) => route.localized && route.path === basePath,
+  );
+}
+
 // Publieke, indexeerbare routes. /cases/* staat bewust niet in deze lijst
 // (noindex); /beheer en /api zijn intern.
 export const PUBLIC_ROUTES: readonly PublicRoute[] = [
@@ -107,18 +168,21 @@ export const PUBLIC_ROUTES: readonly PublicRoute[] = [
     changeFrequency: "monthly",
     priority: 1,
     lastModified: "2026-09-07",
+    localized: true,
   },
   {
     path: "/nidus",
     changeFrequency: "monthly",
     priority: 0.8,
     lastModified: "2026-07-13",
+    localized: true,
   },
   {
     path: "/lowi",
     changeFrequency: "monthly",
     priority: 0.8,
     lastModified: "2026-09-16",
+    localized: true,
   },
   {
     // PDF op het eigen domein (rewrite naar nidus-api in next.config.ts).
@@ -127,6 +191,8 @@ export const PUBLIC_ROUTES: readonly PublicRoute[] = [
     changeFrequency: "yearly",
     priority: 0.5,
     lastModified: CV_LAST_MODIFIED,
+    // Machinebestanden hebben één versie, geen /en-variant.
+    localized: false,
   },
   {
     // Machineleesbaar CV (JSON Resume) voor agents.
@@ -134,5 +200,6 @@ export const PUBLIC_ROUTES: readonly PublicRoute[] = [
     changeFrequency: "yearly",
     priority: 0.5,
     lastModified: CV_LAST_MODIFIED,
+    localized: false,
   },
 ];

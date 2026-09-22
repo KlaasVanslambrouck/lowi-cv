@@ -1,60 +1,24 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, type ReactNode } from "react";
 import type { Language } from "@/types/content";
 
 // Doorgegeven zodat bestaande imports van Language uit deze module blijven werken.
 export type { Language };
 
-interface LanguageContextValue {
+// De taal komt uit de route: RootDocument krijgt hem van de root layout
+// ("/" → nl, "/en/…" → en) en geeft hem hier door. Geen client-state, geen
+// localStorage en geen browsertaal: server en client renderen dezelfde taal,
+// en een bot ziet op elke URL wat een bezoeker ziet.
+export const LanguageContext = createContext<Language>("nl");
+
+interface LanguageProviderProps {
   language: Language;
-  toggleLanguage: () => void;
+  children: ReactNode;
 }
 
-export const LanguageContext = createContext<LanguageContextValue>({
-  language: "nl",
-  toggleLanguage: () => {},
-});
-
-// localStorage-sleutel voor de taalvoorkeur van de bezoeker
-const STORAGE_KEY = "cv-language";
-
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Default Nederlands; de echte voorkeur wordt pas na mount bepaald
-  // (localStorage en navigator bestaan niet tijdens server-side rendering).
-  const [language, setLanguage] = useState<Language>("nl");
-
-  useEffect(() => {
-    // Eerder opgeslagen voorkeur wint; anders browsertaal:
-    // begint met "nl" → Nederlands, anders Engels (fallback Nederlands).
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "nl" || stored === "en") {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- bewust: voorkeur kan pas na mount gelezen worden (SSR heeft geen localStorage)
-      setLanguage(stored);
-      return;
-    }
-    const browserLanguage = navigator.language?.toLowerCase() ?? "nl";
-    setLanguage(browserLanguage.startsWith("nl") ? "nl" : "en");
-  }, []);
-
-  const toggleLanguage = useCallback(() => {
-    setLanguage((previous) => {
-      const next: Language = previous === "nl" ? "en" : "nl";
-      window.localStorage.setItem(STORAGE_KEY, next);
-      return next;
-    });
-  }, []);
-
+export function LanguageProvider({ language, children }: LanguageProviderProps) {
   return (
-    <LanguageContext.Provider value={{ language, toggleLanguage }}>
-      {/* lang-attribuut wisselt mee zodat screenreaders de juiste taal gebruiken */}
-      <div lang={language}>{children}</div>
-    </LanguageContext.Provider>
+    <LanguageContext.Provider value={language}>{children}</LanguageContext.Provider>
   );
 }

@@ -18,9 +18,8 @@ export const XrayContext = createContext<XrayContextValue>({
 });
 
 // Globale weergavemodus: NORMAL toont beschrijvingen, X-RAY toont de
-// technische onderlaag (boomstructuren, deployment-details). Zelfde patroon
-// als LanguageContext; bewust niet gepersisteerd — X-ray is een kijkmodus,
-// geen voorkeur.
+// technische onderlaag (boomstructuren, deployment-details). Bewust niet
+// gepersisteerd — X-ray is een kijkmodus, geen voorkeur.
 export function XrayProvider({ children }: { children: ReactNode }) {
   const [xrayActive, setXrayActive] = useState(false);
 
