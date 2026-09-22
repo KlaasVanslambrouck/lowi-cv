@@ -65,7 +65,36 @@ Een volledige script/style-CSP is bewust nog niet enforced. Next.js runtime
 scripts, font loading, Supabase calls en de WebGL-stack moeten daarvoor apart
 met nonces of hashes worden gevalideerd.
 
+## IndexNow
+
+IndexNow is een protocol waarmee een site zoekmachines zelf laat weten welke
+URL's gewijzigd zijn, in plaats van te wachten tot een crawler langskomt. Bing,
+Yandex en andere deelnemers delen die meldingen onderling. Google gebruikt
+IndexNow niet; daar blijven de sitemap en Search Console de weg.
+
+- **Sleutel:** `INDEXNOW_KEY` in `lib/site.ts`, en hetzelfde als bestand
+  `public/<sleutel>.txt` (inhoud: enkel de sleutel). De sleutel is niet geheim;
+  een test bewaakt dat bestandsnaam, inhoud en constante overeenkomen.
+- **Script:** `scripts/indexnow.ts`, met de pure delen in `lib/indexNow.ts`. De
+  URL-lijst komt uit `app/sitemap.ts`, dus uit `PUBLIC_ROUTES`.
+- **Draaien:** `npm run indexnow` is een dry-run; `npm run indexnow -- --send`
+  controleert eerst dat het sleutelbestand live staat en verstuurt dan.
+  `NEXT_PUBLIC_SITE_URL` moet in `.env.local` op `https://klaasvanslambrouck.dev`
+  staan, anders weigert het script (geen https, of nog `vercel.app`).
+- **Wanneer:** na een deploy met inhoudelijke wijzigingen, niet bij elke commit.
+  Zonder echte wijziging pingen levert niets op en kan tot `429` leiden.
+
 ## Open punten / technische schuld
+
+### npm audit
+
+`npm audit` meldt 11 bestaande kwetsbaarheden (o.a. in next, vitest, postcss,
+sharp). Nog niet onderzocht; aparte sessie.
+
+### ESLint-fout in SchrijfScorer
+
+`components/linguix/SchrijfScorer.tsx:408` faalt op
+`react-hooks/set-state-in-effect`. Oplossen in een aparte fix-commit.
 
 ### CV-data leeft op drie plekken
 

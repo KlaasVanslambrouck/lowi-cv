@@ -46,6 +46,13 @@ export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const SITE_NAME = "Klaas Vanslambrouck";
 
+// IndexNow-sleutel (32 tekens, [a-f0-9]). Moet identiek zijn aan de
+// bestandsnaam én de inhoud van public/<sleutel>.txt: zoekmachines halen dat
+// bestand op om te controleren dat een ping van de eigenaar van het domein komt.
+// Niet geheim: het bewijst alleen controle over het domein en staat hoe dan ook
+// publiek op de site.
+export const INDEXNOW_KEY = "167e8c9f936b77cbb623005b267df08e";
+
 // Laatste inhoudelijke wijziging aan de CV-gegevens; gedeeld door /cv.json
 // (meta.lastModified) en de sitemap. Handmatig bijhouden.
 export const CV_LAST_MODIFIED: IsoDate = "2026-09-22";

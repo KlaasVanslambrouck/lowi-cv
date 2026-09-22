@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "indexnow": "tsx --env-file-if-exists=.env.local scripts/indexnow.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -29,6 +30,7 @@
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.10",
     "three-stdlib": "^2.36.1",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.0",
     "vitest": "^4.1.10"
   }

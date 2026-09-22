@@ -24,6 +24,11 @@ datumcheck pas bij de volgende build effect zou hebben.
 5. **Controleren en uitrollen:** `npx tsc --noEmit`, `npm test`, `npm run build`,
    daarna deployen naar Vercel. Zonder nieuwe build verandert er niets, want de
    pagina's zijn statisch.
+6. **IndexNow pingen** zodra de deploy live staat:
+   `npm run indexnow -- --send`
+   Meldt de gewijzigde URL's meteen aan bij Bing en andere IndexNow-zoekmachines
+   (zie "IndexNow" in `ARCHITECTURE.md`). Google gebruikt IndexNow niet; daarvoor
+   dient stap 11.
 
 Na de build zou je dit moeten zien:
 
@@ -38,19 +43,19 @@ Na de build zou je dit moeten zien:
 
 ## In nidus-api
 
-6. **`src/pdf/CvDocument.tsx`:** tagline naar
+7. **`src/pdf/CvDocument.tsx`:** tagline naar
    `AI Transformation Expert, In The Pocket · Bouwer van AI-gedreven systemen`.
-7. **`src/data/cvData.ts`:** nieuwe functie toevoegen en Itineris afsluiten.
-8. **Redeployen op Railway**, anders serveert `/cv.pdf` nog de oude PDF.
+8. **`src/data/cvData.ts`:** nieuwe functie toevoegen en Itineris afsluiten.
+9. **Redeployen op Railway**, anders serveert `/cv.pdf` nog de oude PDF.
 
 ## Daarbuiten
 
-9. **LinkedIn** bijwerken (functie en headline). Dat profiel staat als `sameAs` in de
-   JSON-LD; een afwijking verzwakt het identiteitsanker.
-10. **Google Search Console:** `/` opnieuw laten indexeren.
-11. **Rich Results Test en validator.schema.org** opnieuw draaien voor `/`, `/nidus`
+10. **LinkedIn** bijwerken (functie en headline). Dat profiel staat als `sameAs` in de
+    JSON-LD; een afwijking verzwakt het identiteitsanker.
+11. **Google Search Console:** `/` opnieuw laten indexeren.
+12. **Rich Results Test en validator.schema.org** opnieuw draaien voor `/`, `/nidus`
     en `/lowi`.
-12. Optioneel: GitHub-bio, en X invullen in `SOCIAL_PROFILES` als dat profiel klopt.
+13. Optioneel: GitHub-bio, en X invullen in `SOCIAL_PROFILES` als dat profiel klopt.
 
 ## Losse eindjes die hier niet bij horen maar wel openstaan
 
