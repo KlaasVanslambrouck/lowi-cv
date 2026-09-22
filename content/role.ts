@@ -13,6 +13,7 @@ import type {
 // SCHAKELEN OP DE STARTDATUM: zet ROLE_PHASE op "current". Bewust geen
 // automatische datumwissel: de site is statisch gebouwd, dus een datumcheck
 // zou pas bij de volgende build effect hebben.
+// Volledige checklist voor die dag: docs/rolwissel-2026-10-05.md
 
 export const ROLE_PHASE: RolePhase = "incoming";
 
