@@ -7,8 +7,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import type { Language } from "@/types/content";
 
-export type Language = "nl" | "en";
+// Doorgegeven zodat bestaande imports van Language uit deze module blijven werken.
+export type { Language };
 
 interface LanguageContextValue {
   language: Language;

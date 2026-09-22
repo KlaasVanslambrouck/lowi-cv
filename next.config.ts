@@ -45,6 +45,11 @@ const nextConfig: NextConfig = {
   // Geen dev-badge linksonder tijdens ontwikkelen/screenshots;
   // heeft geen effect op de productie-build.
   devIndicators: false,
+  experimental: {
+    // Twee root layouts (app/(nl) en app/(en)/en): de 404 voor onbekende URL's
+    // komt uit app/global-not-found.tsx, want er is geen gedeelde layout.
+    globalNotFound: true,
+  },
   async rewrites() {
     // /cv.pdf hoort bij het eigen domein; nidus-api genereert het bestand.
     // De upstream zet zelf Content-Type: application/pdf en

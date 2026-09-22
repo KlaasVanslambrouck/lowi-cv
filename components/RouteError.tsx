@@ -3,7 +3,9 @@
 import Link from "next/link";
 import styles from "@/styles/cv.module.css";
 
-export default function Error({ reset }: { reset: () => void }) {
+// Foutscherm voor de publieke pagina's; gebruikt door app/(nl)/error.tsx en
+// app/(en)/en/error.tsx.
+export default function RouteError({ reset }: { reset: () => void }) {
   return (
     <main className={styles.errorPage}>
       <section className={styles.errorPanel} aria-labelledby="public-error-title">

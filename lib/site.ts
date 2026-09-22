@@ -1,4 +1,5 @@
 import type { Metadata, MetadataRoute } from "next";
+import type { Language } from "@/types/content";
 
 // Canonieke basis-URL van de publieke site. Bron is NEXT_PUBLIC_SITE_URL;
 // NEXT_PUBLIC_-waarden worden tijdens de build ingelijnd, dus een wijziging
@@ -70,6 +71,32 @@ export const SHARED_OPEN_GRAPH = {
 export function absoluteUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${SITE_URL}${normalizedPath}`;
+}
+
+// URL-prefix per taal: Nederlands staat op "/", Engels onder "/en".
+const LANGUAGE_PREFIX: Record<Language, string> = {
+  nl: "",
+  en: "/en",
+};
+
+// Zet een Nederlands (ongeprefixt) intern pad om naar de gevraagde taal:
+// "/" → "/en", "/#projects" → "/en#projects", "/nidus#x" → "/en/nidus#x".
+// Verwacht altijd het NL-pad; een pad dat al met "/en" begint is een fout.
+export function localizedPath(path: string, language: Language): string {
+  if (!path.startsWith("/")) {
+    throw new Error(`localizedPath verwacht een intern pad, kreeg "${path}"`);
+  }
+  if (/^\/en(?:[/#?]|$)/.test(path)) {
+    throw new Error(`localizedPath verwacht het NL-pad, kreeg "${path}"`);
+  }
+
+  const prefix = LANGUAGE_PREFIX[language];
+  if (prefix === "") return path;
+
+  // Bij de homepage valt de losse "/" weg: "/en", niet "/en/".
+  const rest = path.slice(1);
+  const isHomePath = rest === "" || rest.startsWith("#") || rest.startsWith("?");
+  return isHomePath ? `${prefix}${rest}` : `${prefix}${path}`;
 }
 
 // Publieke, indexeerbare routes. /cases/* staat bewust niet in deze lijst

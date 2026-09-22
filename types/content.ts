@@ -8,6 +8,9 @@ export interface Bilingual {
   en: string;
 }
 
+// Taal van een pagina; komt uit de route ("/" = nl, "/en/…" = en).
+export type Language = keyof Bilingual;
+
 export type CareerMotif = "soundwave" | "stage-lights" | "blueprint" | "flowchart";
 
 // Datum zoals JSON Resume ze toelaat: "2021", "2021-02" of "2021-02-01".

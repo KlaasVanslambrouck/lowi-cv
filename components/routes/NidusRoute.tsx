@@ -12,28 +12,32 @@ import { nidusCaseStudy } from "@/content/nidusCaseStudy";
 import { placeholderContent } from "@/content/placeholderContent";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
 import { ThemeProvider } from "@/context/ThemeContext";
-import { SHARED_OPEN_GRAPH, absoluteUrl } from "@/lib/site";
+import { SHARED_OPEN_GRAPH, absoluteUrl, localizedPath } from "@/lib/site";
 import { nidusSchema, personRef } from "@/lib/structuredData";
+import type { Language } from "@/types/content";
 import styles from "@/styles/nidus.module.css";
 
-// Titel zonder naam: de template uit app/layout.tsx voegt "| Klaas Vanslambrouck" toe.
-export const metadata: Metadata = {
-  // TODO(prompt 4): definitieve title/description-copy volgt.
-  title: "Nidus — case study",
-  description:
-    "Diepere case study van Nidus: architectuur, decision log, screenshots en code.",
-  alternates: {
-    canonical: absoluteUrl("/nidus"),
-  },
-  openGraph: {
-    ...SHARED_OPEN_GRAPH,
-    type: "article",
-  },
-};
+// Gedeeld door app/(nl)/nidus/page.tsx en app/(en)/en/nidus/page.tsx.
+// Titel zonder naam: de template uit de root layout voegt "| Klaas Vanslambrouck" toe.
+export function nidusMetadata(language: Language): Metadata {
+  return {
+    // TODO(prompt 4): definitieve title/description-copy volgt.
+    title: "Nidus — case study",
+    description:
+      "Diepere case study van Nidus: architectuur, decision log, screenshots en code.",
+    alternates: {
+      canonical: absoluteUrl(localizedPath("/nidus", language)),
+    },
+    openGraph: {
+      ...SHARED_OPEN_GRAPH,
+      type: "article",
+    },
+  };
+}
 
 // Server component: de content is statisch, vertaling gebeurt in de
 // (client) sectiecomponenten die m.b.v. useLanguage() vertalen.
-export default function NidusPage() {
+export default function NidusRoute() {
   const content = nidusCaseStudy;
 
   return (

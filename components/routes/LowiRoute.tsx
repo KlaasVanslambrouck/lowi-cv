@@ -5,32 +5,36 @@ import LowiCelPagina from "@/components/lowi-cel/LowiCelPagina";
 import { placeholderContent } from "@/content/placeholderContent";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
 import { ThemeProvider } from "@/context/ThemeContext";
-import { SHARED_OPEN_GRAPH, absoluteUrl } from "@/lib/site";
+import { SHARED_OPEN_GRAPH, absoluteUrl, localizedPath } from "@/lib/site";
 import {
   crisprChicknSchema,
   lowiSchema,
   personRef,
 } from "@/lib/structuredData";
+import type { Language } from "@/types/content";
 import styles from "@/components/lowi-cel/LowiCelPagina.module.css";
 
-// Titel zonder naam: de template uit app/layout.tsx voegt "| Klaas Vanslambrouck" toe.
-export const metadata: Metadata = {
-  // TODO(prompt 4): definitieve description-copy volgt; nu samengesteld uit de
-  // bestaande intro-tekst van de pagina (LowiCelPagina).
-  title: "LOWI — Lab of Wonder and Imagination",
-  description:
-    "Een persoonlijk lab van Klaas Vanslambrouck. Ik onderzoek hoe dingen werken en bouw om te ontdekken wat ermee kan. AI, biologie, systemen en verhalen komen hier samen.",
-  alternates: {
-    canonical: absoluteUrl("/lowi"),
-  },
-  openGraph: {
-    ...SHARED_OPEN_GRAPH,
-    type: "article",
-  },
-};
+// Gedeeld door app/(nl)/lowi/page.tsx en app/(en)/en/lowi/page.tsx.
+// Titel zonder naam: de template uit de root layout voegt "| Klaas Vanslambrouck" toe.
+export function lowiMetadata(language: Language): Metadata {
+  return {
+    // TODO(prompt 4): definitieve description-copy volgt; nu samengesteld uit de
+    // bestaande intro-tekst van de pagina (LowiCelPagina).
+    title: "LOWI — Lab of Wonder and Imagination",
+    description:
+      "Een persoonlijk lab van Klaas Vanslambrouck. Ik onderzoek hoe dingen werken en bouw om te ontdekken wat ermee kan. AI, biologie, systemen en verhalen komen hier samen.",
+    alternates: {
+      canonical: absoluteUrl(localizedPath("/lowi", language)),
+    },
+    openGraph: {
+      ...SHARED_OPEN_GRAPH,
+      type: "article",
+    },
+  };
+}
 
 // Servercomponent volgens /nidus; de clientcomponent vertaalt via useLanguage().
-export default function LowiPage() {
+export default function LowiRoute() {
   return (
     <>
       <JsonLd graph={[lowiSchema(), crisprChicknSchema(), personRef()]} />
