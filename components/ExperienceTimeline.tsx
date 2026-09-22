@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import type { Bilingual, ExperienceEntry } from "@/types/content";
+import type { Bilingual } from "@/types/content";
+import type { TimelineExperience } from "@/lib/experience";
 import { useLanguage } from "@/hooks/useLanguage";
 import CareerMotifBackground from "@/components/CareerMotifBackground";
 import JarvisExplainButton from "@/components/JarvisExplainButton";
@@ -9,15 +10,15 @@ import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import styles from "@/styles/cv.module.css";
 
 interface ExperienceTimelineProps {
-  entries: ExperienceEntry[];
+  entries: TimelineExperience[];
   explainButtonLabel: Bilingual;
 }
 
-// Rustige, leesbare tijdlijn — huidige rol staat bovenaan (volgorde uit
-// content). Een koperkleurig bolletje schuift langs de lijn mee op basis van
-// welk item in beeld is (sectie-gebaseerd via IntersectionObserver, bewust
-// geen raw window.scrollY-berekeningen — zelfde aanpak als de rest van de
-// pagina).
+// Rustige, leesbare tijdlijn. De volgorde is chronologisch met de oudste
+// functie bovenaan en de meest recente onderaan; lib/experience.ts levert die
+// lijst. Een koperkleurig bolletje schuift langs de lijn mee op basis van welk
+// item in beeld is (sectie-gebaseerd via IntersectionObserver, bewust geen raw
+// window.scrollY-berekeningen — zelfde aanpak als de rest van de pagina).
 export default function ExperienceTimeline({
   entries,
   explainButtonLabel,
@@ -26,7 +27,6 @@ export default function ExperienceTimeline({
   const { isExplanationActive } = useJarvisExplain();
   const listRef = useRef<HTMLOListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const currentExperienceExplanationId = "current-experience";
 
   useEffect(() => {
     const list = listRef.current;
@@ -68,14 +68,15 @@ export default function ExperienceTimeline({
       />
       <ol ref={listRef} className={styles.timeline}>
         {entries.map((entry) => {
-          const isCurrentEntry = /heden|present/i.test(entry.period);
+          // Welke functie nu loopt én of er een uitleg bij hoort, komt uit
+          // lib/experience.ts (ROLE_PHASE) — niet uit een regex op de periode.
           const explainActive =
-            isCurrentEntry &&
-            isExplanationActive(currentExperienceExplanationId);
+            entry.explanationId !== undefined &&
+            isExplanationActive(entry.explanationId);
 
           return (
           <li
-            key={`${entry.company}-${entry.period}`}
+            key={`${entry.company}-${entry.startDate}`}
             className={styles.timelineItem}
           >
             <div
@@ -89,18 +90,25 @@ export default function ExperienceTimeline({
               <div className={styles.timelineItemContent}>
                 <div className={styles.timelineHeader}>
                   <h3 className={styles.timelineRole}>{t(entry.role)}</h3>
-                  <span className={styles.timelineCompany}>{entry.company}</span>
+                  {/* Kwalificatie tussen haakjes achter de eigennaam. */}
+                  <span className={styles.timelineCompany}>
+                    {entry.companyNote
+                      ? `${entry.company} (${t(entry.companyNote)})`
+                      : entry.company}
+                  </span>
                 </div>
-                {entry.period ? (
-                  <span className={styles.timelinePeriod}>{entry.period}</span>
+                {entry.periodLabel || entry.period ? (
+                  <span className={styles.timelinePeriod}>
+                    {entry.periodLabel ? t(entry.periodLabel) : entry.period}
+                  </span>
                 ) : null}
                 <p className={styles.timelineDescription}>
                   {t(entry.description)}
                 </p>
-                {isCurrentEntry ? (
+                {entry.explanationId ? (
                   <div className={styles.jarvisExplainActionRow}>
                     <JarvisExplainButton
-                      explanationId={currentExperienceExplanationId}
+                      explanationId={entry.explanationId}
                       label={explainButtonLabel}
                     />
                   </div>

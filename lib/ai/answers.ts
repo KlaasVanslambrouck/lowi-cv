@@ -1,3 +1,4 @@
+import { jarvisPositioning, jarvisRoleDescriptor } from "@/content/role";
 import type { Bilingual } from "@/types/content";
 import { getKnowledgeBase } from "./portfolioKnowledgeBase";
 import type { RetrievalResult } from "./types";
@@ -15,8 +16,8 @@ export const preAuthoredAnswers: Record<string, GroundedAnswer> = {
     responseType: "pre-authored",
     sourceChunkIds: ["system-about-me", "skill-ai", "skill-functional-analysis"],
     text: {
-      nl: "Klaas past bij het bouwen van AI-gedreven systemen omdat zijn profiel businessanalyse, technologie en AI samenbrengt. De portfolio beschrijft hem als functioneel analist die processen begrijpt, frictie ziet en die inzichten naar praktische werkende oplossingen vertaalt. De skill-constellatie verbindt AI met LLMs, automation, data en functional analysis, terwijl Functional Analysis gekoppeld is aan productdenken en systems thinking.",
-      en: "Klaas fits the work of building AI-enabled systems because his profile brings business analysis, technology and AI together. The portfolio describes him as a functional analyst who understands processes, spots friction and translates that into practical working solutions. The skill constellation connects AI with LLMs, automation, data and functional analysis, while Functional Analysis is linked to product thinking and systems thinking.",
+      nl: `Klaas past bij het bouwen van AI-gedreven systemen omdat zijn profiel businessanalyse, technologie en AI samenbrengt. De portfolio beschrijft hem als ${jarvisRoleDescriptor.nl}, die processen begrijpt, frictie ziet en die inzichten naar praktische werkende oplossingen vertaalt. De skill-constellatie verbindt AI met LLMs, automation, data en functional analysis, terwijl Functional Analysis gekoppeld is aan productdenken en systems thinking.`,
+      en: `Klaas fits the work of building AI-enabled systems because his profile brings business analysis, technology and AI together. The portfolio describes him as an ${jarvisRoleDescriptor.en}, who understands processes, spots friction and translates that into practical working solutions. The skill constellation connects AI with LLMs, automation, data and functional analysis, while Functional Analysis is linked to product thinking and systems thinking.`,
     },
   },
   "systems-actually-built": {
@@ -71,8 +72,8 @@ export const preAuthoredAnswers: Record<string, GroundedAnswer> = {
       "experience-egov-vzw",
     ],
     text: {
-      nl: "Wat hem onderscheidt is dat analyse niet stopt bij specificaties. De content positioneert hem als functioneel analist met een sterke drang om systemen te begrijpen en te bouwen. De skill-node Functional Analysis is verbonden met AI, product en systems thinking. Zijn EGOV-ervaring onderbouwt de klassieke analysekant: businessbehoeften vertalen naar functionele specificaties voor case management en workflow-automatisering.",
-      en: "What sets him apart is that analysis does not stop at specifications. The content positions him as a functional analyst with a strong drive to understand and build systems. The Functional Analysis skill node is connected to AI, product and systems thinking. His EGOV experience grounds the classic analysis side: translating business needs into functional specifications for case management and workflow automation.",
+      nl: `Wat hem onderscheidt is dat analyse niet stopt bij specificaties. ${jarvisPositioning.nl} De skill-node Functional Analysis is verbonden met AI, product en systems thinking. Zijn EGOV-ervaring onderbouwt de klassieke analysekant: businessbehoeften vertalen naar functionele specificaties voor case management en workflow-automatisering.`,
+      en: `What sets him apart is that analysis does not stop at specifications. ${jarvisPositioning.en} The Functional Analysis skill node is connected to AI, product and systems thinking. His EGOV experience grounds the classic analysis side: translating business needs into functional specifications for case management and workflow automation.`,
     },
   },
 };

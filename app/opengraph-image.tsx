@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { ogAlt, ogSubtitle } from "@/content/role";
 import {
   CvOgCard,
   NetworkMotif,
@@ -8,8 +9,8 @@ import {
   type MotifNode,
 } from "@/lib/og";
 
-// TODO(prompt 4): alt en ondertitel volgen de placeholder-titel uit app/layout.tsx.
-export const alt = "Klaas Vanslambrouck — AI Transformation & Functional Analysis";
+// Alt en ondertitel volgen de rolfase uit content/role.ts.
+export const alt = ogAlt;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,7 +41,7 @@ export default async function Image() {
       <CvOgCard
         eyebrow="Portfolio · CV"
         title="Klaas Vanslambrouck"
-        subtitle="AI Transformation & Functional Analysis"
+        subtitle={ogSubtitle}
         footer={SITE_HOST}
         motif={<NetworkMotif width={480} height={630} nodes={NODES} links={LINKS} />}
       />

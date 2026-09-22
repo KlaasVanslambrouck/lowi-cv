@@ -1,4 +1,5 @@
 import { placeholderContent } from "@/content/placeholderContent";
+import { schemaRole } from "@/content/role";
 import { PUBLIC_ROUTES, SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
 
 // Schema.org JSON-LD als identiteitsanker voor zoekmachines en agents.
@@ -9,15 +10,7 @@ import { PUBLIC_ROUTES, SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
 // Configuratie — wijzig hier, niet in de builders.
 // ---------------------------------------------------------------------------
 
-// Vanaf 2026-10-01: jobTitle "AI Transformation Expert",
-// worksFor { name: "In The Pocket", legalName: "ITP Agency NV" }
-export const CURRENT_ROLE: {
-  jobTitle: string;
-  worksFor: { name: string; legalName?: string };
-} = {
-  jobTitle: "Functional Consultant",
-  worksFor: { name: "Itineris NV" },
-};
+// Rol en werkgever komen uit content/role.ts (schemaRole): dat volgt ROLE_PHASE.
 
 // Leeg = geen `image` in het schema. Later: "/klaas-vanslambrouck.jpg".
 export const PERSON_IMAGE_PATH = "";
@@ -175,8 +168,14 @@ export function personSchema(): PersonNode {
     url: SITE_URL,
     ...(PERSON_IMAGE_PATH ? { image: absoluteUrl(PERSON_IMAGE_PATH) } : {}),
     email: placeholderContent.contact.email,
-    jobTitle: CURRENT_ROLE.jobTitle,
-    worksFor: { "@type": "Organization", ...CURRENT_ROLE.worksFor },
+    jobTitle: schemaRole.jobTitle,
+    worksFor: {
+      "@type": "Organization",
+      name: schemaRole.employer.name,
+      ...(schemaRole.employer.legalName
+        ? { legalName: schemaRole.employer.legalName }
+        : {}),
+    },
     address: {
       "@type": "PostalAddress",
       addressLocality: "Oudenaarde",

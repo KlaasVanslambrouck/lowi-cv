@@ -10,6 +10,7 @@
 // sensitivity-filter in de retrieval-laag te bouwen.
 
 import { placeholderContent } from "@/content/placeholderContent";
+import { experienceFor } from "@/lib/experience";
 import type { Bilingual } from "@/types/content";
 import type { KnowledgeChunk } from "./types";
 
@@ -98,6 +99,11 @@ const CURATED_KEYWORDS: Record<string, string[]> = {
     "businessanalyse",
     "technische implementatie",
     "verbinden",
+    // Rol en werkgever staan in de about-tekst; expliciet als trefwoord zodat
+    // een vraag over AI-transformatie deze chunk vindt (zie content/role.ts).
+    "ai transformation",
+    "ai-transformatie",
+    "in the pocket",
   ],
   // De centrale AI-knoop moet vindbaar zijn op de actuele rolrichting uit de
   // hero, niet alleen op de losse term "AI".
@@ -106,6 +112,8 @@ const CURATED_KEYWORDS: Record<string, string[]> = {
     "ai-enabled systems",
     "bouwen",
     "building",
+    "ai transformation",
+    "ai-transformatie",
   ],
   // De skill-node heet in de content Engels "Functional Analysis"; NL-bezoekers
   // zoeken op deze Nederlandse varianten van hetzelfde begrip.
@@ -114,6 +122,11 @@ const CURATED_KEYWORDS: Record<string, string[]> = {
     "businessanalyse",
     "functioneel analist",
     "requirements",
+    // De node is in skillNodes verbonden met "ai" en "systems-thinking"; die
+    // relatie is de reden dat deze chunk hoort bij vragen over het bouwen van
+    // AI-gedreven systemen. Zonder deze termen valt ze uit de top-k.
+    "ai-gedreven systemen",
+    "ai-enabled systems",
   ],
   // De intro claimt letterlijk "technisch degelijk"; de losse term
   // "betrouwbaarheid/reliability" ontbreekt maar wordt door die claim gedragen.
@@ -148,10 +161,19 @@ function curatedFor(chunkId: string): string[] {
   return CURATED_KEYWORDS[chunkId] ?? [];
 }
 
+// Bedrijf plus periode tussen haakjes; een lege periode laten we weg.
+function experienceContext(company: string, period: string): string {
+  return period ? `(${company}, ${period})` : `(${company})`;
+}
+
 function buildExperienceChunks(): KnowledgeChunk[] {
-  return placeholderContent.experience.map((entry) => {
+  // Via experienceFor(): dezelfde lijst als de tijdlijn en /cv.json, inclusief
+  // de functie uit content/role.ts en de fase-afhankelijke periodeteksten.
+  return experienceFor().map((entry) => {
     const orgSlug = slugify(primaryName(entry.company));
     const id = `experience-${orgSlug}`;
+    const periodNl = entry.periodLabel?.nl ?? entry.period;
+    const periodEn = entry.periodLabel?.en ?? entry.period;
     return {
       id,
       sourceType: "experience",
@@ -162,8 +184,8 @@ function buildExperienceChunks(): KnowledgeChunk[] {
       },
       // Periode en bedrijf horen bij de doorzoekbare tekst van de ervaring.
       content: {
-        nl: `${entry.description.nl} (${entry.company}, ${entry.period})`,
-        en: `${entry.description.en} (${entry.company}, ${entry.period})`,
+        nl: `${entry.description.nl} ${experienceContext(entry.company, periodNl)}`,
+        en: `${entry.description.en} ${experienceContext(entry.company, periodEn)}`,
       },
       keywords: uniqueKeywords(
         [primaryName(entry.company)],

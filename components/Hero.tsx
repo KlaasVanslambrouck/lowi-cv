@@ -67,10 +67,13 @@ export default function Hero({ content, nidusCtaLabel }: HeroProps) {
             <li key={focusArea}>{focusArea}</li>
           ))}
         </ul>
-        <span className={styles.liveBadge}>
-          <span className={styles.liveDot} aria-hidden="true" />
-          {t(content.liveLabel)}
-        </span>
+        {/* Badge enkel wanneer er een statuslabel is (zie content/role.ts). */}
+        {content.liveLabel ? (
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} aria-hidden="true" />
+            {t(content.liveLabel)}
+          </span>
+        ) : null}
         <NidusCta interactionId="nidus_cta_hero" variant="primary">
           {t(nidusCtaLabel)}
         </NidusCta>

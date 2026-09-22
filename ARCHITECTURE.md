@@ -2,10 +2,11 @@
 
 ## Publieke app
 
-`app/page.tsx` is een client-rendered CV-one-pager op basis van
-`content/placeholderContent.ts`. De pagina gebruikt providers voor taal, thema,
-X-ray, Jarvis-uitleg en sessie-inzichten. De content blijft lokaal en tweetalig;
-deze hardeningfase wijzigt geen CV-inhoud.
+`app/page.tsx` is een servercomponent die de metadata (canonical) en de JSON-LD
+rendert; de eigenlijke CV-one-pager staat als clientcomponent in
+`components/HomePage.tsx`, op basis van `content/placeholderContent.ts`. De
+pagina gebruikt providers voor taal, thema, X-ray, Jarvis-uitleg en
+sessie-inzichten. De content blijft lokaal en tweetalig.
 
 De Three.js-onderdelen laden lazy met `next/dynamic` en `ssr: false`.
 `hooks/useSceneSupport.ts` bepaalt of live WebGL veilig is. Bij klein scherm,
@@ -63,3 +64,18 @@ naar Supabase.
 Een volledige script/style-CSP is bewust nog niet enforced. Next.js runtime
 scripts, font loading, Supabase calls en de WebGL-stack moeten daarvoor apart
 met nonces of hashes worden gevalideerd.
+
+## Open punten / technische schuld
+
+### CV-data leeft op drie plekken
+
+| Bron | Rol |
+|---|---|
+| `nidus-api` · `src/data/cvData.ts` | bron van de CV-PDF; rijkst: bullets per functie, tweede opleiding, aanbevelingen |
+| `nidus-api` · `src/data/portfolioContent.ts` | tekst voor Jarvis/AI-consumptie |
+| `lowi-cv` · `content/placeholderContent.ts` | deze site, de Jarvis-kennisbank en `/cv.json` |
+
+Dezelfde gegevens (functies, perioden, vaardigheidsclusters) staan dus drie keer
+en moeten handmatig in sync blijven. Wijzig je één bron, controleer dan de andere
+twee. Doel op termijn: één bron; welke is nog te beslissen. Bewust nog niet
+opgelost; zie ook het commentaarblok bovenaan `lib/cvResume.ts`.

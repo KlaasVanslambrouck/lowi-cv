@@ -18,8 +18,6 @@ export default function ContactFooter({
 }: ContactFooterProps) {
   const { t } = useLanguage();
   const [footerRef] = useSectionTracking<HTMLElement>("contact");
-  const baseUrl = process.env.NEXT_PUBLIC_NIDUS_API_URL?.trim();
-  const cvPdfUrl = `${baseUrl?.replace(/\/+$/, "") ?? ""}/api/portfolio/cv-pdf`;
 
   return (
     // data-section-id zodat JarvisPresence deze sectie herkent
@@ -42,14 +40,9 @@ export default function ContactFooter({
           ) : null}
           <span className={styles.footerLocation}>{t(contact.location)}</span>
         </div>
+        {/* Zelfde origin dankzij de rewrite in next.config.ts, dus `download` werkt. */}
         {contact.cvPdfAvailable ? (
-          <a
-            className={styles.downloadButton}
-            href={cvPdfUrl}
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a className={styles.downloadButton} href={contact.cvPdfUrl} download>
             {t(labels.downloadCv)}
           </a>
         ) : null}

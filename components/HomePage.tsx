@@ -1,6 +1,7 @@
 "use client";
 
 import { placeholderContent } from "@/content/placeholderContent";
+import { experienceFor } from "@/lib/experience";
 import { useLanguage } from "@/hooks/useLanguage";
 import ControlStack from "@/components/ControlStack";
 import Hero from "@/components/Hero";
@@ -64,7 +65,7 @@ export default function HomePage() {
 
           <CVSection id="experience" title={content.sectionTitles.experience}>
             <ExperienceTimeline
-              entries={content.experience}
+              entries={experienceFor()}
               explainButtonLabel={content.uiLabels.jarvisExplainButton}
             />
           </CVSection>

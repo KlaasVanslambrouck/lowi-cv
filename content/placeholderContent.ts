@@ -1,3 +1,4 @@
+import { aboutBody, roleTagline, statusLabel } from "@/content/role";
 import type { PortfolioContent } from "@/types/content";
 
 // Placeholder-content voor de hele pagina. Wordt in een latere stap vervangen
@@ -8,28 +9,24 @@ export const placeholderContent: PortfolioContent = {
   hero: {
     name: "Klaas Vanslambrouck",
     currentRole: { nl: "Functioneel Analist", en: "Functional Analyst" },
-    targetRole: {
-      nl: "Bouwer van AI-gedreven systemen",
-      en: "Builder of AI-enabled systems",
-    },
+    // Rechterkant van de tagline; komt uit content/role.ts.
+    targetRole: roleTagline,
     thesis: {
-      nl: "Ik vertaal complexe business- en systeemcontext naar werkende, AI-gedreven oplossingen — van scherpe analyse tot prototypes en productarchitectuur.",
-      en: "I translate complex business and systems context into working, AI-enabled solutions — from sharp analysis to prototypes and product architecture.",
+      nl: "Ik vertaal complexe business- en systeemcontext naar werkende AI-systemen — van analyse tot prototype, productarchitectuur en uitrol.",
+      en: "I translate complex business and systems context into working AI systems — from analysis to prototype, product architecture and rollout.",
     },
     identityLine: {
       nl: "Mijn kracht zit op de brug tussen business, techniek en AI. Nidus is daar het bewijs van: een echt, zelfgebouwd platform dat data, automatisering en intelligentie samenbrengt — geen demo, maar een werkend systeem.",
       en: "My strength sits at the intersection of business, technology and AI. Nidus is the proof: a real, self-built platform that brings together data, automation and intelligence — not a demo, but a working system.",
     },
     focusAreas: ["Systems Thinking", "Business Analysis", "AI-Enabled Products"],
-    liveLabel: { nl: "beschikbaar", en: "available" },
+    // Statusbadge; null in de "current"-fase, dan toont Hero geen badge.
+    liveLabel: statusLabel,
   },
 
   aboutMe: {
     heading: { nl: "Wie ik ben", en: "Who I am" },
-    body: {
-      nl: "Ik ben Klaas, functioneel analist met een sterke drang om systemen te begrijpen én te bouwen. Mijn kracht zit op de brug tussen business, technologie en AI: ik zie snel hoe processen werken, waar frictie zit en hoe je die kunt vertalen naar praktische, werkende oplossingen. LOWI is mijn persoonlijke laboratorium: de plek waar ik leer, experimenteer en bewijs dat ideeën pas echt waarde krijgen wanneer ze draaien.",
-      en: "I'm Klaas, a functional analyst with a strong drive to understand and build systems. My strength sits at the intersection of business, technology and AI: I quickly see how processes work, where the friction lies, and how to translate that into practical, working solutions. LOWI is my personal laboratory: the place where I learn, experiment, and prove that ideas only gain real value once they actually run.",
-    },
+    body: aboutBody,
   },
 
   experience: [
@@ -38,8 +35,14 @@ export const placeholderContent: PortfolioContent = {
         nl: "Sound Engineer",
         en: "Sound Engineer",
       },
-      company: "Freelance (diverse opdrachtgevers, o.a. Soundfield NV)",
+      company: "Freelance",
+      companyNote: {
+        nl: "diverse opdrachtgevers, o.a. Soundfield NV",
+        en: "various clients, incl. Soundfield NV",
+      },
       period: "2010 — 2017",
+      startDate: "2010",
+      endDate: "2017",
       motif: "soundwave",
       description: {
         nl: "Freelance sound engineer voor meerdere bedrijven: ontwerp en live-mixing van geluidsinstallaties bij diverse events.",
@@ -48,8 +51,11 @@ export const placeholderContent: PortfolioContent = {
     },
     {
       role: { nl: "Team Lead Productie", en: "Production Team Lead" },
-      company: "Student Kick-Off, Gent (vrijwilliger / volunteer)",
-      period: "",
+      company: "Student Kick-Off, Gent",
+      companyNote: { nl: "vrijwilliger", en: "volunteer" },
+      period: "2012 — 2016",
+      startDate: "2012",
+      endDate: "2016",
       motif: "stage-lights",
       description: {
         nl: "Programmeerde de Mainstage en onderhandelde artiestencontracten voor een studentenevenement met 30.000+ bezoekers.",
@@ -60,6 +66,8 @@ export const placeholderContent: PortfolioContent = {
       role: { nl: "Founder", en: "Founder" },
       company: "Event Explorers",
       period: "2016 — 2017",
+      startDate: "2016-01",
+      endDate: "2017-10",
       motif: "blueprint",
       description: {
         nl: "Eigen onderneming: begeleidde events en projecten van concept en engineering tot volledige realisatie.",
@@ -73,6 +81,8 @@ export const placeholderContent: PortfolioContent = {
       },
       company: "Soundfield NV",
       period: "2018 — jan 2021",
+      startDate: "2018",
+      endDate: "2021-01",
       motif: "soundwave",
       description: {
         nl: "Verantwoordelijk voor het projectmanagement van de geluidsafdeling. Ontwierp geluidsinstallaties en verzorgde live-mixing bij internationale evenementen voor Adecco, Samsonite, AWS en meer.",
@@ -81,8 +91,14 @@ export const placeholderContent: PortfolioContent = {
     },
     {
       role: { nl: "Functioneel Analist", en: "Functional Analyst" },
-      company: "EGOV VZW — project bij FOD Financiën",
+      company: "EGOV VZW",
+      companyNote: {
+        nl: "project bij FOD Financiën",
+        en: "project at FPS Finance",
+      },
       period: "2021 — 2022",
+      startDate: "2021-02",
+      endDate: "2022-06",
       motif: "flowchart",
       description: {
         nl: "Vertaalde business-behoeften naar functionele specificaties voor case management en workflow-automatisering.",
@@ -92,7 +108,10 @@ export const placeholderContent: PortfolioContent = {
     {
       role: { nl: "Functioneel Consultant", en: "Functional Consultant" },
       company: "Itineris NV",
-      period: "2022 — heden / present",
+      // Periodetekst en einddatum zijn fase-afhankelijk: lib/experience.ts zet
+      // periodLabel (en in fase "current" ROLE.previousRole.endDate).
+      period: "",
+      startDate: "2022-06",
       motif: "flowchart",
       description: {
         nl: "Projectconsultancy en domeinverantwoordelijke voor service delivery bij een grootschalig upgrade-project voor De Watergroep.",
@@ -109,6 +128,8 @@ export const placeholderContent: PortfolioContent = {
       },
       institution: "Switchfully (onderdeel van Cegeka)",
       period: "2021",
+      startDate: "2021",
+      endDate: "2021",
     },
   ],
 
@@ -217,10 +238,10 @@ export const placeholderContent: PortfolioContent = {
           en: "My daily craft as a functional analyst at De Watergroep (Billing/SDL); Nidus is my own proof of it.",
         },
         items: [
-          "Functionele analyse",
-          "Requirements engineering",
-          "Procesvertaling business ↔ techniek",
-          "Solution design",
+          { nl: "Functionele analyse", en: "Functional analysis" },
+          { nl: "Requirements engineering", en: "Requirements engineering" },
+          { nl: "Procesvertaling business ↔ techniek", en: "Translating between business and engineering" },
+          { nl: "Solution design", en: "Solution design" },
         ],
         proofAnchor: "nidus",
       },
@@ -232,12 +253,12 @@ export const placeholderContent: PortfolioContent = {
           en: "Running in Nidus: an LLM assistant, receipt OCR and budget classification — plus a validated metabolic model.",
         },
         items: [
-          "LLM-integratie (Claude tool-calling)",
-          "RAG",
-          "Prompt engineering",
-          "OCR (Claude Vision)",
-          "TF-IDF + logistische regressie",
-          "Mader/Hauser-model",
+          { nl: "LLM-integratie (Claude tool-calling)", en: "LLM integration (Claude tool-calling)" },
+          { nl: "RAG", en: "RAG" },
+          { nl: "Prompt engineering", en: "Prompt engineering" },
+          { nl: "OCR (Claude Vision)", en: "OCR (Claude Vision)" },
+          { nl: "TF-IDF + logistische regressie", en: "TF-IDF + logistic regression" },
+          { nl: "Mader/Hauser-model", en: "Mader/Hauser model" },
         ],
         proofAnchor: "nidus",
       },
@@ -249,12 +270,12 @@ export const placeholderContent: PortfolioContent = {
           en: "The production backend of Nidus: TypeScript/Node and Python, PostgreSQL with RLS, nightly data pipelines.",
         },
         items: [
-          "TypeScript · Node (Fastify)",
-          "Python (FastAPI)",
-          "PostgreSQL + RLS",
-          "Supabase",
-          "Databricks / Spark",
-          "Datapijplijnen",
+          { nl: "TypeScript · Node (Fastify)", en: "TypeScript · Node (Fastify)" },
+          { nl: "Python (FastAPI)", en: "Python (FastAPI)" },
+          { nl: "PostgreSQL + RLS", en: "PostgreSQL + RLS" },
+          { nl: "Supabase", en: "Supabase" },
+          { nl: "Databricks / Spark", en: "Databricks / Spark" },
+          { nl: "Datapijplijnen", en: "Data pipelines" },
         ],
         proofAnchor: null,
       },
@@ -266,10 +287,10 @@ export const placeholderContent: PortfolioContent = {
           en: "The screens people actually use: the Nidus web app, the mobile app and this portfolio itself.",
         },
         items: [
-          "Next.js · React",
-          "React Native · Expo",
-          "CSS Modules",
-          "Datavisualisatie",
+          { nl: "Next.js · React", en: "Next.js · React" },
+          { nl: "React Native · Expo", en: "React Native · Expo" },
+          { nl: "CSS Modules", en: "CSS Modules" },
+          { nl: "Datavisualisatie", en: "Data visualisation" },
         ],
         proofAnchor: null,
       },
@@ -281,11 +302,11 @@ export const placeholderContent: PortfolioContent = {
           en: "The full Nidus topology runs in production: hosting, CI discipline and a Raspberry Pi at home.",
         },
         items: [
-          "Railway",
-          "Vercel",
-          "CI (tsc · eslint · build)",
-          "Git-workflow",
-          "Raspberry Pi · IoT",
+          { nl: "Railway", en: "Railway" },
+          { nl: "Vercel", en: "Vercel" },
+          { nl: "CI (tsc · eslint · build)", en: "CI (tsc · eslint · build)" },
+          { nl: "Git-workflow", en: "Git workflow" },
+          { nl: "Raspberry Pi · IoT", en: "Raspberry Pi · IoT" },
         ],
         proofAnchor: null,
       },
@@ -829,7 +850,8 @@ render(reply.text);`,
     email: "klaas.d.g.vanslambrouck@gmail.com",
     linkedinUrl: "https://www.linkedin.com/in/klaas-vanslambrouck-66a82934/",
     location: { nl: "Oudenaarde, België", en: "Oudenaarde, Belgium" },
-    cvPdfUrl: "/cv-klaas.pdf",
+    // Eigen domein; next.config.ts stuurt dit door naar nidus-api.
+    cvPdfUrl: "/cv.pdf",
     cvPdfAvailable: true,
   },
 

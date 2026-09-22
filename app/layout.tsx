@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, DM_Sans, DM_Mono } from "next/font/google";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { XrayProvider } from "@/context/XrayContext";
+import { siteDescription, siteTitle } from "@/content/role";
 import { SHARED_OPEN_GRAPH, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -43,14 +44,12 @@ export const viewport: Viewport = {
 // openGraph, twitter, alternates of robots zet, vervangt dat hele object.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Titel (Engels) en description (Nederlands) volgen de rolfase: content/role.ts.
   title: {
-    // TODO(prompt 4): placeholder — definitieve title-copy volgt.
-    default: "Klaas Vanslambrouck | AI Transformation & Functional Analysis",
+    default: siteTitle,
     template: "%s | Klaas Vanslambrouck",
   },
-  // TODO(prompt 4): placeholder (bestaande tekst) — definitieve description volgt.
-  description:
-    "Functioneel Analist die business, technologie en AI vertaalt naar werkende systemen. CV en portfolio met live inkijk in het LOWI-platform.",
+  description: siteDescription,
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,

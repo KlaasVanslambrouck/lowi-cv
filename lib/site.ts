@@ -46,6 +46,10 @@ export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const SITE_NAME = "Klaas Vanslambrouck";
 
+// Laatste inhoudelijke wijziging aan de CV-gegevens; gedeeld door /cv.json
+// (meta.lastModified) en de sitemap. Handmatig bijhouden.
+export const CV_LAST_MODIFIED: IsoDate = "2026-09-22";
+
 // Open Graph-velden die elke pagina deelt. Next.js merget metadata ondiep:
 // een pagina die openGraph zet, vervangt het hele object uit de layout.
 // Spread dit object daarom in elke openGraph-definitie.
@@ -81,5 +85,20 @@ export const PUBLIC_ROUTES: readonly PublicRoute[] = [
     changeFrequency: "monthly",
     priority: 0.8,
     lastModified: "2026-09-16",
+  },
+  {
+    // PDF op het eigen domein (rewrite naar nidus-api in next.config.ts).
+    // lastModified handmatig: het bestand wordt bij elke aanvraag gegenereerd.
+    path: "/cv.pdf",
+    changeFrequency: "yearly",
+    priority: 0.5,
+    lastModified: CV_LAST_MODIFIED,
+  },
+  {
+    // Machineleesbaar CV (JSON Resume) voor agents.
+    path: "/cv.json",
+    changeFrequency: "yearly",
+    priority: 0.5,
+    lastModified: CV_LAST_MODIFIED,
   },
 ];

@@ -42,8 +42,8 @@ export default function Skills({ content }: SkillsProps) {
             <p className={styles.skillClusterContext}>{t(cluster.context)}</p>
             <ul className={styles.skillClusterChips}>
               {cluster.items.map((item) => (
-                <li key={item} className={styles.skillClusterChip}>
-                  {item}
+                <li key={item.nl} className={styles.skillClusterChip}>
+                  {t(item)}
                 </li>
               ))}
             </ul>

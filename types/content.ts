@@ -10,6 +10,38 @@ export interface Bilingual {
 
 export type CareerMotif = "soundwave" | "stage-lights" | "blueprint" | "flowchart";
 
+// Datum zoals JSON Resume ze toelaat: "2021", "2021-02" of "2021-02-01".
+// Alles na het jaar is optioneel; de bron bepaalt hoe precies we kunnen zijn.
+export type IsoDatePart =
+  | `${number}`
+  | `${number}-${number}`
+  | `${number}-${number}-${number}`;
+
+// Rolfase: "incoming" = nieuwe functie aangekondigd maar nog niet begonnen,
+// "current" = de functie loopt. Handmatig schakelen, geen datumlogica.
+export type RolePhase = "incoming" | "current";
+
+export interface EmployerInfo {
+  name: string;
+  legalName?: string;
+  shortName?: string; // hoe de werkgever in lopende tekst genoemd wordt
+}
+
+// Centrale rolgegevens (content/role.ts). Alles wat per fase verschilt —
+// metadata, JSON-LD, statuslabel, about, Jarvis, OG-ondertitel — leidt hieruit af.
+export interface RoleInfo {
+  role: string; // Engelse functietitel, ook in JSON-LD
+  employer: EmployerInfo;
+  // ISO 8601 (YYYY-MM-DD). Enige bron van de startdatum: de leesbare tekst
+  // wordt eruit afgeleid met formatLongDate() in content/role.ts.
+  startDate: string;
+  previousRole: {
+    title: string;
+    employer: EmployerInfo;
+    endDate: IsoDatePart; // laatste maand, gebruikt zodra de fase "current" is
+  };
+}
+
 export interface HeroContent {
   name: string;
   currentRole: Bilingual; // nl: "Functioneel Analist", en: "Functional Analyst"
@@ -17,7 +49,7 @@ export interface HeroContent {
   thesis: Bilingual; // max ~18 woorden
   identityLine: Bilingual;
   focusAreas: string[];
-  liveLabel: Bilingual;
+  liveLabel: Bilingual | null; // null = geen statusbadge tonen
 }
 
 export interface AboutMeContent {
@@ -27,8 +59,17 @@ export interface AboutMeContent {
 
 export interface ExperienceEntry {
   role: Bilingual; // max ~4 woorden
-  company: string;
-  period: string;
+  company: string; // enkel de eigennaam
+  // Kwalificatie bij de opdracht ("vrijwilliger", "project bij FOD Financiën").
+  // De site toont hem tussen haakjes achter de naam; /cv.json zet hem in
+  // work.description.
+  companyNote?: Bilingual;
+  period: string; // weergave op de site; blijft leidend voor de UI
+  // Tweetalige override op `period`, gebruikt door fase-afhankelijke entries.
+  periodLabel?: Bilingual;
+  // Gestructureerde datums voor /cv.json. Geen endDate = lopend.
+  startDate: IsoDatePart;
+  endDate?: IsoDatePart;
   motif: CareerMotif;
   description: Bilingual; // max ~25 woorden
 }
@@ -36,7 +77,9 @@ export interface ExperienceEntry {
 export interface EducationEntry {
   degree: Bilingual; // max ~6 woorden
   institution: string;
-  period: string;
+  period: string; // weergave op de site
+  startDate: IsoDatePart;
+  endDate?: IsoDatePart;
   motif?: CareerMotif;
 }
 
@@ -124,7 +167,10 @@ export interface SkillCluster {
   id: string;
   title: Bilingual;
   context: Bilingual; // één eerlijke zin: waar de skill echt gebruikt is
-  items: string[]; // taalneutrale tech-tags (mono-chips)
+  // Tweetalige chips. Eigennamen (Next.js, RAG, Supabase…) zijn in beide talen
+  // gelijk; NL en EN blijven per item gekoppeld, zodat volgorde en aantal
+  // niet uit elkaar kunnen lopen.
+  items: Bilingual[];
   proofAnchor?: "nidus" | null; // toont een subtiele "→ Nidus"-link naar de /nidus case-study
 }
 
@@ -139,8 +185,8 @@ export interface ContactInfo {
   email: string;
   linkedinUrl: string;
   location: Bilingual;
-  cvPdfUrl: string;
-  cvPdfAvailable: boolean; // pas true zodra het PDF-bestand echt in /public staat
+  cvPdfUrl: string; // pad op het eigen domein, bv. "/cv.pdf" (rewrite in next.config.ts)
+  cvPdfAvailable: boolean; // false verbergt de downloadknop
 }
 
 // Titels van de paginasecties — ook content, dus niet hardcoded in JSX.

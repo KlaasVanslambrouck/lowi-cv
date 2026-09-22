@@ -34,6 +34,10 @@ if (
   });
 }
 
+// Server-side env var (géén NEXT_PUBLIC): de basis-URL van nidus-api wordt
+// enkel in de rewrite gebruikt, dus ze hoeft niet in de browserbundel.
+const nidusApiUrl = process.env.NIDUS_API_URL?.trim().replace(/\/+$/, "");
+
 const nextConfig: NextConfig = {
   // Drie.js-gerelateerde packages worden getranspileerd door Next zelf,
   // verdere configuratie is voor deze fase niet nodig.
@@ -41,6 +45,24 @@ const nextConfig: NextConfig = {
   // Geen dev-badge linksonder tijdens ontwikkelen/screenshots;
   // heeft geen effect op de productie-build.
   devIndicators: false,
+  async rewrites() {
+    // /cv.pdf hoort bij het eigen domein; nidus-api genereert het bestand.
+    // De upstream zet zelf Content-Type: application/pdf en
+    // Content-Disposition: attachment; filename="Klaas-Vanslambrouck-CV.pdf".
+    if (!nidusApiUrl) {
+      console.warn(
+        "NIDUS_API_URL ontbreekt — /cv.pdf wordt niet doorgestuurd en geeft 404.",
+      );
+      return [];
+    }
+
+    return [
+      {
+        source: "/cv.pdf",
+        destination: `${nidusApiUrl}/api/portfolio/cv-pdf`,
+      },
+    ];
+  },
   async redirects() {
     return [
       {

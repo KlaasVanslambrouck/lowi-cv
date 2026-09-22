@@ -45,4 +45,29 @@ describe("getKnowledgeBase", () => {
       }
     }
   });
+
+  // De ervaring-chunks komen uit lib/experience.ts, dus de functie uit
+  // content/role.ts hoort er ook in te zitten.
+  it("bevat de functie bij In The Pocket als ervaring-chunk", () => {
+    const chunk = getKnowledgeBase().find(
+      (candidate) => candidate.id === "experience-in-the-pocket"
+    );
+
+    expect(chunk).toBeDefined();
+    expect(chunk?.sourceType).toBe("experience");
+    expect(chunk?.title.en).toContain("AI Transformation Expert");
+    expect(chunk?.content.en).toContain("AI ambition to adoption");
+    // Periodetekst hoort bij de doorzoekbare inhoud.
+    expect(chunk?.content.nl).toContain("vanaf okt 2026");
+  });
+
+  it("neemt de periode van Student Kick-Off mee in de chunk", () => {
+    const chunk = getKnowledgeBase().find(
+      (candidate) => candidate.id === "experience-student-kick-off"
+    );
+
+    expect(chunk).toBeDefined();
+    expect(chunk?.content.nl).toContain("2012 — 2016");
+    expect(chunk?.content.en).toContain("2012 — 2016");
+  });
 });
