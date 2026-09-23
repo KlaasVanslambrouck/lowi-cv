@@ -3,6 +3,7 @@ import { ActiveDwell } from "./activeDwell";
 import { classifyUserAgent } from "./classify";
 import { initialAcquisition, internalFlag, parseAcquisition, publicPath } from "./session";
 import { requestObservation } from "./requestObservation";
+import { PUBLIC_ROUTES, localizedPath } from "@/lib/site";
 import { validateTrackPayload } from "./trackValidation";
 
 const browser = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36";
@@ -67,6 +68,65 @@ describe("first-touch acquisition and internal browser", () => {
   it("does not retain unrelated queries or sensitive campaign values", () => {
     expect(parseAcquisition("/nidus?token=secret#part", "?utm_source=a%40example.com&token=secret", "javascript:alert(1)")).toMatchObject({ landing_path: "/nidus", source: null, referrer: null });
     expect(publicPath("/beheer/dashboard")).toBeNull();
+  });
+});
+
+describe("publicPath laat alleen bekende publieke paden door", () => {
+  it.each([
+    // Pagina's in beide talen.
+    ["/", "/"],
+    ["/en", "/en"],
+    ["/nidus", "/nidus"],
+    ["/en/nidus", "/en/nidus"],
+    ["/lowi", "/lowi"],
+    ["/en/lowi", "/en/lowi"],
+    // Machinebestanden.
+    ["/cv.pdf", "/cv.pdf"],
+    ["/cv.json", "/cv.json"],
+    ["/robots.txt", "/robots.txt"],
+    ["/sitemap.xml", "/sitemap.xml"],
+    ["/llms.txt", "/llms.txt"],
+    // Noindex-cases, met en zonder subpad.
+    ["/cases/linguix", "/cases/linguix"],
+    ["/cases/biotech-case/the-experiment", "/cases/biotech-case/the-experiment"],
+    ["/projects/nidus", "/projects/nidus"],
+    // Genormaliseerd: trailing slash, query en fragment verdwijnen.
+    ["/nidus/", "/nidus"],
+    ["/en/", "/en"],
+    ["/nidus?utm_source=x#top", "/nidus"],
+  ])("laat %s door als %s", (input, expected) => {
+    expect(publicPath(input)).toBe(expected);
+  });
+
+  it.each([
+    "/beheer",
+    "/beheer/dashboard",
+    "/en/bestaat-niet",
+    "/bestaat-niet",
+    "/api/track",
+    "/cases/Hoofdletters",
+    "https://example.com/nidus",
+    `/${"a".repeat(201)}`,
+  ])("weigert %s", (input) => {
+    expect(publicPath(input)).toBeNull();
+  });
+
+  it("weigert alles wat geen string is", () => {
+    expect(publicPath(undefined)).toBeNull();
+    expect(publicPath(42)).toBeNull();
+  });
+
+  // Bewaking: een nieuwe route in PUBLIC_ROUTES mag niet stil uit de analytics
+  // vallen doordat iemand vergeet publicPath bij te werken.
+  it("laat elke route uit PUBLIC_ROUTES in beide talen door", () => {
+    for (const route of PUBLIC_ROUTES) {
+      const paths = route.localized
+        ? [localizedPath(route.path, "nl"), localizedPath(route.path, "en")]
+        : [route.path];
+      for (const path of paths) {
+        expect(publicPath(path), path).toBe(path);
+      }
+    }
   });
 });
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import HomeRoute, { homeMetadata } from "@/components/routes/HomeRoute";
+import HomeRoute from "@/components/routes/HomeRoute";
+import { homeMetadata } from "@/lib/localizedPages";
 
 export const metadata: Metadata = homeMetadata("en");
 

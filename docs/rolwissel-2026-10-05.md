@@ -9,7 +9,13 @@ datumcheck pas bij de volgende build effect zou hebben.
 
 1. **`content/role.ts`: `ROLE_PHASE` op `"current"`.** Dit is de enige schakel.
    Titel, meta description, statusbadge (verdwijnt), about-tekst, Jarvis-antwoorden,
-   OG-afbeelding, JSON-LD, de tijdlijn en `/cv.json` volgen automatisch.
+   OG-afbeelding, JSON-LD, de tijdlijn en `/cv.json` volgen automatisch — en dat
+   geldt voor **beide talen**: `siteTitleFor`, `siteDescriptionFor`,
+   `ogSubtitleFor` en `ogAltFor` nemen de taal als parameter en lezen dezelfde
+   fase. De Engelse teksten schakelen dus mee zonder extra handeling.
+   `content/role.test.ts` controleert titel (≤ 60) en description (140-160) voor
+   beide talen én beide fases, dus een te lange of te korte tekst valt op bij
+   `npm test`, niet pas na de deploy.
 2. **`content/placeholderContent.ts`:**
    - skillcluster `analyse-systeemdenken` (context-regel): "Mijn dagelijkse vak als
      functioneel analist bij De Watergroep (Billing/SDL)" klopt dan niet meer;
@@ -26,6 +32,9 @@ datumcheck pas bij de volgende build effect zou hebben.
    pagina's zijn statisch.
 6. **IndexNow pingen** zodra de deploy live staat:
    `npm run indexnow -- --send`
+   Dit stuurt acht URL's: `/`, `/nidus` en `/lowi` met hun `/en`-versies, plus
+   `/cv.pdf` en `/cv.json`. De lijst komt uit de sitemap, dus je hoeft niets
+   handmatig toe te voegen.
    Meldt de gewijzigde URL's meteen aan bij Bing en andere IndexNow-zoekmachines
    (zie "IndexNow" in `ARCHITECTURE.md`). Google gebruikt IndexNow niet; daarvoor
    dient stap 11.
@@ -34,8 +43,10 @@ Na de build zou je dit moeten zien:
 
 | Plek | Verwacht na de wissel |
 |---|---|
-| `<title>` | `Klaas Vanslambrouck \| AI Transformation Expert` (zonder "Incoming") |
-| meta description | begint met `AI Transformation Expert bij In The Pocket.` |
+| `<title>` op `/` en `/en` | `Klaas Vanslambrouck \| AI Transformation Expert` (zonder "Incoming"; in beide talen gelijk) |
+| meta description op `/` | begint met `AI Transformation Expert bij In The Pocket.` |
+| meta description op `/en` | `AI Transformation Expert at In The Pocket in Ghent. …` ("in Ghent" staat er bewust: zonder die woorden zakt de zin onder de 140 tekens) |
+| OG-afbeelding van `/` en `/en` | ondertitel zonder "Incoming"; beide talen tonen dezelfde tekst, want de rolnaam is Engels |
 | statusbadge in de hero | verdwenen |
 | tijdlijn | In The Pocket is de huidige functie; Itineris toont `juni 2022 — sep 2026` |
 | `/cv.json` | `basics.label` zonder "Incoming"; Itineris krijgt `endDate: "2026-09"` |
@@ -52,9 +63,12 @@ Na de build zou je dit moeten zien:
 
 10. **LinkedIn** bijwerken (functie en headline). Dat profiel staat als `sameAs` in de
     JSON-LD; een afwijking verzwakt het identiteitsanker.
-11. **Google Search Console:** `/` opnieuw laten indexeren.
+11. **Google Search Console:** `/` én `/en` opnieuw laten indexeren; die twee dragen
+    de gewijzigde titel en description.
 12. **Rich Results Test en validator.schema.org** opnieuw draaien voor `/`, `/nidus`
-    en `/lowi`.
+    en `/lowi`. De `/en`-versies delen dezelfde entiteiten (`Person`, LOWI, Nidus
+    hebben overal hetzelfde `@id`); een steekproef op `/en` volstaat om te zien dat
+    `inLanguage` en de paginanode kloppen.
 13. Optioneel: GitHub-bio, en X invullen in `SOCIAL_PROFILES` als dat profiel klopt.
 
 ## Losse eindjes die hier niet bij horen maar wel openstaan

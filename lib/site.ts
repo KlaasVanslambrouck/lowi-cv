@@ -61,9 +61,11 @@ export const INDEXNOW_KEY = "167e8c9f936b77cbb623005b267df08e";
 export const CV_LAST_MODIFIED: IsoDate = "2026-09-22";
 
 // Maakt van een pad een absolute URL op SITE_URL: "/nidus" → "https://…/nidus".
+// De homepage krijgt geen trailing slash, zodat canonical, JSON-LD en sitemap
+// exact dezelfde URL noemen (Next schrijft de canonical ook zonder slash).
 export function absoluteUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${SITE_URL}${normalizedPath}`;
+  return normalizedPath === "/" ? SITE_URL : `${SITE_URL}${normalizedPath}`;
 }
 
 // URL-prefix per taal: Nederlands staat op "/", Engels onder "/en".
@@ -101,6 +103,12 @@ export function basePathOf(pathname: string): string {
     return pathname.slice(LANGUAGE_PREFIX.en.length);
   }
   return pathname;
+}
+
+// Taal van een pathname, afgeleid uit het pad zelf: "/en/nidus" → "en".
+// Zo hoeft de taal nergens apart opgeslagen of gelogd te worden.
+export function languageOfPath(pathname: string): Language {
+  return basePathOf(pathname) === pathname ? "nl" : "en";
 }
 
 export function otherLanguage(language: Language): Language {

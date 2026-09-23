@@ -4,9 +4,13 @@ import {
   ROLE_START_LABEL,
   ROLE_START_MONTH,
   formatLongDate,
-  siteDescription,
-  siteTitle,
+  siteDescriptionFor,
+  siteTitleFor,
 } from "./role";
+import type { Language, RolePhase } from "@/types/content";
+
+const LANGUAGES: readonly Language[] = ["nl", "en"];
+const PHASES: readonly RolePhase[] = ["incoming", "current"];
 
 describe("formatLongDate", () => {
   it("zet een ISO-datum om naar leesbare NL- en EN-tekst", () => {
@@ -34,10 +38,29 @@ describe("afgeleide rolcopy", () => {
     expect(ROLE_START_MONTH).toBe("2026-10");
   });
 
-  it("houdt titel en description binnen de SEO-grenzen", () => {
-    expect(siteTitle.length).toBeLessThanOrEqual(60);
-    expect(siteDescription.length).toBeGreaterThanOrEqual(140);
-    expect(siteDescription.length).toBeLessThanOrEqual(160);
-    expect(siteDescription).toContain(ROLE_START_LABEL.nl);
+  it("houdt titel en description binnen de SEO-grenzen, in beide talen en fases", () => {
+    for (const phase of PHASES) {
+      for (const language of LANGUAGES) {
+        expect(siteTitleFor(language, phase).length).toBeLessThanOrEqual(60);
+
+        const description = siteDescriptionFor(language, phase);
+        expect(description.length).toBeGreaterThanOrEqual(140);
+        expect(description.length).toBeLessThanOrEqual(160);
+      }
+    }
+  });
+
+  it("noemt de startdatum in de incoming-fase, in de taal van de pagina", () => {
+    expect(siteDescriptionFor("nl", "incoming")).toContain(ROLE_START_LABEL.nl);
+    expect(siteDescriptionFor("en", "incoming")).toContain(ROLE_START_LABEL.en);
+    // Na de start is de datum geen nieuws meer.
+    expect(siteDescriptionFor("nl", "current")).not.toContain(ROLE_START_LABEL.nl);
+    expect(siteDescriptionFor("en", "current")).not.toContain(ROLE_START_LABEL.en);
+  });
+
+  it("gebruikt in beide talen dezelfde titel: de rolnaam is Engels", () => {
+    for (const phase of PHASES) {
+      expect(siteTitleFor("nl", phase)).toBe(siteTitleFor("en", phase));
+    }
   });
 });

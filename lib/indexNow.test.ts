@@ -5,14 +5,21 @@ import {
   buildIndexNowPayload,
   urlsFromSitemap,
 } from "./indexNow";
-import { PUBLIC_ROUTES, absoluteUrl } from "./site";
+import { PUBLIC_ROUTES, absoluteUrl, localizedPath } from "./site";
 
 const KEY = "0123456789abcdef0123456789abcdef";
 
 describe("IndexNow", () => {
-  it("neemt de URL's uit de sitemap (PUBLIC_ROUTES)", async () => {
+  it("neemt de URL's uit de sitemap, dus ook de /en-versies", async () => {
     expect(urlsFromSitemap(await sitemap())).toEqual(
-      PUBLIC_ROUTES.map((route) => absoluteUrl(route.path)),
+      PUBLIC_ROUTES.flatMap((route) =>
+        route.localized
+          ? [
+              absoluteUrl(localizedPath(route.path, "nl")),
+              absoluteUrl(localizedPath(route.path, "en")),
+            ]
+          : [absoluteUrl(route.path)],
+      ),
     );
   });
 

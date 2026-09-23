@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import ControlStack from "@/components/ControlStack";
 import CVSection from "@/components/CVSection";
 import JsonLd from "@/components/JsonLd";
@@ -13,29 +12,14 @@ import { placeholderContent } from "@/content/placeholderContent";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { TranslationProvider } from "@/context/TranslationContext";
-import { pageMetadata } from "@/lib/pageMetadata";
-import { pageLanguageLinks, type PageLocation } from "@/lib/site";
-import { nidusSchema, personRef } from "@/lib/structuredData";
+import { nidusPage } from "@/lib/localizedPages";
+import { pageLanguageLinks } from "@/lib/site";
+import { nidusGraph } from "@/lib/structuredData";
 import type { Language } from "@/types/content";
 import styles from "@/styles/nidus.module.css";
 
-// Gedeeld door app/(nl)/nidus/page.tsx en app/(en)/en/nidus/page.tsx.
-
-function nidusPage(language: Language): PageLocation {
-  return { basePath: "/nidus", language };
-}
-
-// Titel zonder naam: de template uit de root layout voegt "| Klaas Vanslambrouck" toe.
-export function nidusMetadata(language: Language): Metadata {
-  return pageMetadata({
-    ...nidusPage(language),
-    // TODO(prompt 4): definitieve title/description-copy volgt.
-    title: "Nidus — case study",
-    description:
-      "Diepere case study van Nidus: architectuur, decision log, screenshots en code.",
-    ogType: "article",
-  });
-}
+// Gedeeld door app/(nl)/nidus/page.tsx en app/(en)/en/nidus/page.tsx. De
+// metadata staat in lib/localizedPages.ts.
 
 interface NidusRouteProps {
   language: Language;
@@ -49,7 +33,7 @@ export default function NidusRoute({ language }: NidusRouteProps) {
 
   return (
     <>
-      <JsonLd graph={[nidusSchema(), personRef()]} />
+      <JsonLd graph={nidusGraph(language)} />
       <TranslationProvider alternatePath={alternatePath}>
         <ThemeProvider>
           <SessionInsightProvider>

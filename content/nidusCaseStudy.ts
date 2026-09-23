@@ -2,6 +2,18 @@ import type { NidusCaseStudyContent } from "@/types/nidusCaseStudy";
 
 // Content voor de Nidus case-study pagina (/nidus).
 export const nidusCaseStudy: NidusCaseStudyContent = {
+  // Titel gelijk aan de H1 op de pagina; description eerst wat Nidus is,
+  // daarna wat de case study toont. 140-160 tekens (content/metaCopy.test.ts).
+  meta: {
+    title: {
+      nl: "Nidus — case study",
+      en: "Nidus — case study",
+    },
+    description: {
+      nl: "Nidus: een zelfgebouwd AI-platform voor het huishouden. Case study met architectuur, decision log en screenshots van web, mobiel, API en Raspberry Pi-workers.",
+      en: "Nidus: a self-built AI platform for running a household. Case study: architecture, decision log and screenshots of web, mobile, API and Raspberry Pi workers.",
+    },
+  },
   intro: {
     title: {
       nl: "Nidus — case study",

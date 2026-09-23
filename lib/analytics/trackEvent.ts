@@ -1,4 +1,6 @@
-import { normalizeReferrer } from "@/lib/analytics/trackValidation";
+// Rechtstreeks uit privacy.ts: trackValidation.ts is servercode en hoeft niet
+// in de browserbundel te belanden.
+import { normalizeReferrer } from "./privacy";
 import { initialAcquisition, publicPath } from "./session";
 import { activitySignals, excludeHumanContext, isInternalBrowser } from "./browserActivity";
 

@@ -92,5 +92,6 @@ hashstrategie nodig om dat zonder regressies te doen.
 
 ## Error Boundaries
 
-`app/error.tsx` en `app/beheer/dashboard/error.tsx` tonen generieke herstelbare
+`app/(nl)/error.tsx`, `app/(en)/en/error.tsx` (beide `components/RouteError.tsx`)
+en `app/(nl)/beheer/dashboard/error.tsx` tonen generieke herstelbare
 foutschermen. Ze tonen geen stack traces of interne foutdetails aan bezoekers.

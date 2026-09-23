@@ -30,9 +30,10 @@ waarden blijft de publieke CV bruikbaar, maar beheer en analytics werken niet.
 
 ## Architectuur
 
-- Publieke CV: `app/page.tsx` rendert de CV-content uit
-  `content/placeholderContent.ts` met client-side taal-, thema-, X-ray- en
-  Jarvis-contexten.
+- Publieke CV: `app/(nl)/page.tsx` en `app/(en)/en/page.tsx` renderen de
+  CV-content uit `content/placeholderContent.ts`. De taal komt uit de route
+  (Nederlands op `/`, Engels onder `/en`); thema, X-ray en Jarvis zijn
+  client-side contexten. Zie "Talen" in `ARCHITECTURE.md`.
 - Public boundary: bezoekers krijgen geen service-role key en schrijven nooit
   direct naar Supabase. Analytics gaan uitsluitend via `POST /api/track`.
 - Admin boundary: `/beheer/dashboard` is beschermd door `proxy.ts` en nogmaals

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ROLE, resumeLabelFor } from "@/content/role";
-import { SITE_URL } from "./site";
+import { SITE_URL, absoluteUrl, localizedPath } from "./site";
 import { buildLlmsTxt } from "./llmsTxt";
 
 describe("llms.txt", () => {
@@ -85,5 +85,32 @@ describe("llms.txt", () => {
     expect(text).toContain("In production · personal use");
     expect(text).toContain("CRISPR & CHICKN");
     expect(text).toContain("In development");
+  });
+  it("zegt waar de Nederlandse en de Engelse site staan", () => {
+    const text = buildLlmsTxt();
+
+    expect(text).toContain("in Dutch at / and in English under /en");
+    expect(text).not.toContain("English toggle");
+  });
+
+  it("noemt elke inhoudelijke pagina met beide taalversies", () => {
+    const text = buildLlmsTxt();
+
+    for (const basePath of ["/", "/nidus", "/lowi"] as const) {
+      const englishPath = localizedPath(basePath, "en");
+      expect(text, basePath).toContain(`(${absoluteUrl(basePath)})`);
+      expect(text, englishPath).toContain(
+        `(English: [${englishPath}](${absoluteUrl(englishPath)}))`,
+      );
+    }
+  });
+
+  it("houdt de machineleesbare sectie op één versie per bestand", () => {
+    const machineSection = buildLlmsTxt()
+      .split("## Machine-readable")[1]
+      .split("## Projects")[0];
+
+    expect(machineSection).toContain(`(${SITE_URL}/cv.json)`);
+    expect(machineSection).not.toContain("/en/");
   });
 });

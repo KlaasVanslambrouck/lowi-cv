@@ -2,7 +2,7 @@
 // Los van PortfolioContent/content.ts omdat dit geen kolom is van de
 // toekomstige `portfolio_content`-tabel, maar contentbron van een eigen route.
 
-import type { Bilingual } from "@/types/content";
+import type { Bilingual, PageMetaCopy } from "@/types/content";
 
 export interface NidusIntroContent {
   title: Bilingual;
@@ -157,6 +157,8 @@ export interface NidusSectionTitles {
 }
 
 export interface NidusCaseStudyContent {
+  /** <title> en meta description van /nidus en /en/nidus. */
+  meta: PageMetaCopy;
   intro: NidusIntroContent;
   architecture: NidusArchitectureComponent[];
   principles: Bilingual[]; // 2-3 korte architectuurprincipes onder het diagram

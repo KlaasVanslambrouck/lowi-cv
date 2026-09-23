@@ -2,6 +2,7 @@ import type {
   Bilingual,
   CareerMotif,
   EmployerInfo,
+  Language,
   RoleInfo,
   RolePhase,
 } from "@/types/content";
@@ -143,17 +144,49 @@ export function resumeLabelFor(phase: RolePhase): string {
     : roleTagline.en;
 }
 
-// <title> van de site: Engels, maximaal 60 tekens.
-export const siteTitle = `Klaas Vanslambrouck | ${isIncoming ? "Incoming " : ""}${ROLE.role}`;
+// <title> van de site: maximaal 60 tekens. In beide talen gelijk, want de
+// functietitel is Engels; de taal van de pagina blijft wel een parameter,
+// zodat elke aanroep expliciet maakt voor welke taalversie hij bouwt.
+export function siteTitleFor(
+  language: Language,
+  phase: RolePhase = ROLE_PHASE,
+): string {
+  const title = `Klaas Vanslambrouck | ${phase === "incoming" ? "Incoming " : ""}${ROLE.role}`;
+  const byLanguage: Bilingual = { nl: title, en: title };
+  return byLanguage[language];
+}
 
-// Meta description: Nederlands, 140-160 tekens.
-export const siteDescription = isIncoming
-  ? `Vanaf ${ROLE_START_LABEL.nl} ${ROLE.role} bij ${ROLE.employer.name}. Ik vertaal complexe business- en systeemcontext naar werkende systemen. Nidus is het bewijs.`
-  : `${ROLE.role} bij ${ROLE.employer.name}. Ik vertaal complexe business- en systeemcontext naar werkende AI-systemen. Nidus is daarvan het bewijs.`;
+// Meta description per taal, 140-160 tekens.
+export function siteDescriptionFor(
+  language: Language,
+  phase: RolePhase = ROLE_PHASE,
+): string {
+  const byPhase: Record<RolePhase, Bilingual> = {
+    incoming: {
+      nl: `Vanaf ${ROLE_START_LABEL.nl} ${ROLE.role} bij ${ROLE.employer.name}. Ik vertaal complexe business- en systeemcontext naar werkende systemen. Nidus is het bewijs.`,
+      en: `${ROLE.role} at ${ROLE.employer.name} from ${ROLE_START_LABEL.en}. I translate complex business and systems context into working systems. Nidus is the proof.`,
+    },
+    current: {
+      nl: `${ROLE.role} bij ${ROLE.employer.name}. Ik vertaal complexe business- en systeemcontext naar werkende AI-systemen. Nidus is daarvan het bewijs.`,
+      // "in Ghent" houdt de zin binnen de ondergrens van 140 tekens.
+      en: `${ROLE.role} at ${ROLE.employer.name} in Ghent. I translate complex business and systems context into working AI systems. Nidus is the proof.`,
+    },
+  };
 
-// Ondertitel en alt-tekst van de Open Graph-afbeelding (Engels).
-export const ogSubtitle = `${isIncoming ? "Incoming " : ""}${ROLE.role} · ${ROLE.employer.name}`;
-export const ogAlt = `Klaas Vanslambrouck — ${ogSubtitle}`;
+  return byPhase[phase][language];
+}
+
+// Ondertitel en alt-tekst van de Open Graph-afbeelding van de homepage.
+// Gelijk in beide talen, net als de titel: de rolnaam is Engels.
+export function ogSubtitleFor(language: Language): string {
+  const subtitle = `${isIncoming ? "Incoming " : ""}${ROLE.role} · ${ROLE.employer.name}`;
+  const byLanguage: Bilingual = { nl: subtitle, en: subtitle };
+  return byLanguage[language];
+}
+
+export function ogAltFor(language: Language): string {
+  return `Klaas Vanslambrouck — ${ogSubtitleFor(language)}`;
+}
 
 // Rol en werkgever zoals ze in JSON-LD mogen staan. In de "incoming"-fase is de
 // nieuwe functie nog niet begonnen; schema.org beschrijft de huidige situatie,

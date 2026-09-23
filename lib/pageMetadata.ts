@@ -42,6 +42,24 @@ export const PROFILE_OPEN_GRAPH = {
   lastName: "Vanslambrouck",
 } as const;
 
+// De hreflang-links van één pagina: absolute URL per taal plus x-default naar
+// de NL-versie. Gedeeld door de <head> (pageMetadata) en de sitemap, zodat er
+// maar één berekening bestaat.
+export function hreflangAlternates(page: PageLocation): Record<string, string> {
+  const links = pageLanguageLinks(page);
+  const alternates: Record<string, string> = {};
+
+  for (const language of ["nl", "en"] as const) {
+    const path = links.paths[language];
+    if (path !== undefined) alternates[HREFLANG[language]] = absoluteUrl(path);
+  }
+  if (links.paths.nl !== undefined) {
+    alternates["x-default"] = absoluteUrl(links.paths.nl);
+  }
+
+  return alternates;
+}
+
 export interface PageMetadataInput extends PageLocation {
   /** Weggelaten: de titel van de root layout. Anders via de titeltemplate. */
   title?: string;
@@ -53,15 +71,7 @@ export interface PageMetadataInput extends PageLocation {
 export function pageMetadata(input: PageMetadataInput): Metadata {
   const links = pageLanguageLinks(input);
   const canonical = absoluteUrl(links.canonicalPath);
-
-  const languages: Record<string, string> = {};
-  for (const language of ["nl", "en"] as const) {
-    const path = links.paths[language];
-    if (path !== undefined) languages[HREFLANG[language]] = absoluteUrl(path);
-  }
-  if (links.paths.nl !== undefined) {
-    languages["x-default"] = absoluteUrl(links.paths.nl);
-  }
+  const languages = hreflangAlternates(input);
 
   return {
     ...(input.title !== undefined ? { title: input.title } : {}),

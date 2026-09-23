@@ -11,6 +11,13 @@ export interface Bilingual {
 // Taal van een pagina; komt uit de route ("/" = nl, "/en/…" = en).
 export type Language = keyof Bilingual;
 
+// <title> en meta description van één pagina, per taal. De titel staat er
+// zonder "| Klaas Vanslambrouck": die voegt de titeltemplate toe.
+export interface PageMetaCopy {
+  title: Bilingual;
+  description: Bilingual;
+}
+
 export type CareerMotif = "soundwave" | "stage-lights" | "blueprint" | "flowchart";
 
 // Datum zoals JSON Resume ze toelaat: "2021", "2021-02" of "2021-02-01".

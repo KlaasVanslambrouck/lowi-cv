@@ -1,10 +1,22 @@
 import { placeholderContent } from "@/content/placeholderContent";
 import { schemaRole } from "@/content/role";
-import { PUBLIC_ROUTES, SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
+import {
+  PUBLIC_ROUTES,
+  SITE_NAME,
+  SITE_URL,
+  absoluteUrl,
+  localizedPath,
+} from "@/lib/site";
+import type { Language } from "@/types/content";
 
 // Schema.org JSON-LD als identiteitsanker voor zoekmachines en agents.
 // Eigen interfaces (geen schema-dts): enkel de types en velden die we gebruiken.
-// Teksten in het Engels; inLanguage per pagina volgt later per taalversie.
+//
+// TAAL: de teksten blijven Engels in beide taalversies — het zijn beschrijvingen
+// voor machines, niet de zichtbare copy. Wat per taalversie verschilt, is welke
+// pagina beschreven wordt: de paginanodes (ProfilePage, WebPage) hebben per taal
+// een eigen @id, url en inLanguage. De entiteiten daarachter (Person, LOWI,
+// Nidus) houden in beide talen hetzelfde @id: het is één persoon, één lab.
 
 // ---------------------------------------------------------------------------
 // Configuratie — wijzig hier, niet in de builders.
@@ -27,9 +39,23 @@ export const PERSON_NAME = "Klaas Vanslambrouck";
 export const PERSON_ID = `${SITE_URL}/#person`;
 export const LOWI_ID = `${SITE_URL}/#lowi`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
-export const PROFILE_PAGE_ID = `${SITE_URL}/#profilepage`;
 export const NIDUS_ID = `${SITE_URL}/#nidus`;
 export const CRISPR_CHICKN_ID = `${SITE_URL}/#crispr-chickn`;
+
+// Paginanodes: per taalversie een eigen @id, op de URL van die versie.
+// "https://…/#profilepage" en "https://…/en#profilepage".
+export function profilePageId(language: Language): string {
+  return `${absoluteUrl(localizedPath("/", language))}#profilepage`;
+}
+
+export function webPageId(basePath: `/${string}`, language: Language): string {
+  return `${absoluteUrl(localizedPath(basePath, language))}#webpage`;
+}
+
+// Taalcode in inLanguage: gelijk aan <html lang>, dus "nl" of "en".
+function inLanguageOf(language: Language): string {
+  return language;
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -124,18 +150,50 @@ export interface WebSiteNode {
   "@id": string;
   url: string;
   name: string;
-  inLanguage: string;
+  // Beide taalversies van dezelfde site.
+  inLanguage: string[];
   publisher: NodeRef;
+}
+
+// Korte verwijzingen, zodat een pagina naar een entiteit kan wijzen zonder de
+// volledige node te herhalen. Elke @id waar een pagina naar verwijst, staat zo
+// ook in haar eigen graaf (lib/structuredData.test.ts bewaakt dat).
+export interface WebSiteRefNode {
+  "@type": "WebSite";
+  "@id": string;
+  url: string;
+  name: string;
+}
+
+export interface OrganizationRefNode {
+  "@type": "Organization";
+  "@id": string;
+  name: string;
+  url: string;
+}
+
+// De pagina zelf, per taalversie. about wijst naar waar de pagina over gaat.
+export interface WebPageNode {
+  "@type": "WebPage";
+  "@id": string;
+  url: string;
+  name: string;
+  inLanguage: string;
+  isPartOf: NodeRef;
+  about: NodeRef;
 }
 
 export type StructuredDataNode =
   | PersonNode
   | PersonRefNode
   | OrganizationNode
+  | OrganizationRefNode
   | ProfilePageNode
+  | WebPageNode
   | SoftwareApplicationNode
   | CreativeWorkNode
   | WebSiteNode
+  | WebSiteRefNode
   | NodeRef;
 
 // ---------------------------------------------------------------------------
@@ -210,17 +268,56 @@ export function lowiSchema(): OrganizationNode {
   };
 }
 
-export function profilePageSchema(): ProfilePageNode {
+// De homepage per taalversie. mainEntity blijft dezelfde persoon.
+export function profilePageSchema(language: Language): ProfilePageNode {
   const homeRoute = PUBLIC_ROUTES.find((route) => route.path === "/");
 
   return {
     "@type": "ProfilePage",
-    "@id": PROFILE_PAGE_ID,
-    url: SITE_URL,
+    "@id": profilePageId(language),
+    url: absoluteUrl(localizedPath("/", language)),
     name: SITE_NAME,
-    inLanguage: "nl",
+    inLanguage: inLanguageOf(language),
     dateModified: homeRoute?.lastModified ?? "",
     mainEntity: nodeRef(PERSON_ID),
+  };
+}
+
+// De pagina zelf op /nidus en /lowi (en hun /en-versies).
+// Geen primaryImageOfPage: de og:image-URL krijgt van Next een hash in de
+// bestandsnaam, die we hier niet kennen zonder een tweede bron aan te leggen.
+export function webPageSchema(
+  basePath: `/${string}`,
+  language: Language,
+  name: string,
+  aboutId: string,
+): WebPageNode {
+  return {
+    "@type": "WebPage",
+    "@id": webPageId(basePath, language),
+    url: absoluteUrl(localizedPath(basePath, language)),
+    name,
+    inLanguage: inLanguageOf(language),
+    isPartOf: nodeRef(WEBSITE_ID),
+    about: nodeRef(aboutId),
+  };
+}
+
+export function websiteRef(): WebSiteRefNode {
+  return {
+    "@type": "WebSite",
+    "@id": WEBSITE_ID,
+    url: SITE_URL,
+    name: SITE_NAME,
+  };
+}
+
+export function lowiRef(): OrganizationRefNode {
+  return {
+    "@type": "Organization",
+    "@id": LOWI_ID,
+    name: "LOWI — Lab of Wonder and Imagination",
+    url: absoluteUrl("/lowi"),
   };
 }
 
@@ -259,13 +356,56 @@ export function crisprChicknSchema(): CreativeWorkNode {
   };
 }
 
+// Eén node voor de hele site, in beide talen; de taalversies zelf zijn de
+// ProfilePage- en WebPage-nodes.
 export function websiteSchema(): WebSiteNode {
   return {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     url: SITE_URL,
     name: SITE_NAME,
-    inLanguage: "nl",
+    inLanguage: ["nl", "en"],
     publisher: nodeRef(PERSON_ID),
   };
+}
+
+// ---------------------------------------------------------------------------
+// De graaf per pagina — hier staat welke nodes een pagina meestuurt.
+// De route-componenten geven enkel hun taal door.
+// ---------------------------------------------------------------------------
+
+export function homeGraph(language: Language): readonly StructuredDataNode[] {
+  return [
+    websiteSchema(),
+    profilePageSchema(language),
+    personSchema(),
+    lowiSchema(),
+  ];
+}
+
+export function nidusGraph(language: Language): readonly StructuredDataNode[] {
+  return [
+    webPageSchema("/nidus", language, "Nidus — case study", NIDUS_ID),
+    nidusSchema(),
+    // Nidus verwijst naar LOWI en naar de persoon; beide krijgen een korte
+    // node, zodat de graaf van deze pagina geen losse @id's bevat.
+    lowiRef(),
+    personRef(),
+    websiteRef(),
+  ];
+}
+
+export function lowiGraph(language: Language): readonly StructuredDataNode[] {
+  return [
+    webPageSchema(
+      "/lowi",
+      language,
+      "LOWI — Lab of Wonder and Imagination",
+      LOWI_ID,
+    ),
+    lowiSchema(),
+    crisprChicknSchema(),
+    personRef(),
+    websiteRef(),
+  ];
 }

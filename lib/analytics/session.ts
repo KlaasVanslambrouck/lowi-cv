@@ -1,3 +1,4 @@
+import { PUBLIC_ROUTES, localizedPath } from "@/lib/site";
 import { normalizeReferrer } from "./privacy";
 
 export const INTERNAL_KEY = "portfolio-internal";
@@ -11,11 +12,28 @@ export function internalFlag(search: string, storage: StorageLike): boolean {
   return flag === "1" || (flag !== "0" && storage.getItem(INTERNAL_KEY) === "1");
 }
 
+// Elke publieke route, in elke taal waarin ze bestaat. Afgeleid uit
+// lib/site.ts, zodat een nieuwe route of taal hier niet vergeten kan worden.
+const ROUTE_PATHS = new Set(
+  PUBLIC_ROUTES.flatMap((route) =>
+    route.localized
+      ? [localizedPath(route.path, "nl"), localizedPath(route.path, "en")]
+      : [route.path],
+  ),
+);
+
+// Waarneembaar, maar geen sitemap-entry: machinebestanden zonder eigen route in
+// PUBLIC_ROUTES, en de noindex-cases.
+const EXTRA_PATHS = new Set(["/robots.txt", "/sitemap.xml", "/llms.txt"]);
+const CASE_PATH = /^\/(?:cases|projects)\/[a-z0-9-]+(?:\/[a-z0-9-]+)?$/;
+
 // Only public routes; do not persist arbitrary URLs, query strings or fragments.
 export function publicPath(value: unknown): string | null {
   if (typeof value !== "string" || value.length > 200) return null;
   const path = value.split(/[?#]/)[0].replace(/\/$/, "") || "/";
-  return /^(?:\/(?:en(?:\/(?:nidus|lowi))?|nidus|lowi|robots\.txt|sitemap\.xml|llms\.txt|cv\.pdf|cv\.json)?|\/(?:cases|projects)\/[a-z0-9-]+(?:\/[a-z0-9-]+)?)$/.test(path) ? path : null;
+  return ROUTE_PATHS.has(path) || EXTRA_PATHS.has(path) || CASE_PATH.test(path)
+    ? path
+    : null;
 }
 
 export function campaignValue(value: unknown): string | null {

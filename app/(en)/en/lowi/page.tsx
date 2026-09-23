@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import LowiRoute, { lowiMetadata } from "@/components/routes/LowiRoute";
+import LowiRoute from "@/components/routes/LowiRoute";
+import { lowiMetadata } from "@/lib/localizedPages";
 
 export const metadata: Metadata = lowiMetadata("en");
 

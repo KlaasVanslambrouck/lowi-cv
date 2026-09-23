@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   PUBLIC_ROUTES,
+  SITE_URL,
+  absoluteUrl,
   basePathOf,
   isLocalizedPath,
+  languageOfPath,
   localizedPath,
 } from "@/lib/site";
 
@@ -71,5 +74,39 @@ describe("isLocalizedPath", () => {
     expect(isLocalizedPath("/beheer")).toBe(false);
     expect(isLocalizedPath("/cv.json")).toBe(false);
     expect(isLocalizedPath("/cv.pdf")).toBe(false);
+  });
+});
+
+describe("absoluteUrl", () => {
+  it("geeft de homepage zonder trailing slash", () => {
+    expect(absoluteUrl("/")).toBe(SITE_URL);
+    expect(absoluteUrl(localizedPath("/", "en"))).toBe(`${SITE_URL}/en`);
+  });
+
+  it("plakt andere paden achter de basis-URL", () => {
+    expect(absoluteUrl("/nidus")).toBe(`${SITE_URL}/nidus`);
+    expect(absoluteUrl("nidus")).toBe(`${SITE_URL}/nidus`);
+  });
+});
+
+describe("languageOfPath", () => {
+  it("leidt de taal af uit het pad", () => {
+    expect(languageOfPath("/")).toBe("nl");
+    expect(languageOfPath("/nidus")).toBe("nl");
+    expect(languageOfPath("/cases/linguix")).toBe("nl");
+    expect(languageOfPath("/en")).toBe("en");
+    expect(languageOfPath("/en/nidus")).toBe("en");
+  });
+
+  it("ziet een pad dat toevallig met 'en' begint als Nederlands", () => {
+    expect(languageOfPath("/energie")).toBe("nl");
+  });
+
+  it("klopt voor elke gelokaliseerde route in beide talen", () => {
+    for (const route of PUBLIC_ROUTES.filter((entry) => entry.localized)) {
+      for (const language of ["nl", "en"] as const) {
+        expect(languageOfPath(localizedPath(route.path, language))).toBe(language);
+      }
+    }
   });
 });

@@ -1,6 +1,19 @@
 // Route-local, bilingual editorial content. Project claims follow existing case data.
 
-import type { Bilingual } from "@/types/content";
+import type { Bilingual, PageMetaCopy } from "@/types/content";
+
+// <title> en meta description van /lowi en /en/lowi; volgt de intro op de
+// pagina zelf. 140-160 tekens (content/metaCopy.test.ts).
+export const lowiCelMeta: PageMetaCopy = {
+  title: {
+    nl: "LOWI — Lab of Wonder and Imagination",
+    en: "LOWI — Lab of Wonder and Imagination",
+  },
+  description: {
+    nl: "Het persoonlijke lab van Klaas Vanslambrouck. Ik onderzoek hoe dingen werken en bouw om te ontdekken wat ermee kan: AI, biologie, systemen en verhalen.",
+    en: "The personal lab of Klaas Vanslambrouck. I explore how things work and build to find out what they can do, across AI, biology, systems and stories.",
+  },
+};
 
 export type OrganelId =
   | "membraan"

@@ -1,7 +1,7 @@
 import { nidusCaseStudy } from "@/content/nidusCaseStudy";
 import { placeholderContent } from "@/content/placeholderContent";
 import { ROLE_PHASE, resumeLabelFor } from "@/content/role";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, localizedPath } from "@/lib/site";
 import { SOCIAL_PROFILES, lowiSchema } from "@/lib/structuredData";
 import type { RolePhase } from "@/types/content";
 
@@ -26,6 +26,15 @@ const NIDUS_SUMMARY =
 
 function markdownLink(label: string, path: string): string {
   return `[${label}](${absoluteUrl(path)})`;
+}
+
+// Elke inhoudelijke pagina bestaat in twee talen. Eén bullet per pagina, met de
+// Engelse URL erbij, houdt de beschrijving op één plek: een aparte Engelse
+// sectie zou elke zin verdubbelen en kan uit elkaar gaan lopen. De vorm blijft
+// "link: één zin", zoals de rest van het bestand.
+function pageLine(label: string, basePath: `/${string}`, description: string): string {
+  const englishPath = localizedPath(basePath, "en");
+  return `- ${markdownLink(label, basePath)} (English: ${markdownLink(englishPath, englishPath)}): ${description}`;
 }
 
 // De schemabeschrijving noemt de eigenaar ("lab of Klaas Vanslambrouck"); in
@@ -59,7 +68,7 @@ export function buildLlmsTxt(phase: RolePhase = ROLE_PHASE): string {
     // Rol, locatie en de kern van de hero-thesis.
     `> ${resumeLabelFor(phase)} — ${contact.location.en} (Ghent area). ${THESIS_SUMMARY}`,
     "",
-    "This file is in English for machine readers; the website itself is in Dutch by default, with an English toggle.",
+    "The website is in Dutch at / and in English under /en; both versions carry the same content. This file is in English for machine readers.",
     "",
     [
       `${lowiShortName} (${lowiLongName}) is ${hero.name}'s personal lab.`,
@@ -70,9 +79,21 @@ export function buildLlmsTxt(phase: RolePhase = ROLE_PHASE): string {
     "",
     "## Pages",
     "",
-    `- ${markdownLink(`${hero.name} — ${resumeLabelFor(phase)}`, "/")}: CV, career timeline, skills and projects; the main profile page.`,
-    `- ${markdownLink(nidusCaseStudy.intro.title.en, "/nidus")}: ${nidusCaseStudy.intro.subtitle.en} — architecture, decision log and screenshots.`,
-    `- ${markdownLink(lowiOrganization.name, "/lowi")}: the lab itself, told as a scroll-driven story about a cell.`,
+    pageLine(
+      `${hero.name} — ${resumeLabelFor(phase)}`,
+      "/",
+      "CV, career timeline, skills and projects; the main profile page.",
+    ),
+    pageLine(
+      nidusCaseStudy.intro.title.en,
+      "/nidus",
+      `${nidusCaseStudy.intro.subtitle.en} — architecture, decision log and screenshots.`,
+    ),
+    pageLine(
+      lowiOrganization.name,
+      "/lowi",
+      "the lab itself, told as a scroll-driven story about a cell.",
+    ),
     "",
     "## Machine-readable",
     "",

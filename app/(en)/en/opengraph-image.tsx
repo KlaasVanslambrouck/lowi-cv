@@ -1,10 +1,9 @@
 import { OG_CONTENT_TYPE, OG_SIZE, homeOgAlt, homeOgImage } from "@/lib/og";
 
-// Geldt voor alle NL-routes zonder eigen afbeelding (o.a. "/" en /cases/*).
-export const alt = homeOgAlt("nl");
+export const alt = homeOgAlt("en");
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
 export default function Image() {
-  return homeOgImage("nl");
+  return homeOgImage("en");
 }

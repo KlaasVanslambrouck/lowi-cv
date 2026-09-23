@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { siteDescription, siteTitle } from "@/content/role";
+import { siteDescriptionFor, siteTitleFor } from "@/content/role";
 import { PROFILE_OPEN_GRAPH, sharedOpenGraph } from "@/lib/pageMetadata";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Language } from "@/types/content";
@@ -19,12 +19,13 @@ export const ROOT_VIEWPORT: Viewport = {
 export function rootMetadata(language: Language): Metadata {
   return {
     metadataBase: new URL(SITE_URL),
-    // Titel (Engels) en description (Nederlands) volgen de rolfase: content/role.ts.
+    // Titel en description volgen de taal én de rolfase: content/role.ts.
+    // De homepage erft deze titel; andere pagina's vullen de template.
     title: {
-      default: siteTitle,
+      default: siteTitleFor(language),
       template: "%s | Klaas Vanslambrouck",
     },
-    description: siteDescription,
+    description: siteDescriptionFor(language),
     applicationName: SITE_NAME,
     authors: [{ name: SITE_NAME, url: SITE_URL }],
     creator: SITE_NAME,
