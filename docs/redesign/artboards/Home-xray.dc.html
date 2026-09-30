@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Homepage – licht, X-ray (1/2)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0}</style></helmet>
+<div style="width: 1440px; height: 4250px; overflow: hidden">
+<div style="margin-top: -0px">
+<dc-import name="Home" lang="nl" theme="light" xray="{{ true }}" motion="full" h="{{ 8500 }}" hint-size="1440px,8500px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4250}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

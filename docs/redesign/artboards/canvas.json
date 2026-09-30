@@ -1,0 +1,366 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Cel.dc.html": {
+      "h": 720,
+      "is_interactive": true,
+      "page": "comp",
+      "title": "Component · Cel",
+      "w": 720,
+      "x": 0,
+      "y": 0
+    },
+    "Celstanden.dc.html": {
+      "h": 3680,
+      "page": "lowi",
+      "title": "Celstanden · huidig vs. voorstel, tien standen",
+      "w": 1440,
+      "x": 3510,
+      "y": 0
+    },
+    "Home-donker-xray.dc.html": {
+      "h": 4250,
+      "is_interactive": true,
+      "page": "home",
+      "title": "Home · donker · X-ray (1/2)",
+      "w": 1440,
+      "x": 5030,
+      "y": 0
+    },
+    "Home-donker.dc.html": {
+      "h": 8000,
+      "is_interactive": true,
+      "page": "home",
+      "title": "Home · donker · normaal",
+      "w": 1440,
+      "x": 1990,
+      "y": 0
+    },
+    "Home-mobiel-en-donker.dc.html": {
+      "h": 6700,
+      "is_interactive": true,
+      "page": "home",
+      "title": "Home · mobiel · EN · donker · X-ray (1/2)",
+      "w": 390,
+      "x": 6550,
+      "y": 0
+    },
+    "Home-mobiel.dc.html": {
+      "h": 6300,
+      "is_interactive": true,
+      "page": "home",
+      "title": "Home · mobiel (1/2)",
+      "w": 390,
+      "x": 1520,
+      "y": 0
+    },
+    "Home-reduced.dc.html": {
+      "h": 1400,
+      "is_interactive": true,
+      "page": "home",
+      "title": "Home · reduced motion · Jarvis open (uitsnede)",
+      "w": 1440,
+      "x": 7020,
+      "y": 0
+    },
+    "Home-xray.dc.html": {
+      "h": 4250,
+      "is_interactive": true,
+      "page": "home",
+      "title": "Home · licht · X-ray (1/2)",
+      "w": 1440,
+      "x": 3510,
+      "y": 0
+    },
+    "Home.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "page": "home",
+      "title": "Home · desktop · licht · normaal",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Jarvis-staten.dc.html": {
+      "h": 1720,
+      "page": "comp",
+      "title": "Jarvis · zes toestanden",
+      "w": 1440,
+      "x": 1320,
+      "y": 0
+    },
+    "Jarvis.dc.html": {
+      "h": 640,
+      "is_interactive": true,
+      "page": "comp",
+      "title": "Component · Jarvis",
+      "w": 440,
+      "x": 800,
+      "y": 0
+    },
+    "Lowi-donker-reduced.dc.html": {
+      "h": 8000,
+      "is_interactive": true,
+      "page": "lowi",
+      "title": "LOWI · donker · reduced motion · stand kern",
+      "w": 1440,
+      "x": 1990,
+      "y": 0
+    },
+    "Lowi-mobiel.dc.html": {
+      "h": 4000,
+      "is_interactive": true,
+      "page": "lowi",
+      "title": "LOWI · mobiel (1/2)",
+      "w": 390,
+      "x": 1520,
+      "y": 0
+    },
+    "Lowi.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "page": "lowi",
+      "title": "LOWI · desktop · celreis",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "h": 3000,
+      "page": "start",
+      "title": "01 · Bronneninventaris",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Nidus-donker-en.dc.html": {
+      "h": 5450,
+      "is_interactive": true,
+      "page": "nidus",
+      "title": "Nidus · donker · EN",
+      "w": 1440,
+      "x": 1990,
+      "y": 0
+    },
+    "Nidus-mobiel.dc.html": {
+      "h": 3650,
+      "is_interactive": true,
+      "page": "nidus",
+      "title": "Nidus · mobiel (1/2)",
+      "w": 390,
+      "x": 1520,
+      "y": 0
+    },
+    "Nidus.dc.html": {
+      "expand": "fill",
+      "h": 5500,
+      "is_interactive": true,
+      "page": "nidus",
+      "title": "Nidus · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Overdracht.dc.html": {
+      "h": 3400,
+      "page": "start",
+      "title": "Overdracht · Claude Code & Codex",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Stijl.dc.html": {
+      "h": 4500,
+      "is_interactive": true,
+      "page": "start",
+      "title": "02 · Stijlpagina — accenten in beweging",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Home-mobiel-2.dc.html": {
+      "x": 1520,
+      "y": 6420,
+      "w": 390,
+      "h": 6300,
+      "title": "Home · mobiel (2/2)",
+      "page": "home",
+      "is_interactive": true
+    },
+    "Home-xray-2.dc.html": {
+      "x": 3510,
+      "y": 4370,
+      "w": 1440,
+      "h": 4250,
+      "title": "Home · licht · X-ray (2/2)",
+      "page": "home",
+      "is_interactive": true
+    },
+    "Home-donker-xray-2.dc.html": {
+      "x": 5030,
+      "y": 4370,
+      "w": 1440,
+      "h": 4250,
+      "title": "Home · donker · X-ray (2/2)",
+      "page": "home",
+      "is_interactive": true
+    },
+    "Home-mobiel-en-donker-2.dc.html": {
+      "x": 6550,
+      "y": 6820,
+      "w": 390,
+      "h": 6700,
+      "title": "Home · mobiel · EN · donker · X-ray (2/2)",
+      "page": "home",
+      "is_interactive": true
+    },
+    "Lowi-mobiel-2.dc.html": {
+      "x": 1520,
+      "y": 4120,
+      "w": 390,
+      "h": 4000,
+      "title": "LOWI · mobiel (2/2)",
+      "page": "lowi",
+      "is_interactive": true
+    },
+    "Nidus-mobiel-2.dc.html": {
+      "x": 1520,
+      "y": 3770,
+      "w": 390,
+      "h": 3650,
+      "title": "Nidus · mobiel (2/2)",
+      "page": "nidus",
+      "is_interactive": true
+    },
+    "NidusEmbed.dc.html": {
+      "x": 2840,
+      "y": 0,
+      "w": 1000,
+      "h": 900,
+      "title": "Bestaande embed · NidusMockups (1-op-1)",
+      "page": "comp",
+      "is_interactive": true
+    },
+    "NidusScreen.dc.html": {
+      "x": 3920,
+      "y": 0,
+      "w": 660,
+      "h": 1100,
+      "title": "NidusMockups · scherminhoud",
+      "page": "comp",
+      "is_interactive": true
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-09-29T18:10:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "page": "start",
+    "view": "canvas"
+  },
+  "notes": {
+    "tComp": {
+      "kind": "title1",
+      "maxW": 4580,
+      "page": "comp",
+      "text": "Componenten",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "tHome": {
+      "kind": "title1",
+      "maxW": 8460,
+      "page": "home",
+      "text": "Homepage — desktop, mobiel, vier combinaties",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "tLowi": {
+      "kind": "title1",
+      "maxW": 4950,
+      "page": "lowi",
+      "text": "LOWI — één cel, zeven hoofdstukken, deling",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "tNidus": {
+      "kind": "title1",
+      "maxW": 3430,
+      "page": "nidus",
+      "text": "Nidus — bestaande embed 1-op-1 uit de repository",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "tStart": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "start",
+      "text": "Start: inventaris, stijl, overdracht",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Stijl.dc.html",
+    "Overdracht.dc.html",
+    "Home.dc.html",
+    "Home-mobiel.dc.html",
+    "Home-donker.dc.html",
+    "Home-xray.dc.html",
+    "Home-donker-xray.dc.html",
+    "Home-mobiel-en-donker.dc.html",
+    "Home-reduced.dc.html",
+    "Lowi.dc.html",
+    "Lowi-mobiel.dc.html",
+    "Lowi-donker-reduced.dc.html",
+    "Celstanden.dc.html",
+    "Nidus.dc.html",
+    "Nidus-mobiel.dc.html",
+    "Nidus-donker-en.dc.html",
+    "Cel.dc.html",
+    "Jarvis.dc.html",
+    "Jarvis-staten.dc.html",
+    "Home-mobiel-2.dc.html",
+    "Home-xray-2.dc.html",
+    "Home-donker-xray-2.dc.html",
+    "Home-mobiel-en-donker-2.dc.html",
+    "Lowi-mobiel-2.dc.html",
+    "Nidus-mobiel-2.dc.html",
+    "NidusEmbed.dc.html",
+    "NidusScreen.dc.html"
+  ],
+  "pages": [
+    {
+      "id": "start",
+      "name": "Start · inventaris · stijl · overdracht"
+    },
+    {
+      "id": "home",
+      "name": "Homepage"
+    },
+    {
+      "id": "lowi",
+      "name": "LOWI"
+    },
+    {
+      "id": "nidus",
+      "name": "Nidus"
+    },
+    {
+      "id": "comp",
+      "name": "Componenten"
+    }
+  ],
+  "title": "Portfolio-redesign — schetsboek"
+}

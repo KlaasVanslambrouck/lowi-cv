@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Homepage – reduced motion, Jarvis open (uitsnede)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0}</style></helmet>
+<div style="width: 1440px; height: 1400px; overflow: hidden">
+<dc-import name="Home" h="{{ 1400 }}" lang="nl" theme="light" motion="reduced" jarvis="open" hint-size="1440px,1400px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

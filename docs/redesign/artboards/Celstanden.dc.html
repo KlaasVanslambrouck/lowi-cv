@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>LOWI – celstanden, één model</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Caveat:wght@600;700&amp;family=Karla:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap">
+<style>
+body{margin:0}
+.cs{--paper:#F4ECDA;--card:#FAF4E6;--ink:#1D3F4E;--ink2:#33505C;--teal:#256F7B;--accent:#C9461F;--rule:#CDBB94}
+.cs.is-dark{--paper:#102D38;--card:#153846;--ink:#F4ECDA;--ink2:#D6DDD8;--teal:#80BCC0;--accent:#EF936C;--rule:#35596A}
+.cs dl{margin:0;display:grid;grid-template-columns:86px minmax(0,1fr);gap:4px 10px;font-size:14px;line-height:1.5;color:var(--ink2)}
+.cs dt{font-weight:700;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--teal);padding-top:2px}
+.cs dd{margin:0}
+</style>
+</helmet>
+<div class="cs {{rootClass}}" style="width: 1440px; height: 3680px; box-sizing: border-box; padding: 72px 96px; background: var(--paper); color: var(--ink); font-family: Karla, 'Trebuchet MS', sans-serif; display: flex; flex-direction: column; gap: 48px">
+<header style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 64px; align-items: end">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-weight: 700; font-size: 13px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--teal)">LOWI · component · zeven hoofdstukken + deling</p>
+<h1 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 72px; line-height: 1">Eén cel, tien standen.</h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.55; color: var(--ink2)">Alle standen hieronder zijn hetzelfde Cel-component met een andere <code>phase</code>. Organellen houden positie en identiteit; alleen camera, transparantie van de voorzijde, focus­dimming en labels veranderen. Deling vervangt ER, Golgi en kern tijdelijk door vereenvoudigde mitose-lagen; de mitochondriën blijven dezelfde objecten.</p>
+</div>
+<div style="border: 2px solid var(--ink); border-radius: 10px; background: var(--card); padding: 20px 22px; display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0; font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent)">Biologisch nakijken vóór vastleggen</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink2)">Schematische dierlijke cel: plasmamembraan, cytosol, cytoskelet, kern met dubbel kernmembraan en poriën, chromatine, nucleolus, ruw ER aansluitend op het buitenste kernmembraan met ribosomen, glad ER, Golgi-stapel, mitochondriën met cristae, blaasjes en lysosomen. Geen celwand, chloroplasten of centrale vacuole. Aantallen en afmetingen zijn niet op schaal.</p>
+</div>
+</header>
+<section style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 40px; align-items: start; border-top: 2px dashed var(--rule); border-bottom: 2px dashed var(--rule); padding: 32px 0">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--teal)">Huidig · uit de repository</p>
+<h2 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 28px; line-height: 1.1">R3F-instrument en de acht fallback-stills</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink2)">components/lowi-cel: CelCanvas + CelModel (three.js, bloom, DOF, donker instrumentpalet #05060a), scroll via useScrollVoortgang, stills in /public/lowi/cell als fallback bij klein scherm, geen WebGL of reduced motion. Scrollsturing, hoofdstukankers, fallbacklogica en analytics blijven. Wat het voorstel verandert: geen vrije DNA-helix in de kern (DnaHelix), ruw ER aan het kernmembraan toevoegen, glad ER, blaasjes en cytoskelet leesbaar maken, papier i.p.v. zwart instrument, deling via chromosomen en twee kernen.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px"><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/5226244ca12b35fb0cb110f73f34a72e" alt="Huidige still intro: exterior.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>intro</b> · exterior.webp</figcaption></figure><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/527097faf43d792e73b32fe36bd61c22" alt="Huidige still 01: grens.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>01</b> · grens.webp</figcaption></figure><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/c3d9cd53b1cca75924945edacebc797b" alt="Huidige still 02: werkvloer.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>02</b> · werkvloer.webp</figcaption></figure><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/b1946de066fd8040bb5f63bf3e416835" alt="Huidige still 03: code.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>03</b> · code.webp</figcaption></figure><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/a45b5c2c5007d927a5d2cb1f5a9aa716" alt="Huidige still 04: bouwen.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>04</b> · bouwen.webp</figcaption></figure><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/8f39f623850a3dd1a6a66f15437f529f" alt="Huidige still 05: brandstof.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>05</b> · brandstof.webp</figcaption></figure><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/7ed39e922bc111e83de02064fa848d84" alt="Huidige still 06: verfijnen.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>06</b> · verfijnen.webp</figcaption></figure><figure style="margin: 0; display: flex; flex-direction: column; gap: 6px"><img src="/_blob/f2f30c09a82b90163a7fe00977507372" alt="Huidige still 07: groei.webp" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block"><figcaption style="font-size: 12.5px; color: var(--ink2)"><b>07</b> · groei.webp</figcaption></figure></div>
+</section>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 24px">
+<sc-for list="{{states}}" as="st" hint-placeholder-count="10">
+<article style="display: flex; flex-direction: column; gap: 14px">
+<div style="border: 1.5px solid var(--rule); border-radius: 8px; padding: 0; width: 400px; height: 400px; background: var(--paper)">
+<dc-import name="Cel" phase="{{st.phase}}" theme="{{theme}}" lang="nl" motion="reduced" size="{{ 400 }}" uid="{{st.uid}}" show-caption="{{ false }}" hint-size="400px,400px"></dc-import>
+</div>
+<h2 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 24px">{{st.title}}</h2>
+<dl><dt>Focus</dt><dd>{{st.focus}}</dd><dt>Labels</dt><dd>{{st.labels}}</dd><dt>Beweging</dt><dd>{{st.motion}}</dd><dt>Stilstaand</dt><dd>{{st.still}}</dd></dl>
+</article>
+</sc-for>
+</div>
+<div style="flex-grow: 1"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Toestand"},"$preview":{"width":1440,"height":3680}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var theme = (this.props && this.props.theme) || 'light';
+    var S = [
+      ['overzicht', 'Intro · de hele cel', 'hele cel (400, 405) · 1×', 'geen — caption “Dierlijke cel · schematische visualisatie”', 'uiterst trage deeltjesdrift; membraanrand blijft zacht, geen ademhaling', 'voorzijde membraan 50 % dekkend'],
+      ['membraan', '01 · Het membraan', 'linkerrand (150, 420) · 1,9×', 'Plasmamembraan + detail fosfolipidendubbellaag met membraaneiwit', 'voorzijde wordt doorschijnend (50 → 14 %), camera 850 ms; geen opengaan als machine', 'doorsnede zichtbaar, detailvenster rechtsonder'],
+      ['cytoplasma', '02 · Het cytoplasma', 'cytosol linksonder (300, 545) · 1,45×', 'Cytosol · Glad ER · Blaasje', 'drie transportblaasjes langs vaste trajecten (7–9 s), grote organellen stil', 'blaasjes op beginpositie'],
+      ['kern', '03 · De kern', 'kern (365, 392) · 1,95×', 'Kern · kernmembraan met poriën · Nucleolus · Chromatine', 'geleidelijke focus, omliggend ER half gedimd; geen pulserende kern of losse DNA-helix', 'zelfde beeld zonder overgang'],
+      ['ribosomen', '04 · De ribosomen', 'ruw ER (505, 470) · 2,5×', 'Ruw ER met ribosomen + gemarkeerde detailvergroting (grote/kleine subeenheid, mRNA, keten)', 'detailvenster landt na de camera (+600 ms); eventuele translatie-animatie pas na biologische controle', 'detailvenster linksonder'],
+      ['mitochondrien', '05 · De mitochondriën', 'één mitochondrion (585, 555) · 3,1×', 'Mitochondrion · Cristae', 'zelfde object als in het overzicht; geen vuur of bliksem', 'cristae in doorsnede zichtbaar'],
+      ['golgi', '06 · Het golgi-apparaat', 'Golgi-stapel (565, 245) · 2,3×', 'Golgi-apparaat · Transportblaasje', 'blaasjes ER → Golgi → membraan, vereenvoudigde illustratie', 'blaasjes op beginpositie'],
+      ['deling1', '07a · Deling — chromosomen in het midden', 'hele cel · 1×', 'Chromosomen in het midden + stempel “Vereenvoudigd”', 'kern, ER en Golgi vervagen (600 ms); chromosomen en spoelvezels verschijnen', 'tussenstap a'],
+      ['deling2', '07b · Deling — naar twee polen', 'hele cel · 1×', 'Chromosomen naar twee polen', 'membraan wordt licht ovaal; één mitochondrion verhuist naar de rechterhelft', 'tussenstap b'],
+      ['deling3', '07c · Deling — twee kernen, insnoering', 'hele cel · 1×', 'Twee kernen · Insnoering', 'late cytokinese; daarna opent de compositie naar de twee projectkaarten', 'eindtoestand; kaarten Nidus + CRISPR & CHICKN']
+    ];
+    return {
+      rootClass: theme === 'dark' ? 'is-dark' : '', theme: theme,
+      states: S.map(function (s, i) { return { phase: s[0], title: s[1], focus: s[2], labels: s[3], motion: s[4], still: s[5], uid: 'cs' + i }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

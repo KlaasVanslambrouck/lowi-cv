@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Nidus – case study</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Caveat:wght@600;700&amp;family=Karla:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap">
+<style>
+body{margin:0}
+/* ── tokens: alleen binnen .pg, nooit op embeds ── */
+.pg{--paper:#F4ECDA;--card:#FAF4E6;--ink:#1D3F4E;--ink2:#33505C;--mute:#4A6570;--teal:#256F7B;--accent:#C9461F;--marker:#F0B233;--hlc:240,178,51;--rule:#CDBB94;--dot:rgba(29,63,78,.13);--grid:rgba(37,111,123,.16);--btnInk:#FFFFFF;--foot:#1D3F4E;--footInk:#F4ECDA;
+container-type:inline-size;box-sizing:border-box;background-color:var(--paper);background-image:radial-gradient(var(--dot) 1.3px,transparent 1.7px);background-size:26px 26px;color:var(--ink);font-family:Karla,'Trebuchet MS',sans-serif;display:flex;flex-direction:column;position:relative;overflow:clip}
+.pg.is-dark{--paper:#102D38;--card:#153846;--ink:#F4ECDA;--ink2:#D6DDD8;--mute:#A9BCBF;--teal:#80BCC0;--accent:#EF936C;--marker:#D6A94D;--hlc:214,169,77;--rule:#35596A;--dot:rgba(244,236,218,.08);--grid:rgba(128,188,192,.13);--btnInk:#102D38;--foot:#0A222C;--footInk:#F4ECDA}
+.pg.is-xray{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.pg *{box-sizing:border-box}
+.pg a{color:var(--ink)}
+.pg a:hover{color:var(--accent)}
+.pg :focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:4px}
+/* typografie */
+.h1{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:104px;line-height:.96;letter-spacing:-1px;margin:0}
+.h2{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:56px;line-height:1.04;margin:0}
+.h3{font-weight:700;font-size:24px;line-height:1.25;margin:0}
+.eyebrow{font-weight:700;font-size:13px;letter-spacing:2.6px;text-transform:uppercase;color:var(--teal);margin:0}
+.lead{font-size:26px;line-height:1.45;color:var(--ink2);margin:0}
+.body{font-size:18px;line-height:1.62;color:var(--ink2);margin:0}
+.small{font-size:15px;line-height:1.5;color:var(--mute);margin:0}
+.hand{font-family:Caveat,cursive;font-weight:700;color:var(--accent)}
+.mono{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+/* layout */
+.sec{position:relative;padding:112px 96px;border-top:2px dashed var(--rule)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:64px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:72px}
+/* componenten */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 26px;background:var(--accent);color:var(--btnInk)!important;font-weight:700;font-size:15px;letter-spacing:1.6px;text-transform:uppercase;text-decoration:none;border:0;border-radius:6px;box-shadow:4px 4px 0 var(--ink);cursor:pointer;transition:translate .15s,box-shadow .15s}
+.btn:hover{translate:-1px -1px;box-shadow:6px 6px 0 var(--ink)}
+.btn:active{translate:2px 2px;box-shadow:1px 1px 0 var(--ink)}
+.btn2{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;border:2px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);font-weight:700;font-size:15px;letter-spacing:1.6px;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.btn2:hover{background:var(--ink);color:var(--paper)!important}
+.tlink{font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
+.chip{display:inline-flex;align-items:center;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;border:1.5px solid var(--ink);padding:6px 11px;border-radius:999px;color:var(--ink)}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:10px;box-shadow:8px 8px 0 var(--teal);padding:34px;position:relative}
+.jask{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 14px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);font-family:Karla,sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+.jask:hover,.jask[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.jask i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:block}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{min-height:40px;min-width:44px;padding:0 12px;border:0;background:transparent;color:var(--ink);font-family:Karla,sans-serif;font-weight:700;font-size:12px;letter-spacing:1.8px;text-transform:uppercase;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.nav a{font-weight:700;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.nav a[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:8px}
+.mnote{position:absolute;left:var(--x);top:var(--y);transform:rotate(var(--r,-4deg));white-space:nowrap}
+.tree{font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre;margin:0}
+.code{background:#0F2A34;color:#E7EFE9;border-radius:8px;padding:16px 18px;font-size:13px;line-height:1.55;white-space:pre;overflow:auto;margin:0}
+.xr{display:none}
+.is-xray .xr{display:block}
+.is-xray .xrbox{outline:1.5px dashed var(--teal);outline-offset:10px}
+.is-xray .xr-dim{opacity:.62}
+.mob{display:none}
+/* ── schetsaccenten (uit de quiz-HTML, getimed volgens de scrollspecificatie) ── */
+.dr,.drl,.drs{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.dr{stroke-dasharray:700;stroke-dashoffset:0;transition:stroke-dashoffset .7s cubic-bezier(.65,0,.35,1)}
+.dr.sk-wait{stroke-dashoffset:700;transition:none}
+.drs{stroke-dasharray:700;stroke-dashoffset:0;transition:stroke-dashoffset .38s cubic-bezier(.5,0,.5,1)}
+.drs.sk-wait{stroke-dashoffset:700;transition:none}
+.drl{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 2.4s cubic-bezier(.55,0,.35,1)}
+.drl.sk-wait{stroke-dashoffset:1;transition:none}
+.hl{background-image:linear-gradient(100deg,rgba(var(--hlc),0) 0,rgba(var(--hlc),.78) 3%,rgba(var(--hlc),.62) 95%,rgba(var(--hlc),0) 100%);background-repeat:no-repeat;background-position:0 80%;background-size:100% 46%;padding:0 4px;margin:0 -4px;transition:background-size .55s cubic-bezier(.65,0,.35,1)}
+.hl.sk-wait{background-size:0% 46%;transition:none}
+.wr{clip-path:inset(-20% -6% -20% -6%);transition:clip-path .65s cubic-bezier(.5,0,.5,1)}
+.wr.sk-wait{clip-path:inset(-20% 100% -20% -6%);transition:none}
+.st{opacity:1;scale:1;rotate:0deg;transition:opacity .3s ease,scale .45s cubic-bezier(.2,.8,.3,1),rotate .45s cubic-bezier(.2,.8,.3,1)}
+.st.sk-wait{opacity:0;scale:1.25;rotate:-6deg;transition:none}
+.pf{opacity:1;translate:0 0;transition:opacity .7s ease,translate .7s cubic-bezier(.2,.8,.3,1)}
+.pf.sk-wait{opacity:0;translate:0 24px;transition:none}
+.dl1{transition-delay:.15s}.dl2{transition-delay:.5s}.dl3{transition-delay:.85s}.dl4{transition-delay:1.2s}.dl5{transition-delay:1.55s}.dl6{transition-delay:1.9s}
+.dlc{transition-delay:.62s}
+.is-rm .dr,.is-rm .drl,.is-rm .drs,.is-rm .hl,.is-rm .wr,.is-rm .st,.is-rm .pf{transition:none}
+@media (prefers-reduced-motion: reduce){.dr,.drl,.drs,.hl,.wr,.st,.pf{transition:none}}
+/* ── mobiel: containerquery op de pagina ── */
+@container (max-width: 760px){
+.sec{padding:72px 20px}
+.h1{font-size:52px}.h2{font-size:36px}.lead{font-size:20px}.body{font-size:17px}
+.g2,.g3,.split{grid-template-columns:minmax(0,1fr);gap:36px}
+.mnote{position:static;display:block;transform:rotate(-2deg);white-space:normal;margin:10px 0 0}
+.desk{display:none!important}
+.mob{display:flex}
+.card{padding:24px;box-shadow:6px 6px 0 var(--teal)}
+.hdr{padding:0 20px!important}
+.ftr{padding:32px 20px 120px!important}
+}
+</style>
+<style>
+/* Nidus: architectuur */
+.arch{position:relative;display:grid;grid-template-columns:120px repeat(4,minmax(0,1fr));grid-auto-rows:150px;column-gap:24px;row-gap:56px}
+.lane{display:flex;align-items:center;font-weight:700;font-size:12.5px;letter-spacing:2.6px;color:var(--teal);border-right:2px dashed var(--rule)}
+.node{background:var(--card);border:2px solid var(--ink);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;box-shadow:4px 4px 0 var(--ink);z-index:1}
+.node b{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:21px}
+.node .tech{font-size:12.5px;font-weight:700;letter-spacing:.4px;color:var(--teal)}
+.node .desc{font-size:14px;line-height:1.4;color:var(--ink2)}
+.node.key{box-shadow:4px 4px 0 var(--accent)}
+.dlog{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;padding:40px 0;border-top:1.5px dashed var(--rule)}
+.embedslot{position:relative;border:2px dashed var(--ink);border-radius:14px;padding:18px;background-image:repeating-linear-gradient(135deg,transparent 0 14px,rgba(37,111,123,.07) 14px 16px)}
+.nsplit{display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:56px;align-items:end}
+.nside{display:flex;flex-direction:column;gap:22px;border-left:2px dashed var(--rule);padding:12px 0 12px 40px}
+.pgnav a{min-height:44px;display:inline-flex;align-items:center;padding:0 16px;border:1.5px solid var(--ink);border-radius:999px;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.8px;text-transform:uppercase}
+.pgnav a:hover{background:var(--ink);color:var(--paper)}
+@container (max-width: 760px){
+.arch{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto;row-gap:12px}
+.arch .lane{border-right:0;border-bottom:2px dashed var(--rule);padding:18px 0 6px;grid-column:auto!important;grid-row:auto!important}
+.arch .node{grid-column:auto!important;grid-row:auto!important}
+.arch>*{order:var(--o)}
+.dlog{grid-template-columns:minmax(0,1fr);gap:12px}
+.nsplit{grid-template-columns:minmax(0,1fr);gap:28px}
+.nside{border-left:0;padding:0;border-top:2px dashed var(--rule);padding-top:18px}
+}
+</style>
+</helmet>
+<div id="top" class="pg {{rootClass}}" style="width: 100%; min-width: 320px; height: {{h}}px">
+
+<header class="hdr" style="position: sticky; top: 0; z-index: 20; height: 76px; flex-shrink: 0; padding: 0 56px; display: flex; align-items: center; justify-content: space-between; gap: 18px; background: var(--paper); border-bottom: 2px dashed var(--rule)">
+<a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg width="38" height="38" sc-camel-view-box="0 0 38 38" aria-hidden="true" style="fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M19 3 C 29 3, 35 10, 35 19 C 35 29, 28 35, 19 35 C 9 35, 3 28, 3 19 C 3 10, 10 4, 20 3"></path><path d="M12 11 L12 27 M12 19 L22 11 M16 16 L23 27" style="stroke: var(--accent)"></path></svg>
+<span class="desk" style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 19px; line-height: 1">Klaas Vanslambrouck</span>
+</a>
+<nav class="nav desk" aria-label="{{t.navLabel}}" style="display: flex; align-items: center; gap: 30px"><a href="/#projects">{{t.work}}</a><a href="/lowi">LOWI</a><a href="/nidus" aria-current="page">Nidus</a><a href="/#contact">Contact</a></nav>
+<div style="display: flex; align-items: center; gap: 8px">
+<div class="seg" role="group" aria-label="{{t.langLabel}}"><button type="button" aria-pressed="{{pr.nl}}" onClick="{{setNl}}">NL</button><button type="button" aria-pressed="{{pr.en}}" onClick="{{setEn}}">EN</button></div>
+<div class="seg" role="group" aria-label="{{t.themeLabel}}"><button type="button" aria-pressed="{{pr.light}}" onClick="{{setLight}}">{{t.light}}</button><button type="button" aria-pressed="{{pr.dark}}" onClick="{{setDark}}">{{t.dark}}</button></div>
+</div>
+</header>
+
+
+
+
+
+<!-- ═════ INTRO (hiërarchie volgens beeld 10) ═════ -->
+<section id="nidus-intro" data-sk="intro" class="sec" style="flex-shrink: 0; border-top: 0; padding-bottom: 72px">
+<div class="nsplit">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<h1 class="h1" style="font-size: {{h1Fs}}px">Nidus <span style="font-size: 0.34em; color: var(--teal); white-space: nowrap">— case study</span></h1>
+<p style="margin: 0; font-size: {{subFs}}px; line-height: 1.2; font-weight: 500; color: var(--ink)"><span class="hl {{sk.intro}} dl2">{{t.eyebrowA}}</span>{{t.eyebrowB}}</p>
+<p class="lead" style="font-size: 20px; max-width: 58ch">{{t.intro}}</p>
+<span class="chip" style="align-self: flex-start; border-color: var(--teal); color: var(--teal)">{{t.status}}</span>
+</div>
+<div class="nside">
+<nav class="nav" aria-label="{{t.pageNav}}" style="display: flex; flex-wrap: wrap; gap: 6px 26px">
+<a class="tlink" href="#nidus-screenshots" style="text-transform: none; letter-spacing: 0; font-size: 17px">{{t.aInterface}}</a><a class="tlink" href="#nidus-architectuur" style="text-transform: none; letter-spacing: 0; font-size: 17px">{{t.aArch}}</a><a class="tlink" href="#nidus-decision-log" style="text-transform: none; letter-spacing: 0; font-size: 17px">{{t.aDec}}</a><a class="tlink" href="#nidus-code" style="text-transform: none; letter-spacing: 0; font-size: 17px">Code</a>
+</nav>
+<span class="hand wr {{sk.intro}} dl3" style="font-size: 26px; transform: rotate(-2deg); transform-origin: left">{{t.noteIntro}}</span>
+</div>
+</div>
+</section>
+
+<!-- ═════ INTERFACE: bestaande NidusMockups-component, 1-op-1 uit de repository ═════ -->
+<section id="nidus-screenshots" data-sk="emb" class="sec" style="flex-shrink: 0; padding-top: 64px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 32px; position: relative">
+<div style="display: flex; flex-direction: column; gap: 14px"><p class="eyebrow">{{t.aInterface}}</p><h2 class="h2">Screenshots</h2></div>
+<div style="position: relative; display: flex; flex-direction: column; align-items: flex-end">
+<span class="hand wr {{sk.emb}} dl2" style="font-size: 27px; transform: rotate(-3deg)">{{t.noteEmbed}}</span>
+<svg class="desk" aria-hidden="true" width="90" height="60" sc-camel-view-box="0 0 90 60" style="overflow: visible; margin-right: 40px"><path class="dr {{sk.emb}} dl3" d="M70 4 C 72 26, 50 46, 14 52" style="stroke: var(--accent); stroke-width: 3"></path><path class="dr {{sk.emb}} dl4" d="M26 42 L12 52 L27 60" style="stroke: var(--accent); stroke-width: 3"></path></svg>
+</div>
+</div>
+<!-- geen filter, schets, parallax of eigen fonts binnen deze houder -->
+<div role="region" aria-label="{{t.slotAria}}" style="position: relative">
+<dc-import name="NidusEmbed" lang="{{lang}}" theme="{{theme}}" w="{{embedW}}" hint-size="100%,860px"></dc-import>
+</div>
+</section>
+
+<!-- ═════ ARCHITECTUUR ═════ -->
+<section id="nidus-architectuur" data-sk="arch" class="sec" style="flex-shrink: 0">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 48px">
+<div style="display: flex; flex-direction: column; gap: 14px"><p class="eyebrow">client / api / data / edge / ai</p><h2 class="h2">{{t.archTitle}}</h2></div>
+<p class="small desk" style="max-width: 44ch">{{t.archLegend}}</p>
+</div>
+<div class="arch">
+<span class="lane" style="grid-column: 1; grid-row: 1; --o: 10">CLIENT</span>
+<span class="lane" style="grid-column: 1; grid-row: 2; --o: 20">API</span>
+<span class="lane" style="grid-column: 1; grid-row: 3; --o: 30">DATA</span>
+<span class="lane" style="grid-column: 1; grid-row: 4; --o: 40">EDGE</span>
+<span class="lane" style="grid-column: 1; grid-row: 5; --o: 50">AI</span>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="8">
+<div class="node pf {{sk.arch}} {{n.cls}}" style="grid-column: {{n.col}}; grid-row: {{n.row}}; --o: {{n.o}}"><b>{{n.name}}</b><span class="tech">{{n.tech}}</span><span class="desc">{{n.desc}}</span></div>
+</sc-for>
+<!-- alleen gevalideerde verbindingen tekenen -->
+<svg class="desk" aria-hidden="true" sc-camel-view-box="0 0 1248 974" sc-camel-preserve-aspect-ratio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 2">
+<path class="dr {{sk.arch}} dl2" d="M555 152 C 548 170, 562 188, 555 204" style="stroke: var(--accent); stroke-width: 3"></path><path class="dr {{sk.arch}} dl3" d="M545 192 L555 205 L566 192" style="stroke: var(--accent); stroke-width: 3"></path>
+<path class="dr {{sk.arch}} dl3" d="M555 358 C 562 376, 548 394, 555 410" style="stroke: var(--accent); stroke-width: 3"></path><path class="dr {{sk.arch}} dl4" d="M545 398 L555 411 L566 398" style="stroke: var(--accent); stroke-width: 3"></path>
+</svg>
+<span class="hand wr {{sk.arch}} dl3 desk" style="position: absolute; left: 574px; top: 160px; font-size: 22px; white-space: nowrap; z-index: 3">{{t.aOnly}}</span>
+<span class="hand wr {{sk.arch}} dl4 desk" style="position: absolute; left: 574px; top: 366px; font-size: 22px; white-space: nowrap; z-index: 3">{{t.aWrite}}</span>
+</div>
+<ul style="list-style: none; margin: 64px 0 0; padding: 0; display: grid; grid-template-columns: repeat({{princCols}}, minmax(0, 1fr)); gap: 24px">
+<li style="border-top: 3px solid var(--ink); padding-top: 14px; font-size: 17px; line-height: 1.55"><span class="hl {{sk.arch}} dl4">{{t.p1a}}</span>{{t.p1b}}</li>
+<li style="border-top: 3px solid var(--ink); padding-top: 14px; font-size: 17px; line-height: 1.55">{{t.p2}}</li>
+<li style="border-top: 3px solid var(--ink); padding-top: 14px; font-size: 17px; line-height: 1.55">{{t.p3}}</li>
+</ul>
+</section>
+
+<!-- ═════ DECISION LOG ═════ -->
+<section id="nidus-decision-log" data-sk="dec" class="sec" style="flex-shrink: 0">
+<div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px"><p class="eyebrow">{{t.decEyebrow}}</p><h2 class="h2">Decision Log</h2></div>
+<sc-for list="{{decisions}}" as="d" hint-placeholder-count="5">
+<article class="dlog" data-sk="{{d.sk}}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<time style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 22px; color: var(--teal)">{{d.date}}</time>
+<sc-if value="{{d.hasStrike}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 2px" aria-label="{{d.strikeAria}}">
+<span style="position: relative; align-self: flex-start; font-weight: 700; font-size: 18px; color: var(--mute)"><span aria-hidden="true">{{d.from}}</span><svg aria-hidden="true" sc-camel-view-box="0 0 200 20" sc-camel-preserve-aspect-ratio="none" style="position: absolute; left: -4px; top: 40%; width: calc(100% + 8px); height: 14px; overflow: visible"><path class="drs {{d.skc}} dl2" d="M2 12 C 50 6, 120 14, 198 5" style="stroke: var(--accent); stroke-width: 3.5"></path></svg></span>
+<span class="hand wr {{d.skc}} dl3" aria-hidden="true" style="font-size: 26px; transform: rotate(-3deg); transform-origin: left">{{d.to}}</span>
+</div>
+</sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<h3 class="h3">{{d.title}}</h3>
+<p class="body" style="max-width: 70ch">{{d.a}}<span class="hl {{d.skc}} dl1">{{d.b}}</span>{{d.c}}</p>
+</div>
+</article>
+</sc-for>
+</section>
+
+<!-- ═════ CODE ═════ -->
+<section id="nidus-code" data-sk="code" class="sec" style="flex-shrink: 0">
+<div class="split" style="align-items: end">
+<div style="display: flex; flex-direction: column; gap: 14px"><p class="eyebrow">{{t.codeEyebrow}}</p><h2 class="h2">Code</h2></div>
+<p class="lead">{{t.codeSoon}}</p>
+</div>
+</section>
+
+<footer class="ftr" style="flex-grow: 1; min-height: 160px; padding: 40px 96px 120px; background: var(--foot); color: var(--footInk); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 24px">
+<span style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 20px">Klaas Vanslambrouck</span>
+<nav class="nav" aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 26px"><a href="#top" style="color: var(--footInk)">{{t.toTop}}</a><a href="/" style="color: var(--footInk)">{{t.home}}</a><a href="/lowi" style="color: var(--footInk)">LOWI</a></nav>
+</footer>
+
+<div style="position: fixed; right: {{jvRight}}px; bottom: {{jvRight}}px; z-index: 40; width: {{jvW}}px; height: 640px; pointer-events: none">
+<dc-import name="Jarvis" lang="{{lang}}" theme="{{theme}}" motion="{{motionProp}}" w="{{jvW}}" pw="{{jvPw}}" h="640" uid="nidus" hint-size="440px,640px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","options":["nl","en"],"default":"nl","section":"Toestand"},"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Toestand"},"motion":{"editor":"enum","options":["full","reduced"],"default":"full","section":"Toestand"},"mobile":{"editor":null,"default":false},"h":{"editor":null,"default":5500},"$preview":{"width":1440,"height":5500}}'>
+class Component extends DCLogic {
+  _motionOK() {
+    if (this.props.motion === 'reduced') return false;
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return false;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    return true;
+  }
+  componentDidMount() {
+    var self = this;
+    this._timers = [];
+    if (!this._motionOK()) return;
+    this._io = new IntersectionObserver(function (entries) {
+      var on = {}; var any = false;
+      entries.forEach(function (e) { if (e.isIntersecting) { on[e.target.getAttribute('data-sk')] = true; any = true; self._io.unobserve(e.target); } });
+      if (any) self._timers.push(setTimeout(function () { self.setState(function (s) { return { on: Object.assign({}, (s && s.on) || {}, on) }; }); }, 80));
+    }, { threshold: 0.18 });
+    Array.prototype.slice.call(document.querySelectorAll('.pg [data-sk]')).forEach(function (el) { self._io.observe(el); });
+  }
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+    (this._timers || []).forEach(function (t) { clearTimeout(t); });
+  }
+  renderVals() {
+    var self = this;
+    var p = this.props || {};
+    var s = this.state || {};
+    var lang = s.lang || p.lang || 'nl';
+    var theme = s.theme || p.theme || 'light';
+    var mobile = !!p.mobile;
+    var motion = this._motionOK();
+    var on = s.on || {};
+    var sk = {};
+    ['intro', 'arch', 'dec', 'd1', 'd2', 'd3', 'd4', 'd5', 'emb', 'code'].forEach(function (id) { sk[id] = (!motion || on[id]) ? 'sk-on' : 'sk-wait'; });
+    var NL = {
+      navLabel: 'Hoofdnavigatie', langLabel: 'Taal', themeLabel: 'Thema', light: 'Licht', dark: 'Donker', home: 'Home', work: 'Werk', pageNav: 'Op deze pagina',
+      eyebrowA: 'Het zenuwcentrum', eyebrowB: ' van het LOWI-platform',
+      intro: 'Deze pagina wordt een diepere blik op Nidus: architectuur, beslissingen en code. Inhoud volgt binnenkort.',
+      status: 'In productie · persoonlijk gebruik', aInterface: 'Interface', aArch: 'Architectuur', aDec: 'Beslissingen', noteIntro: 'eerst de keuzes, dan de schermen',
+      archTitle: 'Architectuur', archLegend: 'Getekende pijlen tonen alleen verbindingen die in de bestaande tekst bevestigd zijn.',
+      aOnly: 'uitsluitend via nidus-api', aWrite: 'enige schrijftoegang',
+      p1a: 'nidus-mobile roept nooit rechtstreeks Supabase aan', p1b: ' — alles loopt via nidus-api.', p2: 'Elke tabel heeft created_at/updated_at en RLS staat altijd aan.', p3: 'Compute is wegwerpbaar (Railway, Pi), persistentie zit uitsluitend in Supabase.',
+      decEyebrow: 'Beslissingen', noteEmbed: 'de echte interface, met verzonnen data',
+      slotAria: 'Plaats voor de bestaande interactieve Nidus-embed', slotStamp: 'Bestaande interactieve embed — exact hergebruiken',
+      mobile: 'Mobiel', today: 'Vandaag', energy: 'Energie', slotNoteLabel: 'Bestaande notitie in de component — ongewijzigd',
+      fictional: 'Dit is een nagebouwde reconstructie van de echte interface met verzonnen data — geen live screenshot, om privacyredenen (het draait écht op gezinsdata).',
+      slotRules: 'Geen filter, schetslijn, parallax, nieuwe fonts of kleurcorrectie binnen dit kader. Afmetingen volgen de component; het kader snijdt niets af.',
+      codeEyebrow: 'Binnenkort', codeSoon: 'Binnenkort beschikbaar.', toTop: 'Naar boven'
+    };
+    var EN = {
+      navLabel: 'Main navigation', langLabel: 'Language', themeLabel: 'Theme', light: 'Light', dark: 'Dark', home: 'Home', work: 'Work', pageNav: 'On this page',
+      eyebrowA: 'The nerve centre', eyebrowB: ' of the LOWI platform',
+      intro: 'This page will become a deeper look at Nidus: architecture, decisions and code. Content is coming soon.',
+      status: 'In production · personal use', aInterface: 'Interface', aArch: 'Architecture', aDec: 'Decisions', noteIntro: 'the choices first, then the screens',
+      archTitle: 'Architecture', archLegend: 'Drawn arrows only show connections confirmed in the existing copy.',
+      aOnly: 'exclusively via nidus-api', aWrite: 'only write access',
+      p1a: 'nidus-mobile never calls Supabase directly', p1b: ' — everything goes through nidus-api.', p2: 'Every table has created_at/updated_at and RLS is always on.', p3: 'Compute is disposable (Railway, Pi); persistence lives exclusively in Supabase.',
+      decEyebrow: 'Decisions', noteEmbed: 'the real interface, with made-up data',
+      slotAria: 'Slot for the existing interactive Nidus embed', slotStamp: 'Existing interactive embed — reuse exactly',
+      mobile: 'Mobile', today: 'Today', energy: 'Energy', slotNoteLabel: 'Existing note inside the component — unchanged',
+      fictional: 'This is a rebuilt reconstruction of the real interface with fictional data — not a live screenshot, for privacy reasons (it runs on real household data).',
+      slotRules: 'No filter, sketch line, parallax, new fonts or colour correction inside this frame. Size follows the component; the frame crops nothing.',
+      codeEyebrow: 'Coming soon', codeSoon: 'Coming soon.', toTop: 'Back to top'
+    };
+    var t = lang === 'en' ? EN : NL;
+    var N = lang === 'en' ? [
+      ['nidus', 'Next.js · Vercel', 'Web dashboard: overview and control of the whole platform in the browser.', 2, 1, ''],
+      ['nidus-mobile', 'Expo / React Native · iOS', 'Mobile app for on the go, talks exclusively to nidus-api.', 3, 1, 'key'],
+      ['nidus-api', 'Fastify 5 / TypeScript · Railway · Frankfurt', 'Central business logic; the only component with write access to Supabase.', 3, 2, 'key'],
+      ['Supabase', 'PostgreSQL · Frankfurt', 'Central storage with row-level security and auth.', 3, 3, 'key'],
+      ['nidus-ml', 'FastAPI / Python · Railway', 'ML inference as a separate service alongside storage.', 4, 3, ''],
+      ['Databricks', 'Community Edition · Cloud', 'Batch ML training and data pipelines.', 5, 3, ''],
+      ['nidus-pi', 'Raspberry Pi · Thuisnetwerk', 'PM2 cron jobs for energy, location and sync.', 2, 4, ''],
+      ['Claude Haiku', 'LLM · Anthropic API', 'Reasoning and generation for Jarvis.', 4, 5, '']
+    ] : [
+      ['nidus', 'Next.js · Vercel', 'Webdashboard: overzicht en bediening van het hele platform in de browser.', 2, 1, ''],
+      ['nidus-mobile', 'Expo / React Native · iOS', 'Mobiele app voor onderweg, praat uitsluitend met nidus-api.', 3, 1, 'key'],
+      ['nidus-api', 'Fastify 5 / TypeScript · Railway · Frankfurt', 'Centrale businesslogica; het enige component met schrijftoegang tot Supabase.', 3, 2, 'key'],
+      ['Supabase', 'PostgreSQL · Frankfurt', 'Centrale opslag met row-level security en auth.', 3, 3, 'key'],
+      ['nidus-ml', 'FastAPI / Python · Railway', 'ML-inferentie als aparte service naast de opslag.', 4, 3, ''],
+      ['Databricks', 'Community Edition · Cloud', 'Batch ML-training en datapipelines.', 5, 3, ''],
+      ['nidus-pi', 'Raspberry Pi · Thuisnetwerk', 'PM2 cron jobs voor energie, locatie en sync.', 2, 4, ''],
+      ['Claude Haiku', 'LLM · Anthropic API', 'Redenering en generatie voor Jarvis.', 4, 5, '']
+    ];
+    var nodes = N.map(function (n) { return { name: n[0], tech: n[1], desc: n[2], col: n[3], row: n[4], cls: n[5], o: n[4] * 10 + n[3] }; });
+    var D = lang === 'en' ? [
+      ['2026-06-30', 'Knowing when to stop: VLamax without blood lactate', 'No published formula exists for VLamax based on power or speed alone — confirmed by two independent literature reviews. Rather than continuing to chase a more precise approach, I used a pragmatic proxy (peak 3-second power × a constant, ~21% error margin) and explicitly labelled it ‘indicative’ in the interface. Sometimes the right technical decision isn’t solving the problem, but ', 'admitting the available data won’t support more precision', ' — and communicating that honestly to the user.', null],
+      ['2026-06-30', 'A peer-reviewed formula beats reverse-engineering from data', 'The first version of the VO2max model reverse-engineered a constant from five test results, with an error margin over 20%. Switching to a published, speed-based formula (Ji et al., 2021) and calibrating only the individual constant brought that down to 4.71%. Lesson: ', 'a validated formula shape with one calibrated parameter beats a fully self-derived model', '.', null],
+      ['2026-07-08', 'Custom SVG instead of forcing a chart library', 'Training blocks needed to be draggable at second-level precision, with power and heart-rate curves underneath. The existing chart library (Recharts) is used elsewhere in the app but isn’t built for precise pointer interaction. Rather than forcing that library, I built a focused custom SVG component with its own pointer events — ', 'less reusable, but robust for exactly this problem', '.', ['Recharts', 'custom SVG']],
+      ['2026-07-08', 'Power curve as JSONB, not a separate table', 'When someone drags a training-block boundary, power and heart-rate averages need local recalculation without re-calling the ML model — which means the full curve has to stay available. Instead of a separate table with thousands of rows per session, I stored it as a JSONB column on the session table itself: ', 'the data logically belongs to that one session and is never queried on its own', '.', null],
+      ['2026-07-08', 'Conversation memory in the browser, not the database', 'For this portfolio’s AI assistant I had to choose: store conversation history server-side like the assistant in Nidus itself does, or keep it client-side and resend it with every question. For a short, anonymous portfolio visit, the benefit of server-side storage doesn’t outweigh the cost: a new database table, a retention policy, and extra privacy surface for unknown visitors. ', 'Same technology, a deliberately different architecture for a different context.', '', ['database', 'browser']]
+    ] : [
+      ['2026-06-30', 'Wanneer stoppen met zoeken: VLamax zonder bloedlactaat', 'Voor VLamax bestaat geen gepubliceerde formule op basis van enkel vermogen of snelheid — bevestigd door twee onafhankelijke literatuuronderzoeken. In plaats van te blijven zoeken naar een preciezere aanpak, koos ik voor een pragmatische proxy (piekvermogen over 3 seconden × een constante, foutmarge ~21%) en markeerde die expliciet als ‘indicatief’ in de interface. Soms is de juiste technische beslissing niet het probleem oplossen, maar ', 'toegeven dat het met de beschikbare data niet preciezer kan', ' — en dat eerlijk communiceren naar de gebruiker.', null],
+      ['2026-06-30', 'Een peer-reviewed formule verslaat eigen terugrekening', 'De eerste versie van het VO2max-model rekende een constante terug uit vijf testresultaten, met een foutmarge van meer dan 20%. Door over te stappen op een gepubliceerde, snelheidsgebaseerde formule (Ji et al., 2021) en enkel de individuele constante te kalibreren, daalde die foutmarge naar 4,71%. Les: ', 'een gevalideerde formulevorm met één gekalibreerde parameter is betrouwbaarder dan een volledig zelf teruggerekend model', '.', null],
+      ['2026-07-08', 'Custom SVG in plaats van een chart-library forceren', 'Trainingsblokken moesten sleepbaar zijn op seconde-niveau, met vermogen- en hartslagcurves eronder. De bestaande grafiekbibliotheek (Recharts) wordt elders in de app gebruikt, maar is niet gebouwd voor precieze pointer-interactie. In plaats van die bibliotheek te forceren, koos ik voor een gerichte custom SVG-component met eigen pointer-events — ', 'minder herbruikbaar, maar robuust voor exact dit probleem', '.', ['Recharts', 'custom SVG']],
+      ['2026-07-08', 'Power curve als JSONB, niet als aparte tabel', 'Wanneer iemand een trainingsblokgrens verschuift, moeten vermogen- en hartslaggemiddeldes lokaal herberekend worden zonder het ML-model opnieuw aan te roepen — dat vereist dat de volledige curve beschikbaar blijft. In plaats van een aparte tabel met duizenden rijen per sessie, koos ik voor een JSONB-kolom op de sessietabel zelf: ', 'de data hoort logisch bij die ene sessie en wordt nooit los bevraagd', '.', null],
+      ['2026-07-08', 'Gespreksgeheugen in de browser, niet de database', 'Voor de AI-assistent op deze portfolio moest ik kiezen: gespreksgeschiedenis serverside opslaan zoals de assistent in Nidus zelf doet, of clientside bijhouden en meesturen bij elke vraag. Voor een kort, anoniem portfoliobezoek weegt het voordeel van serverside opslag niet op tegen de kost: een nieuwe databasetabel, een retentiebeleid, en extra privacy-oppervlak voor onbekende bezoekers. ', 'Dezelfde technologie, een bewust andere architectuurkeuze voor een andere context.', '', ['database', 'browser']]
+    ];
+    var decisions = D.map(function (d, i) {
+      var id = 'd' + (i + 1);
+      return { date: d[0], title: d[1], a: d[2], b: d[3], c: d[4], sk: id, skc: sk[id], hasStrike: !!d[5],
+        from: d[5] ? d[5][0] : '', to: d[5] ? '→ ' + d[5][1] : '', strikeAria: d[5] ? (lang === 'en' ? 'Rejected: ' : 'Verworpen: ') + d[5][0] + ' · ' + (lang === 'en' ? 'chosen: ' : 'gekozen: ') + d[5][1] : '' };
+    });
+    var set = function (k, v) { return function () { var o = {}; o[k] = v; self.setState(o); }; };
+    var cls = [];
+    if (theme === 'dark') cls.push('is-dark');
+    if (!motion) cls.push('is-rm');
+    return {
+      rootClass: cls.join(' '), h: p.h || 5500, t: t, sk: sk, lang: lang, theme: theme, motionProp: motion ? 'full' : 'reduced',
+      pr: { nl: lang === 'nl' ? 'true' : 'false', en: lang === 'en' ? 'true' : 'false', light: theme === 'light' ? 'true' : 'false', dark: theme === 'dark' ? 'true' : 'false' },
+      setNl: set('lang', 'nl'), setEn: set('lang', 'en'), setLight: set('theme', 'light'), setDark: set('theme', 'dark'),
+      nodes: nodes, decisions: decisions, princCols: mobile ? 1 : 3,
+      h1Fs: mobile ? 72 : 140, subFs: mobile ? 24 : 36, embedW: mobile ? 350 : 1248,
+      jvW: mobile ? 360 : 440, jvPw: mobile ? 340 : 400, jvRight: mobile ? 12 : 28
+    };
+  }
+}
+</script>
+</body>
+</html>

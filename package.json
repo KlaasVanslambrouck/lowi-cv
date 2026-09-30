@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "indexnow": "tsx --env-file-if-exists=.env.local scripts/indexnow.ts"
+    "indexnow": "tsx --env-file-if-exists=.env.local scripts/indexnow.ts",
+    "screenshots": "tsx scripts/screenshots.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -30,6 +31,7 @@
     "@types/three": "^0.185.0",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.10",
+    "playwright": "^1.63.0",
     "three-stdlib": "^2.36.1",
     "tsx": "^4.23.15",
     "typescript": "^5.9.0",

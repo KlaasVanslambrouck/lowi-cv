@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Homepage – klaasvanslambrouck.dev</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Caveat:wght@600;700&amp;family=Karla:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap">
+<style>
+body{margin:0}
+/* ── tokens: alleen binnen .pg, nooit op embeds ── */
+.pg{--paper:#F4ECDA;--card:#FAF4E6;--ink:#1D3F4E;--ink2:#33505C;--mute:#4A6570;--teal:#256F7B;--accent:#C9461F;--marker:#F0B233;--hlc:240,178,51;--rule:#CDBB94;--dot:rgba(29,63,78,.13);--grid:rgba(37,111,123,.16);--btnInk:#FFFFFF;--foot:#1D3F4E;--footInk:#F4ECDA;
+container-type:inline-size;box-sizing:border-box;background-color:var(--paper);background-image:radial-gradient(var(--dot) 1.3px,transparent 1.7px);background-size:26px 26px;color:var(--ink);font-family:Karla,'Trebuchet MS',sans-serif;display:flex;flex-direction:column;position:relative;overflow:clip}
+.pg.is-dark{--paper:#102D38;--card:#153846;--ink:#F4ECDA;--ink2:#D6DDD8;--mute:#A9BCBF;--teal:#80BCC0;--accent:#EF936C;--marker:#D6A94D;--hlc:214,169,77;--rule:#35596A;--dot:rgba(244,236,218,.08);--grid:rgba(128,188,192,.13);--btnInk:#102D38;--foot:#0A222C;--footInk:#F4ECDA}
+.pg.is-xray{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.pg *{box-sizing:border-box}
+.pg a{color:var(--ink)}
+.pg a:hover{color:var(--accent)}
+.pg :focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:4px}
+/* typografie */
+.h1{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:104px;line-height:.96;letter-spacing:-1px;margin:0}
+.h2{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:56px;line-height:1.04;margin:0}
+.h3{font-weight:700;font-size:24px;line-height:1.25;margin:0}
+.eyebrow{font-weight:700;font-size:13px;letter-spacing:2.6px;text-transform:uppercase;color:var(--teal);margin:0}
+.lead{font-size:26px;line-height:1.45;color:var(--ink2);margin:0}
+.body{font-size:18px;line-height:1.62;color:var(--ink2);margin:0}
+.small{font-size:15px;line-height:1.5;color:var(--mute);margin:0}
+.hand{font-family:Caveat,cursive;font-weight:700;color:var(--accent)}
+.mono{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+/* layout */
+.sec{position:relative;padding:112px 96px;border-top:2px dashed var(--rule)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:64px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:72px}
+/* componenten */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 26px;background:var(--accent);color:var(--btnInk)!important;font-weight:700;font-size:15px;letter-spacing:1.6px;text-transform:uppercase;text-decoration:none;border:0;border-radius:6px;box-shadow:4px 4px 0 var(--ink);cursor:pointer;transition:translate .15s,box-shadow .15s}
+.btn:hover{translate:-1px -1px;box-shadow:6px 6px 0 var(--ink)}
+.btn:active{translate:2px 2px;box-shadow:1px 1px 0 var(--ink)}
+.btn2{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;border:2px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);font-weight:700;font-size:15px;letter-spacing:1.6px;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.btn2:hover{background:var(--ink);color:var(--paper)!important}
+.tlink{font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
+.chip{display:inline-flex;align-items:center;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;border:1.5px solid var(--ink);padding:6px 11px;border-radius:999px;color:var(--ink)}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:10px;box-shadow:8px 8px 0 var(--teal);padding:34px;position:relative}
+.jask{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 14px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);font-family:Karla,sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+.jask:hover,.jask[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.jask i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:block}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{min-height:40px;min-width:44px;padding:0 12px;border:0;background:transparent;color:var(--ink);font-family:Karla,sans-serif;font-weight:700;font-size:12px;letter-spacing:1.8px;text-transform:uppercase;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.nav a{font-weight:700;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.nav a[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:8px}
+.mnote{position:absolute;left:var(--x);top:var(--y);transform:rotate(var(--r,-4deg));white-space:nowrap}
+.tree{font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre;margin:0}
+.code{background:#0F2A34;color:#E7EFE9;border-radius:8px;padding:16px 18px;font-size:13px;line-height:1.55;white-space:pre;overflow:auto;margin:0}
+.xr{display:none}
+.is-xray .xr{display:block}
+.is-xray .xrbox{outline:1.5px dashed var(--teal);outline-offset:10px}
+.is-xray .xr-dim{opacity:.62}
+.mob{display:none}
+.heroGrid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:56px;align-items:center}
+.duo>article+article{border-left:1.5px solid var(--rule);padding-left:64px}
+/* ── schetsaccenten (uit de quiz-HTML, getimed volgens de scrollspecificatie) ── */
+.dr,.drl,.drs{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.dr{stroke-dasharray:700;stroke-dashoffset:0;transition:stroke-dashoffset .7s cubic-bezier(.65,0,.35,1)}
+.dr.sk-wait{stroke-dashoffset:700;transition:none}
+.drs{stroke-dasharray:700;stroke-dashoffset:0;transition:stroke-dashoffset .38s cubic-bezier(.5,0,.5,1)}
+.drs.sk-wait{stroke-dashoffset:700;transition:none}
+.drl{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 2.4s cubic-bezier(.55,0,.35,1)}
+.drl.sk-wait{stroke-dashoffset:1;transition:none}
+.hl{background-image:linear-gradient(100deg,rgba(var(--hlc),0) 0,rgba(var(--hlc),.78) 3%,rgba(var(--hlc),.62) 95%,rgba(var(--hlc),0) 100%);background-repeat:no-repeat;background-position:0 80%;background-size:100% 46%;padding:0 4px;margin:0 -4px;transition:background-size .55s cubic-bezier(.65,0,.35,1)}
+.hl.sk-wait{background-size:0% 46%;transition:none}
+.wr{clip-path:inset(-20% -6% -20% -6%);transition:clip-path .65s cubic-bezier(.5,0,.5,1)}
+.wr.sk-wait{clip-path:inset(-20% 100% -20% -6%);transition:none}
+.st{opacity:1;scale:1;rotate:0deg;transition:opacity .3s ease,scale .45s cubic-bezier(.2,.8,.3,1),rotate .45s cubic-bezier(.2,.8,.3,1)}
+.st.sk-wait{opacity:0;scale:1.25;rotate:-6deg;transition:none}
+.pf{opacity:1;translate:0 0;transition:opacity .7s ease,translate .7s cubic-bezier(.2,.8,.3,1)}
+.pf.sk-wait{opacity:0;translate:0 24px;transition:none}
+.dl1{transition-delay:.15s}.dl2{transition-delay:.5s}.dl3{transition-delay:.85s}.dl4{transition-delay:1.2s}.dl5{transition-delay:1.55s}.dl6{transition-delay:1.9s}
+.dlc{transition-delay:.62s}
+.is-rm .dr,.is-rm .drl,.is-rm .drs,.is-rm .hl,.is-rm .wr,.is-rm .st,.is-rm .pf{transition:none}
+@media (prefers-reduced-motion: reduce){.dr,.drl,.drs,.hl,.wr,.st,.pf{transition:none}}
+/* ── mobiel: containerquery op de pagina ── */
+@container (max-width: 760px){
+.sec{padding:72px 20px}
+.h1{font-size:52px}.h2{font-size:36px}.lead{font-size:20px}.body{font-size:17px}
+.g2,.g3,.split,.heroGrid{grid-template-columns:minmax(0,1fr);gap:36px}
+.duo>article+article{border-left:0;padding-left:0;border-top:1.5px solid var(--rule);padding-top:32px}
+.mnote{position:static;display:block;transform:rotate(-2deg);white-space:normal;margin:10px 0 0}
+.desk{display:none!important}
+.mob{display:flex}
+.card{padding:24px;box-shadow:6px 6px 0 var(--teal)}
+.hdr{padding:0 20px!important}
+.ftr{padding:32px 20px 120px!important}
+}
+</style>
+</helmet>
+<div id="top" class="pg {{rootClass}}" style="width: 100%; min-width: 320px; height: {{h}}px">
+
+<!-- ═════ HEADER ═════ -->
+<header class="hdr" style="position: sticky; top: 0; z-index: 20; height: 76px; flex-shrink: 0; padding: 0 56px; display: flex; align-items: center; justify-content: space-between; gap: 24px; background: var(--paper); border-bottom: 2px dashed var(--rule)">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg width="38" height="38" sc-camel-view-box="0 0 38 38" aria-hidden="true" style="fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M19 3 C 29 3, 35 10, 35 19 C 35 29, 28 35, 19 35 C 9 35, 3 28, 3 19 C 3 10, 10 4, 20 3"></path><path d="M12 11 L12 27 M12 19 L22 11 M16 16 L23 27" style="stroke: var(--accent)"></path></svg>
+<span style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 19px; line-height: 1">Klaas Vanslambrouck</span>
+</a>
+<nav class="nav desk" aria-label="{{t.navLabel}}" style="display: flex; align-items: center; gap: 30px">
+<a href="#projects">{{t.nav.work}}</a><a href="/lowi">LOWI</a><a href="/nidus">Nidus</a><a href="#contact">{{t.nav.contact}}</a>
+</nav>
+<div class="desk" style="display: flex; align-items: center; gap: 10px">
+<div class="seg" role="group" aria-label="{{t.langLabel}}"><button type="button" aria-pressed="{{p.nl}}" onClick="{{setNl}}">NL</button><button type="button" aria-pressed="{{p.en}}" onClick="{{setEn}}">EN</button></div>
+<div class="seg" role="group" aria-label="{{t.themeLabel}}"><button type="button" aria-pressed="{{p.light}}" onClick="{{setLight}}">{{t.light}}</button><button type="button" aria-pressed="{{p.dark}}" onClick="{{setDark}}">{{t.dark}}</button></div>
+</div>
+<button type="button" class="mob btn2" aria-expanded="{{menuStr}}" aria-controls="menu-m" onClick="{{toggleMenu}}" style="min-height: 44px; padding: 0 14px">{{menuLabel}}</button>
+</header>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
+<div id="menu-m" class="mob" style="position: sticky; top: 76px; z-index: 19; flex-direction: column; gap: 18px; padding: 20px; background: var(--card); border-bottom: 2px solid var(--ink)">
+<nav class="nav" aria-label="{{t.navLabel}}" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px">
+<a href="#projects" onClick="{{closeMenu}}">{{t.nav.work}}</a><a href="/lowi">LOWI</a><a href="/nidus">Nidus</a><a href="#contact" onClick="{{closeMenu}}">{{t.nav.contact}}</a><a href="#wie" onClick="{{closeMenu}}">{{t.nav.wie}}</a><a href="#ervaring" onClick="{{closeMenu}}">{{t.nav.exp}}</a>
+</nav>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<div class="seg" role="group" aria-label="{{t.langLabel}}"><button type="button" aria-pressed="{{p.nl}}" onClick="{{setNl}}">NL</button><button type="button" aria-pressed="{{p.en}}" onClick="{{setEn}}">EN</button></div>
+<div class="seg" role="group" aria-label="{{t.themeLabel}}"><button type="button" aria-pressed="{{p.light}}" onClick="{{setLight}}">{{t.light}}</button><button type="button" aria-pressed="{{p.dark}}" onClick="{{setDark}}">{{t.dark}}</button></div>
+<div class="seg" role="group" aria-label="{{t.xrayLabel}}"><button type="button" aria-pressed="{{p.normal}}" onClick="{{setNormal}}">{{t.normal}}</button><button type="button" aria-pressed="{{p.xray}}" onClick="{{setXray}}">X-ray</button></div>
+</div>
+</div>
+</sc-if>
+
+<!-- Normaal / X-ray: klein, rechts onder de header (beeld 08), onafhankelijk van thema -->
+<div class="desk" style="flex-shrink: 0; display: flex; justify-content: flex-end; padding: 12px 56px 0">
+<div class="seg" role="group" aria-label="{{t.xrayLabel}}"><button type="button" aria-pressed="{{p.normal}}" onClick="{{setNormal}}">{{t.normal}}</button><button type="button" aria-pressed="{{p.xray}}" onClick="{{setXray}}">X-ray</button></div>
+</div>
+
+<!-- X-ray: stapelstrook met individuele lagen (bestaande labels) -->
+<div class="xr" style="flex-shrink: 0; padding: 14px 56px; border-bottom: 1.5px dashed var(--teal); background: var(--card)">
+<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+<span class="eyebrow">{{t.stack}}</span>
+<sc-for list="{{stackChips}}" as="c" hint-placeholder-count="7"><span class="chip mono" style="text-transform: none; letter-spacing: 0.5px; border-style: dashed; border-color: var(--teal); color: var(--teal)">{{c}}</span></sc-for>
+<span class="hand" style="font-size: 22px; margin-left: 8px">{{t.xrayNote}}</span>
+</div>
+</div>
+
+<!-- ═════ HERO (hiërarchie volgens beeld 08) ═════ -->
+<section data-sk="hero" style="flex-shrink: 0; border-top: 0; padding-top: 56px" class="sec" aria-labelledby="h-name">
+<div class="heroGrid">
+<div style="display: flex; flex-direction: column; gap: 26px; position: relative; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px">
+<p class="eyebrow">{{t.role1}}</p>
+<p style="margin: 0; font-weight: 700; font-size: 16px; color: var(--ink2)">{{t.role2}}</p>
+</div>
+<h1 id="h-name" class="h1" style="font-size: {{nameFs}}px">Klaas<br>Vanslambrouck</h1>
+<p class="lead" style="font-size: {{leadFs}}px; color: var(--ink); max-width: 30ch">{{t.lead1a}}<span class="hl {{sk.hero}} dl2">{{t.lead1b}}</span>{{t.lead1c}}</p>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; position: relative">
+<a class="btn" href="/nidus">{{t.ctaNidus}}<svg width="18" height="14" sc-camel-view-box="0 0 18 14" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M2 7 H15 M10 2 L15 7 L10 12"></path></svg></a>
+<a class="tlink" href="#wie" style="font-size: 17px">{{t.aboutShort}}</a>
+<div class="st {{sk.hero}} dl4" style="border: 3px double var(--teal); color: var(--teal); padding: 7px 14px; font-weight: 700; font-size: 12.5px; letter-spacing: 2px; text-transform: uppercase; rotate: 3deg; background: var(--paper)">{{t.status}}</div>
+</div>
+<p class="body" style="max-width: 62ch">{{t.lead2}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px"><span class="chip">Systems thinking</span><span class="chip">Business analysis</span><span class="chip">AI-enabled products</span></div>
+</div>
+<!-- systeemschets: interfaces ⇄ API ⇄ data (Nidus, uit bestaande architectuurtekst) -->
+<figure class="pf {{sk.hero}} dl2" style="margin: 0; display: flex; flex-direction: column; gap: 14px; position: relative; align-self: center">
+<svg sc-camel-view-box="0 0 560 190" role="img" aria-label="{{t.diagAria}}" style="width: 100%; height: auto; overflow: visible">
+<g style="fill: var(--card); stroke: var(--ink); stroke-width: 2.2">
+<path d="M88 44 C 126 42, 158 74, 156 112 C 154 150, 124 180, 86 178 C 48 176, 20 146, 22 108 C 24 70, 52 46, 90 44"></path>
+<path d="M280 42 C 318 44, 348 74, 346 112 C 344 150, 314 180, 278 178 C 240 176, 212 148, 214 110 C 216 72, 244 42, 282 42"></path>
+<path d="M472 44 C 510 46, 538 76, 536 114 C 534 150, 504 180, 468 178 C 430 176, 402 146, 404 108 C 406 70, 436 44, 474 44"></path>
+</g>
+<g style="fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round">
+<rect x="56" y="88" width="46" height="32" rx="3"></rect><path d="M48 126 H110"></path><rect x="108" y="96" width="18" height="30" rx="3"></rect>
+<rect x="252" y="80" width="56" height="16" rx="3"></rect><rect x="252" y="102" width="56" height="16" rx="3"></rect><rect x="252" y="124" width="56" height="16" rx="3"></rect><path d="M262 88 H266 M262 110 H266 M262 132 H266"></path>
+<ellipse cx="470" cy="84" rx="30" ry="9"></ellipse><path d="M440 84 V136 C 440 142, 500 142, 500 136 V84 M440 101 C 440 107, 500 107, 500 101 M440 118 C 440 124, 500 124, 500 118"></path>
+</g>
+<g style="fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round">
+<path class="dr {{sk.hero}} dl3" d="M166 100 C 180 96, 194 98, 204 100"></path><path class="dr {{sk.hero}} dl3" d="M196 93 L205 100 L196 107"></path>
+<path class="dr {{sk.hero}} dl3" d="M204 122 C 190 124, 178 122, 166 122"></path><path class="dr {{sk.hero}} dl3" d="M174 115 L165 122 L174 129"></path>
+<path class="dr {{sk.hero}} dl4" d="M356 100 C 370 96, 384 98, 394 100"></path><path class="dr {{sk.hero}} dl4" d="M386 93 L395 100 L386 107"></path>
+<path class="dr {{sk.hero}} dl4" d="M394 122 C 380 124, 368 122, 356 122"></path><path class="dr {{sk.hero}} dl4" d="M364 115 L355 122 L364 129"></path>
+</g>
+</svg>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: -14px; text-align: center; font-weight: 700; font-size: {{diagFs}}px; color: var(--ink)"><span>{{diag.a}}</span><span>{{diag.b}}</span><span>{{diag.c}}</span></div>
+<figcaption class="hand wr {{sk.hero}} dl5" style="font-size: 25px; transform: rotate(-2deg); align-self: center">{{t.diagNote}}</figcaption>
+</figure>
+</div>
+</section>
+
+<!-- ═════ WERK IN TWEE LUIKEN: Nidus | LOWI (beeld 08) ═════ -->
+<section data-sk="duo" class="sec" style="flex-shrink: 0; padding-top: 72px; padding-bottom: 72px">
+<div class="g2 duo">
+<article style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="h2" style="font-size: {{duoFs}}px">Nidus</h2>
+<p class="body" style="font-size: 19px; max-width: 36ch">{{t.nidusTag}}</p>
+<a class="tlink" href="/nidus" style="align-self: flex-start; font-size: 17px">{{t.nidusCta}} →</a>
+</article>
+<article style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="h2" style="font-size: {{duoFs}}px">LOWI</h2>
+<p class="body" style="font-size: 19px; max-width: 36ch">Lab of Wonder and Imagination</p>
+<a class="tlink" href="/lowi" style="align-self: flex-start; font-size: 17px">{{t.lowiCell}}</a>
+</article>
+</div>
+</section>
+
+<!-- ═════ WIE IK BEN ═════ -->
+<section id="wie" data-sk="about" class="sec" style="flex-shrink: 0">
+<div class="split">
+<div style="display: flex; flex-direction: column; gap: 14px; position: relative">
+<p class="eyebrow">01</p>
+<h2 class="h2">{{t.aboutTitle}}</h2>
+</div>
+<div style="display: flex; flex-direction: column; gap: 26px; position: relative">
+<p class="body" style="font-size: 21px; line-height: 1.6">{{t.about1}}<span class="hl {{sk.about}} dl2">{{t.about2}}</span>{{t.about3}}</p>
+<a class="tlink" href="/nidus" style="align-self: flex-start; font-size: 17px">{{t.aboutLink}} →</a>
+</div>
+</div>
+</section>
+
+<!-- ═════ ERVARING ═════ -->
+<section id="ervaring" data-sk="exp" class="sec" style="flex-shrink: 0">
+<div class="split">
+<div style="display: flex; flex-direction: column; gap: 14px; position: relative">
+<p class="eyebrow">02 · {{t.expTitle}}</p>
+<h2 class="h2">{{t.expHead}}</h2>
+<p style="margin: 6px 0 0; font-size: 19px; color: var(--ink2)">{{t.expRoute}}</p>
+<p class="hand wr {{sk.exp}} dl2" style="margin: 10px 0 0; font-size: 28px; transform: rotate(-3deg); transform-origin: left">{{t.noteExp}}</p>
+</div>
+<div style="position: relative; padding-left: 48px">
+<svg aria-hidden="true" sc-camel-view-box="0 0 20 1000" sc-camel-preserve-aspect-ratio="none" style="position: absolute; left: 6px; top: 14px; width: 20px; height: calc(100% - 40px); overflow: visible"><path class="drl {{sk.exp}} dl1" sc-camel-path-length="1" d="M10 0 C 16 120, 4 240, 10 360 S 16 600, 10 720 S 6 900, 10 1000" style="stroke: var(--teal); stroke-width: 2.5"></path></svg>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 46px">
+<sc-for list="{{exp}}" as="e" hint-placeholder-count="7">
+<li style="position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px">
+<span aria-hidden="true" style="position: absolute; left: -49px; top: 6px; width: 18px; height: 18px; border-radius: 50%; background: {{e.dot}}; border: 2.5px solid var(--ink)"></span>
+<p class="eyebrow" style="color: var(--mute)">{{e.when}}</p>
+<h3 class="h3">{{e.role}}</h3>
+<p style="margin: 0; font-weight: 700; font-size: 16px; color: var(--teal)">{{e.org}}</p>
+<p class="body" style="max-width: 62ch">{{e.desc}}</p>
+<sc-if value="{{e.jarvis}}" hint-placeholder-val="{{ false }}"><button type="button" class="jask" aria-pressed="{{e.pressed}}" onClick="{{e.ask}}" style="align-self: flex-start; justify-self: start; margin-top: 4px"><i></i>{{t.askJarvis}}</button></sc-if>
+<sc-if value="{{e.next}}" hint-placeholder-val="{{ false }}"><span class="hand" style="font-size: 24px; transform: rotate(-2deg); transform-origin: left">{{t.noteNext}}</span></sc-if>
+</li>
+</sc-for>
+</ol>
+</div>
+</div>
+</section>
+
+<!-- ═════ LOWI — MIJN PLATFORM ═════ -->
+<section id="lowi" data-sk="lowi" class="sec" style="flex-shrink: 0">
+<div class="split" style="align-items: start">
+<div style="display: flex; flex-direction: column; gap: 22px; position: relative">
+<p class="eyebrow">03</p>
+<h2 class="h2">{{t.lowiTitle}}</h2>
+<div style="position: relative; align-self: flex-start">
+<dc-import name="Cel" phase="overzicht" theme="{{theme}}" lang="{{lang}}" motion="{{motionProp}}" size="{{cellSize}}" uid="home" show-labels="{{ false }}" show-caption="{{ false }}" hint-size="300px,300px"></dc-import>
+</div>
+<a class="tlink" href="/lowi" style="align-self: flex-start; font-size: 17px">{{t.lowiCell}}</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 26px">
+<p class="body" style="font-size: 20px">{{t.lowiText}}</p>
+<button type="button" class="jask" aria-pressed="{{xpOn.lowi}}" onClick="{{askLowi}}" style="align-self: flex-start"><i></i>{{t.askJarvis}}</button>
+<!-- redactioneel accent: denkstap (conceptcopy) -->
+<div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 18px" aria-label="{{t.strikeAria}}">
+<span style="position: relative; font-family: 'Alfa Slab One', Georgia, serif; font-size: 30px; color: var(--mute)"><span aria-hidden="true">{{t.strikeFrom}}</span><svg aria-hidden="true" sc-camel-view-box="0 0 200 20" sc-camel-preserve-aspect-ratio="none" style="position: absolute; left: -6px; top: 42%; width: calc(100% + 12px); height: 18px; overflow: visible"><path class="drs {{sk.lowi}} dl2" d="M2 12 C 50 6, 120 14, 198 5" style="stroke: var(--accent); stroke-width: 4"></path></svg></span>
+<span class="hand wr {{sk.lowi}} dl3" style="font-size: 40px; transform: rotate(-3deg)">{{t.strikeTo}}</span>
+</div>
+<div class="g2" style="gap: 32px">
+<article class="card pf {{sk.lowi}} dl3 xrbox" style="display: flex; flex-direction: column; gap: 14px">
+<span class="chip" style="align-self: flex-start; border-color: var(--teal); color: var(--teal)">{{t.nidusStatus}}</span>
+<h3 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 36px">Nidus</h3>
+<p style="margin: 0; font-weight: 700; font-size: 19px; line-height: 1.35">{{t.nidusTag}}</p>
+<p class="body" style="font-size: 16.5px">{{t.nidusText}}</p>
+<div class="xr" style="border-top: 1.5px dashed var(--teal); padding-top: 12px"><p class="tree mono">{{t.nidusXray}}</p><span class="hand" style="font-size: 21px">{{t.nidusXrayNote}}</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: auto">
+<a class="btn" href="/nidus" style="min-height: 46px; padding: 0 18px">{{t.nidusCta}}</a>
+<button type="button" class="jask" aria-pressed="{{xpOn.nidus}}" onClick="{{askNidus}}"><i></i>{{t.askJarvis}}</button>
+</div>
+</article>
+<article class="card pf {{sk.lowi}} dl4 xrbox" style="display: flex; flex-direction: column; gap: 14px; box-shadow: 8px 8px 0 var(--accent)">
+<span class="chip" style="align-self: flex-start; border-color: var(--accent); color: var(--accent)">{{t.crisprStatus}}</span>
+<h3 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 36px">CRISPR &amp; CHICKN</h3>
+<p style="margin: 0; font-weight: 700; font-size: 19px; line-height: 1.35">{{t.crisprTag}}</p>
+<p class="body" style="font-size: 16.5px">{{t.crisprText}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: auto">
+<button type="button" class="jask" aria-pressed="{{xpOn.crispr}}" onClick="{{askCrispr}}"><i></i>{{t.askJarvis}}</button>
+</div>
+</article>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ═════ OPLEIDING + TALEN (rustig) ═════ -->
+<section data-sk="edu" class="sec" style="flex-shrink: 0">
+<div class="g2">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<p class="eyebrow">04</p>
+<h2 class="h2">{{t.eduTitle}}</h2>
+<div style="display: flex; flex-direction: column; gap: 6px; border-left: 0; padding-top: 6px">
+<h3 class="h3">{{t.eduRole}}</h3>
+<p style="margin: 0; font-weight: 700; font-size: 16px; color: var(--teal)">Switchfully (onderdeel van Cegeka)</p>
+<p class="small">2021</p>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 22px">
+<p class="eyebrow">05</p>
+<h2 class="h2">{{t.langTitle}}</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 32px; padding-top: 6px">
+<sc-for list="{{langs}}" as="l" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px; border-bottom: 1.5px dashed var(--rule); padding-bottom: 12px"><dt style="font-weight: 700; font-size: 19px">{{l.n}}</dt><dd style="margin: 0; font-size: 16px; color: var(--mute)">{{l.v}}</dd></div>
+</sc-for>
+</dl>
+</div>
+</div>
+</section>
+
+<!-- ═════ WAT IK BOUW ═════ -->
+<section id="bouw" data-sk="build" class="sec" style="flex-shrink: 0">
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-bottom: 56px">
+<div style="display: flex; flex-direction: column; gap: 14px"><p class="eyebrow">06</p><h2 class="h2">{{t.buildTitle}}</h2></div>
+<p class="hand wr {{sk.build}} dl2" style="margin: 0; font-size: 34px; transform: rotate(-2deg)">{{t.buildSub}}</p>
+</div>
+<div class="g3" style="row-gap: 48px">
+<sc-for list="{{build}}" as="b" hint-placeholder-count="5">
+<article style="display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 3px solid var(--ink)">
+<h3 class="h3">{{b.title}}</h3>
+<p class="body" style="font-size: 16.5px">{{b.text}}</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{b.skills}}" as="s" hint-placeholder-count="4"><li class="chip" style="text-transform: none; letter-spacing: 0.3px; font-size: 13.5px; border-radius: 6px">{{s}}</li></sc-for>
+</ul>
+<sc-if value="{{b.link}}" hint-placeholder-val="{{ true }}"><a class="tlink" href="/nidus" style="align-self: flex-start">→ Nidus</a></sc-if>
+</article>
+</sc-for>
+</div>
+</section>
+
+<!-- ═════ PROJECTEN ═════ -->
+<section id="projects" data-sk="proj" class="sec" style="flex-shrink: 0">
+<div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 52px; position: relative">
+<p class="eyebrow">07</p>
+<h2 class="h2">{{t.projTitle}}</h2>
+<p class="xr hand" style="margin: 6px 0 0; font-size: 26px">{{t.projXrayNote}}</p>
+</div>
+<div class="g3" style="align-items: start">
+<sc-for list="{{projects}}" as="pr" hint-placeholder-count="3">
+<article class="card pf {{sk.proj}} xrbox" style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+<h3 class="h3" style="font-size: 22px">{{pr.title}}</h3>
+<button type="button" class="seg" aria-pressed="{{pr.layersStr}}" aria-controls="lg-{{pr.id}}" onClick="{{pr.toggle}}" style="min-height: 40px; padding: 0 14px; background: {{pr.layersBg}}; color: {{pr.layersFg}}; font-family: Karla, sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; flex-shrink: 0">{{t.layers}}</button>
+</div>
+<p class="body" style="font-size: 16.5px">{{pr.text}}</p>
+<div class="xr" style="border-top: 1.5px dashed var(--teal); padding-top: 12px"><p class="tree mono">{{pr.tree}}</p></div>
+<sc-if value="{{pr.layersOn}}" hint-placeholder-val="{{ false }}"><pre id="lg-{{pr.id}}" class="code mono">{{pr.code}}</pre></sc-if>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{pr.tags}}" as="tg" hint-placeholder-count="3"><span class="chip" style="font-size: 11px">{{tg}}</span></sc-for></div>
+<sc-if value="{{pr.jarvis}}" hint-placeholder-val="{{ false }}"><button type="button" class="jask" aria-pressed="{{xpOn.ai}}" onClick="{{askJarvisProj}}" style="align-self: flex-start"><i></i>{{t.askJarvis}}</button></sc-if>
+</article>
+</sc-for>
+</div>
+<div style="margin-top: 56px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap">
+<a class="btn2" href="/nidus">{{t.projLink}} →</a>
+</div>
+</section>
+
+<!-- ═════ CONTACT ═════ -->
+<section id="contact" data-sk="contact" class="sec" style="flex-shrink: 0">
+<div class="split" style="align-items: end">
+<div style="display: flex; flex-direction: column; gap: 14px"><p class="eyebrow">08</p><h2 class="h2">Contact</h2></div>
+<div style="display: flex; flex-direction: column; gap: 22px">
+<a href="mailto:klaas.d.g.vanslambrouck@gmail.com" style="font-family: 'Alfa Slab One', Georgia, serif; font-size: {{mailFs}}px; line-height: 1.15; text-decoration: none; word-break: break-word"><span class="hl {{sk.contact}} dl1">klaas.d.g.vanslambrouck@gmail.com</span></a>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px">
+<a class="tlink" href="https://www.linkedin.com/in/klaas-vanslambrouck-66a82934/" style="font-size: 18px">LinkedIn</a>
+<span style="font-size: 18px; color: var(--ink2)">{{t.place}}</span>
+<a class="btn" href="/cv.pdf">{{t.cv}}</a>
+</div>
+<p class="small" style="max-width: 60ch">{{t.privacy}}</p>
+</div>
+</div>
+</section>
+
+<!-- ═════ FOOTER ═════ -->
+<footer style="flex-grow: 1; min-height: 160px; padding: 40px 96px 120px; background: var(--foot); color: var(--footInk); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 24px" class="ftr">
+<span style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 20px">Klaas Vanslambrouck</span>
+<nav class="nav" aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 26px"><a href="#top" style="color: var(--footInk)">{{t.toTop}}</a><a href="/lowi" style="color: var(--footInk)">LOWI</a><a href="/nidus" style="color: var(--footInk)">Nidus</a><a href="/cv.pdf" style="color: var(--footInk)">CV</a></nav>
+</footer>
+
+<!-- Jarvis-uitleg (bestaande JarvisExplainPanel: vaste, vooraf geschreven context — geen chat) -->
+<sc-if value="{{hasExplain}}" hint-placeholder-val="{{ false }}">
+<button type="button" aria-label="{{t.xClose}}" onClick="{{closeExplain}}" style="position: fixed; inset: 0; z-index: 45; background: rgba(16,45,56,0.28); border: 0; cursor: pointer"></button>
+<aside role="dialog" aria-labelledby="xp-title" style="position: fixed; right: {{jvRight}}px; top: 96px; z-index: 46; width: {{xpW}}px; max-height: calc(100vh - 130px); overflow: auto; background: var(--card); border: 2px solid var(--ink); border-radius: 12px; box-shadow: 8px 8px 0 var(--teal); padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<p class="eyebrow">{{t.xStatus}}</p>
+<button type="button" aria-label="{{t.xClose}}" onClick="{{closeExplain}}" style="width: 44px; height: 44px; flex-shrink: 0; border: 1.5px solid var(--ink); border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" sc-camel-view-box="0 0 14 14" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M2 2 L12 12 M12 2 L2 12"></path></svg></button>
+</div>
+<p class="hand" style="margin: 0; font-size: 24px; transform: rotate(-1.5deg); transform-origin: left">{{xp.context}}</p>
+<h2 id="xp-title" style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.12">{{xp.title}}</h2>
+<p class="body" style="font-size: 16.5px">{{xp.summary}}</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{xp.signals}}" as="sg" hint-placeholder-count="3"><li style="display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; line-height: 1.45"><svg width="18" height="18" sc-camel-view-box="0 0 18 18" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px; fill: none; stroke: var(--teal); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M3 9 L7 13 L15 3"></path></svg>{{sg}}</li></sc-for>
+</ul>
+<div style="border-top: 1.5px dashed var(--rule); padding-top: 12px; display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-weight: 700; font-size: 13px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--accent)">{{t.xRel}}</p>
+<p class="body" style="font-size: 16px">{{xp.relevance}}</p>
+</div>
+</aside>
+</sc-if>
+
+<!-- Jarvis: bestaande entry + paneel -->
+<div style="position: fixed; right: {{jvRight}}px; bottom: {{jvRight}}px; z-index: 40; width: {{jvW}}px; height: 640px; pointer-events: none">
+<dc-import name="Jarvis" lang="{{lang}}" theme="{{theme}}" motion="{{motionProp}}" open="{{jOpen}}" context="{{jCtx}}" on-close="{{closeJ}}" on-toggle="{{toggleJ}}" force-state="{{jForce}}" w="{{jvW}}" pw="{{jvPw}}" h="640" uid="home" hint-size="440px,640px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","options":["nl","en"],"default":"nl","section":"Toestand"},"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Toestand"},"xray":{"editor":"boolean","default":false,"section":"Toestand"},"motion":{"editor":"enum","options":["full","reduced"],"default":"full","section":"Toestand"},"jarvis":{"editor":"enum","options":["auto","closed","open","typing","loading","answer","error"],"default":"auto","section":"Toestand"},"mobile":{"editor":null,"default":false},"h":{"editor":null,"default":8000},"$preview":{"width":1440,"height":8000}}'>
+class Component extends DCLogic {
+  _motionOK() {
+    if (this.props.motion === 'reduced') return false;
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return false;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    return !(this.state && this.state.printAll);
+  }
+  componentDidMount() {
+    var self = this;
+    this._timers = [];
+    this._onPrint = function () { self.setState({ printAll: true }); };
+    window.addEventListener('beforeprint', this._onPrint);
+    if (!this._motionOK()) return;
+    this._io = new IntersectionObserver(function (entries) {
+      var on = {}; var any = false;
+      entries.forEach(function (e) { if (e.isIntersecting) { on[e.target.getAttribute('data-sk')] = true; any = true; self._io.unobserve(e.target); } });
+      if (any) self._timers.push(setTimeout(function () { self.setState(function (s) { return { on: Object.assign({}, (s && s.on) || {}, on) }; }); }, 80));
+    }, { threshold: 0.18 });
+    Array.prototype.slice.call(document.querySelectorAll('.pg [data-sk]')).forEach(function (el) { self._io.observe(el); });
+  }
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+    (this._timers || []).forEach(function (t) { clearTimeout(t); });
+    if (this._onPrint) window.removeEventListener('beforeprint', this._onPrint);
+  }
+  renderVals() {
+    var self = this;
+    var p = this.props || {};
+    var s = this.state || {};
+    var lang = s.lang || p.lang || 'nl';
+    var theme = s.theme || p.theme || 'light';
+    var xray = s.xray !== undefined ? s.xray : !!p.xray;
+    var mobile = !!p.mobile;
+    var motion = this._motionOK();
+    var on = s.on || {};
+    var sk = {};
+    ['hero', 'duo', 'about', 'exp', 'lowi', 'edu', 'build', 'proj', 'contact'].forEach(function (id) { sk[id] = (!motion || on[id]) ? 'sk-on' : 'sk-wait'; });
+    var NL = {
+      navLabel: 'Hoofdnavigatie', langLabel: 'Taal', themeLabel: 'Thema', xrayLabel: 'Weergave', light: 'Licht', dark: 'Donker', normal: 'Normaal',
+      nav: { work: 'Werk', wie: 'Wie ik ben', exp: 'Ervaring', build: 'Wat ik bouw', proj: 'Projecten', contact: 'Contact', lowiRoute: 'De cel' },
+      stack: 'Lagen', xrayNote: 'onder de motorkap', menu: 'Menu', menuClose: 'Sluiten',
+      role1: 'Functioneel Analist', role2: 'AI Transformation Expert · In The Pocket',
+      lead1a: 'Ik vertaal complexe business- en systeemcontext naar ', lead1b: 'werkende AI-systemen', lead1c: ' — van analyse tot prototype, productarchitectuur en uitrol.',
+      lead2: 'Mijn kracht zit op de brug tussen business, techniek en AI. Nidus is daar het bewijs van: een echt, zelfgebouwd platform dat data, automatisering en intelligentie samenbrengt — geen demo, maar een werkend systeem.',
+      ctaNidus: 'Bekijk de Nidus-case', aboutShort: 'Over mij', diagAria: 'Schets: interfaces praten met de API, de API ontsluit de data', diagNote: 'zo zit Nidus in elkaar', expHead: 'Van geluid naar systemen', expRoute: 'Sound engineering → Functionele analyse → AI', status: 'Start 5 oktober 2026 bij In The Pocket', noteHero: 'het bewijs, niet de belofte', noteBridge: 'hier werk ik', tech: 'Techniek',
+      aboutTitle: 'Wie ik ben',
+      about1: 'Ik ben Klaas. Vanaf 5 oktober 2026 werk ik als AI Transformation Expert bij In The Pocket; tot dan als functioneel analist bij Itineris. Mijn kracht zit op de brug tussen business, technologie en AI: ik zie snel hoe processen werken, ', about2: 'waar frictie zit', about3: ' en hoe je die vertaalt naar praktische, werkende oplossingen. Nidus is daarvan het bewijs: een zelfgebouwd platform dat data, automatisering en intelligentie samenbrengt. LOWI is het lab waar dat ontstaat.',
+      aboutLink: 'Zie hoe ik dit toepas in Nidus', expTitle: 'Ervaring', noteExp: 'van mengtafel naar systemen', noteNext: 'volgende stap →', askJarvis: 'Vraag Jarvis hierover',
+      lowiTitle: 'LOWI — mijn platform', lowiCell: 'Bekijk de cel →',
+      lowiText: 'LOWI — Lab of Wonder and Imagination — is mijn persoonlijke leer-, onderzoeks- en bouwomgeving op het snijvlak van AI, biologie, automatisering en creatieve technologie. Wat begon vanuit nieuwsgierigheid, groeit uit tot een plek waar ik ideeën onderzoek, prototypes bouw en verschillende disciplines met elkaar verbind. LOWI toont niet alleen wat ik bedenk, maar vooral hoe ik denk: onderzoekend, systemisch en altijd gericht op iets dat bruikbaar, begrijpelijk en technisch degelijk is.',
+      strikeFrom: 'Een idee', strikeTo: 'een werkend systeem', strikeAria: 'Een idee, gecorrigeerd tot: een werkend systeem',
+      nidusStatus: 'In productie · persoonlijk gebruik', nidusTag: 'Het digitale zenuwstelsel van mijn dagelijks leven',
+      nidusText: 'Nidus is het eerste volwaardige systeem binnen LOWI: een persoonlijk operating system dat gegevens uit mijn gezin, woning en dagelijkse routines samenbrengt. Ik bouw koppelingen met onder meer energieverbruik, locatiegegevens, automatiseringen, dashboards, Raspberry Pi-workers, Supabase en mobiele interfaces. Daarboven groeit Jarvis als intelligente laag die context begrijpt, verbanden legt, beslissingen ondersteunt en geleidelijk proactiever wordt. Nidus is geen losstaande demo, maar een levend systeem dat voortdurend wordt uitgebreid en verfijnd.',
+      nidusCta: 'Ontdek Nidus', nidusXray: 'CLIENT  nidus · nidus-mobile\nAPI     nidus-api\nDATA    Supabase · nidus-ml · Databricks\nEDGE    nidus-pi\nAI      Claude Haiku', nidusXrayNote: 'mobile praat nooit rechtstreeks met Supabase',
+      crisprStatus: 'In ontwikkeling', crisprTag: 'Theater op het snijvlak van wetenschap, technologie en verbeelding',
+      crisprText: 'CRISPR & CHICKN is een artistiek-wetenschappelijk theaterproject over genetische technologie, maakbaarheid en de vraag hoe ver de mens mag gaan in het herschrijven van leven. Via performance, experiment en verbeelding maakt het project complexe onderwerpen zoals CRISPR, genetische modificatie en synthetische biologie tastbaar voor een breed publiek. Het doel is niet om eenvoudige antwoorden te geven, maar om verwondering, ongemak en gesprek te creëren rond technologieën die onze toekomst mee vormgeven. Binnen LOWI vormt CRISPR & CHICKN de brug tussen mijn interesse in biologie, technologie, educatie en podiumkunst.',
+      eduTitle: 'Opleiding', eduRole: 'Functioneel Analist — Omscholingstraject', langTitle: 'Talenkennis',
+      buildTitle: 'Wat ik bouw', buildSub: '// niet hoe goed — waar echt gebruikt',
+      projTitle: 'Projecten', layers: 'Lagen', projLink: 'Bekijk hoe deze projecten samenkomen in Nidus', projXrayNote: 'drie projecten, één platform',
+      place: 'Oudenaarde, België', cv: 'Download CV (PDF)', privacy: 'Deze site verzamelt beperkte, privacyvriendelijke gebruiksstatistieken zonder advertentiecookies of cross-site tracking.', toTop: 'Naar boven', xStatus: 'JARVIS / contextuele analyse', xClose: 'Sluit Jarvis-paneel', xRel: 'Waarom dit relevant is'
+    };
+    var EN = {
+      navLabel: 'Main navigation', langLabel: 'Language', themeLabel: 'Theme', xrayLabel: 'View', light: 'Light', dark: 'Dark', normal: 'Normal',
+      nav: { work: 'Work', wie: 'Who I am', exp: 'Experience', build: 'What I build', proj: 'Projects', contact: 'Contact', lowiRoute: 'The cell' },
+      stack: 'Layers', xrayNote: 'under the hood', menu: 'Menu', menuClose: 'Close',
+      role1: 'Functional Analyst', role2: 'AI Transformation Expert at In The Pocket',
+      lead1a: 'I translate complex business and systems context into ', lead1b: 'working AI systems', lead1c: ' — from analysis to prototype, product architecture and rollout.',
+      lead2: 'My strength sits at the intersection of business, technology and AI. Nidus is the proof: a real, self-built platform that brings together data, automation and intelligence — not a demo, but a working system.',
+      ctaNidus: 'Explore the Nidus case study', aboutShort: 'About me', diagAria: 'Sketch: interfaces talk to the API, the API exposes the data', diagNote: 'how Nidus fits together', expHead: 'From sound to systems', expRoute: 'Sound engineering → Functional analysis → AI', status: 'Starting 5 October 2026 at In The Pocket', noteHero: 'the proof, not the promise', noteBridge: 'where I work', tech: 'Technology',
+      aboutTitle: 'Who I am',
+      about1: 'I’m Klaas. From 5 October 2026 I work as an AI Transformation Expert at In The Pocket; until then as a functional analyst at Itineris. My strength sits at the intersection of business, technology and AI: I quickly see how processes work, ', about2: 'where the friction lies', about3: ', and how to translate that into practical, working solutions. Nidus is the proof: a self-built platform that brings together data, automation and intelligence. LOWI is the lab where that happens.',
+      aboutLink: 'See how I apply this in Nidus', expTitle: 'Experience', noteExp: 'from mixing desk to systems', noteNext: 'next step →', askJarvis: 'Ask Jarvis about this',
+      lowiTitle: 'LOWI — my platform', lowiCell: 'Explore the cell →',
+      lowiText: 'LOWI — Lab of Wonder and Imagination — is my personal learning, research and building environment at the intersection of AI, biology, automation and creative technology. What started from curiosity is growing into a place where I research ideas, build prototypes and connect different disciplines. LOWI shows not just what I come up with, but above all how I think: inquisitive, systemic, and always aimed at something usable, understandable and technically sound.',
+      strikeFrom: 'An idea', strikeTo: 'a working system', strikeAria: 'An idea, corrected to: a working system',
+      nidusStatus: 'In production · personal use', nidusTag: 'The digital nervous system of my daily life',
+      nidusText: 'Nidus is the first fully-fledged system within LOWI: a personal operating system that brings together data from my family, home and daily routines. I’m building in connections to energy usage, location data, automations, dashboards, Raspberry Pi workers, Supabase and mobile interfaces. On top of that, Jarvis is growing as an intelligent layer that understands context, spots connections, supports decisions and gradually becomes more proactive. Nidus isn’t a standalone demo, but a living system that is continuously expanded and refined.',
+      nidusCta: 'Explore Nidus', nidusXray: 'CLIENT  nidus · nidus-mobile\nAPI     nidus-api\nDATA    Supabase · nidus-ml · Databricks\nEDGE    nidus-pi\nAI      Claude Haiku', nidusXrayNote: 'mobile never talks to Supabase directly',
+      crisprStatus: 'In development', crisprTag: 'Theatre at the intersection of science, technology and imagination',
+      crisprText: 'CRISPR & CHICKN is an artistic-scientific theatre project about genetic technology, the malleability of life, and the question of how far humanity may go in rewriting it. Through performance, experimentation and imagination, the project makes complex topics such as CRISPR, genetic modification and synthetic biology tangible for a broad audience. The goal isn’t to offer easy answers, but to create wonder, unease and conversation around the technologies shaping our future. Within LOWI, CRISPR & CHICKN forms the bridge between my interest in biology, technology, education and performing arts.',
+      eduTitle: 'Education', eduRole: 'Functional Analyst — Career Switch Programme', langTitle: 'Languages',
+      buildTitle: 'What I build', buildSub: '// not how good — where actually used',
+      projTitle: 'Projects', layers: 'Layers', projLink: 'See how these projects connect in Nidus', projXrayNote: 'three projects, one platform',
+      place: 'Oudenaarde, Belgium', cv: 'Download CV (PDF)', privacy: 'This site collects limited, privacy-friendly usage statistics without advertising cookies or cross-site tracking.', toTop: 'Back to top', xStatus: 'JARVIS / contextual analysis', xClose: 'Close Jarvis panel', xRel: 'Why this matters'
+    };
+    var t = lang === 'en' ? EN : NL;
+    var XP = {
+      'current-experience': { nl: ['Ervaring / huidige rol', 'Functionele analyse met delivery-verantwoordelijkheid', 'Deze ervaring toont dat Klaas niet enkel requirements verzamelt, maar domeinen structureert, risico\u2019s zichtbaar maakt en complexe upgrades vertaalbaar houdt voor business en engineering.', ['domeinverantwoordelijkheid binnen service delivery', 'vertaling tussen businessproces en systeemgedrag', 'upgrade-context met afhankelijkheden en impactanalyse'], 'Dit is belangrijk voor het bouwen van AI-gedreven systemen: goede AI-systemen beginnen bij scherpe procesanalyse, betrouwbare context en heldere beslislogica.'],
+        en: ['Experience / current role', 'Functional analysis with delivery responsibility', 'This experience shows Klaas does more than gather requirements: he structures domains, exposes risks and keeps complex upgrades understandable for business and engineering.', ['domain ownership within service delivery', 'translation between business process and system behaviour', 'upgrade context with dependencies and impact analysis'], 'This matters for building AI-enabled systems: strong AI systems start with sharp process analysis, reliable context and clear decision logic.'] },
+      'nidus-project': { nl: ['LOWI / Nidus', 'Nidus als zenuwcentrum van het platform', 'Nidus positioneert de portfolio als een ecosysteem in plaats van losse demos. Het project bundelt data, services en API-laag zodat andere toepassingen context kunnen hergebruiken.', ['centrale backend met herbruikbare API-contracten', 'platformdenken boven losse projectpresentatie', 'basis voor geheugen, telemetry en RAG-context'], 'Dit maakt toekomstige Jarvis-logica geloofwaardig: een assistent heeft pas waarde wanneer hij op een eigen, gestructureerde contextlaag kan bouwen.'],
+        en: ['LOWI / Nidus', 'Nidus as the platform nerve centre', 'Nidus positions the portfolio as an ecosystem rather than a set of demos. It combines data, services and an API layer so other applications can reuse context.', ['central backend with reusable API contracts', 'platform thinking beyond isolated project presentation', 'foundation for memory, telemetry and RAG context'], 'This makes future Jarvis logic credible: an assistant becomes valuable when it can build on its own structured context layer.'] },
+      'lowi-project': { nl: ['Platform / projectarchitectuur', 'LOWI als samenhangend portfoliosysteem', 'LOWI toont een verschuiving van losse technische experimenten naar een samenhangende productomgeving: data, interfaces, agents en observability horen bij dezelfde ontwerpkeuzes.', ['meerdere projecten delen dezelfde platformtaal', 'frontend, data en automatisering worden samen ontworpen', 'portfolio functioneert als levend systeem'], 'Een intelligente portfolio moet zichzelf kunnen verklaren. LOWI is de laag die die verklaring technisch en inhoudelijk laat samenkomen.'],
+        en: ['Platform / project architecture', 'LOWI as a connected portfolio system', 'LOWI shows a shift from separate technical experiments to a connected product environment: data, interfaces, agents and observability belong to the same design choices.', ['multiple projects share one platform language', 'frontend, data and automation are designed together', 'the portfolio behaves like a living system'], 'An intelligent portfolio should be able to explain itself. LOWI is the layer where that explanation becomes both technical and substantive.'] },
+      'ai-transition': { nl: ['Jarvis / AI-richting', 'Van analyse naar AI-engineering', 'Jarvis maakt de overgang tastbaar: van processen begrijpen naar systemen bouwen die context kunnen ophalen, redeneren over intentie en acties voorbereiden.', ['LLM-interface bovenop eigen platformdata', 'toolgebruik en geheugen als volgende logische stap', 'AI uitgelegd via concrete productflows'], 'De richting is duidelijk: geen AI als effect, maar AI als bruikbare laag in een systeem dat zakelijke context begrijpt.'],
+        en: ['Jarvis / AI direction', 'From analysis to AI engineering', 'Jarvis makes the transition tangible: from understanding processes to building systems that can retrieve context, reason about intent and prepare actions.', ['LLM interface on top of owned platform data', 'tool use and memory as the next logical step', 'AI explained through concrete product flows'], 'The direction is clear: not AI as an effect, but AI as a usable layer in a system that understands business context.'] }
+    };
+    var xr = s.explain && XP[s.explain] ? XP[s.explain][lang === 'en' ? 'en' : 'nl'] : null;
+    var xpData = xr ? { context: xr[0], title: xr[1], summary: xr[2], signals: xr[3], relevance: xr[4] } : null;
+    var ask = function (id, src) { return function () { self.setState({ explain: id, explainSrc: src }); }; };
+    var EXP = lang === 'en' ? [
+      ['2010 — 2017', 'Sound Engineer', 'Freelance (various clients, incl. Soundfield NV)', 'Freelance sound engineer for multiple companies: designed sound systems and ran live mixing at various events.'],
+      ['2012 — 2016', 'Production Team Lead', 'Student Kick-Off, Gent (volunteer)', 'Booked the Mainstage and negotiated artist contracts for a student festival drawing 30,000+ visitors.'],
+      ['2016 — 2017', 'Founder', 'Event Explorers', 'Own company: guided events and projects from concept and engineering through to full realisation.'],
+      ['2018 — jan 2021', 'Sound Engineer — Head of Sound Department', 'Soundfield NV', 'Responsible for project management of the sound department. Designed sound systems and ran live mixing at international events for Adecco, Samsonite, AWS and more.'],
+      ['2021 — 2022', 'Functional Analyst', 'EGOV VZW (project at FPS Finance)', 'Translated business needs into functional specs for case management and workflow automation.'],
+      ['June 2022 — present', 'Functional Consultant', 'Itineris NV', 'Project consultancy and domain lead for service delivery on a large-scale upgrade project for De Watergroep.'],
+      ['from Oct 2026', 'AI Transformation Expert', 'In The Pocket', 'Guides organisations from AI ambition to adoption: selecting use cases, rethinking processes, building prototypes and making change measurable. At In The Pocket, a digital product studio in Ghent.']
+    ] : [
+      ['2010 — 2017', 'Sound Engineer', 'Freelance (diverse opdrachtgevers, o.a. Soundfield NV)', 'Freelance sound engineer voor meerdere bedrijven: ontwerp en live-mixing van geluidsinstallaties bij diverse events.'],
+      ['2012 — 2016', 'Team Lead Productie', 'Student Kick-Off, Gent (vrijwilliger)', 'Programmeerde de Mainstage en onderhandelde artiestencontracten voor een studentenevenement met 30.000+ bezoekers.'],
+      ['2016 — 2017', 'Founder', 'Event Explorers', 'Eigen onderneming: begeleidde events en projecten van concept en engineering tot volledige realisatie.'],
+      ['2018 — jan 2021', 'Sound Engineer — Hoofd afdeling geluid', 'Soundfield NV', 'Verantwoordelijk voor het projectmanagement van de geluidsafdeling. Ontwierp geluidsinstallaties en verzorgde live-mixing bij internationale evenementen voor Adecco, Samsonite, AWS en meer.'],
+      ['2021 — 2022', 'Functioneel Analist', 'EGOV VZW (project bij FOD Financiën)', 'Vertaalde business-behoeften naar functionele specificaties voor case management en workflow-automatisering.'],
+      ['juni 2022 — heden', 'Functioneel Consultant', 'Itineris NV', 'Projectconsultancy en domeinverantwoordelijke voor service delivery bij een grootschalig upgrade-project voor De Watergroep.'],
+      ['vanaf okt 2026', 'AI Transformation Expert', 'In The Pocket', 'Begeleidt organisaties van AI-ambitie naar adoptie: use cases kiezen, processen herdenken, prototypes bouwen en verandering meetbaar maken. Bij In The Pocket, een digitale productstudio in Gent.']
+    ];
+    var exp = EXP.map(function (e, i) {
+      return { when: e[0], role: e[1], org: e[2], desc: e[3], jarvis: i === 5, next: i === 6, ask: ask('current-experience', 'exp'), pressed: s.explainSrc === 'exp' ? 'true' : 'false',
+        dot: i === 6 ? 'var(--marker)' : (i >= 4 ? 'var(--teal)' : 'var(--paper)') };
+    });
+    var langs = lang === 'en' ? [{ n: 'Dutch', v: 'Native' }, { n: 'English', v: 'Very good' }, { n: 'French', v: 'Good' }, { n: 'Russian', v: 'Basic' }]
+      : [{ n: 'Nederlands', v: 'Moedertaal' }, { n: 'Engels', v: 'Zeer goed' }, { n: 'Frans', v: 'Goed' }, { n: 'Russisch', v: 'Basis' }];
+    var build = lang === 'en' ? [
+      { title: 'Analysis & Systems Thinking', text: 'My daily craft as a functional analyst at De Watergroep (Billing/SDL); Nidus is my own proof of it.', skills: ['Functional analysis', 'Requirements engineering', 'Translating between business and engineering', 'Solution design'], link: true },
+      { title: 'AI & Machine Learning', text: 'Running in Nidus: an LLM assistant, receipt OCR and budget classification — plus a validated metabolic model.', skills: ['LLM integration (Claude tool-calling)', 'RAG', 'Prompt engineering', 'OCR (Claude Vision)', 'TF-IDF + logistic regression', 'Mader/Hauser model'], link: true },
+      { title: 'Backend & Data', text: 'The production backend of Nidus: TypeScript/Node and Python, PostgreSQL with RLS, nightly data pipelines.', skills: ['TypeScript · Node (Fastify)', 'Python (FastAPI)', 'PostgreSQL + RLS', 'Supabase', 'Databricks / Spark', 'Data pipelines'], link: false },
+      { title: 'Frontend & Mobile', text: 'The screens people actually use: the Nidus web app, the mobile app and this portfolio itself.', skills: ['Next.js · React', 'React Native · Expo', 'CSS Modules', 'Data visualisation'], link: false },
+      { title: 'Platform & Delivery', text: 'The full Nidus topology runs in production: hosting, CI discipline and a Raspberry Pi at home.', skills: ['Railway', 'Vercel', 'CI (tsc · eslint · build)', 'Git workflow', 'Raspberry Pi · IoT'], link: false }
+    ] : [
+      { title: 'Analyse & Systeemdenken', text: 'Mijn dagelijkse vak als functioneel analist bij De Watergroep (Billing/SDL); Nidus is daar mijn eigen bewijs van.', skills: ['Functionele analyse', 'Requirements engineering', 'Procesvertaling business ↔ techniek', 'Solution design'], link: true },
+      { title: 'AI & Machine Learning', text: 'Draait in Nidus: LLM-assistent, kasticket-OCR en budgetclassificatie — plus een gevalideerd metabolisch model.', skills: ['LLM-integratie (Claude tool-calling)', 'RAG', 'Prompt engineering', 'OCR (Claude Vision)', 'TF-IDF + logistische regressie', 'Mader/Hauser-model'], link: true },
+      { title: 'Backend & Data', text: 'De productie-backend van Nidus: TypeScript/Node en Python, PostgreSQL met RLS, nachtelijke datapijplijnen.', skills: ['TypeScript · Node (Fastify)', 'Python (FastAPI)', 'PostgreSQL + RLS', 'Supabase', 'Databricks / Spark', 'Datapijplijnen'], link: false },
+      { title: 'Frontend & Mobile', text: 'De schermen die mensen echt gebruiken: het Nidus-web, de mobiele app en deze portfolio zelf.', skills: ['Next.js · React', 'React Native · Expo', 'CSS Modules', 'Datavisualisatie'], link: false },
+      { title: 'Platform & Delivery', text: 'De volledige Nidus-topologie draait in productie: hosting, CI-discipline en een Raspberry Pi thuis.', skills: ['Railway', 'Vercel', 'CI (tsc · eslint · build)', 'Git-workflow', 'Raspberry Pi · IoT'], link: false }
+    ];
+    var layers = s.layers || {};
+    var PROJ = [
+      { id: 'jarvis', title: lang === 'en' ? 'Jarvis — personal AI assistant' : 'Jarvis — persoonlijke AI-assistent',
+        text: lang === 'en' ? 'Chat assistant on top of the nidus-api answering questions about my CV and projects, with tool use and memory.' : 'Chat-assistent bovenop de nidus-api die vragen over mijn CV en projecten beantwoordt, met tool-gebruik en geheugen.',
+        tree: 'UI\n├── Next.js\n└── JarvisTerminal\nAPI\n├── nidus-api\n└── Claude API\nDATA\n├── Supabase\n└── pgvector',
+        code: 'const reply = await jarvis.chat({\n  message: "Wat draait er op Railway?",\n  tools: [lookupService, queryStats],\n});\nrender(reply.text);', tags: ['Claude API', 'Railway', 'TypeScript'], jarvis: true },
+      { id: 'pi', title: lang === 'en' ? 'Pi sensor network' : 'Pi-sensornetwerk',
+        text: lang === 'en' ? 'Raspberry Pis measure temperature and energy at home, pushing readings to Supabase every minute for dashboards.' : 'Raspberry Pi’s meten temperatuur en energie thuis en pushen elke minuut metingen naar Supabase voor dashboards.',
+        tree: 'EDGE\n├── Raspberry Pi\n└── Python daemon\nDATA\n├── Supabase\n└── PostgreSQL\nOPS\n├── PM2\n└── systemd',
+        code: 'async def push_reading(sensor: Sensor):\n    value = await sensor.read()\n    supabase.table("readings").insert(\n        {"sensor_id": sensor.id, "value": value}\n    ).execute()', tags: ['Python', 'Raspberry Pi', 'Supabase'], jarvis: false },
+      { id: 'mobile', title: lang === 'en' ? 'Mobile companion app' : 'Mobile companion-app',
+        text: lang === 'en' ? 'React Native app exposing the LOWI platform on the go: statuses, notifications and a mini Jarvis.' : 'React Native-app die het LOWI-platform ontsluit onderweg: statussen, notificaties en een mini-Jarvis.',
+        tree: 'UI\n├── React Native\n└── Expo\nAPI\n├── nidus-api\n└── Railway\nAUTH\n└── Supabase Auth',
+        code: 'export function StatusCard({ service }: Props) {\n  const { data } = useServiceStatus(service.id);\n  return <Badge tone={data.ok ? "ok" : "warn"} />;\n}', tags: ['React Native', 'Expo', 'Railway'], jarvis: false }
+    ];
+    var projects = PROJ.map(function (pr) {
+      var onL = !!layers[pr.id];
+      return Object.assign({}, pr, { layersOn: onL, layersStr: onL ? 'true' : 'false', layersBg: onL ? 'var(--ink)' : 'transparent', layersFg: onL ? 'var(--paper)' : 'var(--ink)',
+        toggle: function () { var n = Object.assign({}, layers); n[pr.id] = !onL; self.setState({ layers: n }); } });
+    });
+    var cls = [];
+    if (theme === 'dark') cls.push('is-dark');
+    if (xray) cls.push('is-xray');
+    if (!motion) cls.push('is-rm');
+    var set = function (k, v) { return function () { var o = {}; o[k] = v; self.setState(o); }; };
+    var menuOpen = !!s.menu;
+    var jForce = p.jarvis && p.jarvis !== 'auto' ? p.jarvis : 'auto';
+    return {
+      rootClass: cls.join(' '), h: p.h || 8000, t: t, sk: sk, lang: lang, theme: theme, motionProp: motion ? 'full' : 'reduced',
+      p: { nl: lang === 'nl' ? 'true' : 'false', en: lang === 'en' ? 'true' : 'false', light: theme === 'light' ? 'true' : 'false', dark: theme === 'dark' ? 'true' : 'false', normal: xray ? 'false' : 'true', xray: xray ? 'true' : 'false' },
+      setNl: set('lang', 'nl'), setEn: set('lang', 'en'), setLight: set('theme', 'light'), setDark: set('theme', 'dark'), setNormal: set('xray', false), setXray: set('xray', true),
+      menuOpen: menuOpen, menuStr: menuOpen ? 'true' : 'false', menuLabel: menuOpen ? t.menuClose : t.menu,
+      toggleMenu: function () { self.setState({ menu: !menuOpen }); }, closeMenu: function () { self.setState({ menu: false }); },
+      stackChips: ['next-js', 'supabase', 'railway', 'databricks', 'Raspberry Pi', 'mobile', 'jarvis'],
+      exp: exp, langs: langs, build: build, projects: projects,
+      cellSize: mobile ? 240 : 300, mailFs: mobile ? 16 : 31, nameFs: mobile ? 40 : 112, diagFs: mobile ? 14 : 18, leadFs: mobile ? 21 : 30, duoFs: mobile ? 48 : 80,
+      diag: xray ? { a: 'nidus · mobile', b: 'nidus-api', c: 'Supabase' } : (lang === 'en' ? { a: 'Interfaces', b: 'API', c: 'Data' } : { a: 'Interfaces', b: 'API', c: 'Data' }),
+      askLowi: ask('lowi-project', 'lowi'), askNidus: ask('nidus-project', 'nidus'), askCrispr: ask('lowi-project', 'crispr'), askJarvisProj: ask('ai-transition', 'ai'),
+      xpOn: { lowi: s.explainSrc === 'lowi' ? 'true' : 'false', nidus: s.explainSrc === 'nidus' ? 'true' : 'false', crispr: s.explainSrc === 'crispr' ? 'true' : 'false', ai: s.explainSrc === 'ai' ? 'true' : 'false' },
+      hasExplain: !!xpData, xp: xpData || { signals: [] }, xpW: mobile ? 340 : 420, closeExplain: function () { self.setState({ explain: null, explainSrc: null }); },
+      jOpen: !!s.jOpen, jCtx: s.jCtx || '', jForce: jForce,
+      closeJ: function () { self.setState({ jOpen: false, jCtx: '' }); }, toggleJ: function () { self.setState({ jOpen: !s.jOpen, jCtx: '' }); },
+      jvW: mobile ? 360 : 440, jvPw: mobile ? 340 : 400, jvRight: mobile ? 12 : 28
+    };
+  }
+}
+</script>
+</body>
+</html>

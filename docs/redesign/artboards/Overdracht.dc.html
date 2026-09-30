@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Overdracht – Claude Code &amp; Codex</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Caveat:wght@600;700&amp;family=Karla:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap">
+<style>
+body{margin:0;font-family:Karla,'Trebuchet MS',sans-serif;background:#F4ECDA;color:#1D3F4E}
+a{color:#1D3F4E}a:hover{color:#C9461F}
+.h2{margin:0;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:38px;line-height:1.05}
+.eb{margin:0;font-weight:700;font-size:12.5px;letter-spacing:2.4px;text-transform:uppercase;color:#256F7B}
+.p{margin:0;font-size:16.5px;line-height:1.6;color:#33505C}
+.pre{margin:0;background:#0F2A34;color:#E7EFE9;border-radius:8px;padding:18px 20px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:13px;line-height:1.6;white-space:pre-wrap}
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.45}
+.tbl th{text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#256F7B;padding:9px 10px;border-bottom:2px solid #1D3F4E}
+.tbl td{padding:10px;border-bottom:1.5px dashed #CDBB94;vertical-align:top;color:#33505C}
+.tbl td:first-child{font-weight:700;color:#1D3F4E;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+ol.p,ul.p{padding-left:22px}
+.box{border:2px solid #1D3F4E;border-radius:10px;background:#FAF4E6;padding:24px;box-shadow:8px 8px 0 #256F7B;display:flex;flex-direction:column;gap:12px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 3400px; box-sizing: border-box; padding: 72px 96px; background-color: #F4ECDA; background-image: radial-gradient(rgba(29,63,78,0.13) 1.3px, transparent 1.7px); background-size: 26px 26px; display: flex; flex-direction: column; gap: 56px">
+
+<header style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 64px; align-items: end">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p class="eb">Overdracht · voor Claude Code en Codex</p>
+<h1 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 76px; line-height: 1">Van canvas naar repository.</h1>
+<p class="p" style="font-size: 19px">Dit canvas is een ontwerpbron, geen productiecode. Implementeer in de bestaande Next.js-portfolio met CSS Modules. Inspecteer eerst de code; neem de hier getoonde structuur, tokens, accenten en toestanden over zonder bestaande embeds, Jarvis-contracten of routes te breken.</p>
+</div>
+<div class="box">
+<p class="eb" style="color: #C9461F">Harde grenzen</p>
+<ol class="p" style="margin: 0; font-size: 15.5px">
+<li>NidusMockup (web/mobiel, Vandaag/Energie, notitie) blijft intern identiek: geen nieuwe fonts, resets, filters of kleurvariabelen erin.</li>
+<li>Huidige embedtechniek behouden: geen iframe introduceren of vervangen.</li>
+<li>Tokens alleen binnen <code>.portfolio-design</code>; de bestaande <code>--cv-*</code>-variabelen blijven bestaan, want NidusMockups gebruikt ze voor notitie en toestelknop.</li>
+<li>Gevalideerde NL/EN-copy letterlijk; conceptcopy (inventaris §4) apart laten keuren.</li>
+<li>Geen scroll-hijacking; inhoud zichtbaar zonder JS.</li>
+</ol>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 18px">
+<h2 class="h2">1 · Artboards → repository</h2>
+<table class="tbl">
+<thead><tr><th style="width: 250px">Artboard</th><th style="width: 330px">Vermoedelijke plek in de repo</th><th>Wat implementeren</th></tr></thead>
+<tbody>
+<tr><td>Home.dc.html</td><td>components/HomePage.tsx, Hero.tsx, LowiSection.tsx, ExperienceTimeline.tsx, Skills.tsx, ProjectCard.tsx, ContactFooter.tsx, ControlStack.tsx · styles/cv.module.css</td><td>Volgorde: hero (met systeemschets) → luik Nidus | LOWI → Wie ik ben → Ervaring → LOWI + projecten → Opleiding/Talen → Wat ik bouw → Projecten (#projects) → Contact (#contact). Header: Werk · LOWI · Nidus · Contact + NL/EN + thema; X-ray klein rechts eronder. JarvisExplainButton/-Panel ongewijzigd in gedrag.</td></tr>
+<tr><td>Lowi.dc.html</td><td>components/lowi-cel/LowiCelPagina.tsx + .module.css · content/lowiCellContent.ts</td><td>Tekstkolom links, sceneLaag rechts sticky; hoofdstukbalk (bestaande indicator-nav) horizontaal en sticky; hoofdstuk-id's lowi-cel-* ongewijzigd; details “Van idee naar systeem · Nidus” behouden; deling met drie sentinels.</td></tr>
+<tr><td>Nidus.dc.html</td><td>components/routes/NidusRoute.tsx · components/nidus/NidusIntro.tsx · styles/nidus.module.css</td><td>Volgorde in NidusRoute: NidusIntro → CVSection nidus-screenshots (NidusMockups) → nidus-architectuur → nidus-decision-log → nidus-code. NidusMockups, NidusDashboardDetail, NidusEnergyDetail en nidusMockup.module.css niet aanraken.</td></tr>
+<tr><td>NidusEmbed / NidusScreen</td><td>= NidusMockups (referentie)</td><td>Alleen een 1-op-1-weergave voor het canvas. Niet opnieuw implementeren: in de code blijft de bestaande component.</td></tr>
+<tr><td>Cel.dc.html</td><td>components/lowi-cel/CelModel.tsx, celInstellingen.ts, celPalet.ts, DnaHelix.tsx, /public/lowi/cell/*.webp</td><td>Scrollsturing (useScrollVoortgang), SceneBoundary en fallback houden. Twee routes na inspectie: (a) SVG-lagenmodel zoals hier, stills opnieuw renderen; (b) R3F houden maar geometrie aanvullen (ruw/glad ER, blaasjes), DnaHelix vervangen door chromatine, papierpalet en getekende contour. Props: phase, theme, lang, motion.</td></tr>
+<tr><td>Jarvis.dc.html</td><td>components/jarvis/JarvisAsk.module.css</td><td>Alleen styling van entry en paneel; fetch naar /api/portfolio/jarvis, sessie, foutcodes, scrim en Escape ongewijzigd.</td></tr>
+<tr><td>Stijl.dc.html</td><td>nieuw: styles/sketchbook.module.css + components/sketch/*</td><td>Zie §2 en §4.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="h2">2 · Tokens</h2>
+<pre class="pre">.portfolio-design {
+  --paper:#F4ECDA; --card:#FAF4E6; --ink:#1D3F4E;
+  --ink2:#33505C; --mute:#4A6570; --teal:#256F7B;
+  --accent:#C9461F; --marker:#F0B233; --hlc:240,178,51;
+  --rule:#CDBB94; --btn-ink:#FFFFFF;
+  --font-display:"Portfolio Slab", Georgia, serif;   /* Alfa Slab One */
+  --font-body:"Portfolio Sans", "Trebuchet MS", sans-serif; /* Karla */
+  --font-note:"Portfolio Note", cursive;           /* Caveat 600–700 */
+  --motion-line:700ms; --motion-marker:550ms;
+  --motion-strike:380ms; --motion-note:650ms;
+  --motion-camera:850ms;
+}
+.portfolio-design[data-theme="dark"] {
+  --paper:#102D38; --card:#153846; --ink:#F4ECDA;
+  --ink2:#D6DDD8; --mute:#A9BCBF; --teal:#80BCC0;
+  --accent:#EF936C; --marker:#D6A94D; --hlc:214,169,77;
+  --rule:#35596A; --btn-ink:#102D38;
+}
+.portfolio-design[data-xray="on"] { /* los van thema */
+  background-image: grid 32px in rgba(teal, .16);
+}</pre>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="h2">4 · Accent-API (voorstel)</h2>
+<pre class="pre">// één hook voor alle kleine accenten
+useSketchReveal(ref, { threshold: 0.18, once: true })
+  → "wait" | "on"   // reduced motion / geen IO / print → "on"
+
+&lt;Highlight&gt;werkende AI-systemen&lt;/Highlight&gt;      // 550 ms
+&lt;Underline tone="accent"&gt;onderzoek&lt;/Underline&gt;  // 700 ms
+&lt;Strike to="een werkend systeem"&gt;Een idee&lt;/Strike&gt;
+                                  // 380 ms + 120 ms
+&lt;MarginNote target="#nidus-case"&gt;…&lt;/MarginNote&gt;  // 650 ms
+&lt;Arrow from=… to=… /&gt;  &lt;Connector length="long"/&gt;
+&lt;Stamp&gt;Start 5 oktober 2026 …&lt;/Stamp&gt;         // 450 ms
+
+Regels
+· paden vast (geen random per render)
+· decoratieve SVG: aria-hidden
+· notities zijn echte tekst; mobiel: static onder doel
+· delays 150/500/850/1200/1550/1900 ms</pre>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 18px">
+<h2 class="h2">3 · Celmodel en scrollsturing</h2>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px">
+<pre class="pre">&lt;svg viewBox="0 0 800 800"&gt;
+ &lt;g class="camera"&gt;   /* translate(400,400) scale(s) translate(-fx,-fy) */
+  #celmembraan-achter   (+ #membraan-deling-b, -c)
+  #cytoskelet  #vrije-ribosomen  #cytosol-deeltjes
+  #glad-er  #ruw-er (+ ribosoom-streeplijnen)
+  #kern (#kernmembraan, #poriën, #chromatine, #nucleolus)
+  #golgi  #vesikels-lysosomen (+ .transport ×3)
+  #mitochondrien (5 × zelfde vorm, eigen transform)
+  #deling-1  #deling-2  #deling-3
+  #celmembraan-voor
+ &lt;/g&gt;
+&lt;/svg&gt;
++ HTML-labels (absolute, % uit camera)
++ detailvensters: membraan, ribosomen</pre>
+<table class="tbl">
+<thead><tr><th>phase</th><th>focus · schaal</th><th>anker-id</th></tr></thead>
+<tbody>
+<tr><td>overzicht</td><td>400,405 · 1</td><td>intro</td></tr>
+<tr><td>membraan</td><td>150,420 · 1,9</td><td>lowi-cel-grens</td></tr>
+<tr><td>cytoplasma</td><td>300,545 · 1,45</td><td>lowi-cel-werkvloer</td></tr>
+<tr><td>kern</td><td>365,392 · 1,95</td><td>lowi-cel-code</td></tr>
+<tr><td>ribosomen</td><td>505,470 · 2,5</td><td>lowi-cel-bouwen</td></tr>
+<tr><td>mitochondrien</td><td>585,555 · 3,1</td><td>lowi-cel-brandstof</td></tr>
+<tr><td>golgi</td><td>565,245 · 2,3</td><td>lowi-cel-verfijnen</td></tr>
+<tr><td>deling1–3</td><td>400,405 · 1</td><td>lowi-cel-groei (3 sentinels)</td></tr>
+</tbody>
+</table>
+</div>
+<p class="p">Actieve fase = laatste <code>[data-phase]</code> waarvan de bovenrand boven 50 % van de viewport ligt (rAF-gethrottled scroll-listener of IntersectionObserver met rootMargin <code>-50% 0 -50% 0</code>). Hoofdstukknoppen zijn echte ankers; klik = <code>scrollIntoView</code> (smooth, of auto bij reduced motion) + direct fasewissel. Pauzeknop stopt deeltjes en transportblaasjes. Thema wisselt alleen materiaal (CSS-variabelen), nooit geometrie of fase. Als de huidige renderer 3D blijkt te zijn: biologisch gevormde modellen met getekende contour; dit SVG-model is dan de stijl- en compositiereferentie.</p>
+</section>
+
+<section style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="h2">5 · Stappenplan</h2>
+<ol class="p" style="margin: 0">
+<li>Repo inspecteren: homepage (cv.module), LOWI-renderer, NidusMockup, JarvisAsk, taal- en themaopslag, X-ray/lagen-state. Screenshots maken van alle bestaande toestanden (baseline).</li>
+<li>Tokens + fonts toevoegen, gescoped op <code>.portfolio-design</code>; embed-containers expliciet uitsluiten.</li>
+<li><code>useSketchReveal</code> + accentcomponenten; stijlpagina als Storybook- of testroute.</li>
+<li>Homepage herschikken en stylen; X-ray onafhankelijk van thema; Lagen-toggle per project.</li>
+<li>LOWI: Cel-component + scrollsturing; bestaande ankers en uitklapper; projectkaarten.</li>
+<li>Nidus: omliggende pagina, architectuurraster met alleen bevestigde pijlen, beslisnotities; NidusMockup ongewijzigd inpluggen.</li>
+<li>Jarvis: alleen CSS van entry en paneel.</li>
+<li>QA volgens §6; screenshot-diff van embeds vóór/na.</li>
+</ol>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="h2">6 · Acceptatie</h2>
+<ul class="p" style="margin: 0">
+<li>Embeds: pixelvergelijking vóór/na per viewport (1440/768/390/320), thema, Web/Mobiel en Vandaag/Energie — geen verschil binnen de component.</li>
+<li>Alle bestaande links, ankers, /en-routes, CV, LinkedIn, mailto werken.</li>
+<li>NL/EN, licht/donker op drie routes; X-ray × thema = 4 combinaties op home.</li>
+<li>Toetsenbord: zichtbare focus, hoofdstukknoppen, uitklapper, Jarvis-dialog (Esc sluit, focus terug).</li>
+<li>Contrast ≥ 4,5:1 lopende tekst; accentkleur alleen ≥ 22 px.</li>
+<li>Reduced motion: alles in eindtoestand, cel met directe standen.</li>
+<li>Zonder JS: alle tekst zichtbaar; cel toont overzicht.</li>
+<li>Geen horizontale scroll op 320 px; touch-doelen ≥ 44 px.</li>
+<li>Celanatomie en labels biologisch nagekeken.</li>
+</ul>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 class="h2">7 · Opdracht om te plakken</h2>
+<pre class="pre">Implementeer het redesign van klaasvanslambrouck.dev volgens het Design-canvas "Portfolio-redesign".
+Lees eerst: Overdracht, Inventaris, Stijlpagina, Celstanden.
+
+1. Werk in C:\Users\KlSla\lowi-cv. Lees ARCHITECTURE.md, components/HomePage.tsx, components/lowi-cel/*,
+   components/routes/NidusRoute.tsx, components/nidus/*, components/jarvis/JarvisAsk.tsx en
+   styles/*.module.css. Maak baseline-screenshots (/, /lowi, /nidus, /en-varianten; licht/donker;
+   X-ray; Web/Mobiel; Vandaag/Energie; 1440/768/390/320).
+2. Voeg tokens toe onder .portfolio-design (licht/donker, data-xray los van data-theme).
+   Geen globale resets. Embeds en JarvisAsk-logica blijven intern ongewijzigd.
+3. Bouw useSketchReveal + Highlight/Underline/Strike/MarginNote/Arrow/Connector/Stamp.
+4. Herschik en style home, /lowi, /nidus als volledige lange pagina's met de bestaande ankers.
+5. Vervang de 8 celstills door één gelaagd SVG-celmodel (fasen en camera's uit de overdracht),
+   of verfijn de bestaande renderer als die al lagen/3D heeft — kies pas na inspectie.
+6. Houd alle gevalideerde NL/EN-copy letterlijk; zet conceptcopy achter een duidelijke TODO.
+7. Lever screenshot-diffs van embeds vóór/na en een checklist van de acceptatiecriteria.</pre>
+</section>
+<div style="flex-grow: 1"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3400}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

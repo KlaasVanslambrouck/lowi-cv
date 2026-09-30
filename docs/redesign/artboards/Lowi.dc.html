@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>LOWI – Lab of Wonder and Imagination</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Caveat:wght@600;700&amp;family=Karla:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap">
+<style>
+body{margin:0}
+/* ── tokens: alleen binnen .pg, nooit op embeds ── */
+.pg{--paper:#F4ECDA;--card:#FAF4E6;--ink:#1D3F4E;--ink2:#33505C;--mute:#4A6570;--teal:#256F7B;--accent:#C9461F;--marker:#F0B233;--hlc:240,178,51;--rule:#CDBB94;--dot:rgba(29,63,78,.13);--grid:rgba(37,111,123,.16);--btnInk:#FFFFFF;--foot:#1D3F4E;--footInk:#F4ECDA;
+container-type:inline-size;box-sizing:border-box;background-color:var(--paper);background-image:radial-gradient(var(--dot) 1.3px,transparent 1.7px);background-size:26px 26px;color:var(--ink);font-family:Karla,'Trebuchet MS',sans-serif;display:flex;flex-direction:column;position:relative;overflow:clip}
+.pg.is-dark{--paper:#102D38;--card:#153846;--ink:#F4ECDA;--ink2:#D6DDD8;--mute:#A9BCBF;--teal:#80BCC0;--accent:#EF936C;--marker:#D6A94D;--hlc:214,169,77;--rule:#35596A;--dot:rgba(244,236,218,.08);--grid:rgba(128,188,192,.13);--btnInk:#102D38;--foot:#0A222C;--footInk:#F4ECDA}
+.pg.is-xray{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.pg *{box-sizing:border-box}
+.pg a{color:var(--ink)}
+.pg a:hover{color:var(--accent)}
+.pg :focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:4px}
+/* typografie */
+.h1{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:104px;line-height:.96;letter-spacing:-1px;margin:0}
+.h2{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:56px;line-height:1.04;margin:0}
+.h3{font-weight:700;font-size:24px;line-height:1.25;margin:0}
+.eyebrow{font-weight:700;font-size:13px;letter-spacing:2.6px;text-transform:uppercase;color:var(--teal);margin:0}
+.lead{font-size:26px;line-height:1.45;color:var(--ink2);margin:0}
+.body{font-size:18px;line-height:1.62;color:var(--ink2);margin:0}
+.small{font-size:15px;line-height:1.5;color:var(--mute);margin:0}
+.hand{font-family:Caveat,cursive;font-weight:700;color:var(--accent)}
+.mono{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+/* layout */
+.sec{position:relative;padding:112px 96px;border-top:2px dashed var(--rule)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:64px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:72px}
+/* componenten */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 26px;background:var(--accent);color:var(--btnInk)!important;font-weight:700;font-size:15px;letter-spacing:1.6px;text-transform:uppercase;text-decoration:none;border:0;border-radius:6px;box-shadow:4px 4px 0 var(--ink);cursor:pointer;transition:translate .15s,box-shadow .15s}
+.btn:hover{translate:-1px -1px;box-shadow:6px 6px 0 var(--ink)}
+.btn:active{translate:2px 2px;box-shadow:1px 1px 0 var(--ink)}
+.btn2{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;border:2px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);font-weight:700;font-size:15px;letter-spacing:1.6px;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.btn2:hover{background:var(--ink);color:var(--paper)!important}
+.tlink{font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
+.chip{display:inline-flex;align-items:center;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;border:1.5px solid var(--ink);padding:6px 11px;border-radius:999px;color:var(--ink)}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:10px;box-shadow:8px 8px 0 var(--teal);padding:34px;position:relative}
+.jask{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 14px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);font-family:Karla,sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+.jask:hover,.jask[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.jask i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:block}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{min-height:40px;min-width:44px;padding:0 12px;border:0;background:transparent;color:var(--ink);font-family:Karla,sans-serif;font-weight:700;font-size:12px;letter-spacing:1.8px;text-transform:uppercase;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.nav a{font-weight:700;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.nav a[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:8px}
+.mnote{position:absolute;left:var(--x);top:var(--y);transform:rotate(var(--r,-4deg));white-space:nowrap}
+.tree{font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre;margin:0}
+.code{background:#0F2A34;color:#E7EFE9;border-radius:8px;padding:16px 18px;font-size:13px;line-height:1.55;white-space:pre;overflow:auto;margin:0}
+.xr{display:none}
+.is-xray .xr{display:block}
+.is-xray .xrbox{outline:1.5px dashed var(--teal);outline-offset:10px}
+.is-xray .xr-dim{opacity:.62}
+.mob{display:none}
+/* ── schetsaccenten (uit de quiz-HTML, getimed volgens de scrollspecificatie) ── */
+.dr,.drl,.drs{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.dr{stroke-dasharray:700;stroke-dashoffset:0;transition:stroke-dashoffset .7s cubic-bezier(.65,0,.35,1)}
+.dr.sk-wait{stroke-dashoffset:700;transition:none}
+.drs{stroke-dasharray:700;stroke-dashoffset:0;transition:stroke-dashoffset .38s cubic-bezier(.5,0,.5,1)}
+.drs.sk-wait{stroke-dashoffset:700;transition:none}
+.drl{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 2.4s cubic-bezier(.55,0,.35,1)}
+.drl.sk-wait{stroke-dashoffset:1;transition:none}
+.hl{background-image:linear-gradient(100deg,rgba(var(--hlc),0) 0,rgba(var(--hlc),.78) 3%,rgba(var(--hlc),.62) 95%,rgba(var(--hlc),0) 100%);background-repeat:no-repeat;background-position:0 80%;background-size:100% 46%;padding:0 4px;margin:0 -4px;transition:background-size .55s cubic-bezier(.65,0,.35,1)}
+.hl.sk-wait{background-size:0% 46%;transition:none}
+.wr{clip-path:inset(-20% -6% -20% -6%);transition:clip-path .65s cubic-bezier(.5,0,.5,1)}
+.wr.sk-wait{clip-path:inset(-20% 100% -20% -6%);transition:none}
+.st{opacity:1;scale:1;rotate:0deg;transition:opacity .3s ease,scale .45s cubic-bezier(.2,.8,.3,1),rotate .45s cubic-bezier(.2,.8,.3,1)}
+.st.sk-wait{opacity:0;scale:1.25;rotate:-6deg;transition:none}
+.pf{opacity:1;translate:0 0;transition:opacity .7s ease,translate .7s cubic-bezier(.2,.8,.3,1)}
+.pf.sk-wait{opacity:0;translate:0 24px;transition:none}
+.dl1{transition-delay:.15s}.dl2{transition-delay:.5s}.dl3{transition-delay:.85s}.dl4{transition-delay:1.2s}.dl5{transition-delay:1.55s}.dl6{transition-delay:1.9s}
+.dlc{transition-delay:.62s}
+.is-rm .dr,.is-rm .drl,.is-rm .drs,.is-rm .hl,.is-rm .wr,.is-rm .st,.is-rm .pf{transition:none}
+@media (prefers-reduced-motion: reduce){.dr,.drl,.drs,.hl,.wr,.st,.pf{transition:none}}
+/* ── mobiel: containerquery op de pagina ── */
+@container (max-width: 760px){
+.sec{padding:72px 20px}
+.h1{font-size:52px}.h2{font-size:36px}.lead{font-size:20px}.body{font-size:17px}
+.g2,.g3,.split{grid-template-columns:minmax(0,1fr);gap:36px}
+.mnote{position:static;display:block;transform:rotate(-2deg);white-space:normal;margin:10px 0 0}
+.desk{display:none!important}
+.mob{display:flex}
+.card{padding:24px;box-shadow:6px 6px 0 var(--teal)}
+.hdr{padding:0 20px!important}
+.ftr{padding:32px 20px 120px!important}
+}
+</style>
+<style>
+/* LOWI: celreis — hiërarchie volgens beeld 09: tekst links, één sticky cel rechts */
+.celgrid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;padding:0 96px;position:relative}
+.textcol{grid-column:1;grid-row:1;display:flex;flex-direction:column;min-width:0}
+.celcol{grid-column:2;grid-row:1;position:relative}
+.celstick{position:sticky;top:92px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 0 40px}
+.chbar{position:sticky;top:76px;z-index:8;background:var(--paper);display:flex;gap:16px;overflow-x:auto;border-bottom:2px solid var(--rule);scrollbar-width:none}
+.chbar a{min-height:52px;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;text-decoration:none;font-size:13.5px;color:var(--ink);border-bottom:3px solid transparent;margin-bottom:-2px}
+.chbar a b{font-weight:700;color:var(--mute)}
+.chbar a:hover{color:var(--accent)}
+.chbar a[aria-current="step"]{border-bottom-color:var(--accent);color:var(--accent)}
+.chbar a[aria-current="step"] b{color:var(--accent)}
+.chnav{display:none;gap:4px;justify-content:center}
+.chnav a{min-width:40px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;border:1.5px solid var(--ink);border-radius:999px;font-weight:700;font-size:12px;text-decoration:none;color:var(--ink)}
+.chnav a[aria-current="step"]{background:var(--ink);color:var(--paper)}
+.introL{min-height:720px;padding:80px 0 72px;display:flex;flex-direction:column;justify-content:center;gap:20px}
+.chap{min-height:760px;padding:96px 0 80px;display:flex;flex-direction:column;gap:20px;border-top:2px dashed var(--rule);position:relative;scroll-margin-top:140px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px;position:relative;margin-top:12px;padding-top:18px;border-top:1.5px solid var(--rule)}
+.two>div+div{border-left:1.5px solid var(--rule);padding-left:40px}
+.two h4{margin:0 0 10px;font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:19px;letter-spacing:0}
+.twolink{position:absolute;left:50%;top:-16px;width:60px;margin-left:-30px;height:30px}
+details.nx{border:2px solid var(--ink);border-radius:10px;background:var(--card);padding:0 22px;box-shadow:6px 6px 0 var(--teal)}
+details.nx summary{min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-weight:700;font-size:16px;list-style:none}
+details.nx summary::-webkit-details-marker{display:none}
+details.nx[open] summary .pm{rotate:45deg}
+.pm{transition:rotate .25s}
+@container (max-width: 760px){
+.celgrid{display:block;padding:0 20px}
+.celcol{display:contents}
+.celstick{top:76px;z-index:6;background:var(--paper);border-bottom:2px dashed var(--rule);padding:8px 20px 10px;margin:0 -20px;gap:6px}
+.chbar{display:none}
+.chnav{display:flex}
+.introL{min-height:0;padding:36px 0 40px}
+.chap{min-height:0;padding:56px 0 48px;scroll-margin-top:420px}
+.two{grid-template-columns:minmax(0,1fr);gap:24px}
+.two>div+div{border-left:0;padding-left:0;border-top:1.5px solid var(--rule);padding-top:20px}
+.twolink{display:none}
+}
+</style>
+</helmet>
+<div id="top" class="pg {{rootClass}}" style="width: 100%; min-width: 320px; height: {{h}}px">
+
+<!-- ═════ HEADER ═════ -->
+<header class="hdr" style="position: sticky; top: 0; z-index: 20; height: 76px; flex-shrink: 0; padding: 0 56px; display: flex; align-items: center; justify-content: space-between; gap: 18px; background: var(--paper); border-bottom: 2px dashed var(--rule)">
+<a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg width="38" height="38" sc-camel-view-box="0 0 38 38" aria-hidden="true" style="fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M19 3 C 29 3, 35 10, 35 19 C 35 29, 28 35, 19 35 C 9 35, 3 28, 3 19 C 3 10, 10 4, 20 3"></path><path d="M12 11 L12 27 M12 19 L22 11 M16 16 L23 27" style="stroke: var(--accent)"></path></svg>
+<span class="desk" style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 19px; line-height: 1">Klaas Vanslambrouck</span>
+</a>
+<nav class="nav desk" aria-label="{{t.navLabel}}" style="display: flex; align-items: center; gap: 30px"><a href="/#projects">{{t.work}}</a><a href="/lowi" aria-current="page">LOWI</a><a href="/nidus">Nidus</a><a href="/#contact">Contact</a></nav>
+<div style="display: flex; align-items: center; gap: 8px">
+<div class="seg" role="group" aria-label="{{t.langLabel}}"><button type="button" aria-pressed="{{pr.nl}}" onClick="{{setNl}}">NL</button><button type="button" aria-pressed="{{pr.en}}" onClick="{{setEn}}">EN</button></div>
+<div class="seg" role="group" aria-label="{{t.themeLabel}}"><button type="button" aria-pressed="{{pr.light}}" onClick="{{setLight}}">{{t.light}}</button><button type="button" aria-pressed="{{pr.dark}}" onClick="{{setDark}}">{{t.dark}}</button></div>
+</div>
+</header>
+
+<!-- ═════ CELREIS: tekst links, één sticky cel rechts (beeld 09) ═════ -->
+<div class="celgrid">
+<div class="celcol">
+<div class="celstick">
+<dc-import name="Cel" phase="{{phase}}" theme="{{theme}}" lang="{{lang}}" motion="{{motionProp}}" size="{{cellSize}}" uid="lowi" show-caption="{{ true }}" show-labels="{{ true }}" hint-size="520px,520px"></dc-import>
+<nav class="chnav" aria-label="{{t.chNav}}">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="7"><a href="#{{c.id}}" aria-current="{{c.cur}}" aria-label="{{c.aria}}" onClick="{{c.go}}">{{c.n}}</a></sc-for>
+</nav>
+</div>
+</div>
+
+<div class="textcol">
+<!-- intro -->
+<section class="introL" data-phase="overzicht" data-sk="intro">
+<p class="eyebrow">{{t.eyebrow}}</p>
+<h1 class="h1" style="font-size: {{h1Fs}}px; line-height: 0.9">LOWI</h1>
+<p style="margin: 0; font-size: {{subFs}}px; color: var(--ink)">Lab of Wonder and Imagination</p>
+<p style="margin: 18px 0 0; font-family: 'Alfa Slab One', Georgia, serif; font-size: {{leadFs}}px; line-height: 1.18; max-width: 18ch">{{t.introA1}}<span style="position: relative; display: inline-block">{{t.introU}}<svg aria-hidden="true" sc-camel-view-box="0 0 200 16" sc-camel-preserve-aspect-ratio="none" style="position: absolute; left: -4px; bottom: -8px; width: calc(100% + 8px); height: 14px; overflow: visible"><path class="dr {{sk.intro}} dl2" d="M2 10 C 50 4, 120 14, 198 6" style="stroke: var(--accent); stroke-width: 4"></path></svg></span>{{t.introA2}}</p>
+<p class="body" style="font-size: 20px">{{t.introB}}</p>
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 14px">
+<a href="#lowi-cel-grens" onClick="{{goFirst}}" style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 26px; color: var(--accent); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px">{{t.scroll}} <span aria-hidden="true">↓</span></a>
+<a class="tlink" href="#lowi-projecten" style="font-size: 16px; text-decoration-color: var(--ink)">{{t.skip}}</a>
+</div>
+<span class="hand wr {{sk.intro}} dl3" style="font-size: 26px; transform: rotate(-3deg); transform-origin: left; align-self: flex-start">{{t.noteIntro}}</span>
+</section>
+
+<nav class="chbar" aria-label="{{t.chNav}}">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="7"><a href="#{{c.id}}" aria-current="{{c.cur}}" onClick="{{c.go}}"><b>{{c.n}}</b>{{c.short}}</a></sc-for>
+</nav>
+
+<sc-for list="{{chapters}}" as="ch" hint-placeholder-count="7">
+<section id="{{ch.id}}" class="chap" data-phase="{{ch.phase}}" data-sk="{{ch.sk}}" aria-labelledby="{{ch.id}}-titel" style="min-height: {{ch.minH}}px">
+<p class="eyebrow" style="color: var(--accent)">{{ch.n}} / 07</p>
+<h2 id="{{ch.id}}-titel" class="h2" style="font-size: {{h2Fs}}px">{{ch.title}}</h2>
+<p style="margin: 0; font-weight: 700; font-size: 22px; line-height: 1.35">{{ch.lineA}}<span class="hl {{ch.skc}} dl2">{{ch.lineB}}</span>{{ch.lineC}}</p>
+<div class="two">
+<svg class="twolink" aria-hidden="true" sc-camel-view-box="0 0 60 30" style="overflow: visible"><path class="dr {{ch.skc}} dl3" d="M4 20 C 18 4, 40 4, 54 18" style="stroke: var(--teal); stroke-width: 2.2; stroke-dasharray: 5 5"></path></svg>
+<div><h4 style="color: var(--teal)">{{t.inCell}}</h4><p class="body" style="font-size: 17px">{{ch.cell}}</p></div>
+<div><h4 style="color: var(--accent)">{{t.inLowi}}</h4><p class="body" style="font-size: 17px">{{ch.lowi}}</p></div>
+</div>
+<sc-if value="{{ch.isNidus}}" hint-placeholder-val="{{ false }}">
+<details class="nx" style="margin-top: 14px">
+<summary>{{t.nxSummary}}<span class="pm" aria-hidden="true" style="font-size: 26px; line-height: 1">+</span></summary>
+<div style="padding: 0 0 20px; display: flex; flex-direction: column; gap: 14px">
+<p class="body" style="font-size: 17px">{{t.nxText}}</p>
+<a class="tlink" href="/nidus#nidus-architectuur" style="align-self: flex-start">{{t.nxLink}}</a>
+</div>
+</details>
+</sc-if>
+<sc-if value="{{ch.isDivision}}" hint-placeholder-val="{{ false }}">
+<ol style="list-style: none; margin: 34px 0 0; padding: 0; display: flex; flex-direction: column; gap: 0">
+<sc-for list="{{subs}}" as="sb" hint-placeholder-count="3">
+<li data-phase="{{sb.phase}}" style="min-height: {{subH}}px; display: flex; align-items: flex-start; gap: 16px; padding-top: 8px; border-top: 1.5px dashed var(--rule)">
+<span style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 700; background: {{sb.bg}}; color: {{sb.fg}}">{{sb.k}}</span>
+<span style="font-size: 17px; line-height: 1.5; padding-top: 5px">{{sb.text}}</span>
+</li>
+</sc-for>
+</ol>
+<p class="small" style="margin-top: 6px">{{t.subsNote}}</p>
+</sc-if>
+</section>
+</sc-for>
+</div>
+</div>
+
+<!-- ═════ PROJECTEN: uit één cel twee richtingen ═════ -->
+<section id="lowi-projecten" data-sk="proj" class="sec" style="flex-shrink: 0" aria-labelledby="lowi-slot-titel">
+<div class="split" style="align-items: start">
+<div style="display: flex; flex-direction: column; gap: 18px">
+<p class="eyebrow">{{t.projEyebrow}}</p>
+<h2 id="lowi-slot-titel" class="h2">{{t.projTitle}}</h2>
+<p class="body" style="font-size: 19px">{{t.projText}}</p>
+<div class="desk" style="position: relative; width: 240px; height: 240px; margin-top: 12px">
+<dc-import name="Cel" phase="deling3" theme="{{theme}}" lang="{{lang}}" motion="reduced" size="{{ 240 }}" uid="lowi-split" show-caption="{{ false }}" show-labels="{{ false }}" hint-size="240px,240px"></dc-import>
+</div>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 36px">
+<svg class="desk" aria-hidden="true" sc-camel-view-box="0 0 120 420" style="position: absolute; left: -118px; top: 40px; width: 120px; height: 420px; overflow: visible"><path class="dr {{sk.proj}} dl1" d="M4 250 C 40 250, 50 90, 110 70" style="stroke: var(--teal); stroke-width: 3"></path><path class="dr {{sk.proj}} dl2" d="M98 60 L112 70 L98 82" style="stroke: var(--teal); stroke-width: 3"></path><path class="dr {{sk.proj}} dl2" d="M4 250 C 40 250, 50 380, 110 390" style="stroke: var(--accent); stroke-width: 3"></path><path class="dr {{sk.proj}} dl3" d="M98 380 L112 390 L99 402" style="stroke: var(--accent); stroke-width: 3"></path></svg>
+<article class="card pf {{sk.proj}} dl2" style="display: flex; flex-direction: column; gap: 12px">
+<span class="chip" style="align-self: flex-start; border-color: var(--teal); color: var(--teal)">{{t.nidusStatus}}</span>
+<h3 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 40px">Nidus</h3>
+<p style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.35">{{t.nidusTag}}</p>
+<a class="btn" href="/nidus" style="align-self: flex-start; margin-top: 8px">{{t.nidusCta}} <span aria-hidden="true">↗</span></a>
+</article>
+<article class="card pf {{sk.proj}} dl3" style="display: flex; flex-direction: column; gap: 12px; box-shadow: 8px 8px 0 var(--accent)">
+<span class="chip" style="align-self: flex-start; border-color: var(--accent); color: var(--accent)">{{t.crisprStatus}}</span>
+<h3 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 40px">CRISPR &amp; CHICKN</h3>
+<p style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.35">{{t.crisprTag}}</p>
+</article>
+<a class="tlink" href="/#projects" style="align-self: flex-start; font-size: 17px">{{t.more}} →</a>
+</div>
+</div>
+</section>
+
+<footer class="ftr" style="flex-grow: 1; min-height: 160px; padding: 40px 96px 120px; background: var(--foot); color: var(--footInk); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 24px">
+<span style="font-family: 'Alfa Slab One', Georgia, serif; font-size: 20px">Klaas Vanslambrouck</span>
+<nav class="nav" aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 26px"><a href="#top" style="color: var(--footInk)">{{t.toTop}}</a><a href="/" style="color: var(--footInk)">{{t.home}}</a><a href="/nidus" style="color: var(--footInk)">Nidus</a></nav>
+</footer>
+
+<div style="position: fixed; right: {{jvRight}}px; bottom: {{jvRight}}px; z-index: 40; width: {{jvW}}px; height: 640px; pointer-events: none">
+<dc-import name="Jarvis" lang="{{lang}}" theme="{{theme}}" motion="{{motionProp}}" w="{{jvW}}" pw="{{jvPw}}" h="640" uid="lowi" hint-size="440px,640px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","options":["nl","en"],"default":"nl","section":"Toestand"},"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Toestand"},"motion":{"editor":"enum","options":["full","reduced"],"default":"full","section":"Toestand"},"phase":{"editor":"enum","options":["auto","overzicht","membraan","cytoplasma","kern","ribosomen","mitochondrien","golgi","deling1","deling2","deling3"],"default":"auto","section":"Toestand"},"mobile":{"editor":null,"default":false},"h":{"editor":null,"default":8000},"$preview":{"width":1440,"height":8000}}'>
+class Component extends DCLogic {
+  _motionOK() {
+    if (this.props.motion === 'reduced') return false;
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return false;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    return true;
+  }
+  componentDidMount() {
+    var self = this;
+    this._timers = [];
+    // Celcamera volgt de normale scroll (geen scroll-hijacking): het laatst gepasseerde hoofdstuk bepaalt de stand.
+    this._onScroll = function () {
+      if (self._raf) return;
+      self._raf = requestAnimationFrame(function () {
+        self._raf = null;
+        var doc = document.documentElement;
+        if (doc.scrollHeight <= window.innerHeight + 20) return; // canvasweergave: niet scrollbaar
+        var line = window.innerHeight * 0.5;
+        var active = 'overzicht';
+        Array.prototype.slice.call(document.querySelectorAll('.pg [data-phase]')).forEach(function (el) {
+          if (el.getBoundingClientRect().top < line) active = el.getAttribute('data-phase');
+        });
+        if (active !== (self.state && self.state.phase)) self.setState({ phase: active });
+      });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onScroll);
+    this._onScroll();
+    if (!this._motionOK()) return;
+    this._io = new IntersectionObserver(function (entries) {
+      var on = {}; var any = false;
+      entries.forEach(function (e) { if (e.isIntersecting) { on[e.target.getAttribute('data-sk')] = true; any = true; self._io.unobserve(e.target); } });
+      if (any) self._timers.push(setTimeout(function () { self.setState(function (s) { return { on: Object.assign({}, (s && s.on) || {}, on) }; }); }, 80));
+    }, { threshold: 0.18 });
+    Array.prototype.slice.call(document.querySelectorAll('.pg [data-sk]')).forEach(function (el) { self._io.observe(el); });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onScroll);
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._io) this._io.disconnect();
+    (this._timers || []).forEach(function (t) { clearTimeout(t); });
+  }
+  renderVals() {
+    var self = this;
+    var p = this.props || {};
+    var s = this.state || {};
+    var lang = s.lang || p.lang || 'nl';
+    var theme = s.theme || p.theme || 'light';
+    var mobile = !!p.mobile;
+    var motion = this._motionOK();
+    var phase = p.phase && p.phase !== 'auto' ? p.phase : (s.phase || 'overzicht');
+    var on = s.on || {};
+    var sk = {};
+    ['intro', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'proj'].forEach(function (id) { sk[id] = (!motion || on[id]) ? 'sk-on' : 'sk-wait'; });
+    var NL = {
+      navLabel: 'Hoofdnavigatie', langLabel: 'Taal', themeLabel: 'Thema', light: 'Licht', dark: 'Donker', home: 'Home', work: 'Werk', skip: 'Direct naar de projecten', chNav: 'Hoofdstukken van de cel',
+      eyebrow: 'Een persoonlijk lab van Klaas Vanslambrouck',
+      introA1: 'Ik ', introU: 'onderzoek', introA2: ' hoe dingen werken. En bouw om te ontdekken wat ermee kan.', introB: 'AI, biologie, systemen en verhalen komen hier samen.',
+      scroll: 'Scroll om de cel te openen', noteIntro: 'één cel, zeven blikken',
+      inCell: 'In de cel', inLowi: 'Binnen LOWI',
+      nxSummary: 'Van idee naar systeem · Nidus', nxText: 'De mobiele interface spreekt met nidus-api. De API ontsluit data in Supabase; Raspberry Pi-workers voeren terugkerende taken uit. Interfaces, verwerking en opslag hebben elk hun eigen verantwoordelijkheid.', nxLink: 'Bekijk de architectuur ↗',
+      subs: ['Chromosomen verdeeld over het midden', 'Chromosomen naar twee polen', 'Twee kernen, de cel snoert in'], subsNote: 'Vereenvoudigde overgang — geen biologisch exacte simulatie.',
+      projEyebrow: 'Eén lab. Verschillende richtingen.', projTitle: 'Waar projecten beginnen.',
+      projText: 'LOWI is niet één project. Het is de plek waar projecten vandaan komen. Soms wordt een vraag een systeem dat ik dagelijks gebruik. Soms een verhaal dat een gesprek opent. Dit groeit er nu uit.',
+      nidusStatus: 'In productie · persoonlijk gebruik', nidusTag: 'Het digitale zenuwstelsel van mijn dagelijks leven', nidusCta: 'Ontdek Nidus',
+      crisprStatus: 'In ontwikkeling', crisprTag: 'Theater op het snijvlak van wetenschap, technologie en verbeelding', more: 'Meer werk bekijken', toTop: 'Naar boven'
+    };
+    var EN = {
+      navLabel: 'Main navigation', langLabel: 'Language', themeLabel: 'Theme', light: 'Light', dark: 'Dark', home: 'Home', work: 'Work', skip: 'Skip to the projects', chNav: 'Chapters of the cell',
+      eyebrow: 'A personal lab by Klaas Vanslambrouck',
+      introA1: 'I ', introU: 'explore', introA2: ' how things work. And build to find out what they can do.', introB: 'AI, biology, systems and stories meet here.',
+      scroll: 'Scroll to open the cell', noteIntro: 'one cell, seven views',
+      inCell: 'In the cell', inLowi: 'Within LOWI',
+      nxSummary: 'From idea to system · Nidus', nxText: 'The mobile interface talks to nidus-api. The API exposes data in Supabase; Raspberry Pi workers run recurring tasks. Interfaces, processing and storage each have their own responsibility.', nxLink: 'Explore the architecture ↗',
+      subs: ['Chromosomes lined up at the centre', 'Chromosomes moving to two poles', 'Two nuclei, the cell pinches in'], subsNote: 'Simplified transition — not a biologically exact simulation.',
+      projEyebrow: 'One lab. Different directions.', projTitle: 'Where projects begin.',
+      projText: 'LOWI is not one project. It is where projects come from. Sometimes a question becomes a system I use every day. Sometimes a story that opens a conversation. This is what is growing here.',
+      nidusStatus: 'In production · personal use', nidusTag: 'The digital nervous system of my daily life', nidusCta: 'Explore Nidus',
+      crisprStatus: 'In development', crisprTag: 'Theatre at the intersection of science, technology and imagination', more: 'Explore more work', toTop: 'Back to top'
+    };
+    var t = lang === 'en' ? EN : NL;
+    var CH = lang === 'en' ? [
+      ['The membrane', 'Every lab begins with a ', 'boundary', '.', 'The cell membrane selectively regulates which substances enter and leave. That boundary makes an internal world possible.', 'Not every interesting question becomes a project. Within LOWI, I give a question enough attention to understand it, explore it and build something from it. Focus makes room for depth.'],
+      ['The cytoplasm', 'Not empty, but full of ', 'half-finished things', '.', 'The cytoplasm includes the cytosol and structures outside the nucleus. It is a busy environment for transport and many chemical reactions.', 'Things can be unfinished here. A script, a research question, a first interface. I combine them, test a hunch and change direction when it does not work. An experiment does not have to become a product. It should be clearly recognisable as an experiment.'],
+      ['The nucleus', '', 'Understand first.', ' Then build.', 'The nucleus contains most of the cell’s DNA. Genes carry information that, through RNA, contributes to protein production. DNA does not think; it stores hereditary information.', 'I start by looking: what is actually happening here? Then I try to understand it, see connections and make a model. Building makes that model testable. What the test reveals determines what I need to look at again.'],
+      ['The ribosomes', 'An idea only counts ', 'when it runs', '.', 'Ribosomes read messenger RNA and join amino acids into proteins. Genetic information becomes molecules that do work.', 'Nidus makes that step concrete: data from my daily life comes together in a personal system. An API connects interfaces to data; workers handle recurring tasks. The case shows how these parts work together, and why their boundaries matter.'],
+      ['The mitochondria', '', 'Curiosity', ' is the source of energy.', 'During cellular respiration, mitochondria produce much of the ATP cells use. ATP transfers chemical energy to processes that need it.', 'LOWI exists alongside my work. Here, a question does not need an immediate commercial use or a place on a roadmap. Why does a biological system work this way? What can AI reveal? Can a story help us understand technology? Curiosity gets both time and a workbench.'],
+      ['The Golgi apparatus', 'Becoming usable is ', 'a separate step', '.', 'The Golgi apparatus modifies, sorts and packages proteins and lipids. Transport vesicles carry them to destinations inside or outside the cell.', 'A prototype shows that something is possible. Then comes the work of making it useful: testing, removing unnecessary steps, writing explanations, shaping the interface and controlling access. I want more than to understand how it works. Someone else should be able to take it further.'],
+      ['Division', 'One question grows into ', 'new directions', '.', 'After copying its DNA, an animal cell undergoing mitosis distributes its chromosomes between two nuclei. The cell can then split into two daughter cells.', 'An experiment leaves more than a result. An insight becomes a building block; an unresolved question becomes a new beginning. Nidus and CRISPR & CHICKN take different directions. They share the same habit: investigate, make and look again.']
+    ] : [
+      ['Het membraan', 'Elk lab begint met een ', 'grens', '.', 'Het celmembraan regelt selectief welke stoffen de cel in en uit gaan. Die grens maakt een eigen binnenwereld mogelijk.', 'Niet elke interessante vraag krijgt een project. Binnen LOWI geef ik een vraag genoeg aandacht om ze te begrijpen, te onderzoeken en er iets mee te bouwen. Focus maakt ruimte voor diepgang.'],
+      ['Het cytoplasma', 'Niet leeg, maar vol ', 'half afgewerkte dingen', '.', 'Het cytoplasma omvat het cytosol en de structuren buiten de celkern. Het is een drukke omgeving waarin transport en veel chemische reacties plaatsvinden.', 'Hier mogen dingen onaf zijn. Een script, een onderzoeksvraag, een eerste interface. Ik combineer ze, test een vermoeden en verander van richting als het niet werkt. Een experiment hoeft geen product te worden. Het moet wel eerlijk als experiment herkenbaar blijven.'],
+      ['De kern', '', 'Eerst begrijpen.', ' Dan bouwen.', 'De celkern bevat het grootste deel van het DNA. Genen bevatten informatie die via RNA bijdraagt aan de aanmaak van eiwitten. DNA denkt niet; het is erfelijke informatie.', 'Mijn vertrekpunt is kijken: wat gebeurt hier eigenlijk? Dan probeer ik het te begrijpen, verbanden te zien en er een model van te maken. Bouwen maakt dat model toetsbaar. Wat de test laat zien, bepaalt wat ik opnieuw moet bekijken.'],
+      ['De ribosomen', 'Een idee telt pas ', 'als het draait', '.', 'Ribosomen lezen de informatie in boodschapper-RNA en verbinden aminozuren tot eiwitten. Zo wordt genetische informatie vertaald naar moleculen die werk doen.', 'Nidus maakt die stap concreet: gegevens uit mijn dagelijks leven komen samen in een persoonlijk systeem. Een API verbindt de interfaces met de data; workers verzorgen terugkerende taken. De case laat zien hoe die onderdelen samenwerken, en waarom de grenzen ertussen ertoe doen.'],
+      ['De mitochondriën', '', 'Nieuwsgierigheid', ' is de energiebron.', 'Mitochondriën maken bij de celademhaling veel van het ATP dat cellen gebruiken. ATP draagt chemische energie over aan processen die die nodig hebben.', 'LOWI bestaat naast mijn werk. Hier hoeft een vraag niet meteen commercieel nuttig te zijn of op een roadmap te passen. Waarom werkt een biologisch systeem zo? Wat kan AI zichtbaar maken? Kan een verhaal helpen om technologie te begrijpen? Nieuwsgierigheid krijgt hier tijd én een werkbank.'],
+      ['Het golgi-apparaat', 'Bruikbaar worden is ', 'een aparte stap', '.', 'Het golgi-apparaat bewerkt, sorteert en verpakt eiwitten en lipiden. Transportblaasjes brengen ze naar hun bestemming in of buiten de cel.', 'Een prototype bewijst dat iets kan. Daarna begint het werk om het bruikbaar te maken: testen, overbodige stappen schrappen, uitleg schrijven, de interface verzorgen en toegang goed regelen. Ik wil niet alleen begrijpen hoe het werkt. Iemand anders moet er ook mee verder kunnen.'],
+      ['Deling', 'Uit één vraag groeien ', 'nieuwe richtingen', '.', 'Na het kopiëren van het DNA verdeelt een dierlijke cel bij mitose haar chromosomen over twee kernen. Daarna kan de cel zich splitsen in twee dochtercellen.', 'Een experiment laat meer achter dan een resultaat. Een inzicht wordt een bouwsteen; een onopgeloste vraag wordt een nieuw begin. Nidus en CRISPR & CHICKN gaan verschillende kanten uit. Ze delen dezelfde gewoonte: onderzoeken, maken en opnieuw kijken.']
+    ];
+    var IDS = ['lowi-cel-grens', 'lowi-cel-werkvloer', 'lowi-cel-code', 'lowi-cel-bouwen', 'lowi-cel-brandstof', 'lowi-cel-verfijnen', 'lowi-cel-groei'];
+    var SHORT = lang === 'en' ? ['Membrane', 'Cytoplasm', 'Nucleus', 'Ribosomes', 'Mitochondria', 'Golgi', 'Division'] : ['Membraan', 'Cytoplasma', 'Kern', 'Ribosomen', 'Mitochondriën', 'Golgi', 'Deling'];
+    var PH = ['membraan', 'cytoplasma', 'kern', 'ribosomen', 'mitochondrien', 'golgi', 'deling1'];
+    var rmScroll = motion ? 'smooth' : 'auto';
+    var goTo = function (id, ph) {
+      return function (e) {
+        var el = document.getElementById(id);
+        if (el && el.scrollIntoView) { if (e && e.preventDefault) e.preventDefault(); el.scrollIntoView({ behavior: rmScroll, block: 'start' }); if (history && history.replaceState) history.replaceState(null, '', '#' + id); }
+        self.setState({ phase: ph });
+      };
+    };
+    var activeIdx = phase.indexOf('deling') === 0 ? 6 : PH.indexOf(phase);
+    var chapters = CH.map(function (c, i) {
+      return { id: IDS[i], phase: PH[i], n: '0' + (i + 1), title: c[0], lineA: c[1], lineB: c[2], lineC: c[3], cell: c[4], lowi: c[5],
+        sk: 'c' + (i + 1), skc: sk['c' + (i + 1)], isNidus: i === 3, isDivision: i === 6, minH: i === 6 ? (mobile ? 0 : 1100) : (mobile ? 0 : 760) };
+    });
+    var chips = CH.map(function (c, i) {
+      return { id: IDS[i], n: '0' + (i + 1), short: SHORT[i], aria: '0' + (i + 1) + ' · ' + c[0], cur: i === activeIdx ? 'step' : 'false', go: goTo(IDS[i], PH[i]) };
+    });
+    var subPh = ['deling1', 'deling2', 'deling3'];
+    var subs = t.subs.map(function (x, i) {
+      var act = phase === subPh[i];
+      return { phase: subPh[i], k: 'abc'[i], text: x, bg: act ? 'var(--ink)' : 'transparent', fg: act ? 'var(--paper)' : 'var(--ink)' };
+    });
+    var set = function (k, v) { return function () { var o = {}; o[k] = v; self.setState(o); }; };
+    var cls = [];
+    if (theme === 'dark') cls.push('is-dark');
+    if (!motion) cls.push('is-rm');
+    return {
+      rootClass: cls.join(' '), h: p.h || 8000, t: t, sk: sk, lang: lang, theme: theme, motionProp: motion ? 'full' : 'reduced', phase: phase,
+      pr: { nl: lang === 'nl' ? 'true' : 'false', en: lang === 'en' ? 'true' : 'false', light: theme === 'light' ? 'true' : 'false', dark: theme === 'dark' ? 'true' : 'false' },
+      setNl: set('lang', 'nl'), setEn: set('lang', 'en'), setLight: set('theme', 'light'), setDark: set('theme', 'dark'),
+      chapters: chapters, chips: chips, subs: subs, subH: mobile ? 90 : 220,
+      goFirst: goTo(IDS[0], PH[0]),
+      cellSize: mobile ? 240 : 520, h1Fs: mobile ? 84 : 168, subFs: mobile ? 22 : 30, leadFs: mobile ? 28 : 42, h2Fs: mobile ? 38 : 64,
+      jvW: mobile ? 360 : 440, jvPw: mobile ? 340 : 400, jvRight: mobile ? 12 : 28
+    };
+  }
+}
+</script>
+</body>
+</html>

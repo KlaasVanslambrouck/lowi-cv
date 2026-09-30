@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Jarvis – entry en paneel (bestaand contract)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Caveat:wght@600;700&amp;family=Karla:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap">
+<style>
+body{margin:0}
+.jv{--paper:#F4ECDA;--card:#FAF4E6;--ink:#1D3F4E;--ink2:#33505C;--teal:#256F7B;--accent:#C9461F;--btnInk:#FFFFFF}
+.jv.is-dark{--paper:#102D38;--card:#153846;--ink:#F4ECDA;--ink2:#D6DDD8;--teal:#80BCC0;--accent:#EF936C;--btnInk:#102D38}
+.jv button:focus-visible,.jv input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.jv .jopen:hover{box-shadow:6px 6px 0 var(--ink);translate:-1px -1px}
+.jv .jstart:hover{background:var(--ink);color:var(--paper)}
+.jv .jpanel{animation:jvIn .35s ease both}
+@keyframes jvIn{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
+.jv .jdots span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);animation:jvDot 1s ease-in-out infinite}
+.jv .jdots span:nth-child(2){animation-delay:.15s}.jv .jdots span:nth-child(3){animation-delay:.3s}
+@keyframes jvDot{0%,100%{opacity:.25}50%{opacity:1}}
+.jv.is-rm .jpanel,.jv.is-rm .jdots span{animation:none}
+@media (prefers-reduced-motion: reduce){.jv .jpanel,.jv .jdots span{animation:none}}
+</style>
+</helmet>
+<div class="jv {{rootClass}}" style="width: {{w}}px; height: {{h}}px; position: relative; font-family: Karla, 'Trebuchet MS', sans-serif; color: var(--ink); pointer-events: none">
+<div style="position: absolute; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; pointer-events: auto">
+<sc-if value="{{isOpen}}" hint-placeholder-val="{{ false }}">
+<aside class="jpanel" role="dialog" aria-labelledby="jv-title-{{uid}}" style="width: {{pw}}px; box-sizing: border-box; background: var(--card); border: 2px solid var(--ink); border-radius: 12px; box-shadow: 8px 8px 0 var(--teal); padding: 22px 22px 20px; display: flex; flex-direction: column; gap: 16px; position: relative">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal)">{{t.eyebrow}}</p>
+<h2 id="jv-title-{{uid}}" style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 30px; line-height: 1">{{t.title}}</h2>
+</div>
+<button type="button" aria-label="{{t.close}}" onClick="{{close}}" style="width: 44px; height: 44px; flex-shrink: 0; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" sc-camel-view-box="0 0 14 14" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M2 2 L12 12 M12 2 L2 12"></path></svg></button>
+</div>
+<sc-if value="{{hasContext}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-family: Caveat, cursive; font-weight: 700; font-size: 22px; color: var(--accent); transform: rotate(-1.5deg)">{{t.about}} {{context}}</p>
+</sc-if>
+<div aria-label="{{t.starters}}" style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{starters}}" as="s" hint-placeholder-count="3">
+<button type="button" class="jstart" onClick="{{s.ask}}" style="min-height: 44px; text-align: left; padding: 8px 14px; border: 1.5px solid var(--ink); border-radius: 8px; background: transparent; color: var(--ink); font-family: Karla, sans-serif; font-size: 15px; cursor: pointer">{{s.q}}</button>
+</sc-for>
+</div>
+<form onSubmit="{{submit}}" style="display: flex; flex-direction: column; gap: 6px; margin: 0">
+<label for="jv-in-{{uid}}" style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase">{{t.label}}</label>
+<div style="display: flex; gap: 8px">
+<input id="jv-in-{{uid}}" value="{{query}}" onChange="{{onType}}" placeholder="{{t.placeholder}}" style="flex-grow: 1; min-width: 0; height: 48px; box-sizing: border-box; padding: 0 14px; border: 2px solid var(--ink); border-radius: 8px; background: var(--paper); color: var(--ink); font-family: Karla, sans-serif; font-size: 15px">
+<button type="submit" disabled="{{askDisabled}}" style="height: 48px; padding: 0 18px; border: 0; border-radius: 8px; background: var(--accent); color: var(--btnInk); font-family: Karla, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; opacity: {{askOpacity}}">{{t.ask}}</button>
+</div>
+</form>
+<div aria-live="polite" style="display: flex; flex-direction: column; gap: 10px">
+<sc-if value="{{hasQuestion}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 2px"><p style="margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal)">{{t.questionLabel}}</p><p style="margin: 0; font-size: 15px">{{query}}</p></div>
+</sc-if>
+<sc-if value="{{isLoading}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 15px"><span class="jdots" style="display: flex; gap: 5px"><span></span><span></span><span></span></span>{{t.loading}}</div>
+</sc-if>
+<sc-if value="{{isAnswer}}" hint-placeholder-val="{{ false }}">
+<div style="border-left: 3px solid var(--teal); padding: 4px 0 4px 12px; display: flex; flex-direction: column; gap: 4px">
+<p style="margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal)">{{t.answerLabel}}</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink2)">{{t.answerSlot}}</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal)">{{t.followUp}}</p>
+<p style="margin: 0; font-size: 13.5px; color: var(--ink2); font-style: italic">{{t.followUpNote}}</p>
+</div>
+</sc-if>
+<sc-if value="{{isError}}" hint-placeholder-val="{{ false }}">
+<p role="alert" style="margin: 0; border: 2px solid var(--accent); border-radius: 8px; padding: 12px 14px; font-size: 15px; line-height: 1.45">{{t.error}}</p>
+</sc-if>
+<sc-if value="{{hasQuestion}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14.5px">{{t.contactPrompt}} <a href="#contact" onClick="{{close}}" style="color: var(--ink); font-weight: 700; text-decoration-color: var(--accent); text-underline-offset: 4px">Contact</a></p>
+</sc-if>
+</div>
+</aside>
+</sc-if>
+<button type="button" class="jopen" aria-expanded="{{expanded}}" onClick="{{toggle}}" style="min-height: 52px; padding: 0 22px; border: 2px solid var(--ink); border-radius: 999px; background: var(--card); color: var(--ink); box-shadow: 4px 4px 0 var(--ink); font-family: Karla, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(201,70,31,0.18)"></span>{{t.open}}</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","options":["nl","en"],"default":"nl","section":"Jarvis"},"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Jarvis"},"motion":{"editor":"enum","options":["full","reduced"],"default":"full","section":"Jarvis"},"forceState":{"editor":"enum","options":["auto","closed","open","typing","loading","answer","error"],"default":"auto","section":"Jarvis"},"open":{"editor":null},"context":{"editor":null},"onClose":{"editor":null},"onToggle":{"editor":null},"w":{"editor":null,"default":440},"h":{"editor":null,"default":640},"pw":{"editor":null,"default":400},"uid":{"editor":null,"default":"j"},"$preview":{"width":440,"height":640}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props || {};
+    var s = this.state || {};
+    var self = this;
+    var lang = p.lang === 'en' ? 'en' : 'nl';
+    var T = {
+      en: { eyebrow: 'grounded Q&A', title: 'Ask Jarvis', close: 'Close Jarvis', starters: 'Starter questions', label: 'Your question', placeholder: 'Ask about experience, projects or LOWI...', ask: 'Ask', open: 'Ask about my work', about: '',
+        q: ['What did Klaas build in Nidus?', 'Is he open to new roles?', 'Summarize his experience.'],
+        loading: 'Jarvis is searching the portfolio context...', questionLabel: 'Question', answerLabel: 'Answer', answerSlot: '[answer text from nidus-api /api/portfolio/jarvis]', followUp: 'Follow up', followUpNote: '[suggestedQuestions from the API, as chips]',
+        error: 'Jarvis could not fetch an answer right now. Please try again shortly.', contactPrompt: 'Questions about a role?' },
+      nl: { eyebrow: 'grounded Q&A', title: 'Vraag Jarvis', close: 'Sluit Jarvis', starters: 'Startvragen', label: 'Je vraag', placeholder: 'Stel een vraag over ervaring, projecten of LOWI...', ask: 'Vraag', open: 'Vraag over mijn werk', about: '',
+        q: ['Wat bouwde Klaas in Nidus?', 'Is hij open voor nieuwe rollen?', 'Vat zijn ervaring samen.'],
+        loading: 'Jarvis zoekt in de portfolio-context...', questionLabel: 'Vraag', answerLabel: 'Antwoord', answerSlot: '[antwoordtekst uit nidus-api /api/portfolio/jarvis]', followUp: 'Verder vragen', followUpNote: '[suggestedQuestions uit de API, als chips]',
+        error: 'Jarvis kon nu geen antwoord ophalen. Probeer straks opnieuw.', contactPrompt: 'Vragen over een rol?' }
+    }[lang];
+    var force = p.forceState && p.forceState !== 'auto' ? p.forceState : null;
+    var open = force ? force !== 'closed' : (p.open !== undefined && p.open !== null ? !!p.open : !!s.open);
+    var phase = force ? force : (s.phase || 'idle');
+    var query = force === 'typing' || force === 'loading' || force === 'answer' || force === 'error' ? T.q[0] : (s.query || '');
+    var rm = p.motion === 'reduced';
+    var cls = [];
+    if (p.theme === 'dark') cls.push('is-dark');
+    if (rm) cls.push('is-rm');
+    function run(q) {
+      self.setState({ query: q, phase: 'loading' });
+      clearTimeout(self._t);
+      self._t = setTimeout(function () { self.setState({ phase: 'answer' }); }, 1400);
+    }
+    return {
+      rootClass: cls.join(' '), w: p.w || 440, h: p.h || 640, pw: p.pw || 400, uid: p.uid || 'j', t: T,
+      isOpen: open, expanded: open ? 'true' : 'false',
+      hasContext: false, context: p.context || '',
+      starters: T.q.map(function (q) { return { q: q, ask: function () { run(q); } }; }),
+      query: query, askDisabled: !query, askOpacity: query ? 1 : 0.45,
+      isLoading: phase === 'loading', isAnswer: phase === 'answer', isError: phase === 'error', hasQuestion: phase === 'loading' || phase === 'answer' || phase === 'error',
+      onType: function (e) { self.setState({ query: e.target.value, phase: 'idle' }); },
+      submit: function (e) { if (e && e.preventDefault) e.preventDefault(); if (query) run(query); },
+            toggle: function () { if (p.onToggle) p.onToggle(); else self.setState({ open: !open }); },
+      close: function () { if (p.onClose) p.onClose(); else self.setState({ open: false }); }
+    };
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+}
+</script>
+</body>
+</html>

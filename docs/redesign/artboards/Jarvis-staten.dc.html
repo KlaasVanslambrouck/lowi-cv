@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Jarvis – toestanden</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Caveat:wght@600;700&amp;family=Karla:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; height: 1720px; box-sizing: border-box; padding: 64px 40px; background: {{bg}}; color: {{fg}}; font-family: Karla, 'Trebuchet MS', sans-serif; display: flex; flex-direction: column; gap: 36px">
+<header style="display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding: 0 56px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; font-weight: 700; font-size: 13px; letter-spacing: 2.6px; text-transform: uppercase; color: {{teal}}">Component · Jarvis</p>
+<h1 style="margin: 0; font-family: 'Alfa Slab One', Georgia, serif; font-weight: 400; font-size: 64px; line-height: 1">Zes toestanden, bestaand contract.</h1>
+</div>
+<p style="margin: 0; max-width: 56ch; font-size: 16px; line-height: 1.55">Structuur en teksten uit components/jarvis/JarvisAsk.tsx (dialog met titel, sluitknop, drie startvragen, gelabelde invoer, uitgeschakelde vraagknop bij lege invoer, aria-live-zone). Teksten, startvragen, laad- en foutmelding komen letterlijk uit JarvisAsk.tsx; antwoordtekst en vervolgvragen komen uit nidus-api en zijn hier gemarkeerd.</p>
+</header>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 24px; justify-items: center">
+<sc-for list="{{states}}" as="s" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
+<p style="margin: 0; font-family: Caveat, cursive; font-weight: 700; font-size: 28px; color: {{accent}}">{{s.label}}</p>
+<div style="width: 440px; height: 640px; border: 1.5px dashed {{rule}}; border-radius: 8px">
+<dc-import name="Jarvis" force-state="{{s.state}}" lang="nl" theme="{{theme}}" motion="reduced" w="440" pw="400" h="640" uid="{{s.uid}}" context="{{s.ctx}}" hint-size="440px,640px"></dc-import>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="flex-grow: 1"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Toestand"},"$preview":{"width":1440,"height":1720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var dark = this.props && this.props.theme === 'dark';
+    var S = [['closed', '1 · gesloten', ''], ['open', '2 · open', ''], ['typing', '3 · invoer', ''], ['loading', '4 · laden', ''], ['answer', '5 · antwoord (bestaande weergave)', ''], ['error', '6 · fout + herstel', '']];
+    return {
+      theme: dark ? 'dark' : 'light', bg: dark ? '#102D38' : '#F4ECDA', fg: dark ? '#F4ECDA' : '#1D3F4E', teal: dark ? '#80BCC0' : '#256F7B', accent: dark ? '#EF936C' : '#C9461F', rule: dark ? '#35596A' : '#CDBB94',
+      states: S.map(function (s, i) { return { state: s[0], label: s[1], ctx: s[2], uid: 'js' + i }; })
+    };
+  }
+}
+</script>
+</body>
+</html>
