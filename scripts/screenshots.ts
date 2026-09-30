@@ -1,5 +1,13 @@
-// Vóór/na-screenshots van de Nidus-embed (NidusMockups) voor het redesign.
-// Zie docs/redesign/HANDOFF.md, "Beslissingen" §4. Draait buiten npm test.
+// Vóór/na-screenshots voor het redesign. Zie docs/redesign/HANDOFF.md,
+// "Beslissingen" §4 en §5. Draait buiten npm test.
+//
+// Twee doelen (--target):
+// - nidus-embed (standaard): NidusMockups, zie hieronder;
+// - lowi: volledige pagina's /lowi en /en/lowi op 1440 en 390 px, licht en
+//   donker, naar docs/redesign/page-screenshots/<label>/. Zonder reduced motion,
+//   zoals een gewone bezoeker de pagina ziet.
+//
+//   npm run screenshots -- --target lowi --label lowi-voor
 //
 //   npm run screenshots -- --label baseline          start zelf `next dev` op poort 3217
 //   npm run screenshots -- --label na-fase-2
@@ -29,6 +37,13 @@ import { chromium, type Locator, type Page } from "playwright";
 
 const PORT = 3217;
 const OUT_ROOT = path.join("docs", "redesign", "embed-screenshots");
+const PAGE_OUT_ROOT = path.join("docs", "redesign", "page-screenshots");
+const TARGETS = ["nidus-embed", "lowi"] as const;
+type Target = (typeof TARGETS)[number];
+const LOWI_PATHS = [
+  { id: "nl", path: "/lowi" },
+  { id: "en", path: "/en/lowi" },
+] as const;
 const POSITIONS_FILE = "posities.json";
 
 const DEVICES = [
@@ -55,16 +70,19 @@ function parseArgs(args: readonly string[]): {
   url: string | null;
   compare: string | null;
   alignLabel: string | null;
+  target: Target;
 } {
   let label: string | null = null;
   let url: string | null = null;
   let compare: string | null = null;
   let alignLabel: string | null = null;
+  let target: string = "nidus-embed";
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--label") label = args[++i] ?? null;
     else if (args[i] === "--url") url = args[++i] ?? null;
     else if (args[i] === "--compare") compare = args[++i] ?? null;
     else if (args[i] === "--align-to") alignLabel = args[++i] ?? null;
+    else if (args[i] === "--target") target = args[++i] ?? "";
     else throw new Error(`Onbekend argument: ${args[i]}`);
   }
   if (!label || !LABEL_PATTERN.test(label)) {
@@ -75,7 +93,60 @@ function parseArgs(args: readonly string[]): {
       throw new Error(`${flag} verwacht een bestaande label.`);
     }
   }
-  return { label, url: url?.replace(/\/+$/, "") ?? null, compare, alignLabel };
+  if (!(TARGETS as readonly string[]).includes(target)) {
+    throw new Error(`--target verwacht ${TARGETS.join(" of ")}.`);
+  }
+  return {
+    label,
+    url: url?.replace(/\/+$/, "") ?? null,
+    compare,
+    alignLabel,
+    target: target as Target,
+  };
+}
+
+// Volledige pagina's /lowi en /en/lowi. Na het laden scrolt de pagina één keer
+// helemaal door, zodat eenmalige accenten en lazy inhoud in hun eindtoestand staan.
+async function captureLowiPages(
+  browser: import("playwright").Browser,
+  baseUrl: string,
+  outDir: string,
+): Promise<void> {
+  for (const theme of THEMES) {
+    for (const viewport of VIEWPORTS) {
+      for (const lowi of LOWI_PATHS) {
+        const context = await browser.newContext({
+          viewport,
+          deviceScaleFactor: 1,
+          colorScheme: theme.value,
+        });
+        await context.addInitScript((value) => {
+          try {
+            window.localStorage.setItem("cv-theme", value);
+          } catch {
+            // zonder localStorage volgt het thema colorScheme
+          }
+        }, theme.value);
+        await context.route("**/api/track", (route) => route.abort());
+
+        const page = await context.newPage();
+        await page.goto(`${baseUrl}${lowi.path}`, { waitUntil: "networkidle" });
+        await page.waitForSelector(`html[data-cv-theme="${theme.value}"]`);
+        await page.evaluate(() => document.fonts.ready);
+        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < height; y += viewport.height / 2) {
+          await page.mouse.wheel(0, viewport.height / 2);
+          await page.waitForTimeout(120);
+        }
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.waitForTimeout(1500);
+        const file = `lowi-${lowi.id}-${theme.id}-${viewport.width}.png`;
+        await page.screenshot({ path: path.join(outDir, file), fullPage: true });
+        console.log(`✓ ${file}`);
+        await context.close();
+      }
+    }
+  }
 }
 
 // Byte-vergelijking: dezelfde Chromium codeert dezelfde pixels identiek.
@@ -201,8 +272,25 @@ async function placeAt(mockups: Locator, part: Locator, target: Position | null)
 }
 
 async function main(): Promise<void> {
-  const { label, url, compare, alignLabel } = parseArgs(process.argv.slice(2));
+  const { label, url, compare, alignLabel, target } = parseArgs(process.argv.slice(2));
   const baseUrl = url ?? `http://localhost:${PORT}`;
+
+  if (target === "lowi") {
+    const pageOutDir = path.join(PAGE_OUT_ROOT, label);
+    mkdirSync(pageOutDir, { recursive: true });
+    const server = url ? null : startDevServer();
+    const browser = await chromium.launch();
+    try {
+      await waitForServer(`${baseUrl}/lowi`, 180_000);
+      await captureLowiPages(browser, baseUrl, pageOutDir);
+    } finally {
+      await browser.close();
+      if (server) stopDevServer(server);
+    }
+    console.log(`\nKlaar: ${pageOutDir}`);
+    return;
+  }
+
   const outDir = path.join(OUT_ROOT, label);
   mkdirSync(outDir, { recursive: true });
 

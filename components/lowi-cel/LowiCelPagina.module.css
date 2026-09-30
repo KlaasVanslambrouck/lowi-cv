@@ -1,118 +1,621 @@
-﻿.page {
-  min-height: 100dvh;
-  background: var(--cv-bg);
-  color: var(--cv-text);
-  --lowi-ease: cubic-bezier(.2,.72,.2,1);
+/* ---------------------------------------------------------------------------
+   LOWI-pagina, redesign. Bron: docs/redesign/artboards/Lowi.dc.html
+   (.celgrid/.celstick/.chbar/.chnav/.chap/.two/.nx). Tokens uit
+   styles/sketchbook.module.css. Inhoud max. 1248 px breed, zoals de andere
+   pagina's; mobiel 1.25rem rand.
+--------------------------------------------------------------------------- */
+
+.pagina :is(a, summary, button):focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
-.hoofdstukkenContainer { position: relative; isolation: isolate; display: grid; }
-.hoofdstukken { position: relative; grid-area: 1 / 1; width: 100%; max-width: 80rem; margin: auto; }
-.intro { padding: 8rem 2rem 3rem; }
-.kicker, .nummer, .label, .annotation, .mobieleAnnotatie, .projectStatus {
-  font-family: var(--cv-font-mono);
-  font-size: .7rem;
+
+.eyebrow {
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1625rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.tekstLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  align-self: flex-start;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.tekstLink:hover {
+  color: var(--accent);
+}
+
+/* ===== Raster: tekst links, sticky cel rechts ===== */
+
+.celgrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 64px;
+  padding: 0 max(96px, calc((100% - 1248px) / 2));
+}
+
+.tekstKolom {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.celKolom {
+  position: relative;
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.celPlek {
+  position: sticky;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 0 40px;
+}
+
+.cel {
+  width: min(100%, 520px);
+}
+
+/* nummerknoppen onder de cel: alleen mobiel */
+.hoofdstukKnoppen {
+  display: none;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hoofdstukKnoppen a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 44px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.hoofdstukKnoppen a[aria-current="step"] {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+/* ===== Intro ===== */
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  min-height: 720px;
+  padding: 80px 0 72px;
+}
+
+/* overschrijft de h1-regel uit app/globals.css */
+.titel {
+  color: var(--ink);
+  font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: .065em;
-  line-height: 1.65;
-  color: var(--cv-muted);
+  font-size: clamp(5.25rem, 11vw, 10.5rem);
+  line-height: 0.9;
+  letter-spacing: -1px;
 }
-.kicker { max-width: 24rem; margin-bottom: 1.5rem; }
-.titel { font-family: var(--cv-font-serif); font-size: clamp(5rem, 9vw, 8.8rem); font-weight: 500; letter-spacing: -.055em; line-height: 1; }
-.ondertitel { color: var(--cv-copper); font-family: var(--cv-font-mono); font-size: clamp(.8rem, 1.1vw, 1rem); margin-top: 1.3rem; }
-.introTekst { max-width: 29rem; color: var(--cv-text-soft); margin-top: 2rem; font-size: 1.1rem; line-height: 1.8; text-wrap: pretty; }
-.scrollHint { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 44px; margin-top: 2rem; color: var(--cv-text-soft); font-size: .85rem; text-decoration: none; }
-.scrollHint span { color: var(--cv-copper); }
-.hoofdstuk { padding: 4rem 2rem; scroll-margin-top: 8rem; }
-.tekstvlak { max-width: 32rem; }
-.nummer { color: color-mix(in srgb, var(--hoofdstuk-accent) 80%, var(--cv-text)); margin-bottom: 1.2rem; }
-.hoofdstukTitel, .slotTitel { font-family: var(--cv-font-serif); font-size: clamp(2.4rem, 3.8vw, 3.5rem); font-weight: 500; line-height: 1.12; letter-spacing: -.035em; text-wrap: balance; }
-.kernzin { font-size: 1.12rem; line-height: 1.55; margin-top: 1.25rem; text-wrap: pretty; }
-.label { display: block; margin-bottom: .65rem; font-size: .65rem; text-transform: uppercase; letter-spacing: .14em; }
-.biologie { margin-top: 2rem; color: var(--cv-muted); font-size: .9rem; line-height: 1.8; max-width: 29rem; }
-.lowi { margin-top: 1.65rem; color: var(--cv-text-soft); font-size: 1.02rem; line-height: 1.85; text-wrap: pretty; }
-.bewijs { margin-top: 1.5rem; border-top: 1px solid var(--cv-border); font-size: .85rem; line-height: 1.8; }
-.bewijs summary { cursor: pointer; padding-block: .8rem; min-height: 44px; color: var(--cv-text-soft); }
-.bewijs p { margin-block: .5rem 1rem; color: var(--cv-muted); }
-.bewijs a { display: inline-block; min-height: 44px; text-underline-offset: .3em; }
-.stilbeeld { margin-top: 2rem; overflow: hidden; aspect-ratio: 1; border-radius: 50%; background: #08070a; }
-.stilbeeld img { width: 100%; height: 100%; object-fit: cover; }
-.mobieleAnnotatie { margin-top: 1rem; font-size: .6rem; }
-.sceneLaag { display: none; }
-.canvasVlak { width: 100%; height: 100%; }
-.slot { max-width: 76rem; margin: auto; padding: 7rem 2rem 6rem; border-top: 1px solid var(--cv-border); scroll-margin-top: 6rem; }
-.slotTitel { max-width: 42rem; font-size: clamp(2.7rem, 5vw, 4.8rem); }
-.slotTekst { max-width: 36rem; margin-top: 1.7rem; font-size: 1.1rem; line-height: 1.85; color: var(--cv-text-soft); text-wrap: pretty; }
-.projecten { margin-top: 3.5rem; max-width: 54rem; }
-.project { display: grid; grid-template-columns: 5rem 1fr; gap: 1.8rem; align-items: center; padding-block: 2rem; border-top: 1px solid var(--cv-border); }
-.project:last-child { border-bottom: 1px solid var(--cv-border); }
-.project h3 { font-family: var(--cv-font-serif); font-size: 1.8rem; font-weight: 500; margin-block: .45rem; }
-.project p:not(.projectStatus) { color: var(--cv-text-soft); max-width: 33rem; font-size: .95rem; }
-.projectStatus { font-size: .65rem; }
-.projectSignatuur { display: block; width: 4.5rem; height: 4.5rem; border: 1px solid color-mix(in srgb, var(--cv-copper) 50%, transparent); border-radius: 48% 52% 58% 42%; position: relative; }
-.projectSignatuur::after { content: ''; position: absolute; inset: 1.15rem; border: 1px solid var(--cv-copper); border-radius: 50%; }
-.projectSignatuur[data-richting='1'] { border-color: color-mix(in srgb, var(--cv-violet) 60%, transparent); border-radius: 58% 42% 40% 60%; }
-.projectSignatuur[data-richting='1']::after { border-color: var(--cv-violet); inset: .9rem 1.4rem; transform: rotate(30deg); }
-.slotActies { display: flex; flex-wrap: wrap; gap: 1.75rem; align-items: center; margin-top: 2.5rem; }
-.cta { display: inline-flex; align-items: center; gap: 2rem; min-height: 48px; padding: .8rem 1.4rem; border: 1px solid var(--cv-copper); border-radius: 999px; text-decoration: none; font-size: .95rem; transition: background-color 180ms ease; }
-.secondary { display: inline-flex; gap: 1rem; align-items: center; min-height: 44px; font-size: .9rem; text-decoration: underline; text-underline-offset: .35em; }
-.jarvis { margin-top: 2.5rem; }
-.skipLink { position: fixed; top: 1rem; left: 1rem; z-index: 100; padding: .75rem 1rem; background: var(--cv-bg); transform: translateY(-200%); }
-.skipLink:focus { transform: none; }
-.page :is(a, summary):focus-visible { outline: 2px solid var(--cv-copper); outline-offset: 5px; }
-.page [data-lowi-reveal] { transition: opacity 480ms var(--lowi-ease), transform 480ms var(--lowi-ease); }
-.page [data-reveal='pending'] { opacity: 0; transform: translateY(10px); }
-.page [data-reveal='visible'], .page [data-lowi-reveal]:focus-within { opacity: 1; transform: none; }
-@media (hover: hover) and (pointer: fine) {
-  .cta:hover { background: color-mix(in srgb, var(--cv-copper) 12%, transparent); }
-  .scrollHint:hover, .secondary:hover { color: var(--cv-copper); }
-  .markering:hover { color: var(--cv-text); }
+
+.ondertitel {
+  color: var(--ink);
+  font-size: clamp(1.375rem, 1.5vw + 0.9rem, 1.875rem);
+  line-height: 1.3;
 }
-@media (min-width: 768px) and (min-height: 501px) and (prefers-reduced-motion: no-preference) {
-  :is(.scrollPagina, .wachtPagina) .sceneLaag { display: block; grid-area: 1 / 1; align-self: start; position: sticky; top: 0; height: 100svh; pointer-events: none; }
-  .canvasSlot { position: absolute; inset: 13% max(2rem, calc((100vw - 80rem) / 2)) 16% 49%; overflow: hidden; border-radius: 48% 49% 46% 48%; background: #08070a url('/lowi/cell/exterior.webp') center / cover; }
-  .sceneVoet { position: absolute; left: 50%; right: max(2rem, calc((100vw - 80rem) / 2)); bottom: 5%; }
-  .annotation { text-align: center; font-size: .59rem; margin-bottom: .7rem; }
-  .indicator { position: relative; display: flex; justify-content: center; gap: .1rem; pointer-events: auto; width: max-content; max-width: 100%; margin: auto; padding-top: .5rem; }
-  .markering { display: grid; place-items: center; width: 44px; height: 44px; color: var(--cv-muted); font: .65rem var(--cv-font-mono); text-decoration: none; }
-  .markering[aria-current] { color: var(--cv-text); text-decoration: underline; text-decoration-color: var(--cv-copper); text-underline-offset: .5rem; }
-  .progress { position: absolute; top: 0; left: 12px; right: 12px; height: 1px; background: var(--cv-border); }
-  .progress::after { content: ''; display: block; height: 1px; background: var(--cv-copper); transform: scaleX(var(--scroll-progress, 0)); transform-origin: left; }
-  :is(.scrollPagina, .wachtPagina) .hoofdstukken { pointer-events: none; }
-  :is(.scrollPagina, .wachtPagina) :is(.intro, .hoofdstuk) { width: 46%; padding-inline: 2rem; min-height: 90svh; display: flex; flex-direction: column; justify-content: center; }
-  :is(.scrollPagina, .wachtPagina) .intro { min-height: 85svh; padding-top: 6rem; padding-bottom: 4rem; }
-  :is(.scrollPagina, .wachtPagina) .hoofdstuk { padding-block: 4rem; }
-  :is(.scrollPagina, .wachtPagina) .tekstvlak, :is(.scrollPagina, .wachtPagina) .intro > * { pointer-events: auto; }
-  :is(.scrollPagina, .wachtPagina) :is(.stilbeeld, .mobieleAnnotatie) { display: none; }
+
+.lead {
+  max-width: 18ch;
+  margin-top: 18px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.4vw + 1rem, 2.625rem);
+  line-height: 1.18;
 }
-@media (min-width: 768px) {
-  .artikelPagina .intro { max-width: 48rem; margin: auto; }
-  .artikelPagina .intro .stilbeeld { max-width: 32rem; }
-  .artikelPagina .hoofdstuk { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; max-width: 76rem; margin: auto; }
-  .artikelPagina .stilbeeld { margin: 0; }
+
+.introTekst {
+  color: var(--ink2);
+  font-size: 1.25rem;
+  line-height: 1.6;
 }
-@media (max-width: 1024px) and (min-width: 768px) {
-  .hoofdstukTitel { font-size: 2.6rem; }
-  .canvasSlot { left: 50%; right: 1.5rem; inset-block: 22% 22%; }
-  .introTekst { font-size: 1rem; }
-  .lowi { font-size: .95rem; }
+
+.introLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 14px;
 }
-@media (max-width: 767px) {
-  .intro { padding: 7rem 1.5rem 2rem; }
-  .kicker { font-size: .64rem; max-width: 18rem; }
-  .titel { font-size: 5.7rem; }
-  .introTekst { font-size: 1.1rem; }
-  .hoofdstuk { padding: 3.5rem 1.5rem 2.5rem; border-top: 1px solid var(--cv-border); scroll-margin-top: 5rem; }
-  .hoofdstukTitel { font-size: 2.8rem; }
-  .biologie { font-size: .95rem; }
-  .lowi { font-size: 1.05rem; line-height: 1.85; }
-  .stilbeeld { margin-inline: -.25rem; }
-  .slot { padding: 4rem 1.5rem; }
-  .project { grid-template-columns: 3rem 1fr; gap: 1.25rem; }
-  .projectSignatuur { width: 3rem; height: 3rem; }
-  .projectSignatuur::after { inset: .75rem; }
-  .projectSignatuur[data-richting='1']::after { inset: .6rem .9rem; }
-  .project h3 { font-size: 1.65rem; }
+
+.scrollHint {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
 }
+
+/* ===== Hoofdstukbalk (desktop) ===== */
+
+.hoofdstukBalk {
+  position: sticky;
+  top: 76px;
+  z-index: 8;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  border-bottom: 2px solid var(--rule);
+  background-color: var(--paper);
+  scrollbar-width: none;
+}
+
+.hoofdstukBalk a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 52px;
+  margin-bottom: -2px;
+  border-bottom: 3px solid transparent;
+  color: var(--ink);
+  font-size: 0.84375rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hoofdstukBalk a b {
+  color: var(--mute);
+  font-weight: 700;
+}
+
+.hoofdstukBalk a:hover {
+  color: var(--accent);
+}
+
+.hoofdstukBalk a[aria-current="step"],
+.hoofdstukBalk a[aria-current="step"] b {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ===== Hoofdstukken ===== */
+
+.hoofdstuk {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 760px;
+  padding: 96px 0 80px;
+  border-top: 2px dashed var(--rule);
+  scroll-margin-top: 140px;
+}
+
+.hoofdstuk:first-of-type {
+  border-top: 0;
+}
+
+.hoofdstukDeling {
+  min-height: 1100px;
+}
+
+.nummer {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1625rem;
+  text-transform: uppercase;
+}
+
+/* overschrijft de h2-regel uit app/globals.css */
+.hoofdstukTitel {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.375rem, 3.5vw + 1rem, 4rem);
+  line-height: 1.04;
+}
+
+.kernzin {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1.35;
+}
+
+.twee {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  margin-top: 12px;
+  padding-top: 18px;
+  border-top: 1.5px solid var(--rule);
+}
+
+.twee > div + div {
+  padding-left: 40px;
+  border-left: 1.5px solid var(--rule);
+}
+
+.tweeLink {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  width: 60px;
+  max-width: none;
+  height: 30px;
+  margin-left: -30px;
+  overflow: visible;
+}
+
+.tweeLink path {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2.2;
+  stroke-dasharray: 5 5;
+  stroke-linecap: round;
+}
+
+/* overschrijft de h3-regel uit app/globals.css */
+.tweeKop {
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.2;
+}
+
+.tweeKopCel {
+  color: var(--teal);
+}
+
+.tweeKopLowi {
+  color: var(--accent);
+}
+
+.tweeTekst {
+  color: var(--ink2);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+}
+
+/* Uitklapper "Van idee naar systeem · Nidus" */
+.bewijs {
+  margin-top: 14px;
+  padding: 0 22px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background-color: var(--card);
+  box-shadow: 6px 6px 0 var(--teal);
+}
+
+.bewijs summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  font-weight: 700;
+  font-size: 1rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.bewijs summary::-webkit-details-marker {
+  display: none;
+}
+
+.plus {
+  font-size: 1.625rem;
+  line-height: 1;
+  transition: rotate 250ms;
+}
+
+.bewijs[open] .plus {
+  rotate: 45deg;
+}
+
+.bewijsInhoud {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 20px;
+}
+
+/* Drie deelstanden van de deling */
+.deelstappen {
+  display: flex;
+  flex-direction: column;
+  margin-top: 34px;
+}
+
+.deelstap {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-height: 220px;
+  padding-top: 8px;
+  border-top: 1.5px dashed var(--rule);
+}
+
+.deelstapLetter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  color: var(--ink);
+  font-weight: 700;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
+}
+
+.deelstapActief {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+.deelstapTekst {
+  padding-top: 5px;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+.deelstappenNoot {
+  margin-top: 6px;
+  color: var(--mute);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+/* ===== Projecten ===== */
+
+.projecten {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  align-items: start;
+  gap: 72px;
+  padding: 112px max(96px, calc((100% - 1248px) / 2));
+  border-top: 2px dashed var(--rule);
+  scroll-margin-top: 76px;
+}
+
+.projecten:focus {
+  outline: none;
+}
+
+.projectenKop {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* overschrijft de h2-regel uit app/globals.css */
+.projectenTitel {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 3vw + 1.2rem, 3.5rem);
+  line-height: 1.04;
+}
+
+.projectenTekst {
+  color: var(--ink2);
+  font-size: 1.1875rem;
+  line-height: 1.62;
+}
+
+.kleineCel {
+  width: 240px;
+  margin-top: 12px;
+}
+
+.projectenKaarten {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.projectenPijlen {
+  position: absolute;
+  top: 40px;
+  left: -118px;
+  width: 120px;
+  max-width: none;
+  height: 420px;
+  overflow: visible;
+}
+
+.projectenPijlen path {
+  stroke-width: 3;
+}
+
+.kaart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 34px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background-color: var(--card);
+  box-shadow: 8px 8px 0 var(--teal);
+}
+
+.kaartAccent {
+  box-shadow: 8px 8px 0 var(--accent);
+}
+
+.status {
+  align-self: flex-start;
+  padding: 6px 11px;
+  border: 1.5px solid var(--teal);
+  border-radius: 999px;
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.125rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.statusAccent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* overschrijft de h3-regel uit app/globals.css */
+.kaartTitel {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 1.5vw + 1.4rem, 2.5rem);
+  line-height: 1.1;
+}
+
+.kaartTagline {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+/* ===== Tablet ===== */
+
+@media (max-width: 1100px) {
+  .celgrid,
+  .projecten {
+    gap: 48px;
+    padding-inline: 48px;
+  }
+
+  .projectenPijlen {
+    display: none;
+  }
+}
+
+/* ===== Mobiel: kleine sticky cel bovenaan, nummerknoppen ===== */
+
+@media (max-width: 760px) {
+  .celgrid {
+    display: block;
+    padding: 0 1.25rem;
+  }
+
+  .celKolom {
+    display: contents;
+  }
+
+  .celPlek {
+    top: 76px;
+    z-index: 6;
+    gap: 6px;
+    margin: 0 -1.25rem;
+    padding: 8px 1.25rem 10px;
+    border-bottom: 2px dashed var(--rule);
+    background-color: var(--paper);
+  }
+
+  .cel {
+    width: 240px;
+  }
+
+  .hoofdstukKnoppen {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .hoofdstukBalk {
+    display: none;
+  }
+
+  .intro {
+    min-height: 0;
+    padding: 36px 0 40px;
+  }
+
+  .hoofdstuk,
+  .hoofdstukDeling {
+    min-height: 0;
+    padding: 56px 0 48px;
+    scroll-margin-top: 420px;
+  }
+
+  .twee {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .twee > div + div {
+    padding-top: 20px;
+    padding-left: 0;
+    border-top: 1.5px solid var(--rule);
+    border-left: 0;
+  }
+
+  .tweeLink {
+    display: none;
+  }
+
+  .deelstap {
+    min-height: 90px;
+  }
+
+  .projecten {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+    padding: 72px 1.25rem;
+  }
+
+  .kleineCel {
+    display: none;
+  }
+
+  .kaart {
+    padding: 24px;
+    box-shadow: 6px 6px 0 var(--teal);
+  }
+
+  .kaartAccent {
+    box-shadow: 6px 6px 0 var(--accent);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .page [data-lowi-reveal] { opacity: 1; transform: none; transition: none; }
-  .page :is(a, summary) { transition: none; }
+  .plus,
+  .deelstapLetter {
+    transition: none;
+  }
 }

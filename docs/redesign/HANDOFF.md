@@ -199,3 +199,41 @@ in de commitboodschap.
 - **Baseline vóór fase 1**, op de huidige stand: Nidus-embed Web/Mobiel × Vandaag/Energie
   × licht/donker, op 1440 en 390 px. Zonder baseline is er straks niets om mee te
   vergelijken.
+
+### 5. Fase 4: celmodel via route (a), SVG
+
+Nieuw SVG-component volgens `Cel.dc.html`, in plaats van de R3F-scene.
+
+- **Zonder JS:** de server rendert de SVG in de overzichtsstand; een volledige cel
+  met labels.
+- **Reduced motion:** de cel springt direct naar elke stand, zonder de camerabeweging
+  van 850 ms en zonder wobble-filter. De pauzeknop blijft.
+- **Thema:** verandert alleen CSS-variabelen; de SVG wordt niet opnieuw opgebouwd.
+- **Labels:** HTML, geen SVG-`<text>`, in NL en EN uit `content/lowiCellContent.ts`
+  of een nieuw contentbestand. De clamp/flip-logica uit `Cel.dc.html` gaat mee, zodat
+  labels op 320 px niet buiten beeld vallen.
+- **Deling:** de drie deelstanden werken via `[data-phase]` in `useScrollVoortgang`.
+  De bestaande `data-section-id`'s, analytics-events en `SceneBoundary` blijven
+  ongewijzigd.
+- **Copy:** `// TODO concept-copy` bij alle nieuwe teksten. Het bijschrift
+  "Artistieke visualisatie · niet op schaal" blijft staan tot Klaas de nieuwe tekst
+  bevestigt.
+- **Screenshots:** vóór/na van `/lowi` en `/en/lowi` op 1440 en 390 px, licht en donker.
+
+### 6. three.js opruimen: aparte commit na fase 4
+
+Pas na een zoekactie over de hele repo:
+
+```
+rg "three|@react-three|three-stdlib" --glob "!node_modules" --glob "!docs/**"
+```
+
+Let vooral op `components/biotech-case/experiment/LabScene.tsx`,
+`ArchitectureScene*.tsx`, `SkillConstellationCanvas.tsx` en de `/cases`-routes.
+
+- Gebruikt geen enkel ander bestand three: verwijder `three`, `@react-three/fiber`,
+  `@react-three/drei`, `@react-three/postprocessing`, `three-stdlib` en `@types/three`.
+- Gebruikt iets buiten LOWI of home het nog: laat de packages staan en verwijder
+  alleen de LOWI-scene, `DnaHelix`, de 8 stills en de ongebruikte home-3D-componenten.
+- In beide gevallen eerst melden wat er gevonden is, vóór de commit.
+- Daarna typecheck, lint, test en build, en de bundelgrootte vóór en na vergelijken.

@@ -1,0 +1,710 @@
+/* ---------------------------------------------------------------------------
+   SVG-celmodel. Bron: docs/redesign/artboards/Cel.dc.html (.cel-stijlen).
+   Kleuren alleen via CSS-variabelen: een themawissel verandert het materiaal,
+   nooit de tekening of de stand. Basiskleuren uit styles/sketchbook.module.css;
+   de celeigen tinten staan hieronder, met hetzelfde themamechanisme.
+--------------------------------------------------------------------------- */
+
+.cel {
+  --cel-soft: #e9dfc8;
+  --cel-kern: #7e7fa8;
+  --cel-er: #5b8c9e;
+  --cel-goud: #d39b32;
+  --cel-terra: #c0643c;
+  --cel-cytosol: #e8ddc4;
+  --cel-paper: var(--paper, #f4ecda);
+  --cel-ink: var(--ink, #1d3f4e);
+  --cel-teal: var(--teal, #256f7b);
+  --cel-accent: var(--accent, #c9461f);
+  --cel-marker: var(--marker, #f0b233);
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  color: var(--cel-ink);
+  font-family: var(--font-body, var(--cv-font-sans));
+}
+
+:global(html[data-cv-theme="dark"]) .cel,
+:global(html:not([data-cv-theme])) .cel {
+  --cel-soft: #17394a;
+  --cel-kern: #a9aacc;
+  --cel-er: #86b6c4;
+  --cel-goud: #d6a94d;
+  --cel-terra: #e08a63;
+  --cel-cytosol: #163a48;
+}
+
+@media (prefers-color-scheme: light) {
+  :global(html:not([data-cv-theme])) .cel {
+    --cel-soft: #e9dfc8;
+    --cel-kern: #7e7fa8;
+    --cel-er: #5b8c9e;
+    --cel-goud: #d39b32;
+    --cel-terra: #c0643c;
+    --cel-cytosol: #e8ddc4;
+  }
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ===== Camera, lagen, beweging ===== */
+
+.camera {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  transition: transform 850ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+/* Getekende, licht golvende lijnen; uit bij reduced motion. */
+.wobbel {
+  filter: var(--cel-wobbel);
+}
+
+.laag {
+  transition: opacity 600ms ease;
+}
+
+.mito {
+  transform-box: view-box;
+  transition:
+    transform 850ms cubic-bezier(0.45, 0, 0.2, 1),
+    opacity 600ms ease;
+}
+
+.deeltje {
+  animation: drift 11s ease-in-out infinite alternate;
+}
+
+.deeltje1 {
+  animation-duration: 13s;
+  animation-delay: -4s;
+}
+
+.deeltje2 {
+  animation-duration: 9s;
+  animation-delay: -2s;
+}
+
+.deeltje3 {
+  animation-duration: 15s;
+  animation-delay: -7s;
+}
+
+@keyframes drift {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: 9px -7px;
+  }
+}
+
+.transportBlaasje {
+  animation: transportA 7s ease-in-out infinite;
+}
+
+.transport1 {
+  animation-name: transportB;
+  animation-duration: 8s;
+  animation-delay: -3s;
+}
+
+.transport2 {
+  animation-name: transportC;
+  animation-duration: 9s;
+  animation-delay: -5s;
+}
+
+@keyframes transportA {
+  0% { translate: 0 0; opacity: 0; }
+  12% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { translate: 40px -32px; opacity: 0; }
+}
+
+@keyframes transportB {
+  0% { translate: 0 0; opacity: 0; }
+  12% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { translate: 14px -104px; opacity: 0; }
+}
+
+@keyframes transportC {
+  0% { translate: 0 0; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { translate: -60px 36px; opacity: 0; }
+}
+
+.gepauzeerd .deeltje,
+.gepauzeerd .transportBlaasje {
+  animation-play-state: paused;
+}
+
+/* ===== Vormen ===== */
+
+.arceringLijn {
+  stroke: var(--cel-ink);
+  stroke-width: 0.7;
+  stroke-opacity: 0.32;
+}
+
+.cytosolStop0 {
+  stop-color: var(--cel-paper);
+  stop-opacity: 0.2;
+}
+
+.cytosolStop1 {
+  stop-color: var(--cel-cytosol);
+  stop-opacity: 0.75;
+}
+
+.cytosolStop2 {
+  stop-color: var(--cel-er);
+  stop-opacity: 0.35;
+}
+
+.stip1 {
+  fill: var(--cel-ink);
+  fill-opacity: 0.45;
+}
+
+.stip2 {
+  fill: var(--cel-ink);
+  fill-opacity: 0.35;
+}
+
+.membraan {
+  stroke: var(--cel-ink);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+.membraanLijn {
+  fill: none;
+  stroke: var(--cel-ink);
+  stroke-width: 0.9;
+  stroke-opacity: 0.55;
+}
+
+.cytoskelet {
+  fill: none;
+  stroke: var(--cel-teal);
+  stroke-width: 0.9;
+  stroke-opacity: 0.45;
+  stroke-dasharray: 5 3;
+}
+
+.vrijeRibosomen {
+  fill: var(--cel-ink);
+}
+
+.deeltjes {
+  fill: var(--cel-teal);
+}
+
+.gladERRand,
+.gladERBinnen {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gladERRand {
+  stroke: var(--cel-er);
+  stroke-width: 9;
+}
+
+.gladERBinnen {
+  stroke: var(--cel-soft);
+  stroke-width: 4.6;
+}
+
+.ruwER {
+  fill: var(--cel-er);
+  fill-opacity: 0.34;
+  stroke: var(--cel-ink);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.ruwERAansluiting {
+  fill: none;
+  stroke: var(--cel-ink);
+  stroke-width: 1.5;
+}
+
+.ruwERRibosomen {
+  fill: none;
+  stroke: var(--cel-ink);
+  stroke-width: 3.6;
+  stroke-linecap: round;
+  stroke-dasharray: 0 7.5;
+}
+
+.kernBuiten {
+  fill: var(--cel-kern);
+  fill-opacity: 0.32;
+  stroke: var(--cel-ink);
+  stroke-width: 2;
+}
+
+.kernBinnen {
+  fill: var(--cel-kern);
+  fill-opacity: 0.22;
+  stroke: var(--cel-ink);
+  stroke-width: 1.3;
+}
+
+.kernporien {
+  fill: var(--cel-paper);
+  stroke: var(--cel-ink);
+  stroke-width: 1.1;
+}
+
+.chromatine,
+.chromatineDeling {
+  fill: none;
+  stroke: var(--cel-ink);
+  stroke-opacity: 0.7;
+  stroke-linecap: round;
+}
+
+.chromatine {
+  stroke-width: 1.3;
+}
+
+.chromatineDeling {
+  stroke-width: 1.2;
+}
+
+.nucleolusRand {
+  stroke: var(--cel-ink);
+  stroke-width: 1.4;
+}
+
+.nucleolus {
+  fill: var(--cel-kern);
+  fill-opacity: 0.75;
+}
+
+.golgi {
+  fill: var(--cel-goud);
+  fill-opacity: 0.55;
+  stroke: var(--cel-ink);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.blaasjes {
+  stroke: var(--cel-ink);
+  stroke-width: 1.3;
+}
+
+.blaasjeER {
+  fill: var(--cel-er);
+  fill-opacity: 0.45;
+}
+
+.lysosoom {
+  fill: var(--cel-accent);
+  fill-opacity: 0.22;
+}
+
+.geenRand {
+  stroke: none;
+}
+
+.transport {
+  fill: var(--cel-marker);
+  fill-opacity: 0.8;
+}
+
+.mitoBuiten {
+  fill: var(--cel-terra);
+  fill-opacity: 0.42;
+  stroke: var(--cel-ink);
+  stroke-width: 1.7;
+}
+
+.mitoBinnen {
+  fill: var(--cel-goud);
+  fill-opacity: 0.28;
+  stroke: var(--cel-ink);
+  stroke-width: 1;
+}
+
+.cristae {
+  fill: none;
+  stroke: var(--cel-terra);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.spoel {
+  fill: none;
+  stroke: var(--cel-teal);
+  stroke-width: 0.9;
+  stroke-opacity: 0.6;
+}
+
+.evenaar {
+  stroke-dasharray: 4 4;
+}
+
+.chromosomen {
+  fill: none;
+  stroke: var(--cel-accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pool {
+  fill: var(--cel-ink);
+}
+
+.insnoering {
+  fill: none;
+  stroke: var(--cel-accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.voorzijde {
+  fill: var(--cel-soft);
+  fill-opacity: 0.86;
+}
+
+.voorzijdeLicht {
+  fill: none;
+  stroke: var(--cel-paper);
+  stroke-width: 6;
+  stroke-opacity: 0.7;
+  stroke-linecap: round;
+}
+
+/* ===== Labels (HTML) ===== */
+
+.label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  animation: labelIn 450ms 550ms both;
+}
+
+@keyframes labelIn {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.labelPunt {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--cel-accent);
+  box-shadow: 0 0 0 3px var(--cel-paper);
+}
+
+.labelLijn {
+  flex-shrink: 0;
+  max-width: none;
+  overflow: visible;
+}
+
+.labelLijn path {
+  fill: none;
+  stroke: var(--cel-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.labelTekst {
+  padding: 5px 10px;
+  border: 1.5px solid var(--cel-ink);
+  background-color: var(--cel-paper);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.0125rem;
+  white-space: nowrap;
+}
+
+/* ===== Detailvergroting ===== */
+
+.lens {
+  position: absolute;
+  width: 36%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 2px solid var(--cel-ink);
+  border-radius: 50%;
+  background-color: var(--cel-paper);
+  box-shadow: 5px 5px 0 var(--cel-teal);
+  animation: lensIn 500ms 600ms both;
+}
+
+.lens svg {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+}
+
+@keyframes lensIn {
+  from {
+    opacity: 0;
+    scale: 0.92;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.lensRechts {
+  right: 3%;
+  bottom: 7%;
+}
+
+.lensLinks {
+  left: 3%;
+  bottom: 6%;
+  width: 38%;
+}
+
+.lensTitel,
+.lensSchaal {
+  position: absolute;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.lensTitel {
+  top: 11%;
+  right: 0;
+  left: 0;
+  padding: 0 16%;
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+.lensSchaal {
+  right: 18%;
+  bottom: 7%;
+  left: 18%;
+  font-size: 0.625rem;
+}
+
+.lensLijnen {
+  fill: none;
+  stroke: var(--cel-ink);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.lensKoppen {
+  fill: var(--cel-marker);
+  stroke: var(--cel-ink);
+  stroke-width: 1.3;
+}
+
+.lensEiwit {
+  fill: var(--cel-teal);
+  fill-opacity: 0.35;
+  stroke: var(--cel-ink);
+  stroke-width: 1.6;
+}
+
+.lensER {
+  fill: var(--cel-teal);
+  fill-opacity: 0.16;
+}
+
+.lensERLijn,
+.lensERLijnDun {
+  fill: none;
+  stroke: var(--cel-ink);
+}
+
+.lensERLijn {
+  stroke-width: 2;
+}
+
+.lensERLijnDun {
+  stroke-width: 1.2;
+}
+
+.lensMRNA {
+  fill: none;
+  stroke: var(--cel-accent);
+  stroke-width: 1.6;
+  stroke-dasharray: 3 3;
+}
+
+.lensRibosomen {
+  stroke: var(--cel-ink);
+  stroke-width: 1.5;
+}
+
+.lensGroot {
+  fill: var(--cel-marker);
+  fill-opacity: 0.7;
+}
+
+.lensKlein {
+  fill: var(--cel-marker);
+  fill-opacity: 0.4;
+}
+
+.lensKetens {
+  fill: none;
+  stroke: var(--cel-ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+/* ===== Kader: stand, bijschrift, pauzeknop ===== */
+
+.kop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px 2px;
+  pointer-events: none;
+}
+
+.stand {
+  color: var(--cel-accent);
+  font-family: var(--font-note, cursive);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  transform: rotate(-3deg);
+}
+
+/* Kleine cel (< 360 px, bv. mobiel) */
+.klein .stand {
+  font-size: 1.125rem;
+}
+
+.stempel {
+  padding: 3px 10px;
+  border: 3px double var(--cel-teal);
+  color: var(--cel-teal);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.09375rem;
+  text-transform: uppercase;
+  transform: rotate(4deg);
+}
+
+.bijschrift {
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  color: var(--cel-ink);
+  font-size: 0.75rem;
+  letter-spacing: 0.025rem;
+  line-height: 1.3;
+  opacity: 0.85;
+}
+
+.pauze {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid var(--cel-ink);
+  background-color: var(--cel-paper);
+  color: var(--cel-ink);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.8125rem;
+}
+
+.pauze svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.pauze:hover {
+  background-color: var(--cel-ink);
+  color: var(--cel-paper);
+}
+
+.pauze:focus-visible {
+  outline: 3px solid var(--cel-accent);
+  outline-offset: 2px;
+}
+
+/* ===== Zonder beweging: reduced motion of een stille cel ===== */
+
+.stil .camera,
+.stil .laag,
+.stil .mito {
+  transition: none;
+}
+
+.stil .deeltje,
+.stil .transportBlaasje,
+.stil .label,
+.stil .lens {
+  animation: none;
+}
+
+.stil .wobbel {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camera,
+  .laag,
+  .mito {
+    transition: none;
+  }
+
+  .deeltje,
+  .transportBlaasje,
+  .label,
+  .lens {
+    animation: none;
+  }
+
+  .wobbel {
+    filter: none;
+  }
+}

@@ -1,54 +1,73 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 
-/** Native scroll; refs for pixels, React state only for chapter boundaries. */
-export function useScrollVoortgang(containerRef: RefObject<HTMLElement | null>, aantalHoofdstukken: number, actief: boolean) {
-  const voortgangRef = useRef(0);
-  const [actiefHoofdstukIndex, setActiefHoofdstukIndex] = useState(0);
-  const [inBeeld, setInBeeld] = useState(false);
+// Een stand of hoofdstuk "gaat in" zodra de bovenrand deze lijn passeert
+// (50 % van de viewporthoogte), zoals in docs/redesign (Overdracht §3).
+export const FASE_LIJN = 0.5;
+
+// Het laatste element (in documentvolgorde) waarvan de bovenrand boven de lijn
+// ligt; null als er nog geen voorbij is.
+export function laatsteBovenLijn<T>(
+  elementen: readonly T[],
+  bovenrand: (element: T) => number,
+  lijn: number,
+): T | null {
+  let laatste: T | null = null;
+  for (const element of elementen) {
+    if (bovenrand(element) < lijn) laatste = element;
+  }
+  return laatste;
+}
+
+// Native scroll, geen scroll-hijacking. Leest binnen de container:
+// - [data-phase]: de stand van de cel (hoofdstukken en de drie deelstanden
+//   van de deling);
+// - [data-section-id]: het actieve hoofdstuk voor de hoofdstukbalk. De
+//   deelstanden hebben bewust geen data-section-id, zodat analytics en het
+//   aantal hoofdstukken gelijk blijven.
+// Metingen gaan per animatieframe, zodat scrollen niet elke pixel rendert.
+export function useScrollVoortgang(
+  containerRef: RefObject<HTMLElement | null>,
+  actief = true,
+): { actieveFase: string | null; actiefHoofdstukIndex: number } {
+  const [actieveFase, setActieveFase] = useState<string | null>(null);
+  const [actiefHoofdstukIndex, setActiefHoofdstukIndex] = useState(-1);
+
   useEffect(() => {
     const container = containerRef.current;
-    if (!actief || !container || aantalHoofdstukken < 1) return;
-    let frame = 0, vorig = -1;
-    let zichtbaar = false;
-    const secties = [...container.querySelectorAll<HTMLElement>('[data-section-id]')];
-    const meter = container.querySelector<HTMLElement>('[data-lowi-progress]');
+    if (!actief || !container) return;
+
+    const fasen = [...container.querySelectorAll<HTMLElement>("[data-phase]")];
+    const hoofdstukken = [...container.querySelectorAll<HTMLElement>("[data-section-id]")];
+    const bovenrand = (element: HTMLElement) => element.getBoundingClientRect().top;
+    let frame = 0;
+
     function meet() {
       frame = 0;
-      if (!zichtbaar || document.hidden) return;
-      const vh = window.innerHeight;
-      let p = 0, index = 0;
-      secties.forEach((sectie, i) => {
-        const top = sectie.getBoundingClientRect().top;
-        // Copy enters at 85% of the viewport; camera follows at 58%.
-        if (top < vh * .58) {
-          index = i;
-          p = (i + Math.min(1, Math.max(0, (vh * .58 - top) / (vh * .36)))) / aantalHoofdstukken;
-        }
-      });
-      voortgangRef.current = p;
-      meter?.style.setProperty('--scroll-progress', String(p));
-      if (index !== vorig) { vorig = index; setActiefHoofdstukIndex(index); }
+      const lijn = window.innerHeight * FASE_LIJN;
+      setActieveFase(laatsteBovenLijn(fasen, bovenrand, lijn)?.dataset.phase ?? null);
+      const hoofdstuk = laatsteBovenLijn(hoofdstukken, bovenrand, lijn);
+      setActiefHoofdstukIndex(hoofdstuk ? hoofdstukken.indexOf(hoofdstuk) : -1);
     }
-    function plan() { if (!frame) frame = requestAnimationFrame(meet); }
-    function visibility() { setInBeeld(zichtbaar && !document.hidden); plan(); }
-    const observer = new IntersectionObserver(entries => {
-      zichtbaar = entries.some(e => e.isIntersecting);
-      visibility();
-    });
-    observer.observe(container.querySelector('[data-lowi-canvas-slot]') ?? container);
+
+    function plan() {
+      if (!frame) frame = requestAnimationFrame(meet);
+    }
+
+    plan();
     const resize = new ResizeObserver(plan);
     resize.observe(container);
-    window.addEventListener('scroll', plan, { passive: true });
-    window.addEventListener('resize', plan);
-    document.addEventListener('visibilitychange', visibility);
+    window.addEventListener("scroll", plan, { passive: true });
+    window.addEventListener("resize", plan);
+
     return () => {
-      observer.disconnect(); resize.disconnect(); cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', plan);
-      window.removeEventListener('resize', plan);
-      document.removeEventListener('visibilitychange', visibility);
+      cancelAnimationFrame(frame);
+      resize.disconnect();
+      window.removeEventListener("scroll", plan);
+      window.removeEventListener("resize", plan);
     };
-  }, [actief, aantalHoofdstukken, containerRef]);
-  return { voortgangRef, actiefHoofdstukIndex, inBeeld: actief && inBeeld };
+  }, [actief, containerRef]);
+
+  return { actieveFase, actiefHoofdstukIndex };
 }

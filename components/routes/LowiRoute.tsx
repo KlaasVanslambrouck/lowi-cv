@@ -1,5 +1,8 @@
-import ControlStack from "@/components/ControlStack";
 import JsonLd from "@/components/JsonLd";
+import PortfolioDesign from "@/components/PortfolioDesign";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
+import JarvisAsk from "@/components/jarvis/JarvisAsk";
 import LowiCelPagina from "@/components/lowi-cel/LowiCelPagina";
 import { placeholderContent } from "@/content/placeholderContent";
 import { SessionInsightProvider } from "@/context/SessionInsightContext";
@@ -9,7 +12,6 @@ import { lowiPage } from "@/lib/localizedPages";
 import { pageLanguageLinks } from "@/lib/site";
 import { lowiGraph } from "@/lib/structuredData";
 import type { Language } from "@/types/content";
-import styles from "@/components/lowi-cel/LowiCelPagina.module.css";
 
 // Gedeeld door app/(nl)/lowi/page.tsx en app/(en)/en/lowi/page.tsx. De
 // metadata staat in lib/localizedPages.ts.
@@ -28,10 +30,16 @@ export default function LowiRoute({ language }: LowiRouteProps) {
       <TranslationProvider alternatePath={alternatePath}>
         <ThemeProvider>
           <SessionInsightProvider>
-            <main className={styles.page}>
-              <ControlStack labels={placeholderContent.uiLabels} showXray={false} />
-              <LowiCelPagina projects={placeholderContent.lowi.projects.map(({ name, status, tagline }) => ({ name, status, tagline }))} />
-            </main>
+            <PortfolioDesign>
+              <SiteHeader labels={placeholderContent.uiLabels} current="lowi" />
+              <main>
+                <LowiCelPagina
+                  projects={placeholderContent.lowi.projects.map(({ name, status, tagline }) => ({ name, status, tagline }))}
+                />
+              </main>
+              <SiteFooter current="lowi" />
+              <JarvisAsk />
+            </PortfolioDesign>
           </SessionInsightProvider>
         </ThemeProvider>
       </TranslationProvider>
