@@ -1,0 +1,106 @@
+/* ---------------------------------------------------------------------------
+   Tokens van het redesign ("schetsboek"). Bron: docs/redesign/artboards/Stijl.dc.html.
+
+   Alleen geldig binnen .portfolioDesign (zie components/PortfolioDesign.tsx).
+   De --cv-*-tokens in app/globals.css blijven bestaan: NidusMockups en de
+   pagina's die nog niet herwerkt zijn gebruiken ze.
+
+   Bewust NIET op deze wrapper:
+   - line-height, font-size, letter-spacing: die erft NidusMockups (.nidusFrame
+     zet ze niet zelf) en de embed moet intern identiek blijven;
+   - descendant-regels zoals `.portfolioDesign a` of `:focus-visible`: die
+     zouden in de embed doorwerken. Componenten stylen hun eigen elementen;
+   - container-type: dat maakt de wrapper het containing block voor
+     position: fixed (Jarvis-knop, scrim). Mobiel gaat via @media.
+
+   Thema volgt html[data-cv-theme] (ThemeProvider), met dezelfde fallback als
+   globals.css zolang dat attribuut er nog niet is: donker, tenzij het systeem
+   licht verkiest. X-ray staat los van het thema (data-xray="on").
+--------------------------------------------------------------------------- */
+
+.portfolioDesign {
+  /* licht */
+  --paper: #f4ecda;
+  --card: #faf4e6;
+  --ink: #1d3f4e;
+  --ink2: #33505c;
+  --mute: #4a6570;
+  --teal: #256f7b;
+  --accent: #c9461f;
+  --marker: #f0b233;
+  --hlc: 240 178 51; /* markeerstift als RGB-kanalen: rgb(var(--hlc) / .78) */
+  --rule: #cdbb94;
+  --dot: rgb(29 63 78 / 0.13);
+  --grid: rgb(37 111 123 / 0.16);
+  --btn-ink: #ffffff;
+  --foot: #1d3f4e;
+  --foot-ink: #f4ecda;
+
+  /* families: variabelen van next/font in components/RootDocument.tsx */
+  --font-display: var(--font-alfa-slab-one), Georgia, serif;
+  --font-body: var(--font-karla), "Trebuchet MS", sans-serif;
+  --font-note: var(--font-caveat), cursive;
+
+  /* timings van de schetsaccenten */
+  --motion-line: 700ms;
+  --motion-marker: 550ms;
+  --motion-strike: 380ms;
+  --motion-note: 650ms;
+  --motion-stamp: 450ms;
+  --motion-connector: 2400ms;
+  --motion-camera: 850ms;
+
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--dot) 1.3px, transparent 1.7px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+:global(html[data-cv-theme="dark"]) .portfolioDesign,
+:global(html:not([data-cv-theme])) .portfolioDesign {
+  --paper: #102d38;
+  --card: #153846;
+  --ink: #f4ecda;
+  --ink2: #d6ddd8;
+  --mute: #a9bcbf;
+  --teal: #80bcc0;
+  --accent: #ef936c;
+  --marker: #d6a94d;
+  --hlc: 214 169 77;
+  --rule: #35596a;
+  --dot: rgb(244 236 218 / 0.08);
+  --grid: rgb(128 188 192 / 0.13);
+  --btn-ink: #102d38;
+  --foot: #0a222c;
+  --foot-ink: #f4ecda;
+}
+
+/* Nog geen data-cv-theme en het systeem verkiest licht: terug naar licht. */
+@media (prefers-color-scheme: light) {
+  :global(html:not([data-cv-theme])) .portfolioDesign {
+    --paper: #f4ecda;
+    --card: #faf4e6;
+    --ink: #1d3f4e;
+    --ink2: #33505c;
+    --mute: #4a6570;
+    --teal: #256f7b;
+    --accent: #c9461f;
+    --marker: #f0b233;
+    --hlc: 240 178 51;
+    --rule: #cdbb94;
+    --dot: rgb(29 63 78 / 0.13);
+    --grid: rgb(37 111 123 / 0.16);
+    --btn-ink: #ffffff;
+    --foot: #1d3f4e;
+    --foot-ink: #f4ecda;
+  }
+}
+
+/* X-ray: ruitraster in plaats van puntraster, in beide thema's. */
+.portfolioDesign[data-xray="on"] {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+}

@@ -1,0 +1,287 @@
+/* ---------------------------------------------------------------------------
+   Schetsaccenten. Bron: docs/redesign/artboards/Stijl.dc.html
+   (.dr/.drs/.drl/.hl/.wr/.st en de delay-trappen .dl1–.dl6).
+
+   Kleuren en timings komen uit styles/sketchbook.module.css; buiten
+   .portfolioDesign vallen ze terug op de --cv-*-tokens.
+   De wachttoestand staat alleen onder @media screen: afdrukken toont altijd
+   de eindtoestand. SVG's zetten max-width: none, want app/globals.css geeft
+   elke svg max-width: 100% en de lijnen steken bewust iets buiten hun tekst.
+--------------------------------------------------------------------------- */
+
+/* ===== Delay-trappen en tonen ===== */
+
+.delay1 { --sk-delay: 150ms; }
+.delay2 { --sk-delay: 500ms; }
+.delay3 { --sk-delay: 850ms; }
+.delay4 { --sk-delay: 1200ms; }
+.delay5 { --sk-delay: 1550ms; }
+.delay6 { --sk-delay: 1900ms; }
+
+.toneAccent { --sk-stroke: var(--accent, var(--cv-copper)); }
+.toneTeal { --sk-stroke: var(--teal, var(--cv-blue)); }
+
+/* ===== Lijnvoering (.dr kort, .drs doorhaling, .drl lange connector) ===== */
+
+.line,
+.strikeLine,
+.longLine {
+  fill: none;
+  stroke: var(--sk-stroke, var(--accent, var(--cv-copper)));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.line {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--motion-line, 700ms)
+    cubic-bezier(0.65, 0, 0.35, 1) var(--sk-delay, 0ms);
+}
+
+.strikeLine {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--motion-strike, 380ms)
+    cubic-bezier(0.5, 0, 0.5, 1) var(--sk-delay, 0ms);
+}
+
+.longLine {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--motion-connector, 2400ms)
+    cubic-bezier(0.55, 0, 0.35, 1) var(--sk-delay, 0ms);
+}
+
+/* ===== Handschrift-onthulling (.wr): masker van links naar rechts ===== */
+
+.write {
+  clip-path: inset(-20% -6% -20% -6%);
+  transition: clip-path var(--motion-note, 650ms) cubic-bezier(0.5, 0, 0.5, 1)
+    var(--sk-delay, 0ms);
+}
+
+/* ===== Highlight (markeerstift) ===== */
+
+.highlight {
+  background-image: linear-gradient(
+    100deg,
+    rgb(var(--hlc, 240 178 51) / 0) 0,
+    rgb(var(--hlc, 240 178 51) / 0.78) 3%,
+    rgb(var(--hlc, 240 178 51) / 0.62) 95%,
+    rgb(var(--hlc, 240 178 51) / 0) 100%
+  );
+  background-repeat: no-repeat;
+  background-position: 0 80%;
+  background-size: 100% 46%;
+  padding: 0 4px;
+  margin: 0 -4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size var(--motion-marker, 550ms)
+    cubic-bezier(0.65, 0, 0.35, 1) var(--sk-delay, 0ms);
+}
+
+/* ===== Underline ===== */
+
+.underline {
+  position: relative;
+  display: inline-block;
+}
+
+.underlineSvg {
+  position: absolute;
+  left: -4px;
+  bottom: -9px;
+  width: calc(100% + 8px);
+  max-width: none;
+  height: 14px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.underlineSvg .line {
+  stroke-width: 3.5;
+}
+
+/* ===== Strike (doorhaling + correctie) ===== */
+
+.struck {
+  position: relative;
+  display: inline-block;
+  color: var(--mute, var(--cv-muted));
+  text-decoration: none;
+}
+
+.strikeSvg {
+  position: absolute;
+  left: -6px;
+  top: 42%;
+  width: calc(100% + 12px);
+  max-width: none;
+  height: 16px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.strikeLine {
+  stroke-width: 4;
+}
+
+.correction {
+  display: inline-block;
+  font-family: var(--font-note, cursive);
+  font-weight: 700;
+  font-size: 1.2em;
+  color: var(--accent, var(--cv-copper));
+  text-decoration: none;
+  transform: rotate(-3deg);
+  /* streep (380 ms) + 120 ms pauze; bij delay 1 geeft dat 620 ms (.dlc) */
+  transition-delay: calc(var(--sk-delay, 0ms) + 470ms);
+}
+
+/* ===== MarginNote (kantlijnnotitie) ===== */
+
+.note {
+  display: inline-block;
+  font-family: var(--font-note, cursive);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: var(--accent, var(--cv-copper));
+  transform: rotate(var(--note-rotate, -4deg));
+  transform-origin: left center;
+}
+
+.notePlaced {
+  position: absolute;
+  left: var(--note-x, 0);
+  top: var(--note-y, 0);
+  white-space: nowrap;
+}
+
+/* Mobiel: de notitie schuift in de tekststroom, onder of boven haar doel. */
+@media (max-width: 760px) {
+  .notePlaced {
+    position: static;
+    display: block;
+    white-space: normal;
+    margin-top: 10px;
+    transform: rotate(-2deg);
+  }
+}
+
+/* ===== Arrow ===== */
+
+.arrow {
+  width: 120px;
+  height: 70px;
+  max-width: none;
+  overflow: visible;
+}
+
+.arrow .line {
+  stroke-width: 3;
+}
+
+/* de punt tekent 350 ms na de lijn */
+.arrowHead {
+  transition-delay: calc(var(--sk-delay, 0ms) + 350ms);
+}
+
+/* ===== Connector (lang) ===== */
+
+.connector {
+  width: 260px;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.connector .longLine {
+  stroke-width: 2.6;
+}
+
+.connectorStart,
+.connectorEnd {
+  stroke: var(--ink, var(--cv-text));
+  stroke-width: 2.5;
+}
+
+.connectorStart {
+  fill: var(--marker, var(--cv-copper));
+}
+
+.connectorEnd {
+  fill: var(--teal, var(--cv-blue));
+}
+
+/* ===== Stamp ===== */
+
+.stamp {
+  display: inline-block;
+  border: 3px double var(--sk-stroke, var(--teal, var(--cv-blue)));
+  padding: 0.5rem 1rem;
+  color: var(--sk-stroke, var(--teal, var(--cv-blue)));
+  font-family: var(--font-body, inherit);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  letter-spacing: 0.125rem;
+  text-transform: uppercase;
+  opacity: 1;
+  scale: 1;
+  rotate: var(--stamp-rotate, 3deg);
+  transition:
+    opacity 300ms ease var(--sk-delay, 0ms),
+    scale var(--motion-stamp, 450ms) cubic-bezier(0.2, 0.8, 0.3, 1)
+      var(--sk-delay, 0ms),
+    rotate var(--motion-stamp, 450ms) cubic-bezier(0.2, 0.8, 0.3, 1)
+      var(--sk-delay, 0ms);
+}
+
+/* ===== Wachttoestand (alleen op scherm) ===== */
+
+@media screen {
+  .wait .line,
+  .wait .strikeLine {
+    stroke-dashoffset: 700;
+    transition: none;
+  }
+
+  .wait .longLine {
+    stroke-dashoffset: 1;
+    transition: none;
+  }
+
+  .highlight.wait {
+    background-size: 0% 46%;
+    transition: none;
+  }
+
+  .write.wait,
+  .wait .write {
+    clip-path: inset(-20% 100% -20% -6%);
+    transition: none;
+  }
+
+  .stamp.wait {
+    opacity: 0;
+    scale: 1.25;
+    rotate: -6deg;
+    transition: none;
+  }
+}
+
+/* De hook geeft bij reduced motion al "on"; dit vangt een wissel halverwege. */
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .strikeLine,
+  .longLine,
+  .write,
+  .highlight,
+  .stamp {
+    transition: none;
+  }
+}
