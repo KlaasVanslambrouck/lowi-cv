@@ -1,0 +1,309 @@
+/* ---------------------------------------------------------------------------
+   SiteHeader en SiteFooter van het redesign. Bron: de .hdr/.nav/.seg/.ftr-
+   klassen in docs/redesign/artboards/Nidus.dc.html en Home.dc.html.
+   Tokens komen uit styles/sketchbook.module.css (binnen PortfolioDesign).
+   Mobiele zijmarge 1.25rem (20 px), gelijk aan de secties en aan de oude
+   CVSection, zodat NidusMockups op mobiel even breed blijft.
+--------------------------------------------------------------------------- */
+
+/* ===== Header ===== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 76px;
+  padding: 0 56px;
+  border-bottom: 2px dashed var(--rule);
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+.header a:focus-visible,
+.header button:focus-visible,
+.menuPanel a:focus-visible,
+.menuPanel button:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brandMark {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brandMarkLetter {
+  stroke: var(--accent);
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1125rem;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.navLink:hover {
+  color: var(--accent);
+}
+
+.navLink[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Taal/thema/X-ray: één schakelaar, de actieve helft gevuld. */
+.seg {
+  display: inline-flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.segOption {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 41px; /* 44 px met de rand */
+  padding: 0 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1125rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.seg:hover .segOption:not(.segOptionActive) {
+  color: var(--accent);
+}
+
+.segOptionActive {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+.segDivider {
+  display: none;
+}
+
+/* Normaal/X-ray klein rechts onder de header (alleen home). */
+.xrayBar {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 56px;
+}
+
+.menuButton {
+  display: none;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+.menuButton:hover {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+.menuPanel {
+  display: none;
+}
+
+/* ===== Footer ===== */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  min-height: 160px;
+  /* onderaan 120 px vrij voor de Jarvis-knop */
+  padding: 40px max(96px, calc((100% - 1248px) / 2)) 120px;
+  background-color: var(--foot);
+  color: var(--foot-ink);
+  font-family: var(--font-body);
+}
+
+.footerName {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+}
+
+.footerLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--foot-ink);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1125rem;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.footerLink:focus-visible {
+  outline: 3px solid var(--foot-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ===== Tablet ===== */
+
+@media (max-width: 1100px) {
+  .header {
+    padding: 0 48px;
+  }
+
+  .xrayBar {
+    right: 48px;
+  }
+
+  .footer {
+    padding-inline: 48px;
+  }
+}
+
+/* Naam, vier links en twee schakelaars passen pas vanaf ±1024 px naast
+   elkaar; daaronder gaat de navigatie achter de menuknop. */
+@media (max-width: 1023px) {
+  .nav,
+  .controls,
+  .xrayBar {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .menuPanel:not([hidden]) {
+    position: sticky;
+    top: 76px;
+    z-index: 19;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px 48px;
+    border-bottom: 2px solid var(--ink);
+    background-color: var(--card);
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  .menuNav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 18px;
+  }
+
+  .menuControls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+/* ===== Mobiel ===== */
+
+@media (max-width: 760px) {
+  .header {
+    gap: 12px;
+    padding: 0 1.25rem;
+  }
+
+  .menuPanel:not([hidden]) {
+    padding: 20px 1.25rem;
+  }
+
+  .footer {
+    padding: 32px 1.25rem 120px;
+  }
+}
+
+/* Heel smal: de naam blijft voor screenreaders, het beeldmerk staat alleen. */
+@media (max-width: 420px) {
+  .brandName {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

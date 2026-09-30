@@ -20,8 +20,14 @@ export default function ContactFooter({
   const [footerRef] = useSectionTracking<HTMLElement>("contact");
 
   return (
-    // data-section-id zodat JarvisPresence deze sectie herkent
-    <footer ref={footerRef} className={styles.footer} data-section-id="contact">
+    // data-section-id zodat JarvisPresence deze sectie herkent; id als anker
+    // voor /#contact (SiteHeader, JarvisAsk)
+    <footer
+      ref={footerRef}
+      id="contact"
+      className={styles.footer}
+      data-section-id="contact"
+    >
       <div className={styles.footerInner}>
         <h2 className={styles.footerTitle}>{t(title)}</h2>
         <div className={styles.footerLinks}>

@@ -5,14 +5,21 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useXray } from "@/hooks/useXray";
 import { trackEvent } from "@/lib/analytics/trackEvent";
-import styles from "@/styles/cv.module.css";
+import {
+  controlStackToggleClasses,
+  type ToggleClasses,
+} from "@/components/toggleClasses";
 
 interface XrayToggleProps {
   labels: UILabels;
+  classes?: ToggleClasses;
 }
 
-// Knop in de control-stack: schakelt de globale X-ray modus.
-export default function XrayToggle({ labels }: XrayToggleProps) {
+// Schakelt de globale X-ray modus.
+export default function XrayToggle({
+  labels,
+  classes = controlStackToggleClasses("xrayToggle"),
+}: XrayToggleProps) {
   const { t } = useLanguage();
   const { xrayActive, toggleXray } = useXray();
   const sessionId = useAnalyticsSession();
@@ -36,30 +43,18 @@ export default function XrayToggle({ labels }: XrayToggleProps) {
   return (
     <button
       type="button"
-      className={styles.xrayToggle}
+      className={classes.root}
       onClick={handleToggleXray}
       aria-pressed={xrayActive}
       aria-label={t(labels.xrayToggleAria)}
     >
-      <span
-        className={
-          xrayActive
-            ? styles.languageOption
-            : `${styles.languageOption} ${styles.languageOptionActive}`
-        }
-      >
+      <span className={xrayActive ? classes.option : classes.optionActive}>
         {labels.xrayNormalLabel}
       </span>
-      <span className={styles.languageDivider} aria-hidden="true">
+      <span className={classes.divider} aria-hidden="true">
         /
       </span>
-      <span
-        className={
-          xrayActive
-            ? `${styles.languageOption} ${styles.languageOptionActive}`
-            : styles.languageOption
-        }
-      >
+      <span className={xrayActive ? classes.optionActive : classes.option}>
         {labels.xrayActiveLabel}
       </span>
     </button>

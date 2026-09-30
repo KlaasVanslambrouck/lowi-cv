@@ -5,14 +5,21 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useTheme } from "@/hooks/useTheme";
 import { trackEvent } from "@/lib/analytics/trackEvent";
-import styles from "@/styles/cv.module.css";
+import {
+  controlStackToggleClasses,
+  type ToggleClasses,
+} from "@/components/toggleClasses";
 
 interface ThemeToggleProps {
   labels: UILabels;
+  classes?: ToggleClasses;
 }
 
-// Knop in de control-stack: schakelt tussen het donkere en lichte thema.
-export default function ThemeToggle({ labels }: ThemeToggleProps) {
+// Schakelt tussen het donkere en lichte thema.
+export default function ThemeToggle({
+  labels,
+  classes = controlStackToggleClasses("themeToggle"),
+}: ThemeToggleProps) {
   const { t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const sessionId = useAnalyticsSession();
@@ -36,29 +43,21 @@ export default function ThemeToggle({ labels }: ThemeToggleProps) {
   return (
     <button
       type="button"
-      className={styles.themeToggle}
+      className={classes.root}
       onClick={handleToggleTheme}
       aria-pressed={theme === "light"}
       aria-label={t(labels.themeToggleAria)}
     >
       <span
-        className={
-          theme === "dark"
-            ? `${styles.languageOption} ${styles.languageOptionActive}`
-            : styles.languageOption
-        }
+        className={theme === "dark" ? classes.optionActive : classes.option}
       >
         {labels.themeDarkLabel}
       </span>
-      <span className={styles.languageDivider} aria-hidden="true">
+      <span className={classes.divider} aria-hidden="true">
         /
       </span>
       <span
-        className={
-          theme === "light"
-            ? `${styles.languageOption} ${styles.languageOptionActive}`
-            : styles.languageOption
-        }
+        className={theme === "light" ? classes.optionActive : classes.option}
       >
         {labels.themeLightLabel}
       </span>

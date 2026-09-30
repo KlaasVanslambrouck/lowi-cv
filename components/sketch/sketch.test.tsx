@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import Arrow from "./Arrow";
 import Connector from "./Connector";
 import Highlight from "./Highlight";
+import HighlightPhrase from "./HighlightPhrase";
 import MarginNote from "./MarginNote";
 import Stamp from "./Stamp";
 import Strike from "./Strike";
@@ -46,9 +47,23 @@ describe("schetsaccenten", () => {
   it("Arrow en Connector zijn volledig decoratief", () => {
     for (const markup of [
       renderToStaticMarkup(<Arrow />),
+      renderToStaticMarkup(<Arrow shape="down" />),
       renderToStaticMarkup(<Connector />),
     ]) {
       expect(markup).toMatch(/^<svg[^>]*aria-hidden="true"/);
     }
+  });
+
+  it("HighlightPhrase markeert alleen een letterlijke passage en laat de tekst gelijk", () => {
+    const text = "Het zenuwcentrum van het LOWI-platform";
+    const marked = renderToStaticMarkup(
+      <HighlightPhrase text={text} phrase="Het zenuwcentrum" />,
+    );
+    expect(marked).toMatch(/^<span[^>]*>Het zenuwcentrum<\/span> van het LOWI-platform$/);
+
+    // Passage niet (meer) in de tekst: gewone tekst, geen markering.
+    expect(
+      renderToStaticMarkup(<HighlightPhrase text={text} phrase="De kern" />),
+    ).toBe(text);
   });
 });

@@ -7,12 +7,21 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { trackEvent } from "@/lib/analytics/trackEvent";
 import { otherLanguage } from "@/lib/site";
-import styles from "@/styles/cv.module.css";
+import {
+  controlStackToggleClasses,
+  type ToggleClasses,
+} from "@/components/toggleClasses";
 
-// Link in de control-stack naar dezelfde pagina in de andere taal. Het doel
-// komt uit TranslationContext, dus uit dezelfde bron als de hreflang-links.
+interface LanguageToggleProps {
+  classes?: ToggleClasses;
+}
+
+// Link naar dezelfde pagina in de andere taal. Het doel komt uit
+// TranslationContext, dus uit dezelfde bron als de hreflang-links.
 // Elke taal heeft een eigen root layout: de wissel is een volledige page load.
-export default function LanguageToggle() {
+export default function LanguageToggle({
+  classes = controlStackToggleClasses("languageToggle"),
+}: LanguageToggleProps) {
   const { language } = useLanguage();
   const alternatePath = useContext(TranslationContext);
   const sessionId = useAnalyticsSession();
@@ -41,7 +50,7 @@ export default function LanguageToggle() {
 
   return (
     <Link
-      className={styles.languageToggle}
+      className={classes.root}
       href={alternatePath}
       hrefLang={nextLanguage}
       onClick={handleClick}
@@ -50,23 +59,15 @@ export default function LanguageToggle() {
       }
     >
       <span
-        className={
-          language === "nl"
-            ? `${styles.languageOption} ${styles.languageOptionActive}`
-            : styles.languageOption
-        }
+        className={language === "nl" ? classes.optionActive : classes.option}
       >
         NL
       </span>
-      <span className={styles.languageDivider} aria-hidden="true">
+      <span className={classes.divider} aria-hidden="true">
         /
       </span>
       <span
-        className={
-          language === "en"
-            ? `${styles.languageOption} ${styles.languageOptionActive}`
-            : styles.languageOption
-        }
+        className={language === "en" ? classes.optionActive : classes.option}
       >
         EN
       </span>

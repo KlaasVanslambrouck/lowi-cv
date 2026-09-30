@@ -1,11 +1,21 @@
-import ControlStack from "@/components/ControlStack";
-import CVSection from "@/components/CVSection";
 import JsonLd from "@/components/JsonLd";
+import PortfolioDesign from "@/components/PortfolioDesign";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
+import SketchSection from "@/components/SketchSection";
 import NidusArchitecture from "@/components/nidus/NidusArchitecture";
 import NidusDecisionLog from "@/components/nidus/NidusDecisionLog";
 import NidusIntro from "@/components/nidus/NidusIntro";
 import NidusMockups from "@/components/nidus/NidusMockups";
 import NidusPlaceholder from "@/components/nidus/NidusPlaceholder";
+import {
+  NidusArchitectureLegend,
+  NidusEmbedNote,
+} from "@/components/nidus/NidusSectionAsides";
+import {
+  NIDUS_LAYER_EYEBROW,
+  nidusRedesignCopy,
+} from "@/components/nidus/nidusRedesignCopy";
 import JarvisAsk from "@/components/jarvis/JarvisAsk";
 import { nidusCaseStudy } from "@/content/nidusCaseStudy";
 import { placeholderContent } from "@/content/placeholderContent";
@@ -25,8 +35,15 @@ interface NidusRouteProps {
   language: Language;
 }
 
+// Statuslabel van Nidus, zoals op de homepage (placeholderContent).
+const nidusStatus = placeholderContent.lowi.projects.find(
+  (project) => project.name === "Nidus",
+)?.status;
+
 // Server component: de content is statisch, vertaling gebeurt in de
 // (client) sectiecomponenten die m.b.v. useLanguage() vertalen.
+// Volgorde volgens het redesign: intro → interface → architectuur →
+// beslissingen → code. De sectie-id's (ankers en analytics) blijven gelijk.
 export default function NidusRoute({ language }: NidusRouteProps) {
   const content = nidusCaseStudy;
   const { alternatePath } = pageLanguageLinks(nidusPage(language));
@@ -37,50 +54,68 @@ export default function NidusRoute({ language }: NidusRouteProps) {
       <TranslationProvider alternatePath={alternatePath}>
         <ThemeProvider>
           <SessionInsightProvider>
-            <main className={styles.page}>
-              <ControlStack
-                labels={placeholderContent.uiLabels}
-                showXray={false}
-              />
+            <PortfolioDesign className={styles.page}>
+              <SiteHeader labels={placeholderContent.uiLabels} current="nidus" />
 
-              <NidusIntro content={content.intro} />
-
-              <CVSection
-                id="nidus-architectuur"
-                title={content.sectionTitles.architecture}
-              >
-                <NidusArchitecture
-                  components={content.architecture}
-                  principles={content.principles}
+              <main>
+                <NidusIntro
+                  content={content.intro}
+                  sectionTitles={content.sectionTitles}
+                  status={nidusStatus}
                 />
-              </CVSection>
 
-              <CVSection
-                id="nidus-decision-log"
-                title={content.sectionTitles.decisionLog}
-              >
-                <NidusDecisionLog entries={content.decisionLog} />
-              </CVSection>
+                <SketchSection
+                  id="nidus-screenshots"
+                  eyebrow={nidusRedesignCopy.interface}
+                  title={content.sectionTitles.screenshots}
+                  aside={<NidusEmbedNote />}
+                  className={styles.embedSection}
+                >
+                  {/* NidusMockups blijft ongewijzigd; deze houder zet alleen de
+                      overerving terug zoals vóór het redesign (zie CSS). */}
+                  <div className={styles.embed}>
+                    <NidusMockups
+                      mockups={content.mockups}
+                      sidebarItems={content.sidebarItems}
+                      dashboardDetail={content.dashboardDetail}
+                      energyDetail={content.energyDetail}
+                      note={content.mockupNote}
+                    />
+                  </div>
+                </SketchSection>
 
-              <CVSection
-                id="nidus-screenshots"
-                title={content.sectionTitles.screenshots}
-              >
-                <NidusMockups
-                  mockups={content.mockups}
-                  sidebarItems={content.sidebarItems}
-                  dashboardDetail={content.dashboardDetail}
-                  energyDetail={content.energyDetail}
-                  note={content.mockupNote}
+                <SketchSection
+                  id="nidus-architectuur"
+                  eyebrow={NIDUS_LAYER_EYEBROW}
+                  title={content.sectionTitles.architecture}
+                  aside={<NidusArchitectureLegend />}
+                >
+                  <NidusArchitecture
+                    components={content.architecture}
+                    principles={content.principles}
+                  />
+                </SketchSection>
+
+                <SketchSection
+                  id="nidus-decision-log"
+                  eyebrow={nidusRedesignCopy.decisions}
+                  title={content.sectionTitles.decisionLog}
+                >
+                  <NidusDecisionLog entries={content.decisionLog} />
+                </SketchSection>
+
+                <SketchSection
+                  id="nidus-code"
+                  eyebrow={nidusRedesignCopy.comingSoon}
+                  title={content.sectionTitles.code}
+                  aside={<NidusPlaceholder text={content.placeholderNote} />}
+                  className={styles.codeSection}
                 />
-              </CVSection>
+              </main>
 
-              <CVSection id="nidus-code" title={content.sectionTitles.code}>
-                <NidusPlaceholder text={content.placeholderNote} />
-              </CVSection>
-
+              <SiteFooter current="nidus" />
               <JarvisAsk />
-            </main>
+            </PortfolioDesign>
           </SessionInsightProvider>
         </ThemeProvider>
       </TranslationProvider>

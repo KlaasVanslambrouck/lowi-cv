@@ -1,219 +1,383 @@
 /* ---------------------------------------------------------------------------
-   Component-styling voor de Nidus case-study pagina (/nidus).
-   Design tokens komen uit app/globals.css, net als styles/cv.module.css.
+   Nidus case-study (/nidus), redesign. Bron: docs/redesign/artboards/Nidus.dc.html.
+   Tokens uit styles/sketchbook.module.css; secties via SketchSection.
+   NidusMockups heeft zijn eigen stylesheet (nidusMockup.module.css) en wordt
+   hier niet gestyled; alleen zijn houder (.embed).
 --------------------------------------------------------------------------- */
 
 .page {
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--cv-bg);
-  color: var(--cv-text);
 }
 
-.introSection {
-  max-width: 68rem;
-  margin: 0 auto;
-  padding: 6rem 1.5rem 1.5rem;
+/* ===== Intro ===== */
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  align-items: end;
+  gap: 56px;
+  padding: 112px max(96px, calc((100% - 1248px) / 2)) 72px;
+  scroll-margin-top: 76px;
 }
 
-.introInner {
+.intro a:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.introMain {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 20px;
 }
 
+/* overschrijft de h1-regel uit app/globals.css (Fraunces 500) */
 .introTitle {
-  font-family: var(--cv-font-serif);
-  font-size: clamp(2rem, 6vw, 3.2rem);
-  font-weight: 500;
-  line-height: 1.05;
-  color: var(--cv-bone);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(4.5rem, 9vw, 8.75rem);
+  line-height: 0.96;
+  letter-spacing: -1px;
+}
+
+.introTitleRest {
+  color: var(--teal);
+  font-size: 0.34em;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .introSubtitle {
-  font-family: var(--cv-font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--cv-copper);
+  color: var(--ink);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1.5vw + 1rem, 2.25rem);
+  line-height: 1.2;
 }
 
 .introPitch {
-  max-width: 42rem;
-  font-size: 1.05rem;
-  line-height: 1.68;
-  color: var(--cv-text-soft);
+  max-width: 58ch;
+  color: var(--ink2);
+  font-size: 1.25rem;
+  line-height: 1.45;
 }
 
-.placeholder {
-  font-family: var(--cv-font-mono);
-  font-size: 0.85rem;
-  color: var(--cv-muted);
-  border: 1px dashed rgb(var(--cv-text-rgb) / 0.2);
-  border-radius: var(--cv-radius);
-  padding: 1.5rem;
-}
-
-/* ===== Architectuur: gelaagd kaartendiagram ===== */
-
-.architecture {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.archLayer {
-  display: grid;
-  grid-template-columns: 5.5rem 1fr;
-  gap: 1rem;
-  align-items: start;
-}
-
-.archLayerLabel {
-  font-family: var(--cv-font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--cv-copper);
-  /* Optisch uitlijnen met de bovenrand van de kaarten */
-  padding-top: 1.15rem;
-}
-
-.archLayerCards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-}
-
-.archCard {
-  border: 1px solid rgb(var(--cv-text-rgb) / 0.12);
-  border-radius: var(--cv-radius);
-  padding: 1.1rem 1.25rem;
-  background-color: rgb(var(--cv-text-rgb) / 0.03);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.archCardName {
-  font-size: 1.05rem;
-  color: var(--cv-bone);
-}
-
-.archCardMeta {
-  font-family: var(--cv-font-mono);
+.chip {
+  align-self: flex-start;
+  padding: 6px 11px;
+  border: 1.5px solid var(--teal);
+  border-radius: 999px;
+  color: var(--teal);
+  font-weight: 700;
   font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  color: var(--cv-muted);
+  letter-spacing: 0.125rem;
+  line-height: 1.3;
+  text-transform: uppercase;
 }
 
-.archCardRole {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--cv-text-soft);
+.introSide {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 12px 0 12px 40px;
+  border-left: 2px dashed var(--rule);
+}
+
+.pageNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 26px;
+}
+
+.pageNav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.pageNav a:hover {
+  color: var(--accent);
+}
+
+/* ===== Interface (NidusMockups) ===== */
+
+.embedSection {
+  padding-top: 64px;
+}
+
+.embedNote {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.embedNoteArrow {
+  margin-right: 40px;
+}
+
+/* Houder van NidusMockups: zet de overerving terug naar wat de component
+   vóór het redesign kreeg (font en kleur uit --cv-*, zoals body en de oude
+   <main>). Geen filter, schets, transform of eigen fonts hierbinnen. */
+.embed {
+  color: var(--cv-text);
+  font-family: var(--cv-font-sans);
+}
+
+/* ===== Architectuur ===== */
+
+.legend {
+  max-width: 44ch;
+  color: var(--mute);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.archGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 120px repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(150px, auto);
+  column-gap: 24px;
+  row-gap: 56px;
+}
+
+.archLane {
+  grid-row: var(--arch-row);
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  border-right: 2px dashed var(--rule);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.78125rem;
+  letter-spacing: 0.1625rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.archNode {
+  position: relative;
+  z-index: 1;
+  grid-row: var(--arch-row);
+  grid-column: var(--arch-col);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background-color: var(--card);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.archNodeKey {
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+/* overschrijft de h3-regel uit app/globals.css */
+.archNodeName {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.3125rem;
+  line-height: 1.15;
+}
+
+.archNodeTech {
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.78125rem;
+  letter-spacing: 0.025rem;
+  line-height: 1.35;
+}
+
+.archNodeRole {
+  color: var(--ink2);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Pijl in de tussenruimte naar het component eronder, met notitie ernaast. */
+.archConnection {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: calc(50% - 11px);
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.archConnectionNote {
+  margin-top: 8px;
+  font-size: 1.375rem;
+  white-space: nowrap;
 }
 
 .archPrinciples {
-  margin-top: 0.5rem;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 64px;
 }
 
 .archPrinciple {
-  font-family: var(--cv-font-mono);
-  font-size: 0.82rem;
-  line-height: 1.6;
-  color: var(--cv-text-soft);
-  padding-left: 1.1rem;
-  position: relative;
+  padding-top: 14px;
+  border-top: 3px solid var(--ink);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.55;
 }
 
-.archPrinciple::before {
-  content: "▸";
-  position: absolute;
-  left: 0;
-  color: var(--cv-copper);
+/* ===== Decision log ===== */
+
+.decision {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 40px;
+  padding: 40px 0;
+  border-top: 1.5px dashed var(--rule);
 }
 
-/* Smalle schermen: laaglabel boven de kaarten in plaats van ernaast */
-@media (max-width: 640px) {
-  .archLayer {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-
-  .archLayerLabel {
-    padding-top: 0;
-  }
-}
-
-/* ===== Decision log: verticale tijdlijn ===== */
-
-.decisionLog {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.decisionMeta {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-
-.decisionEntry {
-  position: relative;
-  padding-left: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-/* Doorlopende tijdlijn-lijn achter de markeringen; stopt netjes bij de
-   laatste entry zodat er geen losse staart onder het diagram hangt. */
-.decisionEntry::before {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 0.55rem;
-  bottom: -1.5rem;
-  width: 1px;
-  background-color: rgb(var(--cv-text-rgb) / 0.14);
-}
-
-.decisionEntry:last-child::before {
-  display: none;
-}
-
-.decisionMarker {
-  position: absolute;
-  left: 0;
-  top: 0.35rem;
-  width: 11px;
-  height: 11px;
-  border-radius: 999px;
-  background-color: var(--cv-bg);
-  border: 2px solid var(--cv-copper);
+  align-items: flex-start;
+  gap: 14px;
 }
 
 .decisionDate {
-  font-family: var(--cv-font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  color: var(--cv-muted);
+  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.2;
 }
 
+/* Doorhaling boven, correctie eronder */
+.decisionStrike {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.decisionStrike > ins {
+  font-size: 1.45em;
+  transform-origin: left center;
+}
+
+.decisionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* overschrijft de h3-regel uit app/globals.css */
 .decisionTitle {
-  font-family: var(--cv-font-serif);
-  font-size: 1.15rem;
-  font-weight: 500;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.5rem;
   line-height: 1.25;
-  color: var(--cv-bone);
 }
 
 .decisionDescription {
-  max-width: 46rem;
-  font-size: 0.95rem;
-  line-height: 1.68;
-  color: var(--cv-text-soft);
+  max-width: 70ch;
+  color: var(--ink2);
+  font-size: 1.125rem;
+  line-height: 1.62;
+}
+
+/* ===== Code ===== */
+
+.codeSection .placeholder {
+  max-width: 36ch;
+}
+
+.placeholder {
+  color: var(--ink2);
+  font-size: clamp(1.25rem, 0.5vw + 1.1rem, 1.625rem);
+  line-height: 1.45;
+}
+
+/* ===== Tablet ===== */
+
+@media (max-width: 1100px) {
+  .intro {
+    padding-inline: 48px;
+  }
+}
+
+/* Het raster wordt te smal: lijst per laag. */
+@media (max-width: 1023px) {
+  .archGrid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    row-gap: 12px;
+  }
+
+  .archLane,
+  .archNode {
+    grid-row: auto;
+    grid-column: auto;
+  }
+
+  .archLane {
+    padding: 18px 0 6px;
+    border-right: 0;
+    border-bottom: 2px dashed var(--rule);
+  }
+
+  /* pijlen, notities en legenda horen bij het raster */
+  .archConnection,
+  .legend {
+    display: none;
+  }
+}
+
+/* ===== Mobiel ===== */
+
+@media (max-width: 760px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding: 72px 1.25rem 56px;
+  }
+
+  .introSide {
+    padding: 18px 0 0;
+    border-top: 2px dashed var(--rule);
+    border-left: 0;
+  }
+
+  .embedNote {
+    align-items: flex-start;
+  }
+
+  .embedNoteArrow {
+    display: none;
+  }
+
+  .archPrinciples {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .decision {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
 }

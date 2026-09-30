@@ -174,9 +174,9 @@
 
 /* ===== Arrow ===== */
 
+/* breedte en hoogte komen per vorm uit Arrow.tsx */
 .arrow {
-  width: 120px;
-  height: 70px;
+  flex-shrink: 0;
   max-width: none;
   overflow: visible;
 }
