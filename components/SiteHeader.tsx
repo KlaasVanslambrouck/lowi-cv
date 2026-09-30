@@ -125,12 +125,6 @@ export default function SiteHeader({
         >
           {t(menuOpen ? copy.menuClose : copy.menu)}
         </button>
-
-        {showXray ? (
-          <div className={styles.xrayBar}>
-            <XrayToggle labels={labels} classes={TOGGLE_CLASSES} />
-          </div>
-        ) : null}
       </header>
 
       <div id={menuId} className={styles.menuPanel} hidden={!menuOpen}>
@@ -143,6 +137,13 @@ export default function SiteHeader({
           {showXray ? <XrayToggle labels={labels} classes={TOGGLE_CLASSES} /> : null}
         </div>
       </div>
+
+      {/* Normaal/X-ray klein rechts onder de header (desktop); op mobiel in het menu. */}
+      {showXray ? (
+        <div className={styles.xrayBar}>
+          <XrayToggle labels={labels} classes={TOGGLE_CLASSES} />
+        </div>
+      ) : null}
     </>
   );
 }

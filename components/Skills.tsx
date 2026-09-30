@@ -1,64 +1,40 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import type { SkillsSection } from "@/types/content";
-import { useLanguage } from "@/hooks/useLanguage";
-import { useInViewOnce } from "@/hooks/useInViewOnce";
 import NidusCta from "@/components/NidusCta";
-import styles from "@/styles/cv.module.css";
+import { useLanguage } from "@/hooks/useLanguage";
+import styles from "@/styles/home.module.css";
 
 interface SkillsProps {
   content: SkillsSection;
 }
 
-// Proof-first Skills-sectie ("Wat ik bouw"). Geen niveaubalkjes: elke cluster
-// wordt gedragen door één context-regel (waar de skill echt draait) en een rij
-// mono-chips. Cluster 1 (het beroep) is het anker en krijgt de volle breedte;
-// de bouw-clusters vormen het bewijsraster eronder. Signature-interactie: de
-// kaarten faden gestaffeld in bij scroll-reveal (uit onder reduced motion).
+// Proof-first "Wat ik bouw": geen niveaubalkjes. Elke cluster wordt gedragen
+// door één context-regel (waar de skill echt draait) en een rij chips. De
+// lead-regel staat als kantlijnnotitie naast de kop (HomePage).
 export default function Skills({ content }: SkillsProps) {
   const { t } = useLanguage();
-  const [gridRef, isVisible] = useInViewOnce<HTMLDivElement>({
-    threshold: 0.15,
-  });
 
   return (
-    <div ref={gridRef} className={styles.skillsBlock} data-revealed={isVisible}>
-      <p className={styles.skillsLead}>{t(content.lead)}</p>
-
-      <div className={styles.skillsClusterGrid}>
-        {content.clusters.map((cluster, index) => (
-          <article
-            key={cluster.id}
-            className={
-              index === 0
-                ? `${styles.skillClusterCard} ${styles.skillClusterCardLead}`
-                : styles.skillClusterCard
-            }
-            // Cascade-vertraging per kaart; lead eerst, dan het bewijsraster.
-            style={{ "--reveal-delay": `${index * 70}ms` } as CSSProperties}
-          >
-            <h3 className={styles.skillClusterName}>{t(cluster.title)}</h3>
-            <p className={styles.skillClusterContext}>{t(cluster.context)}</p>
-            <ul className={styles.skillClusterChips}>
-              {cluster.items.map((item) => (
-                <li key={item.nl} className={styles.skillClusterChip}>
-                  {t(item)}
-                </li>
-              ))}
-            </ul>
-            {cluster.proofAnchor === "nidus" ? (
-              <NidusCta
-                className={styles.skillProofLink}
-                interactionId="nidus_cta_skills"
-                variant="secondary"
-              >
-                {t(content.proofLinkLabel)}
-              </NidusCta>
-            ) : null}
-          </article>
-        ))}
-      </div>
+    <div className={styles.skillsGrid}>
+      {content.clusters.map((cluster) => (
+        <article key={cluster.id} className={styles.skillCluster}>
+          <h3 className={styles.skillTitle}>{t(cluster.title)}</h3>
+          <p className={styles.body}>{t(cluster.context)}</p>
+          <ul className={styles.skillChips}>
+            {cluster.items.map((item) => (
+              <li key={item.nl} className={styles.skillChip}>
+                {t(item)}
+              </li>
+            ))}
+          </ul>
+          {cluster.proofAnchor === "nidus" ? (
+            <NidusCta interactionId="nidus_cta_skills" variant="link">
+              {t(content.proofLinkLabel)}
+            </NidusCta>
+          ) : null}
+        </article>
+      ))}
     </div>
   );
 }

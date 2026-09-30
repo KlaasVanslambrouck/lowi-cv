@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { Project, UILabels, XrayLayer } from "@/types/content";
+import JarvisExplainButton from "@/components/JarvisExplainButton";
 import { useAnalyticsSession } from "@/hooks/useAnalyticsSession";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useXray } from "@/hooks/useXray";
-import JarvisExplainButton from "@/components/JarvisExplainButton";
-import { useJarvisExplain } from "@/hooks/useJarvisExplain";
 import { trackEvent } from "@/lib/analytics/trackEvent";
-import styles from "@/styles/cv.module.css";
+import styles from "@/styles/home.module.css";
 
 interface ProjectCardProps {
   project: Project;
@@ -29,37 +28,20 @@ function buildXrayTree(breakdown: XrayLayer[]): string {
     .join("\n");
 }
 
-export default function ProjectCard({
-  project,
-  labels,
-  explanationId,
-}: ProjectCardProps) {
+// Projectkaart: X-ray toont de lagenboom (globaal), de knop "Lagen" toont per
+// project het codefragment. Het analytics-event blijft project_exploded_open.
+export default function ProjectCard({ project, labels, explanationId }: ProjectCardProps) {
   const { t } = useLanguage();
   const { xrayActive } = useXray();
-  const { isExplanationActive } = useJarvisExplain();
   const sessionId = useAnalyticsSession();
-  // Exploded view: muis-hover én expliciete toggle (toetsenbord/touch)
-  const [hoverExploded, setHoverExploded] = useState(false);
-  const [pinnedExploded, setPinnedExploded] = useState(false);
+  const [layersOpen, setLayersOpen] = useState(false);
+  const codeId = useId();
 
-  const exploded = hoverExploded || pinnedExploded;
-  const showXray = xrayActive && Boolean(project.xrayBreakdown);
-  const explainActive = explanationId
-    ? isExplanationActive(explanationId)
-    : false;
-  const cardClassName = [
-    styles.projectCard,
-    exploded ? styles.projectCardExploded : "",
-    explainActive ? styles.jarvisExplainActiveOutline : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  function handleLayersToggle() {
+    const nextOpen = !layersOpen;
+    setLayersOpen(nextOpen);
 
-  function handleExplodedToggle() {
-    const nextPinnedExploded = !pinnedExploded;
-    setPinnedExploded(nextPinnedExploded);
-
-    if (nextPinnedExploded && sessionId) {
+    if (nextOpen && sessionId) {
       trackEvent({
         sessionId,
         eventType: "interaction",
@@ -72,54 +54,41 @@ export default function ProjectCard({
   }
 
   return (
-    <article
-      className={cardClassName}
-      onMouseEnter={() => setHoverExploded(true)}
-      onMouseLeave={() => setHoverExploded(false)}
-    >
-      <div className={`${styles.projectCardLayer} ${styles.projectLayerFront}`}>
-        <div className={styles.projectTitleRow}>
-          <h3 className={styles.projectTitle}>{t(project.title)}</h3>
-          {/* Toegankelijke toggle voor touch-devices en toetsenbord —
-              exploded view hangt dus niet enkel aan :hover */}
-          <button
-            type="button"
-            className={styles.layersToggle}
-            onClick={handleExplodedToggle}
-            aria-pressed={pinnedExploded}
-          >
-            {t(labels.explodeToggle)}
-          </button>
-        </div>
-        <p className={styles.projectDescription}>{t(project.description)}</p>
-        {showXray && project.xrayBreakdown ? (
-          // X-ray voegt technische metadata toe; gewone content blijft zichtbaar.
-          <pre className={`${styles.xrayTree} ${styles.fadeSwap}`}>
-            {buildXrayTree(project.xrayBreakdown)}
-          </pre>
-        ) : null}
-        {explanationId ? (
-          <div className={styles.jarvisExplainActionRow}>
-            <JarvisExplainButton
-              explanationId={explanationId}
-              label={labels.jarvisExplainButton}
-            />
-          </div>
-        ) : null}
+    <article className={`${styles.card} ${styles.projectCard}`}>
+      <div className={styles.projectHead}>
+        <h3 className={styles.projectTitle}>{t(project.title)}</h3>
+        <button
+          type="button"
+          className={styles.layersToggle}
+          onClick={handleLayersToggle}
+          aria-pressed={layersOpen}
+          aria-controls={codeId}
+        >
+          {t(labels.explodeToggle)}
+        </button>
       </div>
-      <pre
-        className={`${styles.codeBlock} ${styles.projectCardLayer} ${styles.projectLayerMid}`}
-        tabIndex={0}
-      >
+      <p className={styles.cardText}>{t(project.description)}</p>
+      {xrayActive && project.xrayBreakdown ? (
+        // X-ray voegt technische metadata toe; gewone content blijft zichtbaar.
+        <div className={styles.cardXray}>
+          <pre className={styles.tree}>{buildXrayTree(project.xrayBreakdown)}</pre>
+        </div>
+      ) : null}
+      <pre id={codeId} className={styles.code} tabIndex={0} hidden={!layersOpen}>
         <code>{project.codeSnippet}</code>
       </pre>
-      <ul className={`${styles.techList} ${styles.projectCardLayer} ${styles.projectLayerBack}`}>
+      <ul className={styles.chips}>
         {project.tech.map((techName) => (
-          <li key={techName} className={styles.techTag}>
+          <li key={techName} className={`${styles.chip} ${styles.tagChip}`}>
             {techName}
           </li>
         ))}
       </ul>
+      {explanationId ? (
+        <div>
+          <JarvisExplainButton explanationId={explanationId} label={labels.jarvisExplainButton} />
+        </div>
+      ) : null}
     </article>
   );
 }

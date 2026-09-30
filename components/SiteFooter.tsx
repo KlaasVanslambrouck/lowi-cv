@@ -12,6 +12,8 @@ export type SitePage = "home" | "lowi" | "nidus";
 interface SiteFooterProps {
   // De huidige pagina; de footer linkt naar de andere twee.
   current: SitePage;
+  // Extra CV-link (homepage). Downloads telt AnalyticsObserver al.
+  cvUrl?: string;
 }
 
 // TODO concept-copy: "Naar boven" (Main.dc.html §4).
@@ -23,7 +25,7 @@ const PAGES: { id: SitePage; href: string; label: Bilingual }[] = [
   { id: "nidus", href: "/nidus", label: { nl: "Nidus", en: "Nidus" } },
 ];
 
-export default function SiteFooter({ current }: SiteFooterProps) {
+export default function SiteFooter({ current, cvUrl }: SiteFooterProps) {
   const { language, t } = useLanguage();
 
   return (
@@ -43,6 +45,11 @@ export default function SiteFooter({ current }: SiteFooterProps) {
             {t(page.label)}
           </Link>
         ))}
+        {cvUrl ? (
+          <a className={styles.footerLink} href={cvUrl} download>
+            CV
+          </a>
+        ) : null}
       </nav>
     </footer>
   );

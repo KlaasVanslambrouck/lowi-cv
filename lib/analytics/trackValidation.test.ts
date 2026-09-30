@@ -12,8 +12,10 @@ const CTA_INTERACTION_IDS = [
   "nidus_cta_projects",
   "nidus_cta_lowi",
   "nidus_cta_skills",
+  "nidus_cta_duo",
   "lowi_cel_cta_nidus",
   "lowi_cta_celpagina",
+  "lowi_cta_duo",
 ] as const satisfies readonly CtaInteractionId[];
 
 function interactionPayload(interactionId: string) {

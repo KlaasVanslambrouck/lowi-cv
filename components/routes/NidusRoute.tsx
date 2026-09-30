@@ -108,9 +108,11 @@ export default function NidusRoute({ language }: NidusRouteProps) {
                   id="nidus-code"
                   eyebrow={nidusRedesignCopy.comingSoon}
                   title={content.sectionTitles.code}
-                  aside={<NidusPlaceholder text={content.placeholderNote} />}
+                  layout="split"
                   className={styles.codeSection}
-                />
+                >
+                  <NidusPlaceholder text={content.placeholderNote} />
+                </SketchSection>
               </main>
 
               <SiteFooter current="nidus" />

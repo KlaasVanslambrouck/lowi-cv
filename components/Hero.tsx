@@ -1,83 +1,81 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import type { Bilingual, HeroContent } from "@/types/content";
-import { useLanguage } from "@/hooks/useLanguage";
-import { useSceneSupport } from "@/hooks/useSceneSupport";
-import { useSectionTracking } from "@/hooks/useSectionTracking";
-import ArchitectureSceneFallback from "@/components/ArchitectureSceneFallback";
 import NidusCta from "@/components/NidusCta";
-import styles from "@/styles/cv.module.css";
-
-// 3D-scene lazy laden, uitsluitend client-side; SVG-netwerk als loading-fallback
-const ArchitectureScene = dynamic(
-  () => import("@/components/ArchitectureScene"),
-  { ssr: false, loading: () => <ArchitectureSceneFallback /> },
-);
+import HighlightPhrase from "@/components/sketch/HighlightPhrase";
+import { SketchScope } from "@/components/sketch/SketchScope";
+import Stamp from "@/components/sketch/Stamp";
+import SystemSketch from "@/components/home/SystemSketch";
+import { HOME_HIGHLIGHTS, homeRedesignCopy as copy } from "@/components/home/homeRedesignCopy";
+import { useLanguage } from "@/hooks/useLanguage";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
+import { useSketchReveal } from "@/hooks/useSketchReveal";
+import styles from "@/styles/home.module.css";
 
 interface HeroProps {
   content: HeroContent;
   nidusCtaLabel: Bilingual;
 }
 
+// Hero van het redesign: naam, rol, stelling en de systeemschets. De vroegere
+// 3D-architectuurscene staat hier bewust niet meer in (HANDOFF, Beslissingen §2).
 export default function Hero({ content, nidusCtaLabel }: HeroProps) {
   const { t } = useLanguage();
   const [heroRef] = useSectionTracking<HTMLElement>("hero");
-  // Gedeelde detectie (reduced motion, <768px, WebGL); vóór mount tonen we
-  // altijd de SVG-fallback zodat er nooit een lege hero flitst
-  const support = useSceneSupport();
+  const sketchState = useSketchReveal(heroRef);
+  const [firstName, ...lastNames] = content.name.split(" ");
 
   return (
-    <header ref={heroRef} className={styles.hero} data-section-id="hero">
-      <div className={styles.heroScene}>
-        {support.showLiveScene ? (
-          <ArchitectureScene />
-        ) : (
-          <ArchitectureSceneFallback />
-        )}
-      </div>
-      <div className={styles.heroContent}>
-        <h1 className={styles.heroName}>{content.name}</h1>
-        {/* current → target: huidige rol in bone, doelrol in koper */}
-        <p className={styles.heroRoles}>
-          <span className={styles.roleCurrent}>{t(content.currentRole)}</span>
-          <span className={styles.roleArrow} aria-hidden="true">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              focusable="false"
-            >
-              <path
-                d="M4 12h14m0 0-5-5m5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className={styles.roleTarget}>{t(content.targetRole)}</span>
-        </p>
-        <p className={styles.heroThesis}>{t(content.thesis)}</p>
-        <p className={styles.heroIdentityLine}>{t(content.identityLine)}</p>
-        <ul className={styles.heroFocusStrip} aria-label="Focus areas">
-          {content.focusAreas.map((focusArea) => (
-            <li key={focusArea}>{focusArea}</li>
-          ))}
-        </ul>
-        {/* Badge enkel wanneer er een statuslabel is (zie content/role.ts). */}
-        {content.liveLabel ? (
-          <span className={styles.liveBadge}>
-            <span className={styles.liveDot} aria-hidden="true" />
-            {t(content.liveLabel)}
-          </span>
-        ) : null}
-        <NidusCta interactionId="nidus_cta_hero" variant="primary">
-          {t(nidusCtaLabel)}
-        </NidusCta>
-      </div>
-    </header>
+    <section
+      ref={heroRef}
+      className={styles.hero}
+      data-section-id="hero"
+      aria-labelledby="hero-naam"
+    >
+      <SketchScope state={sketchState}>
+        <div className={styles.heroText}>
+          <p className={styles.heroRoles}>
+            <span className={styles.eyebrow}>{t(content.currentRole)}</span>{" "}
+            <span className={styles.heroTarget}>{t(content.targetRole)}</span>
+          </p>
+          <h1 id="hero-naam" className={styles.heroName}>
+            {firstName} <br />
+            {lastNames.join(" ")}
+          </h1>
+          <p className={styles.heroThesis}>
+            <HighlightPhrase
+              text={t(content.thesis)}
+              phrase={t(HOME_HIGHLIGHTS.thesis)}
+              delay={2}
+            />
+          </p>
+          <div className={styles.heroActions}>
+            <NidusCta interactionId="nidus_cta_hero" variant="primary" arrow>
+              {t(nidusCtaLabel)}
+            </NidusCta>
+            <a className={styles.textLink} href="#about">
+              {t(copy.aboutShort)}
+            </a>
+            {/* Statusbadge; null in de "current"-fase (content/role.ts). */}
+            {content.liveLabel ? (
+              <Stamp className={styles.heroStamp} delay={4}>
+                {t(content.liveLabel)}
+              </Stamp>
+            ) : null}
+          </div>
+          <p className={`${styles.body} ${styles.heroIdentity}`}>
+            {t(content.identityLine)}
+          </p>
+          <ul className={styles.chips} aria-label="Focus areas">
+            {content.focusAreas.map((focusArea) => (
+              <li key={focusArea} className={styles.chip}>
+                {focusArea}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <SystemSketch />
+      </SketchScope>
+    </section>
   );
 }

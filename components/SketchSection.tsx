@@ -12,7 +12,10 @@ interface SketchSectionProps {
   id: string; // anker én sectie-id voor analytics (zoals CVSection)
   title: Bilingual;
   eyebrow?: Bilingual;
-  // Rechts van de kop op desktop (notitie, legenda); op mobiel eronder.
+  // stacked: kop boven de inhoud, aside rechts van de kop.
+  // split: kop (met aside eronder) links, inhoud rechts (.split in de artboards).
+  layout?: "stacked" | "split";
+  // Naast de kop (stacked) of eronder in de linkerkolom (split); op mobiel eronder.
   aside?: ReactNode;
   className?: string;
   children?: ReactNode;
@@ -25,6 +28,7 @@ export default function SketchSection({
   id,
   title,
   eyebrow,
+  layout = "stacked",
   aside,
   className,
   children,
@@ -33,6 +37,13 @@ export default function SketchSection({
   const sketchState = useSketchReveal(sectionRef);
   const { t } = useLanguage();
   const titleId = `${id}-titel`;
+  const sectionClassName = [
+    styles.section,
+    layout === "split" ? styles.split : null,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <section
@@ -40,7 +51,7 @@ export default function SketchSection({
       id={id}
       data-section-id={id}
       aria-labelledby={titleId}
-      className={className ? `${styles.section} ${className}` : styles.section}
+      className={sectionClassName}
     >
       <SketchScope state={sketchState}>
         <div className={styles.head}>
@@ -52,7 +63,11 @@ export default function SketchSection({
           </div>
           {aside ? <div className={styles.aside}>{aside}</div> : null}
         </div>
-        {children}
+        {layout === "split" && children ? (
+          <div className={styles.body}>{children}</div>
+        ) : (
+          children
+        )}
       </SketchScope>
     </section>
   );

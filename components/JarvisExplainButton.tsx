@@ -3,13 +3,14 @@
 import type { Bilingual } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useJarvisExplain } from "@/hooks/useJarvisExplain";
-import styles from "@/styles/cv.module.css";
+import styles from "@/styles/jarvisExplain.module.css";
 
 interface JarvisExplainButtonProps {
   explanationId: string;
   label: Bilingual;
 }
 
+// Opent het vaste uitlegpaneel (JarvisExplainPanel) voor dit onderdeel; geen chat.
 export default function JarvisExplainButton({
   explanationId,
   label,
@@ -21,15 +22,11 @@ export default function JarvisExplainButton({
   return (
     <button
       type="button"
-      className={
-        active
-          ? `${styles.jarvisExplainButton} ${styles.jarvisExplainButtonActive}`
-          : styles.jarvisExplainButton
-      }
+      className={styles.button}
       onClick={() => openExplanation(explanationId)}
       aria-pressed={active}
     >
-      <span className={styles.jarvisExplainButtonDot} aria-hidden="true" />
+      <span className={styles.buttonDot} aria-hidden="true" />
       {t(label)}
     </button>
   );

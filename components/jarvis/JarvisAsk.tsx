@@ -170,6 +170,7 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
   const sessionId = useAnalyticsSession();
   const titleId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
   const isPanelOpenRef = useRef(false);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -182,6 +183,8 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
   const closePanel = useCallback(() => {
     isPanelOpenRef.current = false;
     setIsOpen(false);
+    // Focus terug naar de knop die het paneel opende.
+    openButtonRef.current?.focus({ preventScroll: true });
   }, []);
 
   function handleOpenPanel() {
@@ -316,6 +319,7 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
   return (
     <div className={rootClassName}>
       <button
+        ref={openButtonRef}
         type="button"
         className={styles.openButton}
         onClick={handleOpenPanel}
@@ -347,7 +351,9 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
                 onClick={closePanel}
                 aria-label={t(copy.close)}
               >
-                x
+                <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+                  <path d="M2 2 L12 12 M12 2 L2 12" />
+                </svg>
               </button>
             </div>
 
@@ -404,7 +410,9 @@ export default function JarvisAsk({ placement = "floating" }: JarvisAskProps) {
                   ) : null}
 
                   {status === "error" && errorMessage ? (
-                    <p className={styles.errorText}>{errorMessage}</p>
+                    <p className={styles.errorText} role="alert">
+                      {errorMessage}
+                    </p>
                   ) : null}
 
                   {status === "success" && answer ? (

@@ -1,0 +1,802 @@
+/* ---------------------------------------------------------------------------
+   Homepage, redesign. Bron: docs/redesign/artboards/Home.dc.html.
+   Tokens uit styles/sketchbook.module.css; secties via SketchSection.
+   Breedte zoals de artboards: inhoud max. 1248 px, rand 96 px (tablet 48,
+   mobiel 1.25rem).
+--------------------------------------------------------------------------- */
+
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.main :focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Gedeelde bouwstenen (.eyebrow, .chip, .card, .tlink, .hand) */
+
+.eyebrow {
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1625rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 11px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.125rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 34px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background-color: var(--card);
+  box-shadow: 8px 8px 0 var(--teal);
+}
+
+.cardAccent {
+  box-shadow: 8px 8px 0 var(--accent);
+}
+
+/* X-ray: kaarten krijgen een gestippelde kader (los van het thema). */
+:global([data-xray="on"]) .card {
+  outline: 1.5px dashed var(--teal);
+  outline-offset: 10px;
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.textLink:hover {
+  color: var(--accent);
+}
+
+.body {
+  color: var(--ink2);
+  font-size: 1.125rem;
+  line-height: 1.62;
+}
+
+.mono {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.tree {
+  margin: 0;
+  color: var(--ink);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.84375rem;
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ===== X-ray-strook onder de header ===== */
+
+.xrayStrip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 14px 56px;
+  border-bottom: 1.5px dashed var(--teal);
+  background-color: var(--card);
+}
+
+.xrayChip {
+  padding: 6px 11px;
+  border: 1.5px dashed var(--teal);
+  border-radius: 999px;
+  color: var(--teal);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.03rem;
+  line-height: 1.3;
+}
+
+.xrayStripNote {
+  margin-left: 8px;
+  font-size: 1.375rem;
+}
+
+/* ===== Hero ===== */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center;
+  gap: 56px;
+  padding: 56px max(96px, calc((100% - 1248px) / 2)) 112px;
+  scroll-margin-top: 76px;
+}
+
+.heroText {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  min-width: 0;
+}
+
+.heroRoles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+}
+
+.heroTarget {
+  color: var(--ink2);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* overschrijft de h1-regel uit app/globals.css (Fraunces 500) */
+.heroName {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* 10.5vw: "Vanslambrouck" past ook op 320 px (±34 px), op 390 px ±41 px */
+  font-size: clamp(2rem, min(10.5vw, 7.8vw + 0.6rem), 7rem);
+  line-height: 0.96;
+  letter-spacing: -1px;
+}
+
+.heroThesis {
+  max-width: 30ch;
+  color: var(--ink);
+  font-size: clamp(1.3125rem, 1.2vw + 0.95rem, 1.875rem);
+  line-height: 1.45;
+}
+
+.heroActions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+}
+
+.heroStamp {
+  background-color: var(--paper);
+}
+
+.heroIdentity {
+  max-width: 62ch;
+}
+
+/* Systeemschets: interfaces ⇄ API ⇄ data */
+.sketch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-self: center;
+  margin: 0;
+}
+
+.sketchSvg {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  overflow: visible;
+}
+
+.sketchBlobs {
+  fill: var(--card);
+  stroke: var(--ink);
+  stroke-width: 2.2;
+}
+
+.sketchIcons {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sketchArrows path {
+  stroke-width: 2.6;
+}
+
+.sketchLabels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: -14px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: clamp(0.875rem, 0.5vw + 0.7rem, 1.125rem);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.sketchCaption {
+  align-self: center;
+}
+
+/* ===== Werk in twee luiken: Nidus | LOWI ===== */
+
+.duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 64px;
+  padding: 72px max(96px, calc((100% - 1248px) / 2));
+  border-top: 2px dashed var(--rule);
+}
+
+.duoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.duoItem + .duoItem {
+  padding-left: 64px;
+  border-left: 1.5px solid var(--rule);
+}
+
+/* overschrijft de h2-regel uit app/globals.css */
+.duoTitle {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  line-height: 1;
+}
+
+.duoText {
+  max-width: 36ch;
+  color: var(--ink2);
+  font-size: 1.1875rem;
+  line-height: 1.55;
+}
+
+/* ===== Wie ik ben ===== */
+
+.aboutBody {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.aboutText {
+  color: var(--ink2);
+  font-size: 1.3125rem;
+  line-height: 1.6;
+}
+
+/* ===== Ervaring ===== */
+
+.experienceRoute {
+  margin-top: 6px;
+  color: var(--ink2);
+  font-size: 1.1875rem;
+  line-height: 1.45;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 48px;
+}
+
+.timelineLine {
+  position: absolute;
+  top: 14px;
+  left: 6px;
+  width: 20px;
+  max-width: none;
+  height: calc(100% - 40px);
+  overflow: visible;
+}
+
+.timelineLine path {
+  stroke-width: 2.5;
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+}
+
+.timelineItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+.timelineDot {
+  position: absolute;
+  top: 6px;
+  left: -49px;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
+  background-color: var(--paper);
+}
+
+.timelineDotAnalysis {
+  background-color: var(--teal);
+}
+
+.timelineDotNext {
+  background-color: var(--marker);
+}
+
+.timelinePeriod {
+  color: var(--mute);
+}
+
+/* overschrijft de h3-regel uit app/globals.css */
+.timelineRole {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.timelineOrg {
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.timelineText {
+  max-width: 62ch;
+}
+
+.timelineAction {
+  justify-self: start;
+  margin-top: 4px;
+}
+
+.timelineNote {
+  justify-self: start;
+  font-size: 1.5rem;
+}
+
+/* ===== LOWI ===== */
+
+.lowiBody {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.lowiIntro {
+  color: var(--ink2);
+  font-size: 1.25rem;
+  line-height: 1.62;
+}
+
+.lowiStrike {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  line-height: 1.2;
+}
+
+.lowiStrike > ins {
+  font-size: 1.35em;
+}
+
+.lowiCards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.statusChip {
+  align-self: flex-start;
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.statusChipMuted {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* overschrijft de h3-regel uit app/globals.css */
+.cardTitle {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 1.5vw + 1rem, 2.25rem);
+  line-height: 1.1;
+}
+
+.cardTagline {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  line-height: 1.35;
+}
+
+.cardText {
+  color: var(--ink2);
+  font-size: 1.03125rem;
+  line-height: 1.62;
+}
+
+.cardXray {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1.5px dashed var(--teal);
+}
+
+.cardXrayNote {
+  font-size: 1.3125rem;
+}
+
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+/* ===== Opleiding + talen ===== */
+
+.eduLang {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 64px;
+}
+
+.eduColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  scroll-margin-top: 76px;
+}
+
+.eduEntry {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 6px;
+}
+
+.eduDegree {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.eduInstitution {
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.small {
+  color: var(--mute);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.languageList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 32px;
+  padding-top: 6px;
+}
+
+.languageItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px dashed var(--rule);
+}
+
+.languageName {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  line-height: 1.35;
+}
+
+.languageLevel {
+  margin: 0;
+  color: var(--mute);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* ===== Wat ik bouw ===== */
+
+.skillsNote {
+  font-size: clamp(1.625rem, 1vw + 1.2rem, 2.125rem);
+}
+
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 48px 32px;
+}
+
+.skillCluster {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 3px solid var(--ink);
+}
+
+.skillTitle {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.skillChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skillChip {
+  padding: 6px 11px;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.84375rem;
+  letter-spacing: 0.02rem;
+  line-height: 1.3;
+}
+
+/* ===== Projecten ===== */
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 32px;
+}
+
+.projectCard {
+  gap: 16px;
+}
+
+.projectHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.projectTitle {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+
+.layersToggle {
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.125rem;
+  text-transform: uppercase;
+}
+
+.layersToggle[aria-pressed="true"],
+.layersToggle:hover {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+.code {
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: 8px;
+  background-color: #0f2a34;
+  color: #e7efe9;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.tagChip {
+  font-size: 0.6875rem;
+}
+
+.projectsNote {
+  font-size: 1.625rem;
+}
+
+.projectsFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+  margin-top: 56px;
+}
+
+/* ===== Contact ===== */
+
+.contactSection {
+  align-items: end;
+}
+
+.contactBody {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.contactMail {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.1vw, 1.9375rem);
+  line-height: 1.15;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.contactMail:hover {
+  color: var(--accent);
+}
+
+.contactRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+}
+
+.contactPlace {
+  color: var(--ink2);
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.privacy {
+  max-width: 60ch;
+}
+
+/* ===== Tablet ===== */
+
+@media (max-width: 1100px) {
+  .hero,
+  .duo {
+    padding-inline: 48px;
+  }
+
+  .xrayStrip {
+    padding-inline: 48px;
+  }
+
+  .lowiCards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skillsGrid,
+  .projectsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ===== Mobiel ===== */
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+    padding: 40px 1.25rem 72px;
+  }
+
+  .xrayStrip {
+    padding-inline: 1.25rem;
+  }
+
+  .duo {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 56px 1.25rem;
+  }
+
+  .duoItem + .duoItem {
+    padding-top: 32px;
+    padding-left: 0;
+    border-top: 1.5px solid var(--rule);
+    border-left: 0;
+  }
+
+  .timeline {
+    padding-left: 40px;
+  }
+
+  .timelineDot {
+    left: -41px;
+  }
+
+  .card {
+    padding: 24px;
+    box-shadow: 6px 6px 0 var(--teal);
+  }
+
+  .cardAccent {
+    box-shadow: 6px 6px 0 var(--accent);
+  }
+
+  .eduLang,
+  .skillsGrid,
+  .projectsGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .eduLang {
+    gap: 56px;
+  }
+}

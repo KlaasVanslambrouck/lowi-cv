@@ -1,0 +1,99 @@
+/* ---------------------------------------------------------------------------
+   CtaLink: .btn / .btn2 / .tlink uit docs/redesign/artboards/Stijl.dc.html.
+   Tokens uit styles/sketchbook.module.css; buiten .portfolioDesign vallen ze
+   terug op --cv-*.
+--------------------------------------------------------------------------- */
+
+.cta {
+  align-self: flex-start;
+  width: fit-content;
+  font-family: var(--font-body, var(--cv-font-sans));
+}
+
+.cta:focus-visible {
+  outline: 3px solid var(--teal, var(--cv-copper));
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.primary,
+.outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.1rem;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.primary {
+  padding: 0 26px;
+  background-color: var(--accent, var(--cv-copper));
+  box-shadow: 4px 4px 0 var(--ink, var(--cv-text));
+  color: var(--btn-ink, var(--cv-bg));
+  transition:
+    translate 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.primary:hover {
+  translate: -1px -1px;
+  box-shadow: 6px 6px 0 var(--ink, var(--cv-text));
+}
+
+.primary:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ink, var(--cv-text));
+}
+
+.outline {
+  padding: 0 22px;
+  border: 2px solid var(--ink, var(--cv-text));
+  color: var(--ink, var(--cv-text));
+}
+
+.outline:hover {
+  background-color: var(--ink, var(--cv-text));
+  color: var(--paper, var(--cv-bg));
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em; /* ruimte voor de pijl: inline-flex laat een spatie wegvallen */
+  min-height: 44px;
+  color: var(--ink, var(--cv-text));
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: var(--accent, var(--cv-copper));
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.link:hover {
+  color: var(--accent, var(--cv-copper));
+}
+
+.arrow {
+  width: 18px;
+  height: 14px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary {
+    transition: none;
+  }
+}

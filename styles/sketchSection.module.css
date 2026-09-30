@@ -47,9 +47,34 @@
   position: relative;
 }
 
+/* Split: kop links (4 delen), inhoud rechts (7 delen). */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  align-items: start;
+  column-gap: 72px;
+}
+
+.split .head {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 22px;
+  margin-bottom: 0;
+}
+
+.body {
+  min-width: 0;
+}
+
 @media (max-width: 1100px) {
   .section {
     padding-inline: 48px;
+  }
+
+  .split {
+    column-gap: 48px;
   }
 }
 
@@ -60,5 +85,14 @@
 
   .head {
     margin-bottom: 32px;
+  }
+
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 36px;
+  }
+
+  .split .head {
+    margin-bottom: 0;
   }
 }

@@ -2,8 +2,7 @@
 
 import type { EducationEntry } from "@/types/content";
 import { useLanguage } from "@/hooks/useLanguage";
-import CareerMotifBackground from "@/components/CareerMotifBackground";
-import styles from "@/styles/cv.module.css";
+import styles from "@/styles/home.module.css";
 
 interface EducationListProps {
   entries: EducationEntry[];
@@ -13,20 +12,12 @@ export default function EducationList({ entries }: EducationListProps) {
   const { t } = useLanguage();
 
   return (
-    <ul className={styles.educationList}>
+    <ul>
       {entries.map((entry) => (
-        <li
-          key={`${entry.institution}-${entry.period}`}
-          className={styles.educationItem}
-        >
-          {entry.motif && <CareerMotifBackground motif={entry.motif} />}
-          <div className={styles.educationItemContent}>
-            <h3 className={styles.educationDegree}>{t(entry.degree)}</h3>
-            <span className={styles.educationInstitution}>
-              {entry.institution}
-            </span>
-            <span className={styles.educationPeriod}>{entry.period}</span>
-          </div>
+        <li key={`${entry.institution}-${entry.period}`} className={styles.eduEntry}>
+          <h3 className={styles.eduDegree}>{t(entry.degree)}</h3>
+          <p className={styles.eduInstitution}>{entry.institution}</p>
+          <p className={styles.small}>{entry.period}</p>
         </li>
       ))}
     </ul>

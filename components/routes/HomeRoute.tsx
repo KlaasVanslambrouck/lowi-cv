@@ -1,7 +1,9 @@
 import HomePage from "@/components/HomePage";
 import JsonLd from "@/components/JsonLd";
+import { nidusCaseStudy } from "@/content/nidusCaseStudy";
 import { TranslationProvider } from "@/context/TranslationContext";
 import { homePage } from "@/lib/localizedPages";
+import { nidusLayerTree } from "@/lib/nidusLayers";
 import { pageLanguageLinks } from "@/lib/site";
 import { homeGraph } from "@/lib/structuredData";
 import type { Language } from "@/types/content";
@@ -21,7 +23,8 @@ export default function HomeRoute({ language }: HomeRouteProps) {
     <>
       <JsonLd graph={homeGraph(language)} />
       <TranslationProvider alternatePath={alternatePath}>
-        <HomePage />
+        {/* Server-side, zodat de case-study-content niet in de homepage-bundle zit. */}
+        <HomePage nidusLayerTree={nidusLayerTree(nidusCaseStudy.architecture)} />
       </TranslationProvider>
     </>
   );

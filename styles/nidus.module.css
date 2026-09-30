@@ -304,8 +304,9 @@
 
 /* ===== Code ===== */
 
-.codeSection .placeholder {
-  max-width: 36ch;
+/* split zoals in het artboard: kop links, tekst rechts, onderaan uitgelijnd */
+.codeSection {
+  align-items: end;
 }
 
 .placeholder {

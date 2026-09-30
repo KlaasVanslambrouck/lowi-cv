@@ -1,0 +1,258 @@
+{
+  "nidus-web-vandaag-licht-1440.png": {
+    "x": 96,
+    "y": 827
+  },
+  "nidus-web-vandaag-licht-1440-notitie.png": {
+    "x": 96,
+    "y": 827
+  },
+  "nidus-web-vandaag-licht-1440-knop.png": {
+    "x": 96,
+    "y": 888
+  },
+  "nidus-web-vandaag-licht-1440-kader.png": {
+    "x": 272,
+    "y": 958
+  },
+  "nidus-web-energie-licht-1440.png": {
+    "x": 96,
+    "y": 826.8125
+  },
+  "nidus-web-energie-licht-1440-notitie.png": {
+    "x": 96,
+    "y": 826
+  },
+  "nidus-web-energie-licht-1440-knop.png": {
+    "x": 96,
+    "y": 887
+  },
+  "nidus-web-energie-licht-1440-kader.png": {
+    "x": 272,
+    "y": 957
+  },
+  "nidus-mobiel-vandaag-licht-1440.png": {
+    "x": 96,
+    "y": 825.8125
+  },
+  "nidus-mobiel-vandaag-licht-1440-notitie.png": {
+    "x": 96,
+    "y": 825
+  },
+  "nidus-mobiel-vandaag-licht-1440-knop.png": {
+    "x": 96,
+    "y": 886
+  },
+  "nidus-mobiel-vandaag-licht-1440-kader.png": {
+    "x": 564,
+    "y": 956
+  },
+  "nidus-mobiel-energie-licht-1440.png": {
+    "x": 96,
+    "y": 824.8125
+  },
+  "nidus-mobiel-energie-licht-1440-notitie.png": {
+    "x": 96,
+    "y": 824
+  },
+  "nidus-mobiel-energie-licht-1440-knop.png": {
+    "x": 96,
+    "y": 885.1875
+  },
+  "nidus-mobiel-energie-licht-1440-kader.png": {
+    "x": 564,
+    "y": 955
+  },
+  "nidus-web-vandaag-licht-390.png": {
+    "x": 20,
+    "y": 1031
+  },
+  "nidus-web-vandaag-licht-390-notitie.png": {
+    "x": 20,
+    "y": 1031
+  },
+  "nidus-web-vandaag-licht-390-knop.png": {
+    "x": 20,
+    "y": 1133.375
+  },
+  "nidus-web-vandaag-licht-390-kader.png": {
+    "x": 20,
+    "y": 1203
+  },
+  "nidus-web-energie-licht-390.png": {
+    "x": 20,
+    "y": 1030.625
+  },
+  "nidus-web-energie-licht-390-notitie.png": {
+    "x": 20,
+    "y": 1030
+  },
+  "nidus-web-energie-licht-390-knop.png": {
+    "x": 20,
+    "y": 1132.375
+  },
+  "nidus-web-energie-licht-390-kader.png": {
+    "x": 20,
+    "y": 1202
+  },
+  "nidus-mobiel-vandaag-licht-390.png": {
+    "x": 20,
+    "y": 1029.625
+  },
+  "nidus-mobiel-vandaag-licht-390-notitie.png": {
+    "x": 20,
+    "y": 1029
+  },
+  "nidus-mobiel-vandaag-licht-390-knop.png": {
+    "x": 20,
+    "y": 1131.375
+  },
+  "nidus-mobiel-vandaag-licht-390-kader.png": {
+    "x": 39,
+    "y": 1201
+  },
+  "nidus-mobiel-energie-licht-390.png": {
+    "x": 20,
+    "y": 1028.625
+  },
+  "nidus-mobiel-energie-licht-390-notitie.png": {
+    "x": 20,
+    "y": 1028
+  },
+  "nidus-mobiel-energie-licht-390-knop.png": {
+    "x": 20,
+    "y": 1130
+  },
+  "nidus-mobiel-energie-licht-390-kader.png": {
+    "x": 39,
+    "y": 1200
+  },
+  "nidus-web-vandaag-donker-1440.png": {
+    "x": 96,
+    "y": 827
+  },
+  "nidus-web-vandaag-donker-1440-notitie.png": {
+    "x": 96,
+    "y": 827
+  },
+  "nidus-web-vandaag-donker-1440-knop.png": {
+    "x": 96,
+    "y": 888
+  },
+  "nidus-web-vandaag-donker-1440-kader.png": {
+    "x": 272,
+    "y": 958
+  },
+  "nidus-web-energie-donker-1440.png": {
+    "x": 96,
+    "y": 826.8125
+  },
+  "nidus-web-energie-donker-1440-notitie.png": {
+    "x": 96,
+    "y": 826
+  },
+  "nidus-web-energie-donker-1440-knop.png": {
+    "x": 96,
+    "y": 887.1875
+  },
+  "nidus-web-energie-donker-1440-kader.png": {
+    "x": 272,
+    "y": 957
+  },
+  "nidus-mobiel-vandaag-donker-1440.png": {
+    "x": 96,
+    "y": 825.8125
+  },
+  "nidus-mobiel-vandaag-donker-1440-notitie.png": {
+    "x": 96,
+    "y": 825
+  },
+  "nidus-mobiel-vandaag-donker-1440-knop.png": {
+    "x": 96,
+    "y": 886.1875
+  },
+  "nidus-mobiel-vandaag-donker-1440-kader.png": {
+    "x": 564,
+    "y": 956
+  },
+  "nidus-mobiel-energie-donker-1440.png": {
+    "x": 96,
+    "y": 824
+  },
+  "nidus-mobiel-energie-donker-1440-notitie.png": {
+    "x": 96,
+    "y": 824
+  },
+  "nidus-mobiel-energie-donker-1440-knop.png": {
+    "x": 96,
+    "y": 885
+  },
+  "nidus-mobiel-energie-donker-1440-kader.png": {
+    "x": 564,
+    "y": 955
+  },
+  "nidus-web-vandaag-donker-390.png": {
+    "x": 20,
+    "y": 1031
+  },
+  "nidus-web-vandaag-donker-390-notitie.png": {
+    "x": 20,
+    "y": 1031
+  },
+  "nidus-web-vandaag-donker-390-knop.png": {
+    "x": 20,
+    "y": 1133.375
+  },
+  "nidus-web-vandaag-donker-390-kader.png": {
+    "x": 20,
+    "y": 1203
+  },
+  "nidus-web-energie-donker-390.png": {
+    "x": 20,
+    "y": 1030.625
+  },
+  "nidus-web-energie-donker-390-notitie.png": {
+    "x": 20,
+    "y": 1030
+  },
+  "nidus-web-energie-donker-390-knop.png": {
+    "x": 20,
+    "y": 1132
+  },
+  "nidus-web-energie-donker-390-kader.png": {
+    "x": 20,
+    "y": 1202
+  },
+  "nidus-mobiel-vandaag-donker-390.png": {
+    "x": 20,
+    "y": 1029.625
+  },
+  "nidus-mobiel-vandaag-donker-390-notitie.png": {
+    "x": 20,
+    "y": 1029
+  },
+  "nidus-mobiel-vandaag-donker-390-knop.png": {
+    "x": 20,
+    "y": 1131
+  },
+  "nidus-mobiel-vandaag-donker-390-kader.png": {
+    "x": 39,
+    "y": 1201
+  },
+  "nidus-mobiel-energie-donker-390.png": {
+    "x": 20,
+    "y": 1028.625
+  },
+  "nidus-mobiel-energie-donker-390-notitie.png": {
+    "x": 20,
+    "y": 1028
+  },
+  "nidus-mobiel-energie-donker-390-knop.png": {
+    "x": 20,
+    "y": 1130.375
+  },
+  "nidus-mobiel-energie-donker-390-kader.png": {
+    "x": 39,
+    "y": 1200
+  }
+}

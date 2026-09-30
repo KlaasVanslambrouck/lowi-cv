@@ -176,23 +176,28 @@ async function pagePosition(locator: Locator): Promise<Position> {
   });
 }
 
+// Meet en corrigeert tot drie keer: de layout rondt een relatieve verschuiving
+// af (1/64 px) en na een klik kan de pagina nog even bijschuiven.
 async function placeAt(mockups: Locator, part: Locator, target: Position | null): Promise<Position> {
-  const current = await pagePosition(part);
-  const goal = target ?? { x: Math.floor(current.x), y: Math.floor(current.y) };
-  await mockups.evaluate(
-    (root, delta) => {
+  const start = await pagePosition(part);
+  const goal = target ?? { x: Math.floor(start.x), y: Math.floor(start.y) };
+  let current = start;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const delta = { x: goal.x - current.x, y: goal.y - current.y };
+    if (Math.abs(delta.x) <= 0.01 && Math.abs(delta.y) <= 0.01) break;
+    await mockups.evaluate((root, shift) => {
       const parent = root.parentElement;
       if (!parent) return;
       const top = Number.parseFloat(parent.style.top || "0");
       const left = Number.parseFloat(parent.style.left || "0");
       parent.style.position = "relative";
       parent.style.zIndex = "1000"; // boven latere secties, zodat klikken blijven werken
-      parent.style.top = `${top + delta.y}px`;
-      parent.style.left = `${left + delta.x}px`;
-    },
-    { x: goal.x - current.x, y: goal.y - current.y },
-  );
-  return pagePosition(part);
+      parent.style.top = `${top + shift.y}px`;
+      parent.style.left = `${left + shift.x}px`;
+    }, delta);
+    current = await pagePosition(part);
+  }
+  return current;
 }
 
 async function main(): Promise<void> {
@@ -257,8 +262,19 @@ async function main(): Promise<void> {
                 ([part, locator]): [string, Locator] => [`${name}-${part}.png`, locator],
               ),
             ];
+            // Muis weg: anders krijgt wat na het verschuiven onder de muis
+            // komt (bv. een tab) een hovertoestand, en die verschilt per run.
+            await page.mouse.move(0, 0);
             for (const [file, locator] of shots) {
               positions[file] = await placeAt(mockups, locator, alignTo?.[file] ?? null);
+              const target = alignTo?.[file];
+              if (
+                target &&
+                (Math.abs(positions[file].x - target.x) > 0.01 ||
+                  Math.abs(positions[file].y - target.y) > 0.01)
+              ) {
+                console.warn(`! ${file}: niet exact op de doelpositie geplaatst`);
+              }
               await locator.screenshot({ path: path.join(outDir, file), animations: "disabled" });
             }
             console.log(`✓ ${name} (+ notitie, knop, kader)`);
