@@ -234,8 +234,8 @@ export const placeholderContent: PortfolioContent = {
           en: "Analysis & Systems Thinking",
         },
         context: {
-          nl: "Mijn dagelijkse vak als functioneel analist bij De Watergroep (Billing/SDL); Nidus is daar mijn eigen bewijs van.",
-          en: "My daily craft as a functional analyst at De Watergroep (Billing/SDL); Nidus is my own proof of it.",
+          nl: "Mijn basis als functioneel analist, o.a. bij De Watergroep (Billing/SDL); Nidus is daar mijn eigen bewijs van.",
+          en: "My foundation as a functional analyst, incl. at De Watergroep (Billing/SDL); Nidus is my own proof of it.",
         },
         items: [
           { nl: "Functionele analyse", en: "Functional analysis" },

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { NEW_ROLE_PERIOD, ROLE_PHASE } from "@/content/role";
 import { getKnowledgeBase } from "./portfolioKnowledgeBase";
 import type { KnowledgeSourceType } from "./types";
 
@@ -57,8 +58,8 @@ describe("getKnowledgeBase", () => {
     expect(chunk?.sourceType).toBe("experience");
     expect(chunk?.title.en).toContain("AI Transformation Expert");
     expect(chunk?.content.en).toContain("AI ambition to adoption");
-    // Periodetekst hoort bij de doorzoekbare inhoud.
-    expect(chunk?.content.nl).toContain("vanaf okt 2026");
+    // Periodetekst van de actieve fase hoort bij de doorzoekbare inhoud.
+    expect(chunk?.content.nl).toContain(NEW_ROLE_PERIOD[ROLE_PHASE].nl);
   });
 
   it("neemt de periode van Student Kick-Off mee in de chunk", () => {

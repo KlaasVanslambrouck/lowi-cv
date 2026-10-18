@@ -58,7 +58,7 @@ export const INDEXNOW_KEY = "167e8c9f936b77cbb623005b267df08e";
 
 // Laatste inhoudelijke wijziging aan de CV-gegevens; gedeeld door /cv.json
 // (meta.lastModified) en de sitemap. Handmatig bijhouden.
-export const CV_LAST_MODIFIED: IsoDate = "2026-09-22";
+export const CV_LAST_MODIFIED: IsoDate = "2026-10-18";
 
 // Maakt van een pad een absolute URL op SITE_URL: "/nidus" → "https://…/nidus".
 // De homepage krijgt geen trailing slash, zodat canonical, JSON-LD en sitemap
@@ -175,7 +175,7 @@ export const PUBLIC_ROUTES: readonly PublicRoute[] = [
     path: "/",
     changeFrequency: "monthly",
     priority: 1,
-    lastModified: "2026-09-07",
+    lastModified: "2026-10-18",
     localized: true,
   },
   {

@@ -16,7 +16,10 @@ import type {
 // zou pas bij de volgende build effect hebben.
 // Volledige checklist voor die dag: docs/rolwissel-2026-10-05.md
 
-export const ROLE_PHASE: RolePhase = "incoming";
+// "as" i.p.v. een type-annotatie: met ": RolePhase" vernauwt TypeScript de
+// const tot de letterlijke waarde, en dan geeft elke vergelijking met de andere
+// fase een compileerfout (TS2367).
+export const ROLE_PHASE = "current" as RolePhase;
 
 export const ROLE: RoleInfo = {
   role: "AI Transformation Expert",

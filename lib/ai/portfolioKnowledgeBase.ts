@@ -104,6 +104,11 @@ const CURATED_KEYWORDS: Record<string, string[]> = {
     "ai transformation",
     "ai-transformatie",
     "in the pocket",
+    // In de "current"-fase zegt de about-tekst "functionele analyse" i.p.v.
+    // "functioneel analist"; zonder deze termen mist de vraag "wat onderscheidt
+    // hem van een klassieke functioneel analist?" deze chunk.
+    "functioneel analist",
+    "functional analyst",
   ],
   // De centrale AI-knoop moet vindbaar zijn op de actuele rolrichting uit de
   // hero, niet alleen op de losse term "AI".
