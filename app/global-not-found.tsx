@@ -8,6 +8,8 @@ import "./globals.css";
 // layouts zijn (app/(nl) en app/(en)/en) en dus geen gedeelde layout om een
 // not-found in te renderen. Rendert buiten de layouts: fonts en globale CSS
 // worden hier zelf geladen. Vereist experimental.globalNotFound in next.config.ts.
+// Agents die text/markdown vragen, krijgen in de plaats app/markdown/missing
+// (fallback-rewrite in next.config.ts).
 export const metadata: Metadata = {
   // Geen robots-veld: Next zet zelf noindex op een 404.
   title: "Pagina niet gevonden | Klaas Vanslambrouck",
@@ -23,8 +25,14 @@ export default function GlobalNotFound() {
             <h1 id="not-found-title" className={styles.errorTitle}>
               Deze pagina bestaat niet.
             </h1>
+            <p className={styles.errorCopy}>
+              Misschien is de pagina verplaatst, of zit er een tikfout in de
+              link. Dit is de website van Klaas Vanslambrouck: cv, loopbaan en
+              projecten.
+            </p>
             <p className={styles.errorCopy} lang="en">
-              This page does not exist.
+              This page does not exist. It may have moved, or the link may
+              contain a typo.
             </p>
             <div className={styles.errorActions}>
               <Link className={styles.errorLink} href="/">
@@ -34,6 +42,12 @@ export default function GlobalNotFound() {
                 English version
               </Link>
             </div>
+            {/* Voor crawlers en agents: waar de volledige lijst staat. Gewone
+                <a>'s: het zijn bestanden, geen pagina's van de app. */}
+            <p className={styles.errorMeta} lang="en">
+              All pages: <a href="/sitemap.xml">sitemap.xml</a> · For AI
+              agents: <a href="/llms.txt">llms.txt</a>
+            </p>
           </section>
         </main>
       </body>

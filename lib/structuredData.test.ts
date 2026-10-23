@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { schemaRole } from "@/content/role";
+import { placeholderContent } from "@/content/placeholderContent";
+import { schemaRole, siteDescriptionFor } from "@/content/role";
 import { absoluteUrl, localizedPath } from "@/lib/site";
 import {
+  LOWI_ID,
   PERSON_ID,
+  SOCIAL_PROFILES,
   homeGraph,
   lowiGraph,
   nidusGraph,
@@ -25,14 +28,30 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
+// Elk object met een @type, ook genest (de Person zit in ProfilePage.mainEntity).
+function typedNodes(graph: readonly StructuredDataNode[]): Record<string, unknown>[] {
+  const nodes: Record<string, unknown>[] = [];
+
+  function walk(value: unknown): void {
+    if (Array.isArray(value)) {
+      for (const item of value) walk(item);
+      return;
+    }
+    if (!isRecord(value)) return;
+    if (typeof value["@type"] === "string") nodes.push(value);
+    for (const child of Object.values(value)) walk(child);
+  }
+
+  walk(graph);
+  return nodes;
+}
+
 // Elke @id die de graaf zelf definieert: een node met een @type.
 function definedIds(graph: readonly StructuredDataNode[]): Set<string> {
   const ids = new Set<string>();
-  for (const node of graph) {
-    if (isRecord(node) && typeof node["@type"] === "string") {
-      const id = node["@id"];
-      if (typeof id === "string") ids.add(id);
-    }
+  for (const node of typedNodes(graph)) {
+    const id = node["@id"];
+    if (typeof id === "string") ids.add(id);
   }
   return ids;
 }
@@ -87,7 +106,7 @@ function nodesWithLanguage(
 function personNode(
   graph: readonly StructuredDataNode[],
 ): Record<string, unknown> {
-  const node = asRecords(graph).find((entry) => entry["@type"] === "Person");
+  const node = typedNodes(graph).find((entry) => entry["@type"] === "Person");
   if (!node) throw new Error("geen Person-node in deze graaf");
   return node;
 }
@@ -159,5 +178,59 @@ describe("Person en WebSite", () => {
     );
     expect(website?.inLanguage).toEqual(["nl", "en"]);
     expect(nodesWithLanguage(homeGraph("nl"), "nl")).toHaveLength(1);
+  });
+});
+
+describe("ProfilePage", () => {
+  it.each(LANGUAGES)("%s: heeft de meta description van die taalversie", (language) => {
+    expect(pageNode(homeGraph(language)).description).toBe(
+      siteDescriptionFor(language),
+    );
+  });
+
+  it.each(LANGUAGES)("%s: mainEntity is de volledige Person", (language) => {
+    const mainEntity = pageNode(homeGraph(language)).mainEntity as Record<
+      string,
+      unknown
+    >;
+
+    expect(mainEntity["@type"]).toBe("Person");
+    expect(mainEntity["@id"]).toBe(PERSON_ID);
+    expect(mainEntity.jobTitle).toBe(schemaRole.jobTitle);
+    expect(mainEntity.worksFor).toMatchObject({
+      "@type": "Organization",
+      name: schemaRole.employer.name,
+    });
+    expect(mainEntity.sameAs).toEqual(
+      Object.values(SOCIAL_PROFILES).filter((url) => url !== ""),
+    );
+    expect(typeof mainEntity.description).toBe("string");
+  });
+
+  it("de homepage definieert Person precies één keer", () => {
+    const persons = typedNodes(homeGraph("nl")).filter(
+      (node) => node["@type"] === "Person",
+    );
+    expect(persons).toHaveLength(1);
+  });
+});
+
+describe("LOWI", () => {
+  const lowi = () =>
+    asRecords(homeGraph("nl")).find((node) => node["@id"] === LOWI_ID);
+
+  it("heeft een contactpunt met het publieke e-mailadres", () => {
+    expect(lowi()?.contactPoint).toMatchObject({
+      "@type": "ContactPoint",
+      email: placeholderContent.contact.email,
+    });
+  });
+
+  it("heeft enkel gemeente en land als adres, geen straat", () => {
+    expect(lowi()?.address).toEqual({
+      "@type": "PostalAddress",
+      addressLocality: "Oudenaarde",
+      addressCountry: "BE",
+    });
   });
 });

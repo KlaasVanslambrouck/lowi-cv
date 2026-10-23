@@ -35,6 +35,7 @@ export interface EmployerInfo {
   name: string;
   legalName?: string;
   shortName?: string; // hoe de werkgever in lopende tekst genoemd wordt
+  url?: string; // website van de werkgever, voor worksFor in de JSON-LD
 }
 
 // Centrale rolgegevens (content/role.ts). Alles wat per fase verschilt —

@@ -59,6 +59,23 @@
   margin-top: 1.25rem;
 }
 
+.errorMeta {
+  margin-top: 1.25rem;
+  color: var(--cv-text-soft);
+  font-family: var(--cv-font-mono);
+  font-size: 0.75rem;
+}
+
+.errorMeta a {
+  color: var(--cv-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.errorMeta a:hover {
+  color: var(--cv-copper-soft);
+}
+
 .errorButton,
 .errorLink {
   min-height: 2.75rem;

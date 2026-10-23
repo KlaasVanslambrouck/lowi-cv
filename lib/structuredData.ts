@@ -1,5 +1,5 @@
 import { placeholderContent } from "@/content/placeholderContent";
-import { schemaRole } from "@/content/role";
+import { schemaRole, siteDescriptionFor } from "@/content/role";
 import {
   PUBLIC_ROUTES,
   SITE_NAME,
@@ -35,6 +35,17 @@ export const SOCIAL_PROFILES = {
 };
 
 export const PERSON_NAME = "Klaas Vanslambrouck";
+
+// Derde-persoonsvariant van hero.thesis.en; ook gebruikt in /llms.txt.
+export const PERSON_THESIS =
+  "Translates complex business and systems context into working AI systems: from analysis to prototype, product architecture and rollout.";
+
+// LOWI heeft geen eigen adres: enkel gemeente en land, geen straat.
+const LOCALITY_ADDRESS: PostalAddressNode = {
+  "@type": "PostalAddress",
+  addressLocality: "Oudenaarde",
+  addressCountry: "BE",
+};
 
 export const PERSON_ID = `${SITE_URL}/#person`;
 export const LOWI_ID = `${SITE_URL}/#lowi`;
@@ -75,6 +86,15 @@ interface EmployerNode {
   "@type": "Organization";
   name: string;
   legalName?: string;
+  url?: string;
+}
+
+interface ContactPointNode {
+  "@type": "ContactPoint";
+  contactType: string;
+  email: string;
+  url: string;
+  availableLanguage: string[];
 }
 
 // Korte persoonsverwijzing voor pagina's zonder volledige Person-node:
@@ -93,6 +113,7 @@ export interface PersonNode {
   alternateName: string[];
   url: string;
   image?: string;
+  description: string;
   email: string;
   jobTitle: string;
   worksFor: EmployerNode;
@@ -109,17 +130,25 @@ export interface OrganizationNode {
   url: string;
   description: string;
   disambiguatingDescription: string;
+  email: string;
+  address: PostalAddressNode;
+  contactPoint: ContactPointNode;
   founder: NodeRef;
 }
 
+// mainEntity is de volledige Person, niet enkel een @id-verwijzing: zo staan
+// jobTitle, worksFor en sameAs ook in de ProfilePage voor lezers die geen
+// @id's in de graaf opzoeken. Die velden horen volgens Schema.org bij Person,
+// niet bij ProfilePage zelf.
 export interface ProfilePageNode {
   "@type": "ProfilePage";
   "@id": string;
   url: string;
   name: string;
+  description: string;
   inLanguage: string;
   dateModified: string;
-  mainEntity: NodeRef;
+  mainEntity: PersonNode;
 }
 
 export interface SoftwareApplicationNode {
@@ -225,6 +254,7 @@ export function personSchema(): PersonNode {
     alternateName: ["Klaas Van Slambrouck"],
     url: SITE_URL,
     ...(PERSON_IMAGE_PATH ? { image: absoluteUrl(PERSON_IMAGE_PATH) } : {}),
+    description: `${schemaRole.jobTitle} at ${schemaRole.employer.name}. ${PERSON_THESIS}`,
     email: placeholderContent.contact.email,
     jobTitle: schemaRole.jobTitle,
     worksFor: {
@@ -233,12 +263,9 @@ export function personSchema(): PersonNode {
       ...(schemaRole.employer.legalName
         ? { legalName: schemaRole.employer.legalName }
         : {}),
+      ...(schemaRole.employer.url ? { url: schemaRole.employer.url } : {}),
     },
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Oudenaarde",
-      addressCountry: "BE",
-    },
+    address: LOCALITY_ADDRESS,
     knowsAbout: [
       "AI transformation",
       "functional analysis",
@@ -264,11 +291,22 @@ export function lowiSchema(): OrganizationNode {
       "Personal learning, research and building lab of Klaas Vanslambrouck at the intersection of AI, biology, automation and creative technology.",
     disambiguatingDescription:
       "A personal lab of Klaas Vanslambrouck (Oudenaarde, Belgium). Not related to lowi.nl.",
+    // Contact loopt via Klaas zelf: hetzelfde publieke adres als op de site.
+    email: placeholderContent.contact.email,
+    address: LOCALITY_ADDRESS,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "general inquiries",
+      email: placeholderContent.contact.email,
+      url: placeholderContent.contact.linkedinUrl,
+      availableLanguage: ["Dutch", "English"],
+    },
     founder: nodeRef(PERSON_ID),
   };
 }
 
-// De homepage per taalversie. mainEntity blijft dezelfde persoon.
+// De homepage per taalversie. mainEntity is in beide talen dezelfde persoon
+// (zelfde @id); description is de meta description van die taalversie.
 export function profilePageSchema(language: Language): ProfilePageNode {
   const homeRoute = PUBLIC_ROUTES.find((route) => route.path === "/");
 
@@ -277,9 +315,10 @@ export function profilePageSchema(language: Language): ProfilePageNode {
     "@id": profilePageId(language),
     url: absoluteUrl(localizedPath("/", language)),
     name: SITE_NAME,
+    description: siteDescriptionFor(language),
     inLanguage: inLanguageOf(language),
     dateModified: homeRoute?.lastModified ?? "",
-    mainEntity: nodeRef(PERSON_ID),
+    mainEntity: personSchema(),
   };
 }
 
@@ -377,8 +416,8 @@ export function websiteSchema(): WebSiteNode {
 export function homeGraph(language: Language): readonly StructuredDataNode[] {
   return [
     websiteSchema(),
+    // Bevat de volledige Person als mainEntity.
     profilePageSchema(language),
-    personSchema(),
     lowiSchema(),
   ];
 }

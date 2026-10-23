@@ -15,6 +15,7 @@ describe("llms.txt", () => {
     const text = buildLlmsTxt();
 
     for (const heading of [
+      "## When to use this profile",
       "## Pages",
       "## Machine-readable",
       "## Projects",
@@ -112,5 +113,26 @@ describe("llms.txt", () => {
 
     expect(machineSection).toContain(`(${SITE_URL}/cv.json)`);
     expect(machineSection).not.toContain("/en/");
+  });
+
+  it("noemt de situaties waarvoor dit profiel relevant is", () => {
+    const section = buildLlmsTxt()
+      .split("## When to use this profile")[1]
+      .split("## Pages")[0];
+
+    for (const topic of [
+      "AI readiness",
+      "Use-case discovery",
+      "Process redesign",
+      "Prototyping",
+      "Functional analysis",
+      "AI adoption",
+    ]) {
+      expect(section, topic).toContain(`- ${topic}:`);
+    }
+  });
+
+  it("vermeldt de Markdown-versies via Accept: text/markdown", () => {
+    expect(buildLlmsTxt()).toContain("Accept: text/markdown");
   });
 });

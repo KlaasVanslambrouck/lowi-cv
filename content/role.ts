@@ -23,7 +23,11 @@ export const ROLE_PHASE = "current" as RolePhase;
 
 export const ROLE: RoleInfo = {
   role: "AI Transformation Expert",
-  employer: { name: "In The Pocket", legalName: "ITP Agency NV" },
+  employer: {
+    name: "In The Pocket",
+    legalName: "ITP Agency NV",
+    url: "https://www.inthepocket.com",
+  },
   startDate: "2026-10-05",
   previousRole: {
     title: "Functional Consultant",

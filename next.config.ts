@@ -1,4 +1,10 @@
 import type { NextConfig } from "next";
+import {
+  MARKDOWN_ACCEPT_CONDITION,
+  MARKDOWN_NOT_FOUND_PATH,
+  MARKDOWN_ROUTES,
+  markdownDestination,
+} from "./lib/markdownRoutes";
 
 const securityHeaders = [
   {
@@ -51,6 +57,23 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
   async rewrites() {
+    // Content negotiation (lib/markdownRoutes.ts). beforeFiles, want de
+    // HTML-pagina's zijn statische routes: een gewone (afterFiles) rewrite
+    // komt pas aan bod nadat die al gematcht zijn, en zou dus nooit lopen.
+    const markdownPages = MARKDOWN_ROUTES.map((route) => ({
+      source: route.path,
+      destination: markdownDestination(route),
+      has: [MARKDOWN_ACCEPT_CONDITION],
+    }));
+
+    // fallback loopt pas als geen enkele route of bestand past: precies de
+    // URL's die anders de HTML-404 van app/global-not-found.tsx krijgen.
+    const markdownNotFound = {
+      source: "/:path*",
+      destination: MARKDOWN_NOT_FOUND_PATH,
+      has: [MARKDOWN_ACCEPT_CONDITION],
+    };
+
     // /cv.pdf hoort bij het eigen domein; nidus-api genereert het bestand.
     // De upstream zet zelf Content-Type: application/pdf en
     // Content-Disposition: attachment; filename="Klaas-Vanslambrouck-CV.pdf".
@@ -58,15 +81,21 @@ const nextConfig: NextConfig = {
       console.warn(
         "NIDUS_API_URL ontbreekt — /cv.pdf wordt niet doorgestuurd en geeft 404.",
       );
-      return [];
     }
+    const cvPdf = nidusApiUrl
+      ? [
+          {
+            source: "/cv.pdf",
+            destination: `${nidusApiUrl}/api/portfolio/cv-pdf`,
+          },
+        ]
+      : [];
 
-    return [
-      {
-        source: "/cv.pdf",
-        destination: `${nidusApiUrl}/api/portfolio/cv-pdf`,
-      },
-    ];
+    return {
+      beforeFiles: markdownPages,
+      afterFiles: cvPdf,
+      fallback: [markdownNotFound],
+    };
   },
   async redirects() {
     return [
@@ -85,6 +114,10 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      // Geen Vary: Accept voor de HTML-pagina's: Next overschrijft de Vary van
+      // een app-pagina met zijn eigen RSC-waarden (build/templates/app-page.js,
+      // res.setHeader). De Markdown-respons zet zelf Vary: Accept, en dat is de
+      // richting die telt: een cache geeft Markdown dan nooit aan een browser.
     ];
   },
 };
